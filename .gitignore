@@ -71,3 +71,7 @@ modules/
 # SQL Server DataBase
 *.MDF
 *.LDF
+
+# IMG
+img/
+jm/
