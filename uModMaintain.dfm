@@ -573,7 +573,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTitle: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -591,7 +590,6 @@ object FModMaintain: TFModMaintain
     ActiveStoredUsage = [auDesignTime]
     Active = True
     BeforeEdit = fdQryTreeBeforeEdit
-    AfterEdit = fdQryTreeAfterEdit
     AfterPost = fdQryTreeAfterPost
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
@@ -1258,7 +1256,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMaxID: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -1269,7 +1266,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMaxSort: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -1293,7 +1289,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMov: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -1304,7 +1299,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMaxLen: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       

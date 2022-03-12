@@ -123,7 +123,6 @@ type
     procedure fdQryTreeAfterPost(DataSet: TDataSet);
     procedure btn1Click(Sender: TObject);
     procedure fdQryTreeBeforeEdit(DataSet: TDataSet);
-    procedure fdQryTreeAfterEdit(DataSet: TDataSet);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -147,8 +146,8 @@ end;
 
 procedure TFModMaintain.bitbtnSaveClick(Sender: TObject);
 var
-  NumErrors: Integer;
-  NumChanges: Integer;
+  NumErrors: integer;
+  NumChanges: integer;
 begin
   // Ensure that all edits have been posted
   if fdQryTree.State in dsEditModes then
@@ -221,9 +220,9 @@ end;
 procedure TFModMaintain.btn1Click(Sender: TObject);
 var
   sortMoved, sortNewParent: string; // 记录被移动项序号和目标父项的序号
-  parentIdOld, parentIdNew, newParentId: Integer;
+  parentIdOld, parentIdNew, newParentId: integer;
   s_max_sort, sqlText: string;
-  max_len, i_max_sort, sortMovedLen, sortNewParentLen, level_old, level_new: Integer;
+  max_len, i_max_sort, sortMovedLen, sortNewParentLen, level_old, level_new: integer;
 
 begin
   // sortNewParent:=fdQryTree['t_sort'];
@@ -296,9 +295,9 @@ end;
 procedure TFModMaintain.cxDBLkUpComClassExit(Sender: TObject);
 var
   sortMoved, sortNewParent: string; // 记录被移动项序号和目标父项的序号
-  parentIdOld, parentIdNew, newParentId: Integer;
+  parentIdOld, parentIdNew, newParentId: integer;
   s_max_sort, sqlText: string;
-  max_len, i_max_sort, sortMovedLen, sortNewParentLen, level_old, level_new: Integer;
+  max_len, i_max_sort, sortMovedLen, sortNewParentLen, level_old, level_new: integer;
 
 begin
   // //
@@ -442,30 +441,49 @@ begin
   // AIndex := 0;
 end;
 
-
 procedure TFModMaintain.fdQryTreeBeforeEdit(DataSet: TDataSet);
 begin
   parentIdBefore := fdQryTree['t_parent_id'];
 end;
 
-procedure TFModMaintain.fdQryTreeAfterEdit(DataSet: TDataSet);
-begin
-  parentIdAfter := fdQryTree['t_parent_id'];
-
-end;
-
 procedure TFModMaintain.fdQryTreeAfterPost(DataSet: TDataSet);
+var
+  Movedsort, NewParentsort: string; // 记录被移动项序号和目标父项的序号
+
 begin
   // ShowMessage('AfterPost');
   // ShowMessage(fdQryTree['t_name']);
   if DataSet.UpdateStatus = usModified then
   begin
-  ShowMessage(IntToStr(parentIdBefore));
-  ShowMessage(IntToStr(parentIdAfter));
+    parentIdAfter := fdQryTree['t_parent_id'];
+    // -- parentIdBefore 修改前parentId
+    // -- parentIdAfter  修改后parentId ，也是父项目的t_ID
+    if parentIdBefore = parentIdAfter then // 如果新旧值相同，退出
+    begin
+      fdQryTree.Cancel;
+      Exit;
+    end;
+    // ---Movedsort移动项目t_sort
+    Movedsort := fdQryTree['t_t_sort'];
+    if fdQryTitle.locate('t_id', parentIdAfter, []) then
+    begin
+      // --NewParentsort目标父项目t_sort
+      NewParentsort := fdQryTitle['t_sort']
+    end
+    else
+    begin
+      fdQryTree.Cancel;
+      MessageDlg('目标目录有错！', mtWarning, [mbOK], 0); // 此项应该不会执
+      Exit;
+    end;
+
+
+    // ShowMessage(inttostr(parentIdBefore));
+    // ShowMessage(inttostr(parentIdAfter));
+
   end;
 
 end;
-
 
 procedure TFModMaintain.fdQryTreeCalcFields(DataSet: TDataSet);
 begin
@@ -601,7 +619,7 @@ end;
 
 procedure TFModMaintain.AddNode(IsChild: Boolean);
 var
-  cur_id, cur_par_id, cur_level, max_id: Integer;
+  cur_id, cur_par_id, cur_level, max_id: integer;
   s_cur_sort, s_max_sort, s_sort_num: string;
 begin
 
