@@ -1,0 +1,52 @@
+-- 无参数分析模型模板例
+-- 1.各模型名称不能重复
+-- 2.参数个数应与“参数信息”处的的个数和类型相一致
+-- 3.可复制粘贴至 SSMS(SQL Server Management Studio)中调试运行
+CREATE PROCEDURE 模型英文名称 WITH ENCRYPTION AS
+BEGIN
+
+END
+GO
+
+-- 有参数分析模型模板例
+-- 1.各模型名称不能重复
+-- 2.参数个数应与“参数信息”处的的个数和类型相一致(代码参数前以@开头)
+-- 3.可复制粘贴至 SSMS(SQL Server Management Studio)中调试运行
+CREATE PROCEDURE 模型英文名称(@str Varchar(40),@begin_date Char(8),@num Int ) WITH ENCRYPTION AS
+BEGIN
+
+END
+GO
+
+-- 返回字符串函数模板例（“参数信息”处必须为空）
+CREATE FUNCTION 函数英文名称(@str VARCHAR(MAX),@split VARCHAR(10))
+RETURNS Varchar(8) WITH ENCRYPTION
+    AS
+BEGIN
+
+
+  RETURN
+END
+GO
+
+-- 返回数量函数模板例（“参数信息”处必须为空）
+CREATE FUNCTION 函数英文名称(@str VARCHAR(MAX),@split VARCHAR(10))
+RETURNS Varchar(8) WITH ENCRYPTION
+    AS
+BEGIN
+
+
+  RETURN
+END
+GO
+
+-- 返回表函数模板（“参数信息”处必须为空）
+CREATE FUNCTION 函数英文名称(@str VARCHAR(MAX),@split VARCHAR(10))
+RETURNS TABLE WITH ENCRYPTION
+    AS
+BEGIN
+
+  RETURN (Select * ……)
+END
+GO
+

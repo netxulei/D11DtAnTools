@@ -512,6 +512,31 @@ object FModMaintain: TFModMaintain
       Height = 673
       Width = 995
     end
+    object btn1: TButton
+      Left = 15
+      Top = 344
+      Width = 75
+      Height = 25
+      Caption = 'btn1'
+      TabOrder = 3
+      OnClick = btn1Click
+    end
+    object edt1: TEdit
+      Left = 24
+      Top = 312
+      Width = 121
+      Height = 23
+      TabOrder = 4
+      Text = '1302'
+    end
+    object edt2: TEdit
+      Left = 151
+      Top = 312
+      Width = 121
+      Height = 23
+      TabOrder = 5
+      Text = '0102'
+    end
   end
   object cxspltr1: TcxSplitter
     Left = 473
@@ -548,7 +573,7 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTitle: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    LocalSQL = FDLocalSQL1
+    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -565,6 +590,9 @@ object FModMaintain: TFModMaintain
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Active = True
+    BeforeEdit = fdQryTreeBeforeEdit
+    AfterEdit = fdQryTreeAfterEdit
+    AfterPost = fdQryTreeAfterPost
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
@@ -1231,7 +1259,6 @@ object FModMaintain: TFModMaintain
   object fdQryMaxID: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Active = True
-    LocalSQL = FDLocalSQL1
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -1242,6 +1269,7 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMaxSort: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -1265,6 +1293,7 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMov: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
@@ -1275,6 +1304,7 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMaxLen: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
