@@ -333,7 +333,7 @@ object FModMaintain: TFModMaintain
         StyleFocused.LookAndFeel.NativeStyle = True
         StyleHot.LookAndFeel.Kind = lfUltraFlat
         StyleHot.LookAndFeel.NativeStyle = True
-        TabOrder = 2
+        TabOrder = 1
         Width = 697
       end
       object grp1: TGroupBox
@@ -348,7 +348,7 @@ object FModMaintain: TFModMaintain
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 3
         object cxdbchckbx1: TcxDBCheckBox
           Left = 3
           Top = 15
@@ -383,7 +383,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 5
+        TabOrder = 4
         Transparent = True
       end
       object cxdbchckbx3: TcxDBCheckBox
@@ -397,7 +397,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 6
+        TabOrder = 5
         Transparent = True
       end
       object cxdbtxtdt4: TcxDBTextEdit
@@ -409,7 +409,7 @@ object FModMaintain: TFModMaintain
         StyleDisabled.LookAndFeel.NativeStyle = True
         StyleFocused.LookAndFeel.NativeStyle = True
         StyleHot.LookAndFeel.NativeStyle = True
-        TabOrder = 3
+        TabOrder = 2
         Width = 697
       end
       object pnl4: TPanel
@@ -422,7 +422,7 @@ object FModMaintain: TFModMaintain
         BevelOuter = bvNone
         Ctl3D = False
         ParentCtl3D = False
-        TabOrder = 7
+        TabOrder = 6
         object bitbtn3: TBitBtn
           Left = 0
           Top = 75
@@ -448,7 +448,7 @@ object FModMaintain: TFModMaintain
         Width = 146
         Height = 25
         Caption = #20195#30721#35268#33539#27979#35797
-        TabOrder = 8
+        TabOrder = 7
         OnClick = btnTestClick
       end
       object cxdbchkbxIsClass: TcxDBCheckBox
@@ -462,7 +462,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 9
+        TabOrder = 8
         Transparent = True
         OnEditing = cxdbchkbxIsClassEditing
         OnExit = cxdbchkbxIsClassExit
@@ -476,6 +476,7 @@ object FModMaintain: TFModMaintain
         Properties.DropDownRows = 20
         Properties.DropDownSizeable = True
         Properties.DropDownWidth = 260
+        Properties.ImmediatePost = True
         Properties.KeyFieldNames = 't_id'
         Properties.ListColumns = <
           item
@@ -484,7 +485,8 @@ object FModMaintain: TFModMaintain
         Properties.ListOptions.ShowHeader = False
         Properties.ListSource = ds2
         Properties.MaxLength = 400
-        TabOrder = 1
+        Style.Shadow = False
+        TabOrder = 9
         OnEnter = cxDBLkUpComClassEnter
         OnExit = cxDBLkUpComClassExit
         Width = 234
@@ -513,8 +515,8 @@ object FModMaintain: TFModMaintain
       Width = 995
     end
     object btn1: TButton
-      Left = 15
-      Top = 344
+      Left = 24
+      Top = 341
       Width = 75
       Height = 25
       Caption = 'btn1'
@@ -576,9 +578,9 @@ object FModMaintain: TFModMaintain
     Connection = F_DT.FDConSQLite
     SQL.Strings = (
       
-        'select t_id,t_parent_id,t_sort,repeat('#39'.'#39',length(t_sort)*2)||t_n' +
-        'ame as t_name from fdQryTree where t_parent_id=0 or isClass='#39'1'#39' ' +
-        ' union select 0,0,'#39#39','#39'*=================*'#39' order by t_sort')
+        'select t_id,t_parent_id,t_sort,repeat('#39'  '#39',length(t_sort))||'#39#8857'--' +
+        #39'||t_name as t_name from fdQryTree where t_parent_id=0 or isClas' +
+        's='#39'1'#39'  union select 0,0,'#39#39','#39'*=================*'#39' order by t_sort')
     Left = 1027
     Top = 256
   end
@@ -1306,5 +1308,29 @@ object FModMaintain: TFModMaintain
         't like '#39'01%'#39' order by t_sort')
     Left = 1105
     Top = 480
+  end
+  object cxGrdVwrpstry1: TcxGridViewRepository
+    Left = 873
+    Top = 432
+    object cxgrdbtblvwGrdVwrpstry1DBTableView1: TcxGridDBTableView
+      Navigator.Buttons.CustomButtons = <>
+      DataController.DataSource = ds2
+      DataController.KeyFieldNames = 't_id'
+      DataController.Summary.DefaultGroupSummaryItems = <>
+      DataController.Summary.FooterSummaryItems = <>
+      DataController.Summary.SummaryGroups = <>
+      object cxgrdbtblvwGrdVwrpstry1DBTableView1t_id: TcxGridDBColumn
+        DataBinding.FieldName = 't_id'
+      end
+      object cxgrdbtblvwGrdVwrpstry1DBTableView1t_parent_id: TcxGridDBColumn
+        DataBinding.FieldName = 't_parent_id'
+      end
+      object cxgrdbtblvwGrdVwrpstry1DBTableView1t_sort: TcxGridDBColumn
+        DataBinding.FieldName = 't_sort'
+      end
+      object cxgrdbtblvwGrdVwrpstry1DBTableView1t_name: TcxGridDBColumn
+        DataBinding.FieldName = 't_name'
+      end
+    end
   end
 end

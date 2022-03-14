@@ -96,10 +96,16 @@ type
     cxstyl2: TcxStyle;
     fdQryMov: TFDQuery;
     fdQryMaxLen: TFDQuery;
-    cxDBLkUpComClass: TcxDBLookupComboBox;
     btn1: TButton;
     edt1: TEdit;
     edt2: TEdit;
+    cxGrdVwrpstry1: TcxGridViewRepository;
+    cxgrdbtblvwGrdVwrpstry1DBTableView1: TcxGridDBTableView;
+    cxgrdbtblvwGrdVwrpstry1DBTableView1t_id: TcxGridDBColumn;
+    cxgrdbtblvwGrdVwrpstry1DBTableView1t_parent_id: TcxGridDBColumn;
+    cxgrdbtblvwGrdVwrpstry1DBTableView1t_sort: TcxGridDBColumn;
+    cxgrdbtblvwGrdVwrpstry1DBTableView1t_name: TcxGridDBColumn;
+    cxDBLkUpComClass: TcxDBLookupComboBox;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure fdQryTreeCalcFields(DataSet: TDataSet);
@@ -448,23 +454,32 @@ end;
 
 procedure TFModMaintain.fdQryTreeAfterPost(DataSet: TDataSet);
 var
-  Movedsort, NewParentsort: string; // 记录被移动项序号和目标父项的序号
-
+  Movedsort, NewParentsort, sqlText: string; // 记录被移动项序号和目标父项的序号
+  sortMovedLen, sortNewParentLen,level_old,level_new: integer;
 begin
-  // ShowMessage('AfterPost');
-  // ShowMessage(fdQryTree['t_name']);
-  if DataSet.UpdateStatus = usModified then
+  {
+    -- parentIdBefore 修改前parentId，OnbeforeEdit取值
+    -- parentIdAfter  修改后parentId ，也是父项目的t_ID
+    -- Movedsort移动项目t_sort
+    -- NewParentsort目标父项目t_sort
+  }
+  fdQryTree.DisableControls;
+  // ShowMessage('afterPost');
+  if DataSet.UpdateStatus = usModified then // 若是修改状态：append、edit其他字段都会触发
   begin
+    // 修改后parentId ，也是父项目的t_ID
     parentIdAfter := fdQryTree['t_parent_id'];
-    // -- parentIdBefore 修改前parentId
-    // -- parentIdAfter  修改后parentId ，也是父项目的t_ID
+
+    ShowMessage(inttostr(parentIdBefore) + '|' + inttostr(parentIdAfter));
+
     if parentIdBefore = parentIdAfter then // 如果新旧值相同，退出
     begin
       fdQryTree.Cancel;
+      fdQryTree.EnableControls;
       Exit;
     end;
     // ---Movedsort移动项目t_sort
-    Movedsort := fdQryTree['t_t_sort'];
+    Movedsort := fdQryTree['t_sort'];
     if fdQryTitle.locate('t_id', parentIdAfter, []) then
     begin
       // --NewParentsort目标父项目t_sort
@@ -473,7 +488,34 @@ begin
     else
     begin
       fdQryTree.Cancel;
+      fdQryTree.EnableControls;
       MessageDlg('目标目录有错！', mtWarning, [mbOK], 0); // 此项应该不会执
+      Exit;
+    end;
+    // 计算级次
+    sortMovedLen := Length(Movedsort); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
+    sortNewParentLen := Length(NewParentsort); // 新的父项的长度
+
+    // 子集t_sort最大长度，用于计算级次
+    sqlText := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort + '%'' order by t_sort';
+    fdQryMaxLen.Close;
+    fdQryMaxLen.SQL.Clear;
+    fdQryMaxLen.SQL.Add(sqlText);
+    fdQryMaxLen.Prepared;
+    fdQryMaxLen.Open;
+    fdQryMaxLen.First;
+    level_old := fdQryMaxLen['max_len'] div 2 - sortMovedLen div 2 + 1; // 没移动记录的级次
+    level_new := sortNewParentLen div 2;
+    if level_old + level_new > 4 then
+    begin
+{$IF CompilerVersion >= 29.0}
+      fdQryTree.UndoLastChange(True);
+{$ENDIF}
+      // OnDataChange(nil, nil);
+      // fdQryMov.Close;
+      fdQryMaxLen.Close;
+      fdQryTree.EnableControls;
+      MessageDlg('变更所属类别后，目录超过4级，不能变更级！', mtWarning, [mbOK], 0);
       Exit;
     end;
 
@@ -570,8 +612,11 @@ begin
   fdQryTitle.DisableControls;
   fdQryTitle.Connection := F_DT.FDConSQLite;
   fdQryTitle.SQL.Clear;
-  fdQryTitle.SQL.Add('SELECT t_id,t_parent_id,repeat(''.'',length(t_sort)*2)||t_name as t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass=' + '''' +
-    '1' + '''' + ' union SELECT 0,0,' + '''' + '*==============*' + '''' + ','''' ' + 'FROM fdQryTree order by t_sort');
+  // fdQryTitle.SQL.Add('SELECT t_id,t_parent_id,t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass=' + '''' +
+  // '1' + '''' + ' union SELECT 0,0,' + '''' + '*==============*' + '''' + ','''' ' + 'FROM fdQryTree order by t_sort');
+  //
+  fdQryTitle.SQL.Add('SELECT t_id,t_parent_id,repeat('' '',length(t_sort)*2)||''⊙┈┈┈''||t_name as t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass='
+    + '''' + '1' + '''' + ' union SELECT 0,0,' + '''' + '⊙┈┈┈顶层' + '''' + ','''' ' + 'FROM fdQryTree order by t_sort');
   fdQryTitle.Prepared;
   fdQryTitle.Open;
   fdQryTitle.enableControls;
