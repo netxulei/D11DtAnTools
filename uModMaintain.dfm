@@ -487,6 +487,7 @@ object FModMaintain: TFModMaintain
         Properties.MaxLength = 400
         Style.Shadow = False
         TabOrder = 9
+        OnClick = cxDBLkUpComClassClick
         OnEnter = cxDBLkUpComClassEnter
         OnExit = cxDBLkUpComClassExit
         Width = 234
@@ -585,13 +586,12 @@ object FModMaintain: TFModMaintain
     Top = 256
   end
   object fdQryTmp: TFDQuery
-    Left = 1135
-    Top = 626
+    Left = 671
+    Top = 554
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Active = True
-    BeforeEdit = fdQryTreeBeforeEdit
     AfterPost = fdQryTreeAfterPost
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
@@ -615,6 +615,7 @@ object FModMaintain: TFModMaintain
     object fdQryTreet_parent_id: TIntegerField
       FieldName = 't_parent_id'
       Origin = 't_parent_id'
+      OnChange = fdQryTreet_parent_idChange
     end
     object fdQryTreet_name: TStringField
       FieldName = 't_name'
@@ -1296,8 +1297,8 @@ object FModMaintain: TFModMaintain
       
         'select t_id,t_parent_id,t_sort from fdQryTree where t_sort like ' +
         #39'01%'#39' order by t_sort')
-    Left = 1185
-    Top = 480
+    Left = 809
+    Top = 544
   end
   object fdQryMaxLen: TFDQuery
     ActiveStoredUsage = [auDesignTime]
