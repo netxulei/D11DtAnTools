@@ -19,7 +19,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, EhLibMTE,
-  cxImageComboBox;
+  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON;
 
 type
   TMainFrm = class(TForm)
@@ -151,6 +151,12 @@ type
     fdQryTreet_auto: TStringField;
     fdQryTreet_hide: TStringField;
     fdQryTreet_type: TStringField;
+    fdQryTreet_sort: TStringField;
+    fdQryTreeisClass: TStringField;
+    fdQryExport: TFDQuery;
+    FDStanStorageBinLink1: TFDStanStorageBinLink;
+    FDStanStorageJSONLink1: TFDStanStorageJSONLink;
+    FDStanStorageXMLLink1: TFDStanStorageXMLLink;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
@@ -497,7 +503,7 @@ begin
   fdqryAuto.SQL.Clear;
   sqltext := 'SELECT * FROM "X_menus" where t_auto =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' +
     '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type = ' + '''' + t_type + '''' +
-    ' order by t_order';
+    ' order by t_sort';
   fdqryAuto.SQL.Add(sqltext);
   // FdqryAuto.sql.SaveToFile('d:\x.sql');
   fdqryAuto.Prepared;
@@ -1054,7 +1060,7 @@ begin
   // 根据检查模式确定列出的模型功能  未隐藏 无数据库版本或指定版本=t_database_ver    版本之间不在混淆分析模型
   sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' +
     '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type =' + '''' + t_type + '''' +
-    ' order by t_order';
+    ' order by t_sort';
   fdQryTree.close; // fdQryTree=ADOQ2
   fdQryTree.DisableControls;
   fdQryTree.Connection := F_DT.FDConSYS;
@@ -1522,7 +1528,7 @@ var
   s_filename: string;
 begin
   // ActiveControl:=dbgrdh1;
-  SaveDialog2.FileName := DateToStr(Now) + '.zh';
+  SaveDialog2.FileName := DateToStr(Now) + '.mod';
   if SaveDialog2.Execute then
   begin
     s_filename := Trim(SaveDialog2.FileName);
@@ -1537,23 +1543,25 @@ begin
     // ShowWaitText('请稍后，正在进行功能导出...');
     try
       SaveDialog2.FileName := SaveDialog2.FileName;
-      AdoEx1.close;
-      AdoEx1.DisableControls;
-      AdoEx1.Connection := F_DT.ADOCN1;
-      AdoEx1.CursorLocation := clUseClient;
-      AdoEx1.CursorType := ctStatic;
-      AdoEx1.LockType := ltBatchOptimistic;
-      AdoEx1.SQL.Clear;
-      AdoEx1.SQL.Add('SELECT * FROM "X_menus" order by t_order');
-      AdoEx1.Prepared;
-      AdoEx1.Open;
-      AdoEx1.enableControls;
-      AdoEx1.SaveToFile(SaveDialog2.FileName, pfXML);
+      fdQryExport.close;
+      // fdqryExport.DisableControls;
+      fdQryExport.Connection := F_DT.FDConSYS;
+      // fdqryExport.CursorLocation := clUseClient;
+      // fdqryExport.CursorType := ctStatic;
+      // fdqryExport.LockType := ltBatchOptimistic;
+      fdQryExport.SQL.Clear;
+      fdQryExport.SQL.Add('SELECT * FROM "X_menus" order by t_sort');
+      fdQryExport.Prepared;
+      fdQryExport.Open;
+      fdQryExport.FetchAll;
+      // fdqryExport.enableControls;
+      fdQryExport.SaveToFile(SaveDialog2.FileName, sfBinary);
+      // fdqryExport.SaveToFile(SaveDialog2.FileName, sfXML);
+      // fdqryExport.SaveToFile(SaveDialog2.FileName, sfJSON );
       // ShowWaitText;
-      MessageDlg('功能数据已导出到' + SaveDialog2.FileName, mtInformation, [mbOK], 0);
+      MessageDlg('模型代码信息已备份到' + SaveDialog2.FileName, mtInformation, [mbOK], 0);
     finally
-      AdoEx1.close;
-      AdoEx1.DisableControls;
+      fdQryExport.close;
       // ShowWaitText; //不带入参数,则是关闭等待窗口
     end;
   end;
@@ -1578,7 +1586,7 @@ begin
   // del_proc();
   // def_fun();
   // Auto_proc();
-  cxDBTreeList1t_name.Caption.Text := '检查功能（双击执行）' + '→' + '版本：' + t_Jclj_Ver;
+  cxDBTreeList1t_name.Caption.Text := '模型列表（双击执行）' + '→' + '版本：' + t_Jclj_Ver;
 end;
 
 procedure TMainFrm.MnUserClick(Sender: TObject);
@@ -1640,10 +1648,12 @@ end;
 procedure TMainFrm.cxDBTreeList1DblClick(Sender: TObject);
 var
   i_id, i_parent_id: Integer;
+  isClass: string;
 begin
   // i_id := fdQryTree['t_id'];
   i_parent_id := fdQryTree['t_parent_id'];
-  if (cxDBTreeList1.FocusedNode.Count > 0) or (i_parent_id = 0) then
+  isClass := fdQryTree['isClass'];
+  if (cxDBTreeList1.FocusedNode.Count > 0) or (i_parent_id = 0) or (isClass = '1') then
   begin
     btn1.Enabled := False;
   end
@@ -1980,8 +1990,8 @@ end;
 
 procedure TMainFrm.Button1Click(Sender: TObject);
 begin
-ShowMessage(format('%.4d',[2]));
-//  DispInfo();
+  ShowMessage(format('%.4d', [2]));
+  // DispInfo();
   // Auto_proc;
 end;
 

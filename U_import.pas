@@ -47,19 +47,17 @@ var
   i, ii_max: Integer;
   MyIniFile: TIniFile;
 begin
-  s_filename := Trim(StringReplace(lbledtFileName.Text, '"', '',
-    [rfReplaceAll]));
+  s_filename := Trim(StringReplace(lbledtFileName.Text, '"', '', [rfReplaceAll]));
   s_Jclj_Ver := ExtractFileName(s_filename);
   if Length(s_filename) = 0 then
   begin
-    MessageDlg('没有选择导入的文件！', mtInformation, [mbOK], 0);
+    MessageDlg('没有选择之前备份的文件！', mtInformation, [mbOK], 0);
     exit;
   end;
 
   if IfIncludeKG(s_filename) then
   begin
-    MessageDlg('文件名或所在目录名中包含空格，请修正文件名或将文件放在不含空格的目录中，再导入！', mtInformation,
-      [mbOK], 0);
+    MessageDlg('文件名或所在目录名中包含空格，请修正文件名或将文件放在不含空格的目录中，再导入！', mtInformation, [mbOK], 0);
     exit;
   end;
   if not FileExists(s_filename) then
@@ -89,8 +87,7 @@ begin
     F_DT.ADOCN1.BeginTrans;
     if rb1.Checked then // 替换导入
     begin
-      if Application.MessageBox('替换方式导入将会使原有检查模型丢失，确定吗？', '注意',
-        MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
+      if Application.MessageBox('替换方式导入将会使原有检查模型丢失，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
       begin
         F_DT.ADOCN1.RollbackTrans;
         exit;
@@ -122,8 +119,8 @@ begin
     end;
     if rb2.Checked then // 新增导入
     begin
-      if Application.MessageBox('新增方式导入将保留原有检查模型，但需在开放模式下将新的检查模型归入相应类别，确定吗？',
-        '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
+      if Application.MessageBox('新增方式导入将保留原有检查模型，但需在开放模式下将新的检查模型归入相应类别，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL
+      then
       begin
         F_DT.ADOCN1.RollbackTrans;
         exit;
@@ -153,10 +150,8 @@ begin
       begin
         ADOqr1.Append;
         ADOqr1.FieldValues['t_id'] := ADOqr2.FieldValues['t_id'] + ii_max + 1;
-        ADOqr1.FieldValues['t_parent_id'] := ADOqr2.FieldValues['t_parent_id'] +
-          ii_max + 1;
-        ADOqr1.FieldValues['t_order'] := ADOqr2.FieldValues['t_parent_id'] +
-          ii_max + 1;
+        ADOqr1.FieldValues['t_parent_id'] := ADOqr2.FieldValues['t_parent_id'] + ii_max + 1;
+        ADOqr1.FieldValues['t_order'] := ADOqr2.FieldValues['t_parent_id'] + ii_max + 1;
         for i := 2 to ADOqr2.FieldCount - 2 do
           ADOqr1.Fields[i].Value := ADOqr2.Fields[i].Value;
         ADOqr2.Next;

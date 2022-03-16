@@ -38,7 +38,7 @@ type
     ds1: TDataSource;
     ds2: TDataSource;
     fdQryTitle: TFDQuery;
-    fdQryTmp: TFDQuery;
+    fdQrySameLev: TFDQuery;
     cxspltr1: TcxSplitter;
     pnl3: TPanel;
     lbl6: TLabel;
@@ -96,9 +96,6 @@ type
     cxstyl2: TcxStyle;
     fdQryMov: TFDQuery;
     fdQryMaxLen: TFDQuery;
-    btn1: TButton;
-    edt1: TEdit;
-    edt2: TEdit;
     cxGrdVwrpstry1: TcxGridViewRepository;
     cxgrdbtblvwGrdVwrpstry1DBTableView1: TcxGridDBTableView;
     cxgrdbtblvwGrdVwrpstry1DBTableView1t_id: TcxGridDBColumn;
@@ -106,6 +103,8 @@ type
     cxgrdbtblvwGrdVwrpstry1DBTableView1t_sort: TcxGridDBColumn;
     cxgrdbtblvwGrdVwrpstry1DBTableView1t_name: TcxGridDBColumn;
     cxDBLkUpComClass: TcxDBLookupComboBox;
+    fdQryCur: TFDQuery;
+    fdQryNext: TFDQuery;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
       AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
@@ -126,18 +125,18 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxdbchkbxIsClassExit(Sender: TObject);
     procedure cxDBLkUpComClassEnter(Sender: TObject);
-    procedure cxDBLkUpComClassExit(Sender: TObject);
     procedure cxdbchkbxIsClassEditing(Sender: TObject; var CanEdit: Boolean);
-    procedure fdQryTreeAfterPost(DataSet: TDataSet);
-    procedure btn1Click(Sender: TObject);
     procedure fdQryTreet_parent_idChange(Sender: TField);
     procedure cxDBLkUpComClassClick(Sender: TObject);
+    procedure bitbtn3Click(Sender: TObject);
+    procedure bitbtnTypeDownClick(Sender: TObject);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
     isBatch: Boolean; // 是否做过批量变更，主要是变更有子项的所属类别、移动有子项的项目
     procedure ToggleButtons(Enable: Boolean);
     procedure AddNode(IsChild: Boolean);
+    procedure MoveItem(UpDown: Char);
   public { Public declarations }
   end;
 
@@ -221,36 +220,20 @@ begin
   Close;
 end;
 
+procedure TFModMaintain.bitbtn3Click(Sender: TObject);
+
+begin
+  MoveItem('1');
+end;
+
+procedure TFModMaintain.bitbtnTypeDownClick(Sender: TObject);
+begin
+  MoveItem('0');
+end;
+
 procedure TFModMaintain.bitbtnAddBrotherClick(Sender: TObject);
 begin
   AddNode(False);
-end;
-
-procedure TFModMaintain.btn1Click(Sender: TObject);
-var
-  sortMoved, sortNewParent: string; // 记录被移动项序号和目标父项的序号
-  parentIdOld, parentIdNew, newParentId: integer;
-  s_max_sort, sqlText: string;
-  max_len, i_max_sort, sortMovedLen, sortNewParentLen, level_old, level_new: integer;
-
-begin
-  // sortNewParent:=fdQryTree['t_sort'];
-  s_max_sort := edt1.text;
-  sortMoved := edt2.text;
-  sortMovedLen := Length(sortMoved);
-  sqlText := 'update fdQryTree set t_sort = ''' + s_max_sort + '''||substr(t_sort,' + inttostr(sortMovedLen) +
-    '+1,length(t_sort)-' + inttostr(sortMovedLen) + ') where t_sort like ' + '''' + sortMoved + '%''';
-  fdQryMov.Close;
-  fdQryMov.SQL.Clear;
-  fdQryMov.SQL.Add(sqlText);
-  fdQryMov.ExecSQL;
-  fdQryMov.Close;
-
-  // fdQryTree.Edit;
-  // fdQryTree.Post;
-  isBatch := True; // 批量变更标志 存盘和全部取消后变为false
-  fdQryTitle.Refresh;
-
 end;
 
 procedure TFModMaintain.btnTestClick(Sender: TObject);
@@ -277,9 +260,9 @@ end;
 
 procedure TFModMaintain.cxDBLkUpComClassClick(Sender: TObject);
 var
-  Movedsort, NewParentsort, sqlText, s_max_sort: string; // 记录被移动项序号和目标父项的序号
+  Movedsort, NewParentsort, sqltext, s_max_sort: string; // 记录被移动项序号和目标父项的序号
   sortMovedLen, sortNewParentLen, level_old, level_new, i_max_sort: integer;
-  bk:TbookMark;
+  bk: TbookMark;
 begin
   {
     -- parentIdBefore 修改前parentId，OnbeforeEdit取值
@@ -299,11 +282,11 @@ begin
     fdQryTree.Cancel;
     // fdQryTree.UndoLastChange(True);
     fdQryTree.EnableControls;
-    Exit;
+    exit;
   end;
   // ---Movedsort移动项目t_sort
   Movedsort := fdQryTree['t_sort'];
-  if fdQryTitle.locate('t_id', parentIdAfter, []) then
+  if fdQryTitle.Locate('t_id', parentIdAfter, []) then
   begin
     // --NewParentsort目标父项目t_sort
     NewParentsort := fdQryTitle['t_sort']
@@ -320,10 +303,10 @@ begin
   // ShowMessage(Movedsort + '|' + NewParentsort);
 
   // 长度
-  sortMovedLen := Length(Movedsort); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
-  sortNewParentLen := Length(NewParentsort); // 新的父项的长度
+  sortMovedLen := length(Movedsort); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
+  sortNewParentLen := length(NewParentsort); // 新的父项的长度
 
-  bk:=fdQryTree.GetBookmark;
+  bk := fdQryTree.GetBookmark;
 
   // 判断是否自移动
   if LeftStr(NewParentsort, sortMovedLen) = Movedsort then
@@ -332,15 +315,15 @@ begin
     // fdQryTree.UndoLastChange(True);
     fdQryTree.EnableControls;
     MessageDlg('不能把自己移动到自己的子项下！', mtWarning, [mbOK], 0); // 此项应该不会执
-    Exit;
+    exit;
   end;
 
   // 子集t_sort最大长度，用于计算级次
-  sqlText := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort +
+  sqltext := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort +
     '%'' order by t_sort';
   fdQryMaxLen.Close;
   fdQryMaxLen.SQL.Clear;
-  fdQryMaxLen.SQL.Add(sqlText);
+  fdQryMaxLen.SQL.ADD(sqltext);
   fdQryMaxLen.Prepared;
   fdQryMaxLen.Open;
   fdQryMaxLen.First;
@@ -357,14 +340,14 @@ begin
     fdQryMaxLen.Close;
     fdQryTree.EnableControls;
     MessageDlg('变更所属类别后，目录超过4级，不能变更级！', mtWarning, [mbOK], 0);
-    Exit;
+    exit;
   end;
   // ---------------------
   // 新父节点下最大t_sort
   fdQryMaxSort.Close;
   fdQryMaxSort.Connection := F_DT.FDConSQLite;
   fdQryMaxSort.SQL.Clear;
-  fdQryMaxSort.SQL.Add('SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree where t_sort like ''' +
+  fdQryMaxSort.SQL.ADD('SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree where t_sort like ''' +
     NewParentsort + '%'' and length(t_sort)=' + inttostr(sortNewParentLen + 2));
   // fdQryMaxSort.SQL.Add('SELECT count(t_sort) as i_SortMax FROM fdQryTree where t_sort like '''
   // + sortNewParent+'%'' and length(t_sort)='+inttostr(sortNewParentLen+2));
@@ -386,13 +369,12 @@ begin
   if i_max_sort = 0 then
     s_max_sort := NewParentsort + Format('%.2d', [(i_max_sort + 1)])
   else
-    s_max_sort := Format('%.' + (inttostr(Length(NewParentsort) + 2)) + 'd', [(i_max_sort + 1)]);
+    s_max_sort := Format('%.' + (inttostr(length(NewParentsort) + 2)) + 'd', [(i_max_sort + 1)]);
   // 修改被移动项目的t_parent_id和t_sort
   fdQryTree.Edit;
   fdQryTree['t_parent_id'] := parentIdAfter;
   // fdQryTree.Post;
-  edt1.text := s_max_sort;
-  edt2.text := Movedsort;
+
   // ShowMessage(cxDBLkUpComClass.EditValue);
   // cxDBLkUpComClass.EditValue := parentIdAfter;
   // ShowMessage(cxDBLkUpComClass.EditValue);
@@ -406,24 +388,24 @@ begin
   // '+1,length(t_sort)-' + inttostr(sortMovedLen) + ') where t_sort like ' + '''' + Movedsort + '%''';
   // sqlText := 'update fdQryTree set t_sort = ''' + s_max_sort + '''' +' where t_sort = ' + '''' + sortMoved + '''';
 
-  sqlText := 'select t_id,t_parent_id,t_name,t_sort from  fdQryTree where t_sort like ' + '''' + Movedsort + '%''';
+  sqltext := 'select t_id,t_parent_id,t_name,t_sort from  fdQryTree where t_sort like ' + '''' + Movedsort + '%''';
   fdQryMov.Close;
   fdQryMov.SQL.Clear;
-  fdQryMov.SQL.Add(sqlText);
+  fdQryMov.SQL.ADD(sqltext);
   fdQryMov.Open;
   var
     tmpId: integer;
   var
     tmpSort: string;
-
+  fdQryMov.First;
   while not fdQryMov.Eof do
   begin
     tmpId := fdQryMov['t_id'];
-    if fdQryTree.locate('t_id', tmpId, []) then
+    if fdQryTree.Locate('t_id', tmpId, []) then
     begin
       tmpSort := fdQryTree['t_sort'];
       fdQryTree.Edit;
-      fdQryTree['t_sort'] := s_max_sort + copy(tmpSort, sortMovedLen + 1, Length(tmpSort) - sortMovedLen);
+      fdQryTree['t_sort'] := s_max_sort + copy(tmpSort, sortMovedLen + 1, length(tmpSort) - sortMovedLen);
     end;
     fdQryMov.Next;
   end;
@@ -439,138 +421,16 @@ end;
 
 procedure TFModMaintain.cxDBLkUpComClassEnter(Sender: TObject);
 var
-  sqlText: string;
+  sqltext: string;
 begin
   parentIdBefore := fdQryTree['t_parent_id'];
-end;
-
-procedure TFModMaintain.cxDBLkUpComClassExit(Sender: TObject);
-var
-  sortMoved, sortNewParent: string;
-  // 记录被移动项序号和目标父项的序号
-  parentIdOld, parentIdNew, newParentId: integer;
-  s_max_sort, sqlText: string;
-  max_len, i_max_sort, sortMovedLen, sortNewParentLen, level_old, level_new: integer;
-
-begin
-  // //
-  // // ShowMessage('FieldChange');
-  // // cxdbtrlst1.Refresh;
-  // fdQryTree.DisableControls;
-  // if fdQryTitle.Eof then
-  // Abort;
-  //
-  // parentIdOld := fdQryTree.FieldByName('t_parent_id').OldValue;
-  // parentIdNew := fdQryTree.FieldByName('t_parent_id').CurValue;
-  //
-  // if parentIdNew = parentIdOld then // 如果新旧值相同，退出
-  // begin
-  // fdQryTree.Cancel;
-  // fdQryMov.Close;
-  // fdQryMaxLen.Close;
-  // Exit;
-  // end;
-  //
-  // sortMoved := fdQryTree['t_sort']; // 被移动项目t_sort
-  //
-  // if fdQryTitle.Locate('t_id', parentIdNew, []) then
-  // begin
-  // // 新父项的t_id
-  // newParentId := fdQryTitle['t_id']; // 此时被移动项目的 parentID已经修改为新父项的ID，后续要注意
-  // sortNewParent := fdQryTitle['t_sort'] // 目标项目t_sort
-  // end
-  // else
-  // MessageDlg('目标目录有错！', mtWarning, [mbOK], 0); // 此项应该不会执行
-  // sortMovedLen := Length(sortMoved); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
-  // sortNewParentLen := Length(sortNewParent); // 新的父项的长度
-  //
-  // // 子集t_sort最大长度，用于计算级次
-  // sqlText := 'select max(length(t_sort))max_len from fdQryTree where t_sort like ' + '''' + sortMoved + '%'' order by t_sort';
-  // fdQryMaxLen.Close;
-  // fdQryMaxLen.SQL.Clear;
-  // fdQryMaxLen.SQL.Add(sqlText);
-  // fdQryMaxLen.Prepared;
-  // fdQryMaxLen.Open;
-  // fdQryMaxLen.First;
-  //
-  // level_old := fdQryMaxLen['max_len'] div 2 - sortMovedLen div 2 + 1; // 没移动记录的级次
-  // level_new := sortNewParentLen div 2;
-  // if level_old + level_new > 4 then
-  // begin
-  // {$IF CompilerVersion >= 29.0}
-  // fdQryTree.UndoLastChange(True);
-  // {$ENDIF}
-  // // OnDataChange(nil, nil);
-  // // fdQryMov.Close;
-  // fdQryMaxLen.Close;
-  // MessageDlg('变更所属类别后，目录超过4级，不能变更级！', mtWarning, [mbOK], 0);
-  // Exit;
-  // end;
-  //
-  // // 新父节点下最大t_sort
-  // fdQryMaxSort.Close;
-  // fdQryMaxSort.Connection := F_DT.FDConSQLite;
-  // fdQryMaxSort.SQL.Clear;
-  // fdQryMaxSort.SQL.Add('SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree where t_sort like ''' + sortNewParent + '%'' and length(t_sort)=' +
-  // inttostr(sortNewParentLen + 2));
-  // // fdQryMaxSort.SQL.Add('SELECT count(t_sort) as i_SortMax FROM fdQryTree where t_sort like '''
-  // // + sortNewParent+'%'' and length(t_sort)='+inttostr(sortNewParentLen+2));
-  // // 此时把新增节点也放进来了，可能需要在enter阶段就要取值  ，但此阶段并不知道新父项？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
-  // // 使用新父项的t_sort取值？？？？？？？？？？？？？？？？？？？？？？？？？？
-  // // fdQryMaxSort.SQL.Add('SELECT count(t_sort) as i_SortMax FROM fdQryTree where t_parent_id=' + IntToStr(parentIdNew));
-  // fdQryMaxSort.Open;
-  // fdQryMaxSort.First;
-  // //出错会乱，故必须先判断最大值是否存在
-  // var
-  // vart: TVarType;
-  // vart := VarType(fdQryMaxSort['i_SortMax']);
-  // if (vart = varNull) or (vart = varstring) then
-  // i_max_sort := 0
-  // else
-  // i_max_sort := fdQryMaxSort.FieldByName('i_SortMax').Asinteger;
-  // fdQryMaxSort.Close;
-  //
-  // if i_max_sort = 0 then
-  // s_max_sort := sortNewParent + Format('%.2d', [(i_max_sort + 1)])
-  // else
-  // s_max_sort := Format('%.' + (inttostr(Length(sortNewParent) + 2)) + 'd', [(i_max_sort + 1)]);
-  //
-  // // ------local update，才能真正修改
-  //
-  // // update test1 set t_sort= '0103'||substr(t_sort,4+1,length(t_sort)-4) where t_sort like '0201%'
-  /// /  sqlText := 'update fdQryTree set t_sort = ''' + s_max_sort + '''||substr(t_sort,' + inttostr(sortMovedLen) + '+1,length(t_sort)-' + inttostr(sortMovedLen) +
-  /// /    ') where t_sort like ' + '''' + sortMoved + '%''';
-  // sqlText := 'update fdQryTree set t_sort = ''' + s_max_sort + '''' +' where t_sort = ' + '''' + sortMoved + '''';
-  // fdQryMov.Close;
-  // fdQryMov.SQL.Clear;
-  // fdQryMov.SQL.Add(sqlText);
-  // fdQryMov.ExecSQL;
-  // fdQryMov.Close;
-  //
-  // // fdQryTree.Edit;
-  // // fdQryTree.Post;
-  // isBatch := True; // 批量变更标志 存盘和全部取消后变为false
-  // fdQryTitle.Refresh;
-  // fdQryTree.EnableControls;
-  //
-  // // bitbtnSaveClick(self);
-  //
-  // // fdQryMov.First;
-  // // if not fdQryMov.eof then
-  // // begin
-  // // fdQryMov.Edit;
-  // // fdQryMov['t_sort']:=sortNewParent + Copy(fdQryMov['t_sort'],sortMovedLen,Length(fdQryMov['t_sort'])-sortMovedLen);
-  // // end;
-  // // 修改子集t_sort适应新的parent的t_sort  sortNewParent   sortMoved
-  // // fdQryTree.Edit; // 为了更新修改状态
-  // // fdQryTree.Post;
 end;
 
 procedure TFModMaintain.cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
   AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
 begin
   if AIndexType = tlitStateIndex then
-    Exit;
+    exit;
 
   if ANode.Expanded then
     AIndex := 1
@@ -592,230 +452,6 @@ begin
   // AIndex := 1
   // else
   // AIndex := 0;
-end;
-
-procedure TFModMaintain.fdQryTreeAfterPost(DataSet: TDataSet);
-var
-  Movedsort, NewParentsort, sqlText, s_max_sort: string; // 记录被移动项序号和目标父项的序号
-  sortMovedLen, sortNewParentLen, level_old, level_new, i_max_sort: integer;
-begin
-  // {
-  // -- parentIdBefore 修改前parentId，OnbeforeEdit取值
-  // -- parentIdAfter  修改后parentId ，也是父项目的t_ID
-  // -- Movedsort移动项目t_sort
-  // -- NewParentsort目标父项目t_sort
-  // }
-  // // fdQryTree.DisableControls;
-  // // ShowMessage('afterPost');
-  // if not(DataSet.UpdateStatus = usModified) then // 若是修改状态：append、edit其他字段都会触发
-  // Exit;
-  // // 修改后parentId ，也是父项目的t_ID
-  // parentIdAfter := fdQryTree['t_parent_id'];
-  //
-  // ShowMessage(inttostr(parentIdBefore) + '|' + inttostr(parentIdAfter));
-  //
-  // if parentIdBefore = parentIdAfter then // 如果新旧值相同，退出
-  // begin
-  // fdQryTree.Cancel;
-  // // fdQryTree.UndoLastChange(True);
-  // fdQryTree.EnableControls;
-  // Exit;
-  // end;
-  // // ---Movedsort移动项目t_sort
-  // Movedsort := fdQryTree['t_sort'];
-  // if fdQryTitle.locate('t_id', parentIdAfter, []) then
-  // begin
-  // // --NewParentsort目标父项目t_sort
-  // NewParentsort := fdQryTitle['t_sort']
-  // end
-  // else
-  // begin
-  // fdQryTree.Cancel;
-  // // fdQryTree.UndoLastChange(True);
-  // fdQryTree.EnableControls;
-  // MessageDlg('目标目录有错！', mtWarning, [mbOK], 0); // 此项应该不会执
-  // Exit;
-  // end;
-  //
-  // // 长度
-  // sortMovedLen := Length(Movedsort); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
-  // sortNewParentLen := Length(NewParentsort); // 新的父项的长度
-  //
-  // // 判断是否自移动
-  // if LeftStr(NewParentsort, sortMovedLen) = Movedsort then
-  // begin
-  // fdQryTree.Cancel;
-  // // fdQryTree.UndoLastChange(True);
-  // fdQryTree.EnableControls;
-  // MessageDlg('不能把自己移动到自己的子项下！', mtWarning, [mbOK], 0); // 此项应该不会执
-  // Exit;
-  // end;
-  //
-  // // 子集t_sort最大长度，用于计算级次
-  // sqlText := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort +
-  // '%'' order by t_sort';
-  // fdQryMaxLen.Close;
-  // fdQryMaxLen.SQL.Clear;
-  // fdQryMaxLen.SQL.Add(sqlText);
-  // fdQryMaxLen.Prepared;
-  // fdQryMaxLen.Open;
-  // fdQryMaxLen.First;
-  // level_old := fdQryMaxLen['max_len'] div 2 - sortMovedLen div 2 + 1; // 没移动记录的级次
-  // level_new := sortNewParentLen div 2;
-  // if level_old + level_new > 4 then
-  // begin
-  // {$IF CompilerVersion >= 29.0}
-  // // fdQryTree.Cancel;
-  // fdQryTree.UndoLastChange(True); // 计算玩级次，已经post，cancel无效了
-  // {$ENDIF}
-  // // OnDataChange(nil, nil);
-  // // fdQryMov.Close;
-  // fdQryMaxLen.Close;
-  // fdQryTree.EnableControls;
-  // MessageDlg('变更所属类别后，目录超过4级，不能变更级！', mtWarning, [mbOK], 0);
-  // Exit;
-  // end;
-  //
-  // // ---------------------
-  // // 新父节点下最大t_sort
-  // fdQryMaxSort.Close;
-  // fdQryMaxSort.Connection := F_DT.FDConSQLite;
-  // fdQryMaxSort.SQL.Clear;
-  // fdQryMaxSort.SQL.Add('SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree where t_sort like ''' +
-  // NewParentsort + '%'' and length(t_sort)=' + inttostr(sortNewParentLen + 2));
-  // // fdQryMaxSort.SQL.Add('SELECT count(t_sort) as i_SortMax FROM fdQryTree where t_sort like '''
-  // // + sortNewParent+'%'' and length(t_sort)='+inttostr(sortNewParentLen+2));
-  // // 此时把新增节点也放进来了，可能需要在enter阶段就要取值  ，但此阶段并不知道新父项？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
-  // // 使用新父项的t_sort取值？？？？？？？？？？？？？？？？？？？？？？？？？？
-  // // fdQryMaxSort.SQL.Add('SELECT count(t_sort) as i_SortMax FROM fdQryTree where t_parent_id=' + IntToStr(parentIdNew));
-  // fdQryMaxSort.Open;
-  // fdQryMaxSort.First;
-  // // 出错会乱，故必须先判断最大值是否存在
-  // var
-  // vart: TVarType;
-  // vart := VarType(fdQryMaxSort['i_SortMax']);
-  // if (vart = varNull) or (vart = varstring) then
-  // i_max_sort := 0
-  // else
-  // i_max_sort := fdQryMaxSort.FieldByName('i_SortMax').Asinteger;
-  // fdQryMaxSort.Close;
-  //
-  // if i_max_sort = 0 then
-  // s_max_sort := NewParentsort + Format('%.2d', [(i_max_sort + 1)])
-  // else
-  // s_max_sort := Format('%.' + (inttostr(Length(NewParentsort) + 2)) + 'd', [(i_max_sort + 1)]);
-  //
-  // ShowMessage(s_max_sort);
-  // // ---------------------
-  //
-  // // ---------
-  // // 变更被移动项目
-  // // update test1 set t_sort = '0103' | | substr(t_sort, 4 + 1, Length(t_sort) - 4)where t_sort like '0201%'
-  // sqlText := 'update fdQryTree set t_sort = ''' + s_max_sort + '''||substr(t_sort,' + inttostr(sortMovedLen) +
-  // '+1,length(t_sort)-' + inttostr(sortMovedLen) + ') where t_sort like ' + '''' + Movedsort + '%''';
-  // // sqlText := 'update fdQryTree set t_sort = ''' + s_max_sort + '''' +' where t_sort = ' + '''' + sortMoved + '''';
-  // fdQryMov.Close;
-  // fdQryMov.SQL.Clear;
-  // fdQryMov.SQL.Add(sqlText);
-  // fdQryMov.ExecSQL; // 会再次触发本事件，造成错误
-  // fdQryMov.Close;
-  // isBatch := True; // 批量变更标志 存盘和全部取消后变为false
-  // fdQryTitle.Refresh;
-  // fdQryTree.EnableControls;
-  //
-  // // ---------
-
-  // fdQryTree.EnableControls;
-  // OnDataChange(nil, nil);
-  // ShowMessage(inttostr(parentIdBefore));
-  // ShowMessage(inttostr(parentIdAfter));
-
-
-
-
-
-  // {
-  // -- parentIdBefore 修改前parentId，OnbeforeEdit取值
-  // -- parentIdAfter  修改后parentId ，也是父项目的t_ID
-  // -- Movedsort移动项目t_sort
-  // -- NewParentsort目标父项目t_sort
-  // }
-  // fdQryTree.DisableControls;
-  // // ShowMessage('afterPost');
-  // if DataSet.UpdateStatus = usModified then // 若是修改状态：append、edit其他字段都会触发
-  // begin
-  // // 修改后parentId ，也是父项目的t_ID
-  // parentIdAfter := fdQryTree['t_parent_id'];
-  //
-  // ShowMessage(inttostr(parentIdBefore) + '|' + inttostr(parentIdAfter));
-  //
-  // if parentIdBefore = parentIdAfter then // 如果新旧值相同，退出
-  // begin
-  // fdQryTree.Cancel;
-  /// /      fdQryTree.UndoLastChange(True);
-  // fdQryTree.EnableControls;
-  // Exit;
-  // end;
-  // // ---Movedsort移动项目t_sort
-  // Movedsort := fdQryTree['t_sort'];
-  // if fdQryTitle.locate('t_id', parentIdAfter, []) then
-  // begin
-  // // --NewParentsort目标父项目t_sort
-  // NewParentsort := fdQryTitle['t_sort']
-  // end
-  // else
-  // begin
-  // // fdQryTree.Cancel;
-  // fdQryTree.UndoLastChange(True);
-  // fdQryTree.EnableControls;
-  // MessageDlg('目标目录有错！', mtWarning, [mbOK], 0); // 此项应该不会执
-  // Exit;
-  // end;
-  // // 判断是否自移动
-  //
-  // if Pos(Movedsort, NewParentsort) > 0 then
-  // begin
-  // fdQryTree.UndoLastChange(True);
-  // fdQryTree.EnableControls;
-  // MessageDlg('不能把自己移动到自己的子项下！', mtWarning, [mbOK], 0); // 此项应该不会执
-  // Exit;
-  // end;
-  //
-  // // 计算级次
-  // sortMovedLen := Length(Movedsort); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
-  // sortNewParentLen := Length(NewParentsort); // 新的父项的长度
-  //
-  // // 子集t_sort最大长度，用于计算级次
-  // sqlText := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort + '%'' order by t_sort';
-  // fdQryMaxLen.Close;
-  // fdQryMaxLen.SQL.Clear;
-  // fdQryMaxLen.SQL.Add(sqlText);
-  // fdQryMaxLen.Prepared;
-  // fdQryMaxLen.Open;
-  // fdQryMaxLen.First;
-  // level_old := fdQryMaxLen['max_len'] div 2 - sortMovedLen div 2 + 1; // 没移动记录的级次
-  // level_new := sortNewParentLen div 2;
-  // if level_old + level_new > 4 then
-  // begin
-  // {$IF CompilerVersion >= 29.0}
-  // // fdQryTree.Cancel;
-  // fdQryTree.UndoLastChange(True);
-  // {$ENDIF}
-  // // OnDataChange(nil, nil);
-  // // fdQryMov.Close;
-  // fdQryMaxLen.Close;
-  //
-  // MessageDlg('变更所属类别后，目录超过4级，不能变更级！', mtWarning, [mbOK], 0);
-  // fdQryTree.EnableControls;
-  // Exit;
-  // end;
-  //
-  // fdQryTree.EnableControls;
-  // // ShowMessage(inttostr(parentIdBefore));
-  // // ShowMessage(inttostr(parentIdAfter));
-  //
-  // end;
-
 end;
 
 procedure TFModMaintain.fdQryTreeCalcFields(DataSet: TDataSet);
@@ -846,12 +482,13 @@ begin
     // usDeleted:
     // DataSet.Fields[0].AsInteger := 3;
   end;
+
   // StatusBar1.SimpleText := DataSet.Fields[0].AsString+'计算一次'+datetimetostr(now());
 end;
 
 procedure TFModMaintain.fdQryTreet_parent_idChange(Sender: TField);
 var
-  Movedsort, NewParentsort, sqlText, s_max_sort: string; // 记录被移动项序号和目标父项的序号
+  Movedsort, NewParentsort, sqltext, s_max_sort: string; // 记录被移动项序号和目标父项的序号
   sortMovedLen, sortNewParentLen, level_old, level_new, i_max_sort: integer;
 begin
   // {
@@ -1039,17 +676,17 @@ end;
 
 procedure TFModMaintain.FormCreate(Sender: TObject);
 var
-  sqlText: string;
+  sqltext: string;
 begin
   isBatch := False;
   // sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' + '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type =' + '''' + t_type + '''' + ' order by t_sort';
-  sqlText := 'SELECT * FROM X_menus where t_type =' + '''' + t_type + '''' + ' order by t_sort';
+  sqltext := 'SELECT * FROM X_menus where t_type =' + '''' + t_type + '''' + ' order by t_sort';
   fdQryTree.Close;
   // fdQryTree=ADOQ2
   fdQryTree.DisableControls;
   fdQryTree.Connection := F_DT.FDConSYS;
   fdQryTree.SQL.Clear;
-  fdQryTree.SQL.Add(sqlText);
+  fdQryTree.SQL.ADD(sqltext);
   fdQryTree.Prepared;
   fdQryTree.Open;
   fdQryTree.EnableControls;
@@ -1066,7 +703,7 @@ begin
   // fdQryTitle.SQL.Add('SELECT t_id,t_parent_id,t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass=' + '''' +
   // '1' + '''' + ' union SELECT 0,0,' + '''' + '*==============*' + '''' + ','''' ' + 'FROM fdQryTree order by t_sort');
   //
-  fdQryTitle.SQL.Add
+  fdQryTitle.SQL.ADD
     ('SELECT t_id,t_parent_id,repeat('' '',length(t_sort)*2)||''⊙┈┈┈''||t_name as t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass='
     + '''' + '1' + '''' + ' union SELECT 0,0,' + '''' + '⊙┈┈┈数据分析模型' + '''' + ','''' ' +
     'FROM fdQryTree order by t_sort');
@@ -1076,6 +713,107 @@ begin
   // MainFrm.fdQryTree.CachedUpdates := True;
   // fdmtblTree.CloneCursor(MainFrm.fdQryTree, True, False);
 
+end;
+
+procedure TFModMaintain.MoveItem(UpDown: Char);
+var
+  cur_sort, next_sort, sqltext: string;
+  sortLen: integer;
+  bk: TbookMark;
+begin
+  fdQryTree.DisableControls;
+  bk := fdQryTree.Bookmark;
+  // select t_id,t_parent_id,t_sort from fdqryTree where length(t_sort)=length('010202') and substr(t_sort,1,length(t_sort)-2)= substr('010202',1,length('010202')-2) order by t_sort
+  cur_sort := fdQryTree['t_sort'];
+  sqltext := 'select t_id,t_parent_id,t_sort from fdqryTree where length(t_sort)=length(''' + cur_sort +
+    ''') and substr(t_sort,1,length(t_sort)-2)= substr(''' + cur_sort + ''',1,length(''' + cur_sort +
+    ''')-2) order by t_sort';
+  fdQrySameLev.Close;
+  fdQrySameLev.SQL.Clear;
+  fdQrySameLev.SQL.ADD(sqltext);
+  fdQrySameLev.Open;
+  cur_sort := fdQryTree['t_sort'];
+  fdQrySameLev.Locate('t_sort', cur_sort, []);
+
+  if UpDown = '1' then
+  begin
+    fdQrySameLev.Prior;
+    if fdQrySameLev.Bof then
+    begin
+      fdQrySameLev.Close;
+      fdQryTree.EnableControls;
+      MessageDlg('本级项目已到第一项！', mtWarning, [mbOK], 0);
+      exit;
+    end;
+    next_sort := fdQrySameLev['t_sort'];
+    fdQrySameLev.Close;
+  end
+  else
+  begin
+    fdQrySameLev.Next;
+    if fdQrySameLev.Eof then
+    begin
+      fdQrySameLev.Close;
+      fdQryTree.EnableControls;
+      MessageDlg('本级项目已到最后一项！', mtWarning, [mbOK], 0);
+      exit;
+    end;
+    next_sort := fdQrySameLev['t_sort'];
+    fdQrySameLev.Close;
+  end;
+
+  // ShowMessage(cur_sort + '|' + next_sort);
+
+  // 两个被移动记录的子集
+  sqltext := 'select t_id,t_parent_id,t_name,t_sort from  fdQryTree where t_sort like ' + '''' + cur_sort + '%''';
+  fdQryCur.Close;
+  fdQryCur.SQL.Clear;
+  fdQryCur.SQL.ADD(sqltext);
+  fdQryCur.Open;
+
+  sqltext := 'select t_id,t_parent_id,t_name,t_sort from  fdQryTree where t_sort like ' + '''' + next_sort + '%''';
+  fdQryNext.Close;
+  fdQryNext.SQL.Clear;
+  fdQryNext.SQL.ADD(sqltext);
+  fdQryNext.Open;
+  // 分别循环子集，修改顺序号
+
+  var
+    tmpId: integer;
+  var
+    tmpSort: string;
+  sortLen := length(next_sort);
+  fdQryCur.First;
+  while not fdQryCur.Eof do
+  begin
+    tmpId := fdQryCur['t_id'];
+    if fdQryTree.Locate('t_id', tmpId, []) then
+    begin
+      tmpSort := fdQryTree['t_sort'];
+      fdQryTree.Edit;
+      fdQryTree['t_sort'] := next_sort + copy(tmpSort, sortLen + 1, length(tmpSort) - sortLen);
+    end;
+    fdQryCur.Next;
+  end;
+  fdQryCur.Close;
+  sortLen := length(cur_sort);
+  fdQryNext.First;
+  while not fdQryNext.Eof do
+  begin
+    tmpId := fdQryNext['t_id'];
+    if fdQryTree.Locate('t_id', tmpId, []) then
+    begin
+      tmpSort := fdQryTree['t_sort'];
+      fdQryTree.Edit;
+      fdQryTree['t_sort'] := cur_sort + copy(tmpSort, sortLen + 1, length(tmpSort) - sortLen);
+    end;
+    fdQryNext.Next;
+  end;
+  fdQryNext.Close;
+  isBatch := True; // 批量变更标志 存盘和全部取消后变为false
+  fdQryTitle.Refresh;
+  fdQryTree.EnableControls;
+  fdQryTree.GotoBookmark(bk);
 end;
 
 procedure TFModMaintain.N24Click(Sender: TObject);
@@ -1120,7 +858,7 @@ var
   cur_id, cur_par_id, cur_level, max_id: integer;
   s_cur_sort, s_max_sort, s_sort_num: string;
 begin
-
+  fdQryTree.DisableControls;
   // 当前记录节点和父节点号
   if fdQryTree.Eof then
   begin
@@ -1140,14 +878,16 @@ begin
   // 新增子项判断 ，改变分类时也要判断
   if (IsChild) and (cur_level >= 3) then
   begin
+    fdQryTree.EnableControls;
     MessageDlg('已达最后一级，不能再增加子项！', mtInformation, [mbOK], 0);
-    Exit;
+    exit;
   end;
 
   // 添加子项，本项自动设为类别
   if (IsChild) then
     if fdQryTree['isClass'] <> '1' then
     begin
+      fdQryTree.Edit;
       fdQryTree['isClass'] := '1';
       fdQryTitle.Refresh;
     end;
@@ -1157,7 +897,7 @@ begin
   fdQryMaxID.Close;
   fdQryMaxID.Connection := F_DT.FDConSQLite;
   fdQryMaxID.SQL.Clear;
-  fdQryMaxID.SQL.Add('SELECT max(t_id) as i_max FROM fdQryTree');
+  fdQryMaxID.SQL.ADD('SELECT max(t_id) as i_max FROM fdQryTree');
   fdQryMaxID.Prepared;
   fdQryMaxID.Open;
   fdQryMaxID.First;
@@ -1171,9 +911,9 @@ begin
   fdQryMaxSort.Connection := F_DT.FDConSQLite;
   fdQryMaxSort.SQL.Clear;
   if IsChild then
-    fdQryMaxSort.SQL.Add('SELECT max(t_sort) as s_max FROM fdQryTree where t_parent_id=' + inttostr(cur_id))
+    fdQryMaxSort.SQL.ADD('SELECT max(t_sort) as s_max FROM fdQryTree where t_parent_id=' + inttostr(cur_id))
   else
-    fdQryMaxSort.SQL.Add('SELECT max(t_sort) as s_max FROM fdQryTree where t_parent_id=' + inttostr(cur_par_id));
+    fdQryMaxSort.SQL.ADD('SELECT max(t_sort) as s_max FROM fdQryTree where t_parent_id=' + inttostr(cur_par_id));
   fdQryMaxSort.Prepared;
   fdQryMaxSort.Open;
   fdQryMaxSort.First;
@@ -1228,6 +968,7 @@ begin
   fdQryTree.FieldByName('isClass').AsString := '0';
   TBlobField(fdQryTree.FieldByName('t_proc')).LoadFromFile('ModTemplate.txt');
   fdQryTree.Post;
+  fdQryTree.EnableControls;
   // AsString := 'CREATE PROCEDURE ModelName (@,@ )     With Encryption AS' + #13 + 'BEGIN' + #13#13 + 'END' + #13 + 'GO';
   // fdqryTree.UpdateBatch(arAll);
   // cxdbtrlst1.DataController.DataSource := ds1;

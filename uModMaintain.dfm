@@ -425,21 +425,29 @@ object FModMaintain: TFModMaintain
         TabOrder = 6
         object bitbtn3: TBitBtn
           Left = 0
-          Top = 75
+          Top = 24
           Width = 17
-          Height = 25
+          Height = 76
+          Hint = #22312#26412#32423#21521#19978#31227#21160#39033#30446#65288#36830#21516#23376#39033#65289
           ImageIndex = 2
           Images = imgLstBtn
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 0
+          OnClick = bitbtn3Click
         end
         object bitbtnTypeDown: TBitBtn
           Left = 0
           Top = 106
           Width = 17
-          Height = 25
+          Height = 71
+          Hint = #22312#26412#32423#21521#19979#31227#21160#39033#30446#65288#36830#21516#23376#39033#65289
           ImageIndex = 3
           Images = imgLstBtn
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 1
+          OnClick = bitbtnTypeDownClick
         end
       end
       object btnTest: TButton
@@ -489,7 +497,6 @@ object FModMaintain: TFModMaintain
         TabOrder = 9
         OnClick = cxDBLkUpComClassClick
         OnEnter = cxDBLkUpComClassEnter
-        OnExit = cxDBLkUpComClassExit
         Width = 234
       end
     end
@@ -514,31 +521,6 @@ object FModMaintain: TFModMaintain
       TabOrder = 2
       Height = 673
       Width = 995
-    end
-    object btn1: TButton
-      Left = 24
-      Top = 341
-      Width = 75
-      Height = 25
-      Caption = 'btn1'
-      TabOrder = 3
-      OnClick = btn1Click
-    end
-    object edt1: TEdit
-      Left = 24
-      Top = 312
-      Width = 121
-      Height = 23
-      TabOrder = 4
-      Text = '1302'
-    end
-    object edt2: TEdit
-      Left = 151
-      Top = 312
-      Width = 121
-      Height = 23
-      TabOrder = 5
-      Text = '0102'
     end
   end
   object cxspltr1: TcxSplitter
@@ -585,14 +567,19 @@ object FModMaintain: TFModMaintain
     Left = 1027
     Top = 256
   end
-  object fdQryTmp: TFDQuery
-    Left = 671
-    Top = 554
+  object fdQrySameLev: TFDQuery
+    Connection = F_DT.FDConSQLite
+    SQL.Strings = (
+      
+        'select t_id,t_parent_id,t_sort from fdqryTree where length(t_sor' +
+        't)=length('#39'010202'#39') and substr(t_sort,1,length(t_sort)-2)= subst' +
+        'r('#39'010202'#39',1,length('#39'010202'#39')-2) order by t_sort')
+    Left = 719
+    Top = 442
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Active = True
-    AfterPost = fdQryTreeAfterPost
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
@@ -1333,5 +1320,25 @@ object FModMaintain: TFModMaintain
         DataBinding.FieldName = 't_name'
       end
     end
+  end
+  object fdQryCur: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSQLite
+    SQL.Strings = (
+      
+        'select t_id,t_parent_id,t_sort from fdQryTree where t_sort like ' +
+        #39'01%'#39' order by t_sort')
+    Left = 905
+    Top = 544
+  end
+  object fdQryNext: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSQLite
+    SQL.Strings = (
+      
+        'select t_id,t_parent_id,t_sort from fdQryTree where t_sort like ' +
+        #39'01%'#39' order by t_sort')
+    Left = 985
+    Top = 544
   end
 end

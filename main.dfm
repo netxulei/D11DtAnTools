@@ -68,7 +68,7 @@ object MainFrm: TMainFrm
     object cxDBTreeList1t_name: TcxDBTreeListColumn
       Caption.AlignHorz = taCenter
       Caption.GlyphAlignVert = vaBottom
-      Caption.Text = #26816#26597#27169#22411#65288#21452#20987#25191#34892#65289
+      Caption.Text = #27169#22411#21015#34920#65288#21452#20987#25191#34892#65289
       DataBinding.FieldName = 't_name'
       Width = 100
       Position.ColIndex = 0
@@ -2190,6 +2190,17 @@ object MainFrm: TMainFrm
       FixedChar = True
       Size = 1
     end
+    object fdQryTreet_sort: TStringField
+      FieldName = 't_sort'
+      Origin = 't_sort'
+      Size = 12
+    end
+    object fdQryTreeisClass: TStringField
+      FieldName = 'isClass'
+      Origin = 'isClass'
+      FixedChar = True
+      Size = 1
+    end
   end
   object fdqryTmp: TFDQuery
     Left = 952
@@ -2209,5 +2220,21 @@ object MainFrm: TMainFrm
   object fdqryAuto: TFDQuery
     Left = 80
     Top = 288
+  end
+  object fdQryExport: TFDQuery
+    Left = 389
+    Top = 169
+  end
+  object FDStanStorageBinLink1: TFDStanStorageBinLink
+    Left = 1157
+    Top = 217
+  end
+  object FDStanStorageJSONLink1: TFDStanStorageJSONLink
+    Left = 1141
+    Top = 281
+  end
+  object FDStanStorageXMLLink1: TFDStanStorageXMLLink
+    Left = 1149
+    Top = 177
   end
 end

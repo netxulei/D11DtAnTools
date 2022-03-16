@@ -1,24 +1,45 @@
 object F_import: TF_import
   Left = 452
   Top = 248
-  Caption = #26816#26597#36923#36753#20851#31995#23548#20837
-  ClientHeight = 420
-  ClientWidth = 500
+  Caption = #27169#22411#20195#30721#24674#22797
+  ClientHeight = 208
+  ClientWidth = 515
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = #24494#36719#38597#40657
   Font.Style = []
-  OldCreateOrder = False
   Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 17
+  object rg1: TRadioGroup
+    Left = 125
+    Top = 79
+    Width = 260
+    Height = 50
+    BiDiMode = bdLeftToRight
+    Columns = 2
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #23435#20307
+    Font.Style = []
+    ItemIndex = 1
+    Items.Strings = (
+      #22686#37327#26041#24335
+      #35206#30422#26041#24335)
+    ParentBiDiMode = False
+    ParentFont = False
+    ShowFrame = False
+    TabOrder = 0
+    WordWrap = True
+  end
   object btn1: TBitBtn
-    Left = 137
-    Top = 180
+    Left = 125
+    Top = 156
     Width = 68
     Height = 24
     Caption = #30830#23450
@@ -40,8 +61,8 @@ object F_import: TF_import
     OnClick = btn1Click
   end
   object btn2: TBitBtn
-    Left = 246
-    Top = 180
+    Left = 258
+    Top = 156
     Width = 68
     Height = 24
     Caption = #36820#22238
@@ -62,26 +83,12 @@ object F_import: TF_import
     TabOrder = 3
     OnClick = btn2Click
   end
-  object rg1: TRadioGroup
-    Left = 66
-    Top = 79
-    Width = 341
-    Height = 77
-    Caption = #23548#20837#36873#39033
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = #23435#20307
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 0
-  end
   object rb1: TRadioButton
-    Left = 252
-    Top = 106
+    Left = 365
+    Top = 135
     Width = 88
     Height = 25
-    Caption = #26367#25442#23548#20837
+    Caption = #35206#30422#26041#24335
     Checked = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -93,11 +100,11 @@ object F_import: TF_import
     TabStop = True
   end
   object rb2: TRadioButton
-    Left = 131
-    Top = 107
+    Left = 365
+    Top = 157
     Width = 88
     Height = 22
-    Caption = #26032#22686#23548#20837
+    Caption = #22686#37327#26041#24335
     Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -110,11 +117,10 @@ object F_import: TF_import
   object pnlFileName: TPanel
     Left = 0
     Top = 0
-    Width = 500
+    Width = 515
     Height = 73
     Align = alTop
     TabOrder = 5
-    ExplicitWidth = 572
     object spbtnFileName: TSpeedButton
       Left = 438
       Top = 31
@@ -158,35 +164,35 @@ object F_import: TF_import
       EditLabel.Caption = #36873#25321#19982#23548#20837#30340#25991#20214#21517
       ReadOnly = True
       TabOrder = 0
+      Text = ''
       TextHint = #36873#25321#19982#23548#20837#30340#25991#20214#21517
     end
   end
   object ADOqr1: TADOQuery
     Parameters = <>
-    Left = 10
-    Top = 85
+    Left = 74
+    Top = 149
   end
   object ADOqr2: TADOQuery
     Parameters = <>
     Left = 12
-    Top = 133
+    Top = 141
   end
   object ADOqr3: TADOQuery
     Parameters = <>
-    Left = 8
-    Top = 184
+    Left = 440
+    Top = 88
   end
   object ADOtmp: TADOQuery
     Parameters = <>
-    Left = 12
-    Top = 232
+    Left = 388
+    Top = 104
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
     DefaultExt = 'Mod'
     Filter = #27169#22411#25991#20214'(*.Mod)|*.Mod'
     FilterIndex = 0
     Title = #35831#36873#25321#19982#23548#20837#30340#27169#22411#25991#20214
-    Left = 80
-    Top = 224
+    Left = 240
   end
 end
