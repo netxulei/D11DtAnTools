@@ -738,8 +738,7 @@ begin
   // 如果为汉字的第一个字节则减(加)一位
   strtxt := Trim(strtxt);
   Result := False;
-
-  for i := 0 to Length(strtxt) do
+  for i := 1 to Length(strtxt) do
   begin
     if (strtxt[i] = ' ') or (strtxt[i] = '"') or (strtxt[i] = ' ') then
     begin

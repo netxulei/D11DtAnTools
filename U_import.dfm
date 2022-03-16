@@ -2,8 +2,8 @@ object F_import: TF_import
   Left = 452
   Top = 248
   Caption = #27169#22411#20195#30721#24674#22797
-  ClientHeight = 208
-  ClientWidth = 515
+  ClientHeight = 408
+  ClientWidth = 695
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -117,10 +117,11 @@ object F_import: TF_import
   object pnlFileName: TPanel
     Left = 0
     Top = 0
-    Width = 515
+    Width = 695
     Height = 73
     Align = alTop
     TabOrder = 5
+    ExplicitWidth = 515
     object spbtnFileName: TSpeedButton
       Left = 438
       Top = 31
@@ -194,5 +195,17 @@ object F_import: TF_import
     FilterIndex = 0
     Title = #35831#36873#25321#19982#23548#20837#30340#27169#22411#25991#20214
     Left = 240
+  end
+  object FDqryImport: TFDQuery
+    Left = 304
+    Top = 239
+  end
+  object FDqryTree: TFDQuery
+    Left = 397
+    Top = 242
+  end
+  object FDqryTmp: TFDQuery
+    Left = 474
+    Top = 239
   end
 end

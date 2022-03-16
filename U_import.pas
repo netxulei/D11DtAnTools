@@ -6,7 +6,10 @@ uses U_DT, U_Common,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, cxGraphics, cxCustomData, cxStyles, cxTL, cxMaskEdit, DB, ADODB,
   StdCtrls, Buttons, cxInplaceContainer, cxDBTL, cxControls, cxTLData,
-  ExtCtrls, Mask, IniFiles, Vcl.ExtDlgs;
+  ExtCtrls, Mask, IniFiles, Vcl.ExtDlgs, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
 
 type
   TF_import = class(TForm)
@@ -23,6 +26,9 @@ type
     pnlFileName: TPanel;
     lbledtFileName: TLabeledEdit;
     spbtnFileName: TSpeedButton;
+    FDqryImport: TFDQuery;
+    FDqryTree: TFDQuery;
+    FDqryTmp: TFDQuery;
     procedure btn1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btn2Click(Sender: TObject);
@@ -65,64 +71,69 @@ begin
     MessageDlg('文件不存在！', mtInformation, [mbOK], 0);
     exit;
   end;
-  with ADOqr1 do
-  begin
-    Close;
-    DisableControls;
-    Connection := F_DT.ADOCN1;
-    CursorLocation := clUseClient;
-    CursorType := ctStatic;
-    LockType := ltBatchOptimistic;
-    SQL.Clear;
-    SQL.Add('SELECT * FROM "X_menus" order by t_id');
-    Prepared;
-    Open;
-    enableControls;
-  end;
-  with ADOqr2 do
-  begin
-    LoadFromFile(s_filename);
-  end;
+
+  // FDqryImport.close;
+
+  // FDqryImport.Connection := F_DT.FDConSYS;
+  // fdQryImport.CursorLocation := clUseClient;
+  // fdQryImport.CursorType := ctStatic;
+  // fdQryImport.LockType := ltBatchOptimistic;
+  // FDqryImport.SQL.Clear;
+  // FDqryImport.SQL.Add('SELECT * FROM "X_menus" order by t_sort');
+  // FDqryImport.Prepared;
+  // FDqryImport.Open;
+  // FDqryImport.FetchAll;
+  // fdQryImport.enableControls;
+  // FDqryImport.LoadFromFile(s_filename);
+
+  FDqryTree.Close;
+  FDqryTree.Connection := F_DT.FDConSYS;
+  FDqryTree.UpdateOptions.AutoCommitUpdates := True;
+  FDqryTree.CachedUpdates := True;
+  FDqryTree.SQL.Clear;
+  FDqryTree.SQL.Add('SELECT * FROM "X_menus" order by t_sort');
+  FDqryTree.Prepared;
+  FDqryTree.Open;
+  FDqryTree.FetchAll;
+
   try
-    F_DT.ADOCN1.BeginTrans;
+    F_DT.FDConSYS.StartTransaction;
     if rb1.Checked then // 替换导入
     begin
-      if Application.MessageBox('替换方式导入将会使原有检查模型丢失，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
+      if Application.MessageBox('覆盖模式恢复将导致原有模型被替换，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
       begin
         F_DT.ADOCN1.RollbackTrans;
+        FDqryTree.Close;
         exit;
       end;
-      with ADOqr3 do
+
+      // ------删除原表----------
+      FDqryImport.Close;
+      FDqryImport.Connection := F_DT.FDConSYS;
+      FDqryImport.SQL.Clear;
+      FDqryImport.SQL.Add('TRUNCATE TABLE "X_menus"');
+      FDqryImport.Prepared;
+      FDqryImport.ExecSQL;
+      FDqryImport.Close;
+      // ---------------------------
+      FDqryImport.LoadFromFile(s_filename);;
+      FDqryImport.Open;
+      FDqryImport.First;
+      while not FDqryImport.Eof do
       begin
-        Close;
-        DisableControls;
-        Connection := F_DT.ADOCN1;
-        CursorLocation := clUseClient;
-        CursorType := ctStatic;
-        LockType := ltBatchOptimistic;
-        SQL.Clear;
-        SQL.Add('TRUNCATE TABLE "X_menus"');
-        Prepared;
-        ExecSQL;
+        FDqryTree.Append;
+        for i := 0 to FDqryImport.FieldCount - 1 do
+          FDqryTree.Fields[i].Value := FDqryImport.Fields[i].Value;
+        FDqryImport.Next;
+
       end;
-      ADOqr2.LoadFromFile(s_filename);
-      ADOqr2.Open;
-      ADOqr2.First;
-      while not ADOqr2.Eof do
-      begin
-        ADOqr1.Append;
-        for i := 0 to ADOqr2.FieldCount - 1 do
-          ADOqr1.Fields[i].Value := ADOqr2.Fields[i].Value;
-        ADOqr2.Next;
-        ADOqr1.UpdateBatch(arAll);
-      end;
+      FDqryTree.ApplyUpdates;
     end;
     if rb2.Checked then // 新增导入
     begin
-      if Application.MessageBox('新增方式导入将保留原有检查模型，但需在开放模式下将新的检查模型归入相应类别，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL
-      then
+      if Application.MessageBox('新增方式导入将保留原有检查模型，但需在开放模式下将新的检查模型归入相应类别，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
       begin
-        F_DT.ADOCN1.RollbackTrans;
+        F_DT.FDConSYS.Rollback;
         exit;
       end;
       with ADOtmp do
@@ -158,7 +169,7 @@ begin
         ADOqr1.UpdateBatch(arAll);
       end;
     end;
-    F_DT.ADOCN1.CommitTrans;
+    F_DT.FDConSYS.Commit;
     // 检查逻辑版本号记录
     s_filename_set := ExtractFilePath(ParamStr(0)) + 'setting.ini';
     MyIniFile := TIniFile.Create(s_filename_set);

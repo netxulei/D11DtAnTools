@@ -1573,8 +1573,8 @@ begin
   F_import.ShowModal;
   if Length(Trim(t_proj_no)) > 0 then
   begin
-    del_proc(); // 删除存储过程
-    Auto_proc() // 自动执行的存储过程
+//    del_proc(); // 删除存储过程
+//    Auto_proc() // 自动执行的存储过程
   end;
   // ADOQ1.close;
   // ADOQ1.Open;
@@ -2042,15 +2042,15 @@ begin
   FModMaintain.ShowModal;
   // ADOQ1.close;
   // ADOQ1.Open;
-  // fdQryTree.close;
-  // fdQryTree.Open;
+   fdQryTree.close;
+   fdQryTree.Open;
   // cre_zhsys();   //建立账户视图
   { if Length(Trim(t_proj_no)) > 0 then
     begin
     del_proc(); // 删除存储过程
     Auto_proc() // 自动执行的存储过程
-    end;
-    DispInfo(); }
+    end; }
+    DispInfo();
   // 有关银行数据库方面的操作可在新建项目和设置当前项目时执行 或者 此时判断若存在当前项目，就执行
   // cxDBTreeList1.FullExpand;
 

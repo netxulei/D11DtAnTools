@@ -79,9 +79,9 @@ object MainFrm: TMainFrm
     end
   end
   object Panel1: TPanel
-    Left = 268
+    Left = 270
     Top = 0
-    Width = 1115
+    Width = 1113
     Height = 846
     Align = alClient
     Caption = 'Panel1'
@@ -90,7 +90,7 @@ object MainFrm: TMainFrm
     object Panel2: TPanel
       Left = 1
       Top = 17
-      Width = 1113
+      Width = 1111
       Height = 32
       Align = alTop
       Caption = 'Panel2'
@@ -109,7 +109,7 @@ object MainFrm: TMainFrm
       object pnl3: TPanel
         Left = 57
         Top = 1
-        Width = 1055
+        Width = 1053
         Height = 30
         Align = alClient
         BevelOuter = bvLowered
@@ -140,14 +140,14 @@ object MainFrm: TMainFrm
           StyleDisabled.Color = clWhite
           StyleDisabled.TextColor = clBlack
           TabOrder = 0
-          Width = 1053
+          Width = 1051
         end
       end
     end
     object pnl1: TPanel
       Left = 1
       Top = 49
-      Width = 1113
+      Width = 1111
       Height = 796
       Align = alClient
       Caption = 'pnl1'
@@ -157,7 +157,7 @@ object MainFrm: TMainFrm
       object pnl5: TPanel
         Left = 1
         Top = 1
-        Width = 1111
+        Width = 1109
         Height = 27
         Align = alTop
         Alignment = taLeftJustify
@@ -286,7 +286,7 @@ object MainFrm: TMainFrm
         object pnl4: TPanel
           Left = 282
           Top = 1
-          Width = 828
+          Width = 826
           Height = 25
           Align = alClient
           Color = 16776176
@@ -302,7 +302,7 @@ object MainFrm: TMainFrm
           object lblInfo: TLabel
             Left = 1
             Top = 1
-            Width = 826
+            Width = 824
             Height = 23
             Align = alClient
             Caption = #24403#21069#39033#30446
@@ -321,8 +321,8 @@ object MainFrm: TMainFrm
       object dbgrdh1: TDBGridEh
         Left = 1
         Top = 52
-        Width = 1111
-        Height = 375
+        Width = 1109
+        Height = 371
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
         Align = alClient
         AllowedOperations = []
@@ -378,7 +378,7 @@ object MainFrm: TMainFrm
       object pnl2: TPanel
         Left = 1
         Top = 28
-        Width = 1111
+        Width = 1109
         Height = 24
         Align = alTop
         ParentBackground = False
@@ -430,9 +430,9 @@ object MainFrm: TMainFrm
       end
       object cxspltr4: TcxSplitter
         Left = 1
-        Top = 612
-        Width = 1111
-        Height = 8
+        Top = 610
+        Width = 1109
+        Height = 10
         Hint = #21333#20987#25110#19978#19979#25302#21160
         HotZoneClassName = 'TcxSimpleStyle'
         HotZone.SizePercent = 40
@@ -450,7 +450,7 @@ object MainFrm: TMainFrm
       object pnl10: TPanel
         Left = 1
         Top = 620
-        Width = 1111
+        Width = 1109
         Height = 175
         Align = alBottom
         Caption = 'pnl10'
@@ -459,7 +459,7 @@ object MainFrm: TMainFrm
         object dbgrdh3: TDBGridEh
           Left = 1
           Top = 24
-          Width = 1109
+          Width = 1107
           Height = 150
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
@@ -511,7 +511,7 @@ object MainFrm: TMainFrm
         object Panel4: TPanel
           Left = 1
           Top = 1
-          Width = 1109
+          Width = 1107
           Height = 23
           Align = alTop
           TabOrder = 1
@@ -552,8 +552,8 @@ object MainFrm: TMainFrm
       end
       object pnl9: TPanel
         Left = 1
-        Top = 435
-        Width = 1111
+        Top = 433
+        Width = 1109
         Height = 177
         Align = alBottom
         Color = 16776176
@@ -564,7 +564,7 @@ object MainFrm: TMainFrm
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 25
-          Width = 1109
+          Width = 1107
           Height = 151
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
@@ -616,7 +616,7 @@ object MainFrm: TMainFrm
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 1109
+          Width = 1107
           Height = 24
           Align = alTop
           TabOrder = 1
@@ -638,9 +638,9 @@ object MainFrm: TMainFrm
       end
       object cxspltr3: TcxSplitter
         Left = 1
-        Top = 427
-        Width = 1111
-        Height = 8
+        Top = 423
+        Width = 1109
+        Height = 10
         Hint = #21333#20987#25110#19978#19979#25302#21160
         HotZoneClassName = 'TcxSimpleStyle'
         HotZone.SizePercent = 40
@@ -668,7 +668,7 @@ object MainFrm: TMainFrm
     object pnl7: TPanel
       Left = 1
       Top = 1
-      Width = 1113
+      Width = 1111
       Height = 16
       Align = alTop
       ParentBackground = False
@@ -676,7 +676,7 @@ object MainFrm: TMainFrm
       object lblHlp: TLabel
         Left = 1
         Top = 1
-        Width = 1111
+        Width = 1109
         Height = 15
         Align = alTop
         Caption = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
@@ -693,7 +693,7 @@ object MainFrm: TMainFrm
   object cxspltr2: TcxSplitter
     Left = 260
     Top = 0
-    Width = 8
+    Width = 10
     Height = 846
     Hint = #21333#20987#25110#24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
