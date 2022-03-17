@@ -11,7 +11,7 @@ uses
   U_item in 'U_item.pas' {f_item},
   UF_CHG_PASS in 'UF_CHG_PASS.pas' {F_CHG_PASS},
   U_user in 'U_user.pas' {F_user},
-  U_import in 'U_import.pas' {F_import},
+  U_Export in 'U_Export.pas' {F_Export},
   U_mode in 'U_mode.pas' {F_mode},
   JMCode in 'JMCode.pas',
   log4me in 'log4me.pas',
@@ -24,7 +24,8 @@ uses
   Vcl.VDBConsts in 'MySome\Vcl.VDBConsts.pas',
   uSrcTabMaintain in 'uSrcTabMaintain.pas' {frmSrcTabMaintain},
   uDataImport1 in 'uDataImport1.pas' {FrmDataImport},
-  uModMaintain in 'uModMaintain.pas' {FModMaintain};
+  uModMaintain in 'uModMaintain.pas' {FModMaintain},
+  U_import in 'U_import.pas' {F_import};
 
 {$R *.res}
 
@@ -34,5 +35,6 @@ begin
   Application.CreateForm(TLoginFrm, LoginFrm);
   Application.CreateForm(TF_DT, F_DT);
   Application.CreateForm(TF_float, F_float);
+  Application.CreateForm(TF_import, F_import);
   Application.Run;
 end.

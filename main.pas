@@ -40,7 +40,6 @@ type
     MnModRest: TMenuItem;
     ImageList1: TImageList;
     pm1: TPopupMenu;
-    N23: TMenuItem;
     N24: TMenuItem;
     N25: TMenuItem;
     ds1: TDataSource;
@@ -51,7 +50,6 @@ type
     pm2: TPopupMenu;
     Copy1: TMenuItem;
     N27: TMenuItem;
-    N17: TMenuItem;
     pnl1: TPanel;
     pnl5: TPanel;
     pnl6: TPanel;
@@ -134,7 +132,6 @@ type
     MnDict: TMenuItem;
     fdQryTree: TFDQuery;
     fdqryTmp: TFDQuery;
-    Button1: TButton;
     fdmtblRun: TFDMemTable;
     Excel1: TMenuItem;
     fdqryAuto: TFDQuery;
@@ -157,6 +154,7 @@ type
     FDStanStorageBinLink1: TFDStanStorageBinLink;
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
     FDStanStorageXMLLink1: TFDStanStorageXMLLink;
+    btn3: TButton;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
@@ -223,11 +221,11 @@ type
     procedure spbtnFormatClick(Sender: TObject);
     procedure N22Click(Sender: TObject);
     procedure MnModelClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure dbgrdh1TitleBtnClick(Sender: TObject; ACol: Integer; Column: TColumnEh);
     procedure MnDictClick(Sender: TObject);
     procedure MnRuleClick(Sender: TObject);
     procedure N2Click(Sender: TObject);
+    procedure btn3Click(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -479,14 +477,12 @@ begin
   // 自动执行存储过程基于项目，一般跟在清理项目后执行：1.维护项目后（新增、删除、修改）；2.维护模型后；3.导入模型后
   // 准备连接F_DT.FDConGen、F_DT.FDConSYS在login阶段连接字以设定，F_DT.fdconProj在login阶段读取t_database、项目维护后发生改变
   F_DT.FDConGen.Connected := False;
-  // F_DT.FDConGen.ConnectionString := t_connect;  //不带数据库名称的连接
-  fdqryTmp.Connection := F_DT.FDConGen;
+  fdqryTmp.Connection := F_DT.FDConGen; // 不带数据库名称的连接
   F_DT.fdconProj.Connected := False;
   // 准备基于项目的连接
   F_DT.fdconProj.ConnectionString := t_connect + 'Database=' + t_Database + ';';
 
-  // 判断项目数据库是否存在--------------
-
+  // 判断项目数据库是否存在--若不存在，则无需删除存储过程------------
   fdqryTmp.SQL.Clear;
   fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
   fdqryTmp.Open;
@@ -501,9 +497,9 @@ begin
   fdqryAuto.close;
   fdqryAuto.Connection := F_DT.FDConSYS; // 系统数据库
   fdqryAuto.SQL.Clear;
-  sqltext := 'SELECT * FROM "X_menus" where t_auto =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' +
-    '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type = ' + '''' + t_type + '''' +
-    ' order by t_sort';
+  sqltext := 'SELECT * FROM "X_menus" where isClass<>''1'' and t_auto =''1''' +
+    ' and (len(isnull(t_right,''''))=0 or t_right=''' + t_database_ver + ''')' + ' and t_type = ''' + t_type +
+    ''' order by t_sort';
   fdqryAuto.SQL.Add(sqltext);
   // FdqryAuto.sql.SaveToFile('d:\x.sql');
   fdqryAuto.Prepared;
@@ -522,6 +518,8 @@ begin
     ClickNO := False; // 取消参数录入时，为true，该函数或存储过程不执行
     // ShowWaitText(Trim(FdqryAuto.FieldByName('t_name').AsString));
     // 读取文件直到有数据的第一行
+
+   //------------------------------------------------------------------------------------------------
     s_filename := ExtractFilePath(ParamStr(0)) + 'x_sql.txt';
     s2 := Trim(fdqryAuto.FieldByName('t_para').AsString);
     s2 := StringReplace(s2, ' ', '', [rfReplaceAll]);
@@ -1351,6 +1349,11 @@ begin
   // end;
 end;
 
+procedure TMainFrm.btn3Click(Sender: TObject);
+begin
+  Auto_proc();
+end;
+
 procedure TMainFrm.N19Click(Sender: TObject);
 begin
   btn1.Click;
@@ -1534,7 +1537,7 @@ begin
     s_filename := Trim(SaveDialog2.FileName);
     if FileExists(s_filename) then
     begin
-      if Application.MessageBox('导出文件已存在，覆盖吗？', '注意', MB_YESNO + MB_ICONWARNING) = IDNO then
+      if MessageDlg('模型文件已存在，覆盖吗？''', mtWarning, [mbYes, mbNo], 0) = mrNo then
       begin
         Exit;
       end;
@@ -1559,7 +1562,7 @@ begin
       // fdqryExport.SaveToFile(SaveDialog2.FileName, sfXML);
       // fdqryExport.SaveToFile(SaveDialog2.FileName, sfJSON );
       // ShowWaitText;
-      MessageDlg('模型代码信息已备份到' + SaveDialog2.FileName, mtInformation, [mbOK], 0);
+      MessageDlg('模型已导出到' + SaveDialog2.FileName, mtInformation, [mbOK], 0);
     finally
       fdQryExport.close;
       // ShowWaitText; //不带入参数,则是关闭等待窗口
@@ -1573,8 +1576,8 @@ begin
   F_import.ShowModal;
   if Length(Trim(t_proj_no)) > 0 then
   begin
-//    del_proc(); // 删除存储过程
-//    Auto_proc() // 自动执行的存储过程
+    // del_proc(); // 删除存储过程
+    // Auto_proc() // 自动执行的存储过程
   end;
   // ADOQ1.close;
   // ADOQ1.Open;
@@ -1652,7 +1655,10 @@ var
 begin
   // i_id := fdQryTree['t_id'];
   i_parent_id := fdQryTree['t_parent_id'];
-  isClass := fdQryTree['isClass'];
+  if varIsNull(fdQryTree['isClass']) then
+    isClass := '0'
+  else
+    isClass := fdQryTree['isClass'];
   if (cxDBTreeList1.FocusedNode.Count > 0) or (i_parent_id = 0) or (isClass = '1') then
   begin
     btn1.Enabled := False;
@@ -1988,13 +1994,6 @@ begin
 
 end;
 
-procedure TMainFrm.Button1Click(Sender: TObject);
-begin
-  ShowMessage(format('%.4d', [2]));
-  // DispInfo();
-  // Auto_proc;
-end;
-
 procedure TMainFrm.chk1Click(Sender: TObject);
 begin
   if chk1.Checked then
@@ -2040,17 +2039,15 @@ begin
 
   Application.CreateForm(TFModMaintain, FModMaintain);
   FModMaintain.ShowModal;
-  // ADOQ1.close;
-  // ADOQ1.Open;
-   fdQryTree.close;
-   fdQryTree.Open;
+  fdQryTree.close;
+  fdQryTree.Open;
   // cre_zhsys();   //建立账户视图
-  { if Length(Trim(t_proj_no)) > 0 then
-    begin
+  if Length(Trim(t_proj_no)) > 0 then
+  begin
     del_proc(); // 删除存储过程
     Auto_proc() // 自动执行的存储过程
-    end; }
-    DispInfo();
+  end;
+  DispInfo();
   // 有关银行数据库方面的操作可在新建项目和设置当前项目时执行 或者 此时判断若存在当前项目，就执行
   // cxDBTreeList1.FullExpand;
 

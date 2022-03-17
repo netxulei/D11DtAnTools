@@ -469,7 +469,7 @@ begin
     F_DT.FDQryTmp.Close;
     // ===========================================
 
-    if is_exist = '1' then // 若存储过程或函数存在，则不再继续
+    if is_exist = '1' then // 若存储过程或函数存在，则不再继续   函数都是自动运行的，运行状态应该删除函数，并重建函数
     begin
       sl.Free;
       sl_params.Free;

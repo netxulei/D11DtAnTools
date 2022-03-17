@@ -1,9 +1,9 @@
-object F_import: TF_import
+object F_Export: TF_Export
   Left = 452
   Top = 248
-  Caption = #27169#22411#23548#20837
-  ClientHeight = 572
-  ClientWidth = 572
+  Caption = #27169#22411#20195#30721#23548#20837
+  ClientHeight = 551
+  ClientWidth = 568
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,11 +18,11 @@ object F_import: TF_import
   object pnlFileName: TPanel
     Left = 0
     Top = 0
-    Width = 572
+    Width = 568
     Height = 97
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 568
+    ExplicitWidth = 671
     object spbtnFileName: TSpeedButton
       Left = 465
       Top = 32
@@ -83,20 +83,20 @@ object F_import: TF_import
       Width = 457
       Height = 25
       AutoSize = False
-      EditLabel.Width = 143
+      EditLabel.Width = 117
       EditLabel.Height = 15
-      EditLabel.Caption = #36873#25321#20934#22791#23548#20837#30340#27169#22411#25991#20214
+      EditLabel.Caption = #36873#25321#19982#23548#20837#30340#25991#20214#21517
       ReadOnly = True
       TabOrder = 0
       Text = ''
-      TextHint = #36873#25321#20934#22791#23548#20837#30340#27169#22411#25991#20214
+      TextHint = #36873#25321#19982#23548#20837#30340#25991#20214#21517
     end
   end
   object cxDBTreeLst1: TcxDBTreeList
     Left = 0
     Top = 145
-    Width = 572
-    Height = 427
+    Width = 568
+    Height = 406
     Align = alClient
     Bands = <
       item
@@ -106,8 +106,11 @@ object F_import: TF_import
     OptionsData.Editing = False
     RootValue = -1
     TabOrder = 1
-    ExplicitWidth = 568
-    ExplicitHeight = 406
+    Visible = False
+    ExplicitLeft = 8
+    ExplicitTop = 184
+    ExplicitWidth = 729
+    ExplicitHeight = 525
     object cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn1: TcxDBTreeListColumn
       Caption.Text = #27169#22411#21517#31216
       DataBinding.FieldName = 't_name'
@@ -151,18 +154,17 @@ object F_import: TF_import
   object pnl2: TPanel
     Left = 0
     Top = 97
-    Width = 572
+    Width = 568
     Height = 48
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 568
-    object btn1: TBitBtn
-      Left = 130
-      Top = 12
-      Width = 81
+    ExplicitWidth = 671
+    object bitbtnDisp: TBitBtn
+      Left = 8
+      Top = 6
+      Width = 146
       Height = 24
-      Caption = #23548#20837
-      Enabled = False
+      Caption = #26174#31034#22791#20221
       Glyph.Data = {
         76010000424D7601000000000000760000002800000020000000100000000100
         04000000000000010000120B0000120B00001000000000000000000000000000
@@ -178,12 +180,35 @@ object F_import: TF_import
         5990555555555555577755555555555555555555555555555555}
       NumGlyphs = 2
       TabOrder = 0
+      OnClick = bitbtnDispClick
+    end
+    object btn1: TBitBtn
+      Left = 186
+      Top = 6
+      Width = 146
+      Height = 24
+      Caption = #24674#22797#22791#20221
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
+        555555555555555555555555555555555555555555FF55555555555559055555
+        55555555577FF5555555555599905555555555557777F5555555555599905555
+        555555557777FF5555555559999905555555555777777F555555559999990555
+        5555557777777FF5555557990599905555555777757777F55555790555599055
+        55557775555777FF5555555555599905555555555557777F5555555555559905
+        555555555555777FF5555555555559905555555555555777FF55555555555579
+        05555555555555777FF5555555555557905555555555555777FF555555555555
+        5990555555555555577755555555555555555555555555555555}
+      NumGlyphs = 2
+      TabOrder = 1
       OnClick = btn1Click
     end
     object btn2: TBitBtn
-      Left = 277
-      Top = 12
-      Width = 81
+      Left = 365
+      Top = 6
+      Width = 146
       Height = 24
       Caption = #36820#22238
       Glyph.Data = {
@@ -200,7 +225,7 @@ object F_import: TF_import
         EE33337F333377F3337F33EEEEEE00EEEE33337F33337733337F33EEEEEEEEEE
         EE33337FFFFFFFFFFF7F33EEEEEEEEEEEE333377777777777773}
       NumGlyphs = 2
-      TabOrder = 1
+      TabOrder = 2
       OnClick = btn2Click
     end
   end

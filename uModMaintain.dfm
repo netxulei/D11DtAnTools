@@ -20,7 +20,7 @@ object FModMaintain: TFModMaintain
   object cxdbtrlst1: TcxDBTreeList
     Left = 0
     Top = 0
-    Width = 473
+    Width = 433
     Height = 923
     Align = alLeft
     Bands = <
@@ -82,7 +82,7 @@ object FModMaintain: TFModMaintain
       DataBinding.FieldName = 'modiState'
       Options.Editing = False
       Options.Sorting = False
-      Width = 59
+      Width = 60
       Position.ColIndex = 0
       Position.RowIndex = 0
       Position.BandIndex = 0
@@ -95,7 +95,7 @@ object FModMaintain: TFModMaintain
       DataBinding.FieldName = 't_name'
       Options.Editing = False
       Options.Sorting = False
-      Width = 256
+      Width = 405
       Position.ColIndex = 1
       Position.RowIndex = 0
       Position.BandIndex = 0
@@ -103,6 +103,7 @@ object FModMaintain: TFModMaintain
       Summary.GroupFooterSummaryItems = <>
     end
     object cxdbtrlst1t_sort: TcxDBTreeListColumn
+      Visible = False
       DataBinding.FieldName = 't_sort'
       Width = 78
       Position.ColIndex = 2
@@ -114,6 +115,7 @@ object FModMaintain: TFModMaintain
       Summary.GroupFooterSummaryItems = <>
     end
     object cxdbtrlst1t_id: TcxDBTreeListColumn
+      Visible = False
       DataBinding.FieldName = 't_id'
       Width = 100
       Position.ColIndex = 3
@@ -123,6 +125,7 @@ object FModMaintain: TFModMaintain
       Summary.GroupFooterSummaryItems = <>
     end
     object cxdbtrlst1t_parent_id: TcxDBTreeListColumn
+      Visible = False
       DataBinding.FieldName = 't_parent_id'
       Width = 100
       Position.ColIndex = 4
@@ -133,23 +136,26 @@ object FModMaintain: TFModMaintain
     end
   end
   object pnl1: TPanel
-    Left = 481
+    Left = 441
     Top = 0
-    Width = 997
+    Width = 1037
     Height = 923
     Align = alClient
     TabOrder = 1
+    ExplicitLeft = 481
+    ExplicitWidth = 997
     object pnl6: TPanel
       Left = 1
       Top = 1
-      Width = 995
-      Height = 25
+      Width = 1035
+      Height = 32
       Align = alTop
       TabOrder = 0
+      ExplicitWidth = 995
       object bitbtnUndoAll: TBitBtn
-        Left = 314
-        Top = 2
-        Width = 70
+        Left = 324
+        Top = 7
+        Width = 75
         Height = 21
         Hint = #25764#38144#19978#27425#20445#23384#21069#25152#26377#22686#21024#25913
         Caption = #20840#25764
@@ -165,9 +171,9 @@ object FModMaintain: TFModMaintain
         OnClick = bitbtnUndoAllClick
       end
       object bitbtnSave: TBitBtn
-        Left = 390
-        Top = 2
-        Width = 70
+        Left = 403
+        Top = 7
+        Width = 75
         Height = 21
         Caption = #20445#23384
         Font.Charset = DEFAULT_CHARSET
@@ -180,9 +186,9 @@ object FModMaintain: TFModMaintain
         OnClick = bitbtnSaveClick
       end
       object bitbtnUndoOnce: TBitBtn
-        Left = 238
-        Top = 2
-        Width = 70
+        Left = 245
+        Top = 7
+        Width = 75
         Height = 21
         Hint = #25764#38144#26368#36817#19968#26465#35760#24405#30340#22686#21024#25913#12290#21464#26356#36807#24102#26377#23376#39033#39033#30446#30340#25152#23646#31867#21035#65292#21482#33021#20840#37096#25764#38144#25110#23384#30424#12290
         Caption = #25764#19968
@@ -198,9 +204,9 @@ object FModMaintain: TFModMaintain
         OnClick = bitbtnUndoOnceClick
       end
       object bitbtnExit: TBitBtn
-        Left = 466
-        Top = 2
-        Width = 70
+        Left = 639
+        Top = 7
+        Width = 75
         Height = 21
         Caption = #36864#20986
         Font.Charset = DEFAULT_CHARSET
@@ -209,13 +215,13 @@ object FModMaintain: TFModMaintain
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 8
         OnClick = bitbtnExitClick
       end
       object bitbtnAddBrother: TBitBtn
         Left = 10
-        Top = 2
-        Width = 70
+        Top = 7
+        Width = 75
         Height = 21
         Hint = #26032#22686#24403#21069#39033#30446#24179#32423#39033#30446
         Caption = #26032#22686
@@ -231,9 +237,9 @@ object FModMaintain: TFModMaintain
         OnClick = bitbtnAddBrotherClick
       end
       object bitbtnAddChild: TBitBtn
-        Left = 86
-        Top = 2
-        Width = 70
+        Left = 88
+        Top = 7
+        Width = 75
         Height = 21
         Hint = #26032#22686#24403#21069#39033#30446#30340#19979#19968#32423#23376#39033#30446#65292#21516#26102#24403#21069#39033#30446#23646#24615#21464#20026#31867#21035
         Caption = #23376#39033
@@ -249,9 +255,9 @@ object FModMaintain: TFModMaintain
         OnClick = bitbtnAddChildClick
       end
       object bitbtnDelete: TBitBtn
-        Left = 162
-        Top = 2
-        Width = 70
+        Left = 167
+        Top = 7
+        Width = 75
         Height = 21
         Caption = #21024#38500
         Font.Charset = DEFAULT_CHARSET
@@ -263,14 +269,43 @@ object FModMaintain: TFModMaintain
         TabOrder = 2
         OnClick = bitbtnDeleteClick
       end
+      object bitbtnImport: TBitBtn
+        Left = 560
+        Top = 7
+        Width = 75
+        Height = 21
+        Caption = #23548#20837
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 7
+        OnClick = bitbtnImportClick
+      end
+      object cxbtnExp: TcxButton
+        Left = 481
+        Top = 7
+        Width = 75
+        Height = 21
+        Caption = #23548#20986
+        DropDownMenu = pmExport
+        Kind = cxbkOfficeDropDown
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 6
+      end
     end
     object pnl3: TPanel
       Left = 1
-      Top = 26
-      Width = 995
+      Top = 33
+      Width = 1035
       Height = 223
       Align = alTop
       TabOrder = 1
+      ExplicitTop = 26
+      ExplicitWidth = 995
       object lbl6: TLabel
         Left = 487
         Top = 4
@@ -502,7 +537,7 @@ object FModMaintain: TFModMaintain
     end
     object cxdbm1: TcxDBMemo
       Left = 1
-      Top = 249
+      Top = 256
       Align = alClient
       DataBinding.DataField = 't_proc'
       DataBinding.DataSource = ds1
@@ -519,12 +554,15 @@ object FModMaintain: TFModMaintain
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 2
-      Height = 673
-      Width = 995
+      ExplicitTop = 249
+      ExplicitWidth = 995
+      ExplicitHeight = 673
+      Height = 666
+      Width = 1035
     end
   end
   object cxspltr1: TcxSplitter
-    Left = 473
+    Left = 433
     Top = 0
     Width = 8
     Height = 923
@@ -536,6 +574,7 @@ object FModMaintain: TFModMaintain
     ShowHint = True
     ParentColor = False
     ParentShowHint = False
+    ExplicitLeft = 473
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -1233,15 +1272,15 @@ object FModMaintain: TFModMaintain
     Top = 400
   end
   object pm1: TPopupMenu
-    Left = 104
-    Top = 61
-    object N24: TMenuItem
+    Left = 296
+    Top = 373
+    object MnExpand: TMenuItem
       Caption = #20840#37096#23637#24320
-      OnClick = N24Click
+      OnClick = MnExpandClick
     end
-    object N25: TMenuItem
+    object MnCollapse: TMenuItem
       Caption = #20840#37096#25910#32553
-      OnClick = N25Click
+      OnClick = MnCollapseClick
     end
   end
   object fdQryMaxID: TFDQuery
@@ -1340,5 +1379,28 @@ object FModMaintain: TFModMaintain
         #39'01%'#39' order by t_sort')
     Left = 985
     Top = 544
+  end
+  object pmExport: TPopupMenu
+    Left = 1224
+    Top = 53
+    object MenuItem3: TMenuItem
+      Caption = #23548#20986#20840#37096
+      OnClick = MenuItem3Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = #23548#20986#24403#21069#39033#21450#23376#39033
+      OnClick = MenuItem4Click
+    end
+  end
+  object dlgSaveExport: TSaveDialog
+    FileName = 'file1'
+    Filter = #27169#22411#25991#20214' (*.Mod)|*.Mod'
+    Title = #23548#20986#27169#22411
+    Left = 176
+    Top = 640
+  end
+  object fdQryExport: TFDQuery
+    Left = 1229
+    Top = 105
   end
 end

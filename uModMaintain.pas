@@ -20,7 +20,8 @@ uses
   MemTableDataEh, MemTableEh, Vcl.ComCtrls, StrUtils, dxdbtrel,
   cxDBExtLookupComboBox, cxFilter, cxData, cxDataStorage, dxDateRanges, cxDBData,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridBandedTableView, cxGridDBBandedTableView, cxGrid, cxGridDBTableView, Vcl.Grids, Vcl.DBGrids;
+  cxGridBandedTableView, cxGridDBBandedTableView, cxGrid, cxGridDBTableView, Vcl.Grids, Vcl.DBGrids, cxButtons,
+  u_import;
 
 type
   TMyNavgator = class(TDBNavigator);
@@ -79,8 +80,8 @@ type
     ImageList1: TImageList;
     FDLocalSQL1: TFDLocalSQL;
     pm1: TPopupMenu;
-    N24: TMenuItem;
-    N25: TMenuItem;
+    MnExpand: TMenuItem;
+    MnCollapse: TMenuItem;
     fdQryMaxID: TFDQuery;
     fdQryMaxSort: TFDQuery;
     bitbtnDelete: TBitBtn;
@@ -105,12 +106,19 @@ type
     cxDBLkUpComClass: TcxDBLookupComboBox;
     fdQryCur: TFDQuery;
     fdQryNext: TFDQuery;
+    bitbtnImport: TBitBtn;
+    cxbtnExp: TcxButton;
+    pmExport: TPopupMenu;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    dlgSaveExport: TSaveDialog;
+    fdQryExport: TFDQuery;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
       AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure fdQryTreeCalcFields(DataSet: TDataSet);
-    procedure N24Click(Sender: TObject);
-    procedure N25Click(Sender: TObject);
+    procedure MnExpandClick(Sender: TObject);
+    procedure MnCollapseClick(Sender: TObject);
     procedure bitbtnAddBrotherClick(Sender: TObject);
     procedure btnTestClick(Sender: TObject);
     procedure bitbtnAddChildClick(Sender: TObject);
@@ -130,6 +138,9 @@ type
     procedure cxDBLkUpComClassClick(Sender: TObject);
     procedure bitbtn3Click(Sender: TObject);
     procedure bitbtnTypeDownClick(Sender: TObject);
+    procedure MenuItem3Click(Sender: TObject);
+    procedure MenuItem4Click(Sender: TObject);
+    procedure bitbtnImportClick(Sender: TObject);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -220,6 +231,19 @@ begin
   Close;
 end;
 
+procedure TFModMaintain.bitbtnImportClick(Sender: TObject);
+begin
+  if fdQryTree.UpdatesPending then
+  begin
+    MessageDlg('最后修改未保存！请确认信息并保存或撤销修改后再行导入。', mtWarning, [mbOK], 0);
+    exit;
+  end;
+  Application.CreateForm(TF_import, F_import);
+  F_import.ShowModal;
+  fdQryTree.Close;
+  fdQryTree.Open;
+end;
+
 procedure TFModMaintain.bitbtn3Click(Sender: TObject);
 
 begin
@@ -303,8 +327,8 @@ begin
   // ShowMessage(Movedsort + '|' + NewParentsort);
 
   // 长度
-  sortMovedLen := length(Movedsort); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
-  sortNewParentLen := length(NewParentsort); // 新的父项的长度
+  sortMovedLen := Length(Movedsort); // 被移动项目的T_sort,准备其子项目的前sortMovedLen位替换为新的父项的t_sort
+  sortNewParentLen := Length(NewParentsort); // 新的父项的长度
 
   bk := fdQryTree.GetBookmark;
 
@@ -369,7 +393,7 @@ begin
   if i_max_sort = 0 then
     s_max_sort := NewParentsort + Format('%.2d', [(i_max_sort + 1)])
   else
-    s_max_sort := Format('%.' + (inttostr(length(NewParentsort) + 2)) + 'd', [(i_max_sort + 1)]);
+    s_max_sort := Format('%.' + (inttostr(Length(NewParentsort) + 2)) + 'd', [(i_max_sort + 1)]);
   // 修改被移动项目的t_parent_id和t_sort
   fdQryTree.Edit;
   fdQryTree['t_parent_id'] := parentIdAfter;
@@ -405,7 +429,7 @@ begin
     begin
       tmpSort := fdQryTree['t_sort'];
       fdQryTree.Edit;
-      fdQryTree['t_sort'] := s_max_sort + copy(tmpSort, sortMovedLen + 1, length(tmpSort) - sortMovedLen);
+      fdQryTree['t_sort'] := s_max_sort + copy(tmpSort, sortMovedLen + 1, Length(tmpSort) - sortMovedLen);
     end;
     fdQryMov.Next;
   end;
@@ -782,7 +806,7 @@ begin
     tmpId: integer;
   var
     tmpSort: string;
-  sortLen := length(next_sort);
+  sortLen := Length(next_sort);
   fdQryCur.First;
   while not fdQryCur.Eof do
   begin
@@ -791,12 +815,12 @@ begin
     begin
       tmpSort := fdQryTree['t_sort'];
       fdQryTree.Edit;
-      fdQryTree['t_sort'] := next_sort + copy(tmpSort, sortLen + 1, length(tmpSort) - sortLen);
+      fdQryTree['t_sort'] := next_sort + copy(tmpSort, sortLen + 1, Length(tmpSort) - sortLen);
     end;
     fdQryCur.Next;
   end;
   fdQryCur.Close;
-  sortLen := length(cur_sort);
+  sortLen := Length(cur_sort);
   fdQryNext.First;
   while not fdQryNext.Eof do
   begin
@@ -805,7 +829,7 @@ begin
     begin
       tmpSort := fdQryTree['t_sort'];
       fdQryTree.Edit;
-      fdQryTree['t_sort'] := cur_sort + copy(tmpSort, sortLen + 1, length(tmpSort) - sortLen);
+      fdQryTree['t_sort'] := cur_sort + copy(tmpSort, sortLen + 1, Length(tmpSort) - sortLen);
     end;
     fdQryNext.Next;
   end;
@@ -816,12 +840,97 @@ begin
   fdQryTree.GotoBookmark(bk);
 end;
 
-procedure TFModMaintain.N24Click(Sender: TObject);
+procedure TFModMaintain.MnExpandClick(Sender: TObject);
 begin
   cxdbtrlst1.FullExpand;
 end;
 
-procedure TFModMaintain.N25Click(Sender: TObject);
+procedure TFModMaintain.MenuItem3Click(Sender: TObject);
+var
+  s_filename, sqltext, cur_sort: string;
+begin
+  // 导出全部 ，应在全部存盘的情况下进行
+  // ActiveControl:=dbgrdh1;
+  if fdQryTree.UpdatesPending then
+  begin
+    MessageDlg('最后修改未保存！请确认信息并保存或撤销修改后再行导出。', mtWarning, [mbOK], 0);
+    exit;
+  end;
+  dlgSaveExport.FileName := DateToStr(Now) + 'All.mod';
+  if dlgSaveExport.Execute then
+  begin
+    s_filename := Trim(dlgSaveExport.FileName);
+    if FileExists(s_filename) then
+    begin
+      if MessageDlg('模型文件已存在，覆盖吗？''', mtWarning, [mbYes, mbNo], 0) = mrNo then
+      begin
+        exit;
+      end;
+    end;
+    try
+      dlgSaveExport.FileName := dlgSaveExport.FileName;
+      fdQryExport.Close;
+      // fdqryExport.DisableControls;
+      fdQryExport.Connection := F_DT.FDConSYS;
+      fdQryExport.SQL.Clear;
+      sqltext := 'SELECT * FROM "X_menus" order by t_sort';
+      fdQryExport.SQL.ADD(sqltext);
+      fdQryExport.Prepared;
+      fdQryExport.Open;
+      fdQryExport.FetchAll;
+      fdQryExport.SaveToFile(dlgSaveExport.FileName, sfBinary);
+      MessageDlg('全部模型已导出到' + dlgSaveExport.FileName, mtInformation, [mbOK], 0);
+    finally
+      fdQryExport.Close;
+    end;
+  end;
+
+end;
+
+procedure TFModMaintain.MenuItem4Click(Sender: TObject);
+var
+  s_filename, sqltext, cur_sort: string;
+begin
+  // 导出当前及子项 ，应在全部存盘的情况下进行
+  // ActiveControl:=dbgrdh1;
+  if fdQryTree.UpdatesPending then
+  begin
+    MessageDlg('最后修改未保存！请确认信息并保存或撤销修改后再行导出。', mtWarning, [mbOK], 0);
+    exit;
+  end;
+
+  cur_sort := fdQryTree['t_sort'];
+  dlgSaveExport.FileName := DateToStr(Now) + 'Part.mod';
+  if dlgSaveExport.Execute then
+  begin
+    s_filename := Trim(dlgSaveExport.FileName);
+    if FileExists(s_filename) then
+    begin
+      if MessageDlg('模型文件已存在，覆盖吗？''', mtWarning, [mbYes, mbNo], 0) = mrNo then
+      begin
+        exit;
+      end;
+    end;
+    try
+      dlgSaveExport.FileName := dlgSaveExport.FileName;
+      fdQryExport.Close;
+      // fdqryExport.DisableControls;
+      fdQryExport.Connection := F_DT.FDConSYS;
+      fdQryExport.SQL.Clear;
+      sqltext := 'SELECT * FROM "X_menus" where t_sort like ''' + cur_sort + '%'' order by t_sort';
+      fdQryExport.SQL.ADD(sqltext);
+      fdQryExport.Prepared;
+      fdQryExport.Open;
+      fdQryExport.FetchAll;
+      fdQryExport.SaveToFile(dlgSaveExport.FileName, sfBinary);
+      MessageDlg('当前模型及其子项已导出到' + dlgSaveExport.FileName, mtInformation, [mbOK], 0);
+    finally
+      fdQryExport.Close;
+    end;
+  end;
+end;
+
+procedure TFModMaintain.MnCollapseClick(Sender: TObject);
 begin
   cxdbtrlst1.FullCollapse;
 end;
@@ -851,6 +960,11 @@ begin
   bitbtnUndoOnce.Enabled := Enable and (not isBatch);
 
   bitbtnUndoAll.Enabled := Enable;
+
+  cxbtnExp.Enabled := Not Enable;
+
+  bitbtnImport.Enabled := Not Enable;
+
 end;
 
 procedure TFModMaintain.AddNode(IsChild: Boolean);

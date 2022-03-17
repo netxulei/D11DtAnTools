@@ -1,4 +1,4 @@
-unit U_import;
+unit U_Export;
 
 interface
 
@@ -14,7 +14,7 @@ uses U_DT, U_Common,
   DBGridEhToolCtrls, DynVarsEh, EhLibVCL, GridsEh, DBAxisGridsEh, DBGridEh;
 
 type
-  TF_import = class(TForm)
+  TF_Export = class(TForm)
     OpenTextFileDialog1: TOpenTextFileDialog;
     pnlFileName: TPanel;
     lbledtFileName: TLabeledEdit;
@@ -30,6 +30,7 @@ type
     cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn4: TcxDBTreeListColumn;
     rg1: TRadioGroup;
     pnl2: TPanel;
+    bitbtnDisp: TBitBtn;
     btn1: TBitBtn;
     btn2: TBitBtn;
     procedure btn1Click(Sender: TObject);
@@ -37,6 +38,7 @@ type
     procedure btn2Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure spbtnFileNameClick(Sender: TObject);
+    procedure bitbtnDispClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -44,13 +46,61 @@ type
   end;
 
 var
-  F_import: TF_import;
+  F_Export: TF_Export;
 
 implementation
 
 {$R *.dfm}
 
-procedure TF_import.btn1Click(Sender: TObject);
+procedure TF_Export.bitbtnDispClick(Sender: TObject);
+var
+  s_filename, s_Jclj_Ver: string;
+begin
+  s_filename := Trim(StringReplace(lbledtFileName.Text, '"', '', [rfReplaceAll]));
+  s_Jclj_Ver := ExtractFileName(s_filename);
+  if Length(s_filename) = 0 then
+  begin
+    MessageDlg('没有选择备份的文件！', mtInformation, [mbOK], 0);
+    exit;
+  end;
+
+  if IfIncludeKG(s_filename) then
+  begin
+    MessageDlg('文件名或所在目录名中包含空格，请修正文件名或将文件放在不含空格的目录中，再导入！', mtInformation, [mbOK], 0);
+    exit;
+  end;
+  if not FileExists(s_filename) then
+  begin
+    MessageDlg('文件不存在！', mtInformation, [mbOK], 0);
+    exit;
+  end;
+
+  if not cxDBTreeLst1.Visible then
+  begin
+    fdmtblImp.LoadFromFile(s_filename);;
+    fdmtblImp.Open;
+    cxDBTreeLst1.DataController.KeyField := 't_id';
+    cxDBTreeLst1.DataController.ParentField := 't_parent_id';
+    // cxDBTreeLst1.Columns[0].DataBinding.fieldname:=
+    cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn1.DataBinding.FieldName := 't_name';
+    cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn2.DataBinding.FieldName := 't_id';
+    cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn3.DataBinding.FieldName := 't_parent';
+    cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn4.DataBinding.FieldName := 't_sort';
+    cxDBTreeLst1.Visible := True;
+    bitbtnDisp.Caption := '关闭显示';
+//    F_import.Height := pnlFileName.Height + pnl2.Height + cxDBTreeLst1.Height;
+  end
+  else
+  begin
+    cxDBTreeLst1.Visible := False;
+    fdmtblImp.Close;
+    bitbtnDisp.Caption := '显示备份';
+//    F_import.Height := pnlFileName.Height + pnl2.Height;
+  end;
+
+end;
+
+procedure TF_Export.btn1Click(Sender: TObject);
 var
   s_filepath, s_filename, s_filename_set, s_Jclj_Ver: string;
   i, i_id_max, i_sort_max: Integer;
@@ -98,7 +148,7 @@ begin
     F_DT.FDConSYS.StartTransaction;
     if rg1.ItemIndex = 1 then // 替换导入
     begin
-      if Application.MessageBox('覆盖模式导入将导致原有模型被替换，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
+      if Application.MessageBox('覆盖模式恢复将导致原有模型被替换，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
       begin
         F_DT.ADOCN1.RollbackTrans;
         FDqryTree.Close;
@@ -132,7 +182,7 @@ begin
     end;
     if rg1.ItemIndex = 0 then // 新增导入
     begin
-      if MessageDlg('增量模式导入，可能需要在开放模式中重新分类或移动顺序，确定吗？''', mtWarning, mbOKCancel, 0) = mrCancel then
+      if MessageDlg('增量模式恢复将会把恢复的模型添加在原有模型最后，可能需要重新分类或移动顺序，确定吗？''', mtWarning, mbOKCancel, 0) = mrCancel then
       begin
         F_DT.FDConSYS.Rollback;
         exit;
@@ -188,7 +238,7 @@ begin
         prior2_sort := next2_sort;
         fdmtblImp.Next;
       end;
-      // cxDBTreeLst1.Refresh;
+//         cxDBTreeLst1.Refresh;
       fdmtblImp.First;
       while not fdmtblImp.Eof do
       begin
@@ -220,50 +270,34 @@ begin
     // MyIniFile.WriteString('other','AreaCode',Trim(cxtxtdt2.Text));
     MyIniFile.Free;
     fdmtblImp.Close;
-    MessageDlg('模型导入成功!', mtInformation, [mbOK], 0);
+    MessageDlg('检查模型导入成功!', mtInformation, [mbOK], 0);
     Close;
   except
     F_DT.ADOCN1.RollbackTrans;
-    raise exception.Create('模型导入错误，可能导入的不是模型文件!');
+    raise exception.Create('数据导入时发现错误，请检查数据文件!');
   end;
 end;
 
-procedure TF_import.FormCreate(Sender: TObject);
+procedure TF_Export.FormCreate(Sender: TObject);
 begin
   lbledtFileName.Text := DateToStr(Now) + '.Mod';
 end;
 
-procedure TF_import.spbtnFileNameClick(Sender: TObject);
+procedure TF_Export.spbtnFileNameClick(Sender: TObject);
 begin
   if OpenTextFileDialog1.Execute then
   begin
     lbledtFileName.Text := OpenTextFileDialog1.FileName;
-    try
-      fdmtblImp.LoadFromFile(lbledtFileName.Text);;
-      fdmtblImp.Open;
-      cxDBTreeLst1.DataController.KeyField := 't_id';
-      cxDBTreeLst1.DataController.ParentField := 't_parent_id';
-      // cxDBTreeLst1.Columns[0].DataBinding.fieldname:=
-      cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn1.DataBinding.FieldName := 't_name';
-      cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn2.DataBinding.FieldName := 't_id';
-      cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn3.DataBinding.FieldName := 't_parent';
-      cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn4.DataBinding.FieldName := 't_sort';
-      btn1.Enabled := True;
-    except
-      btn1.Enabled := False;
-      MessageDlg('该文件不是本系统的模型文件！', mtError, [mbOK], 0);
-
-    end;
     // showmessage(OpenTextFileDialog1.FileName);
   end;
 end;
 
-procedure TF_import.btn2Click(Sender: TObject);
+procedure TF_Export.btn2Click(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TF_import.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TF_Export.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FDqryTree.Close;
   FDqryTmp.Close;
