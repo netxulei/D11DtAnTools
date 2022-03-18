@@ -50,7 +50,7 @@ type
 const
   TextFormatFlag: array [Ansi .. Utf8] of Word = ($0000, $FFFE, $FEFF, $EFBB);
 
-procedure ModlCodeValid(FDQryTree: TFDQuery; isRun: Boolean; isAuto: Boolean); // 验证模型代码，返回全局R_proc,t_ProcFunName，可用于执行
+procedure ModlCodeValid(FDQryTree: TFDQuery; isRun: Boolean; isAuto: Boolean); // 验证模型代码，返回全局R_proc,t_ProcFunName，执行情况下完成存储过程或函数的建立
 
 function IsIntStr(const S: string): Boolean;
 
@@ -110,7 +110,7 @@ var
   i_cnt1, i_cnt2, i_cnt3, i_cnt4: Integer; // 代码@、参数字段@、!、:三个符号出现的数量
   creaFlag, procFlag, funcFlag, asFlag, withFlag, encrFlag, retuFlag, is_exist: Char; // 关键字判断
 begin
-  SetLength(R_proc,0);//初始化参数数组
+  SetLength(R_proc, 0); // 初始化参数数组
   // 模型参数
   sParamField := Trim(FDQryTree.FieldByName('t_para').AsString); // 模型参数
   sParamField := StringReplace(sParamField, ' ', '', [rfReplaceAll]); // 去空格
@@ -190,16 +190,16 @@ begin
   if (procFlag = '0') and (funcFlag = '0') then
     sError := sError + '"PROCEDURE或FUNCTION"';
   if (retuFlag = '0') and (funcFlag = '1') then
-    sError := sError + '"RETURNS"';
+    sError := sError + '"RETURNS(Function)"';
   if asFlag = '0' then
     sError := sError + '"AS"';
   if withFlag = '0' then
     sError := sError + '"WITH"';
-  if encrFlag = '0' then
-    sError := sError + '"ENCRYPTION"';
+  if (procFlag = '1') and (encrFlag = '0') then
+    sError := sError + '"ENCRYPTION(Procedure)"';
   if Length(sError) > 0 then
   begin
-    MessageDlg('模型代码缺少' + PChar(sError) + '等必要的关键字，请退出后完善模型代码！', mtError, [mbOK], 0);
+    MessageDlg('模型代码缺少必要的关键字:' + PChar(sError) + '，请退出后完善模型代码！', mtError, [mbOK], 0);
     sl.Free;
     sl_params.Free;
     sl_param.Free;
@@ -228,14 +228,24 @@ begin
     else
       Break;
   end;
-  // 删除存储过程中的所有者如"dbo."等
-  i_pos1 := pos('.', sqlname);
-  if i_pos1 > 0 then
-    Delete(sqlname, 1, i_pos1);
+  // 清除SQLserver定界符号  方括号和双引号。因为要得到存储过程或函数名
+  // 删除存储过程中的所有者如"dbo."等   ,名称变大写
+  sqlname := StringReplace(sqlname, '[', '', [rfReplaceAll]);
+  sqlname := StringReplace(sqlname, ']', '', [rfReplaceAll]);
+  sqlname := StringReplace(sqlname, '"', '', [rfReplaceAll]);
+  sqlname := StringReplace(sqlname, '"', '', [rfReplaceAll]);
+  sqlname := UpperCase(sqlname);
+  sqlname := StringReplace(sqlname, 'DBO.', '', [rfReplaceAll]);
+  // i_pos1 := pos('.', sqlname);
+  // if i_pos1 > 0 then
+  // Delete(sqlname, 1, i_pos1);
+
   t_ProcFunName := sqlname; // 付给全局，执行使用
+  // ShowMessage(sqlname);
+  // exit;
   // -------sqlname为获取的存储过程名称------------------------------------------------------------------
 {$REGION '存储过程要校验信息参数与代码中参数的匹配性，以及取得信息参数的值用于运行'}
-  // ---如果是函数，不考虑参数的事（参数信息有无内容，不予考虑
+  // ---如果是函数，不考虑运行参数的事，函数只在存储过程中使用，只建立，不执行（参数信息有无内容，不予考虑）
   if procFlag = '1' then
   begin
     // 获取参数字段的参数（参数数量不定，用数组？）
@@ -345,17 +355,17 @@ begin
     F_DT.FDQryTmp.SQL.Clear;
     if procFlag = '1' then
       sqltext := 'IF EXISTS (SELECT * FROM sys.objects WHERE Type =' + '''' + 'P' + '''' + ' AND name=' + '''' + sqlname
-        + '''' + ') DROP PROCEDURE dbo.' + sqlname;
+        + '''' + ') DROP PROCEDURE dbo.[' + sqlname + ']';
     if funcFlag = '1' then
       sqltext := 'IF EXISTS (select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' +
         'AF' + '''' + ' or type =' + '''' + 'FN' + '''' + ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT'
-        + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.'
-        + sqlname;
+        + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.[' +
+        sqlname + ']';
     F_DT.FDQryTmp.SQL.Add(sqltext);
     F_DT.FDQryTmp.Prepared;
     F_DT.FDQryTmp.ExecSQL;
     // F_DT.FDConSys.Connected := False;
-    // 测试建立存储过程
+    // 测试建立存储过程 或函数        基于程序集的函数测试会出错，如regex.isMatch
     try
       F_DT.FDQryTmp.Close;
       F_DT.FDQryTmp.SQL.Clear;
@@ -399,12 +409,12 @@ begin
     F_DT.FDQryTmp.SQL.Clear;
     if procFlag = '1' then
       sqltext := 'IF EXISTS (SELECT * FROM sys.objects WHERE Type =' + '''' + 'P' + '''' + ' AND name=' + '''' + sqlname
-        + '''' + ') DROP PROCEDURE dbo.' + sqlname;
+        + '''' + ') DROP PROCEDURE dbo.[' + sqlname + ']';
     if funcFlag = '1' then
       sqltext := 'IF EXISTS (select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' +
         'AF' + '''' + ' or type =' + '''' + 'FN' + '''' + ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT'
-        + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.'
-        + sqlname;
+        + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.[' +
+        sqlname + ']';
     F_DT.FDQryTmp.SQL.Add(sqltext);
     F_DT.FDQryTmp.Prepared;
     F_DT.FDQryTmp.ExecSQL;
@@ -432,7 +442,7 @@ begin
     begin
       F_DT.FDQryTmp.Close;
       F_DT.FDConGen.Connected := False;
-      if not isAuto then // 非自动运行模式显示出错信息
+      if not isAuto then // 非自动运行模式显示出错信息 ，自动运行，直接返回了
         MessageDlg('项目数据库不存在或损坏，请删除此项目，重新建立项目!。', mtInformation, [mbOK], 0);
       sl.Free;
       sl_params.Free;
@@ -469,7 +479,7 @@ begin
     F_DT.FDQryTmp.Close;
     // ===========================================
 
-    if is_exist = '1' then // 若存储过程或函数存在，则不再继续   函数都是自动运行的，运行状态应该删除函数，并重建函数
+    if is_exist = '1' then // 若存储过程或函数存在，则不再继续   函数都是自动运行的。del_proc() 同时应删除函数
     begin
       sl.Free;
       sl_params.Free;

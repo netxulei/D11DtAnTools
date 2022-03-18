@@ -403,6 +403,7 @@ function TMainFrm.del_proc(): Boolean;
 var
   sqltext: string;
 begin
+//删除当前项目所有存储过程和函数
   // 注意限制不要删除了系统的存储过程
   // ShowWaitText('请稍后，正在初始化检查功能...');
   dbgrdh1.Enabled := False;
@@ -426,7 +427,37 @@ begin
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'begin';
     fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'exec(' + '''' + 'drop procedure ' + '''' + '+@procName)';
+    sqltext := 'exec(''drop procedure [''+@procName+'']'')';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'fetch next from cur into @procName';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'end';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'close cur';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'deallocate cur';
+    fdqryTmp.SQL.Add(sqltext);
+//    fdqryTmp.SQL.SaveToFile('d:\x.sql');
+    fdqryTmp.Prepared;
+    fdqryTmp.ExecSQL;
+
+    // 还应删除函数？
+    fdqryTmp.SQL.Clear;
+    sqltext := 'declare @procName varchar(500)';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'declare cur cursor';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'for select name from sysobjects Where type=''AF'' or type=''FN'' or type=''FS'' or type=''FT'' or  type=''IF'' or type=''TF''';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'open cur';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'fetch next from cur into @procName';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'while @@fetch_status=0';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'begin';
+    fdqryTmp.SQL.Add(sqltext);
+    sqltext := 'exec(''drop function [''+@procName+'']'')';
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'fetch next from cur into @procName';
     fdqryTmp.SQL.Add(sqltext);
@@ -497,7 +528,7 @@ begin
   fdqryAuto.close;
   fdqryAuto.Connection := F_DT.FDConSYS; // 系统数据库
   fdqryAuto.SQL.Clear;
-  sqltext := 'SELECT * FROM "X_menus" where isClass<>''1'' and t_auto =''1''' +
+  sqltext := 'SELECT * FROM "X_menus" where (isClass<>''1'' or isClass is null) and t_auto =''1''' +
     ' and (len(isnull(t_right,''''))=0 or t_right=''' + t_database_ver + ''')' + ' and t_type = ''' + t_type +
     ''' order by t_sort';
   fdqryAuto.SQL.Add(sqltext);
@@ -517,399 +548,8 @@ begin
   begin
     ClickNO := False; // 取消参数录入时，为true，该函数或存储过程不执行
     // ShowWaitText(Trim(FdqryAuto.FieldByName('t_name').AsString));
-    // 读取文件直到有数据的第一行
-
-   //------------------------------------------------------------------------------------------------
-    s_filename := ExtractFilePath(ParamStr(0)) + 'x_sql.txt';
-    s2 := Trim(fdqryAuto.FieldByName('t_para').AsString);
-    s2 := StringReplace(s2, ' ', '', [rfReplaceAll]);
-    s2 := StringReplace(s2, '＠', '@', [rfReplaceAll]);
-    s2 := StringReplace(s2, '：', ':', [rfReplaceAll]);
-    // ShowMessage('will proc');
-    TBlobField(fdqryAuto.FieldByName('t_proc')).SaveToFile(s_filename);
-    AssignFile(sqlfile, s_filename);
-    FileMode := 0;
-    Reset(sqlfile);
-    while not Eof(sqlfile) do
-    begin
-      Readln(sqlfile, s1);
-      if Length(Trim(s1)) <> 0 then
-        Break;
-    end;
-    CloseFile(sqlfile);
-    s1 := UpperCase(Trim(s1));
-
-    i_pos11 := Pos('FUNCTION', s1);
-    i_pos1 := Pos('PROCEDURE', s1);
-    if (i_pos11 = 0) and (i_pos1 = 0) then
-    begin
-      // ShowWaitText;
-      MessageDlg('自动执行的模型代码缺少PROCEDURE或FUNCTION关键字！', mtInformation, [mbOK], 0);
-      Exit;
-    end;
-
-    // 建立自定义函数开始
-    if i_pos11 > 0 then
-    begin
-      // 获取函数名
-      Delete(s1, 1, i_pos11 + 7);
-      s1 := Trim(s1);
-      i_len := Length(s1);
-      sqlname := '';
-      for ii := 1 to i_len do
-      begin
-        if (s1[ii] <> ' ') and (s1[ii] <> '(') then
-          sqlname := sqlname + s1[ii]
-        else
-          Break;
-      end;
-      // 删除函数中的所有者如"dbo."等
-
-      sqlname := StringReplace(sqlname, 'dbo.', '', [rfReplaceAll]);
-      // showmessage(sqlname);
-      sqlname := StringReplace(sqlname, '[', '', [rfReplaceAll]);
-      sqlname := StringReplace(sqlname, ']', '', [rfReplaceAll]);
-
-      // 查找自定义函数是否存在
-      try
-        sqltext := 'select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' + 'AF' +
-          '''' + ' or type =' + '''' + 'FN' + '''' + ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT' +
-          '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')';
-        fdqryTmp.Connection := F_DT.fdconProj;
-        fdqryTmp.close;
-        fdqryTmp.SQL.Clear;
-        fdqryTmp.SQL.Add(sqltext);
-        fdqryTmp.Prepared;
-        fdqryTmp.Open;
-      except
-        fdqryTmp.close;
-        // ShowWaitText;
-        raise Exception.Create('项目数据库可能损坏，请在项目设置中删该项目后重新建立!');
-        Exit;
-      end;
-      if fdqryTmp.RecordCount = 0 then
-        is_exist := 0
-      else
-        is_exist := 1;
-      fdqryTmp.close;
-      // 若存在则删除
-      if is_exist = 1 then
-      begin
-        sqltext := 'drop Function ' + '[dbo].[' + sqlname + ']';
-        // showmessage(sqltext);
-        fdqryTmp.close;
-        fdqryTmp.SQL.Clear;
-        fdqryTmp.SQL.Add(sqltext);
-        fdqryTmp.Prepared;
-        fdqryTmp.ExecSQL;
-        fdqryTmp.close;
-      end;
-      // 建立自定义函数，出错要回滚
-      s1 := '';
-      sqltext := '';
-      AssignFile(sqlfile, s_filename);
-      FileMode := 0;
-      Reset(sqlfile);
-      try
-        F_DT.fdconProj.StartTransaction;
-        fdqryTmp.close;
-        fdqryTmp.SQL.Clear;
-        while not Eof(sqlfile) do
-        begin
-          Readln(sqlfile, sqltext);
-          if Length(Trim(sqltext)) <> 0 then
-            fdqryTmp.SQL.Add(sqltext);
-          while (not Eof(sqlfile)) and (UpperCase(Trim(sqltext)) <> 'GO') do
-          begin
-            Readln(sqlfile, sqltext);
-            if (UpperCase(Trim(sqltext)) <> 'GO') then
-              fdqryTmp.SQL.Add(sqltext);
-          end;
-        end;
-        CloseFile(sqlfile);
-        // fdqryTmp.SQL.LoadFromFile(s_filename); 执行出错，改为手工读文件，加入sql语句
-        DeleteFile(s_filename);
-        fdqryTmp.ExecSQL; // 执行
-        F_DT.fdconProj.Commit;
-        fdqryTmp.close;
-      except
-        CloseFile(sqlfile);
-        F_DT.fdconProj.Rollback;
-        fdqryTmp.close;
-        // ShowWaitText;
-        raise Exception.Create('自动建立自定义函数时发生错误，请在开放模式下维护!');
-        Exit;
-      end;
-      fdqryTmp.close;
-      // 函数建立结束
-    end;
-    // 自定义函数结束
-    // ======= 存储过程开始================
-    if i_pos1 > 0 then
-    begin
-      // 获取存储过程名
-      Delete(s1, 1, i_pos1 + 8);
-      s1 := Trim(s1);
-      i_len := Length(s1);
-      sqlname := '';
-      for ii := 1 to i_len do
-      begin
-        if (s1[ii] <> ' ') and (s1[ii] <> '(') then
-          sqlname := sqlname + s1[ii]
-        else
-          Break;
-      end;
-      // MessageDlg(sqlname);
-      // 删除存储过程中的所有者如"dbo."等
-      i_pos1 := Pos('.', sqlname);
-      if i_pos1 > 0 then
-        Delete(sqlname, 1, i_pos1);
-      // 获取参数（参数数量不定，用数组？）
-      i_pos1 := Pos('@', s1);
-      Delete(s1, 1, i_pos1 - 1);
-      s1 := Trim(s1);
-      i_len := Length(s1);
-      // 统计@出现的次数
-      i_cnt1 := 0;
-      for ii := 1 to i_len do
-        if s1[ii] = '@' then
-          Inc(i_cnt1);
-      i_cnt2 := 0;
-      for ii := 1 to Length(s2) do
-        if s2[ii] = '@' then
-          Inc(i_cnt2);
-      i_cnt3 := 0;
-      for ii := 1 to Length(s2) do
-        if s2[ii] = '!' then
-          Inc(i_cnt3);
-      i_cnt4 := 0;
-      for ii := 1 to Length(s2) do
-        if s2[ii] = ':' then
-          Inc(i_cnt4);
-
-      if (i_cnt2 <> i_cnt3) or (i_cnt3 <> i_cnt4) or (i_cnt2 <> i_cnt4) then
-      begin
-        // ShowWaitText;
-        MessageDlg('参数信息定义不正确，请在检查模型维护中检查参数信息！', mtInformation, [mbOK], 0);
-        Exit;
-      end;
-      if i_cnt1 <> i_cnt2 then
-      begin
-        // ShowWaitText;
-        MessageDlg('参数信息中的参数个数与检查模型代码中的参数个数不一致，请在检查模型维护中检查！', mtInformation, [mbOK], 0);
-        Exit;
-      end;
-      // s1="@aa int,@bb char(8),@cc string )"   取消其他字符后再取参数？
-      // s2="@提示:20090101@提示2:20091231"
-      s1 := StringReplace(s1, ')', '', [rfReplaceAll]);
-      s1 := StringReplace(s1, '(', '', [rfReplaceAll]);
-
-      // 如果i_cnt1>0，则获得每一个参数到记录数组
-      if i_cnt1 > 0 then
-      begin
-        SetLength(R_proc, i_cnt1);
-        s3 := '';
-        for i := 1 to i_cnt1 do
-        begin
-          // i_pos1:=Pos('@',s1);
-          i_pos2 := Pos(' ', s1);
-          if i_pos2 = 0 then
-            i_pos2 := Length(s1);
-          s3 := Copy(s1, 1, i_pos2 - 1);
-          R_proc[i - 1].s_para_name := s3;
-          Delete(s1, 1, i_pos2);
-          i_pos1 := Pos('@', s1);
-          Delete(s1, 1, i_pos1 - 1);
-          s1 := Trim(s1);
-          // i_pos1:=Pos('@',s2);
-          i_pos2 := Pos('!', s2);
-          s3 := Copy(s2, 2, i_pos2 - 2);
-          R_proc[i - 1].s_para_tip := s3;
-          Delete(s2, 1, i_pos2 - 1);
-          i_pos2 := Pos(':', s2);
-          s3 := Copy(s2, 2, i_pos2 - 2);
-          s3 := UpperCase(s3);
-          if (s3 <> 'N') and (s3 <> 'D') and (s3 <> 'S') then
-          begin
-            // ShowWaitText;
-            MessageDlg('检查模型中参数信息中的数据类型只能是N、S、D，请在检查模型维护中检查！', mtInformation, [mbOK], 0);
-            Exit;
-          end;
-          R_proc[i - 1].s_para_lx := s3;
-          Delete(s2, 1, i_pos2 - 1);
-          i_pos2 := Pos('@', s2);
-          if i_pos2 = 0 then
-          begin
-            i_pos2 := Length(s2);
-            s3 := Copy(s2, 2, i_pos2 - 1);
-          end
-          else
-            s3 := Copy(s2, 2, i_pos2 - 2);
-          R_proc[i - 1].s_para_value := StringReplace(s3, '@', '', [rfReplaceAll]);
-          Delete(s2, 1, i_pos2 - 1);
-        end;
-      end;
-      // MessageDlg(IntToStr(i_cnt1));
-      // MessageDlg(sqlname);
-      // 查找数据库存储过程是否存在
-      try
-        sqltext := 'select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and type =' + '''' +
-          'P' + '''';
-        // fdqryTmp.Connection := F_DT.fdconProj;
-        fdqryTmp.close;
-        fdqryTmp.SQL.Clear;
-        fdqryTmp.SQL.Add(sqltext);
-        fdqryTmp.Prepared;
-        fdqryTmp.Open;
-      except
-        fdqryTmp.close;
-        // ShowWaitText;
-        raise Exception.Create('项目数据库可能损坏，请在项目设置中删该项目后重新建立!');
-        Exit;
-      end;
-      if fdqryTmp.RecordCount = 0 then
-        is_exist := 0
-      else
-        is_exist := 1;
-      fdqryTmp.close;
-
-      // ------------存储过程不存在要建立，建立时出错要回滚 ----------------------
-      if is_exist = 0 then
-      begin
-        sqltext := '';
-        AssignFile(sqlfile, s_filename);
-        FileMode := 0;
-        Reset(sqlfile);
-        try
-          F_DT.fdconProj.StartTransaction;
-          fdqryTmp.close;
-          fdqryTmp.SQL.Clear;
-          while not Eof(sqlfile) do
-          begin
-            Readln(sqlfile, sqltext);
-            if Length(Trim(sqltext)) <> 0 then
-              fdqryTmp.SQL.Add(sqltext);
-            while (not Eof(sqlfile)) and (UpperCase(Trim(sqltext)) <> 'GO') do
-            begin
-              Readln(sqlfile, sqltext);
-              if (UpperCase(Trim(sqltext)) <> 'GO') then
-                fdqryTmp.SQL.Add(sqltext);
-            end;
-          end;
-          CloseFile(sqlfile);
-          // fdqryTmp.SQL.LoadFromFile(s_filename); 执行出错，改为手工读文件，加入sql语句
-          DeleteFile(s_filename);
-          fdqryTmp.ExecSQL; // 执行
-          F_DT.fdconProj.Commit;
-          fdqryTmp.close;
-        except
-          CloseFile(sqlfile);
-          F_DT.fdconProj.Rollback;
-          fdqryTmp.close;
-          // ShowWaitText;
-          raise Exception.Create('自动建立分析模型错误！请检查修正分析模型代码!');
-          Exit;
-        end;
-        fdqryTmp.close;
-      end;
-      // ----------------------存储过程建立结束-----------------------------------------
-      // 若存在则执行
-      // 首先输入参数，正常才执行
-      if i_cnt1 > 0 then
-      begin
-        i := 1;
-        while (i <= i_cnt1) do
-        begin
-          ClickedOK := InputQuery('输入参数', R_proc[i - 1].s_para_tip + '            ', R_proc[i - 1].s_para_value);
-          if ClickedOK then { NewString contains new input string }
-          begin
-            // 根据提示参数“日期”“数”等判断数据是否输入正确
-            if R_proc[i - 1].s_para_lx = 'D' then
-            begin
-              // 判断是否日期
-              try
-                tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' +
-                  Copy(R_proc[i - 1].s_para_value, 7, 2);
-                StrToDate(tmps1);
-              except
-                MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
-                Continue;
-              end;
-            end;
-            // 根据提示参数“日期”“数”等判断数据是否输入正确
-            if R_proc[i - 1].s_para_lx = 'N' then
-            begin
-              // 判断是否数字
-              if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf))
-              then
-              begin
-                MessageDlg('应该输入数字！', mtInformation, [mbOK], 0);
-                Continue;
-              end;
-            end;
-          end
-          else
-          begin
-            // MessageDlg('取消参数录入');
-            ClickNO := True;
-            Break;
-          end;
-          i := i + 1;
-        end;
-        // 重新开始新的自动存储过程
-        if ClickNO then
-        begin
-          fdqryAuto.Next;
-          Continue;
-        end;
-        // 记住本次输入的值
-        tmps1 := '';
-        tmps2 := '';
-        for i := 1 to i_cnt1 do
-        begin
-          tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' +
-            R_proc[i - 1].s_para_value;
-          tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
-        end;
-        fdqryAuto.Edit;
-        fdqryAuto.FieldByName('t_para').AsString := tmps1;
-        fdqryAuto.Post;
-        // cxtxtdt1.Text := Trim(FdqryAuto.FieldByName('t_name').AsString) + '-' + tmps2;
-      end
-      else;
-      // cxtxtdt1.Text := Trim(FdqryAuto.FieldByName('t_name').AsString);
-      // ShowWaitText('请稍后，正在处理查询……（如果超过' + t_timeout +
-      // '秒，没有返回结果，系统自动返回。请优化方法代码或在参数设置中加大查询结果时长。）');
-      try
-        try
-
-          fdSPAuto.Connection := F_DT.fdconProj;
-          fdSPAuto.StoredProcName := sqlname;
-          // msp1.Params.Refresh; //参数起作用，这个语句很重要
-          fdSPAuto.Prepare;
-          // 先判断是否需要参数
-          if i_cnt1 > 0 then // 需要参数
-          begin
-            for i := 1 to i_cnt1 do
-            begin
-              fdSPAuto.Params.ParamByName(R_proc[i - 1].s_para_name).Value := R_proc[i - 1].s_para_value;
-            end;
-          end;
-          // MessageDlg('执行存储过程');
-          fdSPAuto.Prepared;
-          fdSPAuto.Open;
-          // FDSPAuto.enableControls;
-        finally
-          // FDSPAuto.DisableControls;
-          fdSPAuto.close;
-          // ShowWaitText; //不带入参数,则是关闭等待窗口
-        end;
-      except
-        // ShowWaitText; //不带入参数,则是关闭等待窗口
-        raise Exception.Create('执行分析模型功能时出错！请确认数据是否导入成功！');
-        Exit;
-      end;
-    end;
+    ModlCodeValid(fdqryAuto, True, True);
+    ShowMessage(t_ProcFunName);
     fdqryAuto.Next;
   end;
   fdqryAuto.close;
@@ -1139,7 +779,7 @@ begin
   end;
   F_DT.fdconProj.ConnectionString := t_connect + 'Database=' + t_Database + ';';
   dbgrdh1.Color := clWindow;
-  // 校验 获得全局R_proc，t_ProcFunName，用于执行
+  // 校验 获得全局R_proc参数数组，t_ProcFunName名称，用于执行
   ModlCodeValid(fdQryTree, True, False);
 
   // 若存在或建立成功则执行
@@ -1351,6 +991,7 @@ end;
 
 procedure TMainFrm.btn3Click(Sender: TObject);
 begin
+  del_proc();
   Auto_proc();
 end;
 
