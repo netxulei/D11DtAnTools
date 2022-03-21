@@ -19,7 +19,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, EhLibMTE,
-  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON;
+  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON, cxButtons, AdvEdit;
 
 type
   TMainFrm = class(TForm)
@@ -69,9 +69,6 @@ type
     N34: TMenuItem;
     N35: TMenuItem;
     N36: TMenuItem;
-    mtblh1: TMemTableEh;
-    adtdrvrh1: TADODataDriverEh;
-    AdoEx1: TADOQuery;
     ds2: TDataSource;
     MnOpen: TMenuItem;
     cxspltr2: TcxSplitter;
@@ -81,12 +78,8 @@ type
     ds3: TDataSource;
     pnl9: TPanel;
     dbgrdh2: TDBGridEh;
-    pnl10: TPanel;
-    dbgrdh3: TDBGridEh;
-    cxspltr4: TcxSplitter;
     pnl2: TPanel;
     cxtxtdt1: TcxTextEdit;
-    qry_aoto: TADOQuery;
     prpstrgh1: TPropStorageEh;
     inprpstrgmnh1: TIniPropStorageManEh;
     pm3: TPopupMenu;
@@ -110,10 +103,6 @@ type
     pnl7: TPanel;
     mniN38: TMenuItem;
     Panel3: TPanel;
-    chk2: TCheckBox;
-    Panel4: TPanel;
-    chk1: TCheckBox;
-    btn_jy: TButton;
     N38: TMenuItem;
     N39: TMenuItem;
     N_Err: TMenuItem;
@@ -155,6 +144,19 @@ type
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
     FDStanStorageXMLLink1: TFDStanStorageXMLLink;
     btn3: TButton;
+    mtblh1: TMemTableEh;
+    bitbtnAssis: TBitBtn;
+    chkAssis: TCheckBox;
+    cxbtnExp: TcxButton;
+    pmAssis: TPopupMenu;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    lbledtKey: TLabeledEdit;
+    lbledtTabName: TLabeledEdit;
+    lbledtSort: TLabeledEdit;
+    lbledtName: TLabeledEdit;
+    mmoFields: TMemo;
+    lblFields: TLabel;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
@@ -226,6 +228,7 @@ type
     procedure MnRuleClick(Sender: TObject);
     procedure N2Click(Sender: TObject);
     procedure btn3Click(Sender: TObject);
+    procedure bitbtnAssisClick(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -244,38 +247,38 @@ uses
 
 function TMainFrm.table_visable(): Boolean;
 begin
-  // MessageDlg('将要确定table显示');
-  pnl10.Visible := False;
-  cxspltr4.Visible := False;
-  pnl9.Visible := False;
-  cxspltr3.Visible := False;
-  if fdQryTree['t_table2'] = '1' then
-  begin
-    pnl10.Visible := True;
-    cxspltr4.Visible := True;
-  end
-  else
-  begin
-    pnl10.Visible := False;
-    cxspltr4.Visible := False;
-  end;
-
-  if fdQryTree['t_table1'] = '1' then
-  begin
-    pnl9.Visible := True;
-    cxspltr3.Visible := True;
-  end
-  else
-  begin
-    pnl9.Visible := False;
-    cxspltr3.Visible := False;
-  end;
-
-  // if  pnl9.top<pnl10.Top then pnl9.top:=pnl10.Top-1;
-  if cxspltr3.Top < cxspltr4.Top then
-    cxspltr3.Top := cxspltr4.Top;
-  cxspltr3.Top := pnl9.Top;
-  cxspltr4.Top := pnl10.Top;
+//  // MessageDlg('将要确定table显示');
+//  pnl10.Visible := False;
+//  cxspltr4.Visible := False;
+//  pnl9.Visible := False;
+//  cxspltr3.Visible := False;
+//  if fdQryTree['t_table2'] = '1' then
+//  begin
+//    pnl10.Visible := True;
+//    cxspltr4.Visible := True;
+//  end
+//  else
+//  begin
+//    pnl10.Visible := False;
+//    cxspltr4.Visible := False;
+//  end;
+//
+//  if fdQryTree['t_table1'] = '1' then
+//  begin
+//    pnl9.Visible := True;
+//    cxspltr3.Visible := True;
+//  end
+//  else
+//  begin
+//    pnl9.Visible := False;
+//    cxspltr3.Visible := False;
+//  end;
+//
+//  // if  pnl9.top<pnl10.Top then pnl9.top:=pnl10.Top-1;
+//  if cxspltr3.Top < cxspltr4.Top then
+//    cxspltr3.Top := cxspltr4.Top;
+//  cxspltr3.Top := pnl9.Top;
+//  cxspltr4.Top := pnl10.Top;
 
 end;
 
@@ -303,16 +306,8 @@ end;
 
 function TMainFrm.DispInfo(): Boolean;
 // 显示初始信息同时解决维护模型代码涉及参数变化时出错的问题（退出重进就不出错了）msp1
-type
-  TProcRec = record
-    s_para_tip: string;
-    s_para_lx: string;
-    s_para_name: string;
-    s_para_value: string;
-  end;
 var
   // pt: TPoint;
-  R_proc: array of TProcRec;
   s1, s2, s3: string;
   s_filename: string;
   sqlname, sqltext, sqltext_bank, s_key_name: string;
@@ -403,7 +398,7 @@ function TMainFrm.del_proc(): Boolean;
 var
   sqltext: string;
 begin
-//删除当前项目所有存储过程和函数
+  // 删除当前项目所有存储过程和函数
   // 注意限制不要删除了系统的存储过程
   // ShowWaitText('请稍后，正在初始化检查功能...');
   dbgrdh1.Enabled := False;
@@ -437,7 +432,7 @@ begin
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'deallocate cur';
     fdqryTmp.SQL.Add(sqltext);
-//    fdqryTmp.SQL.SaveToFile('d:\x.sql');
+    // fdqryTmp.SQL.SaveToFile('d:\x.sql');
     fdqryTmp.Prepared;
     fdqryTmp.ExecSQL;
 
@@ -447,7 +442,8 @@ begin
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'declare cur cursor';
     fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'for select name from sysobjects Where type=''AF'' or type=''FN'' or type=''FS'' or type=''FT'' or  type=''IF'' or type=''TF''';
+    sqltext :=
+      'for select name from sysobjects Where type=''AF'' or type=''FN'' or type=''FS'' or type=''FT'' or  type=''IF'' or type=''TF''';
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'open cur';
     fdqryTmp.SQL.Add(sqltext);
@@ -478,15 +474,7 @@ begin
 end;
 
 function TMainFrm.Auto_proc(): Boolean;
-type
-  TProcRec = record
-    s_para_tip: string;
-    s_para_lx: string;
-    s_para_name: string;
-    s_para_value: string;
-  end;
 var
-  R_proc: array of TProcRec;
   s1, s2, s3: string;
   s_filename: string;
   sqlname, sqltext, sqltext_bank: string;
@@ -546,10 +534,106 @@ begin
   fdqryAuto.First;
   while not fdqryAuto.Eof do // 循环执行需要自动执行的存储过程
   begin
-    ClickNO := False; // 取消参数录入时，为true，该函数或存储过程不执行
+    ClickNO := False; // 取消参数录入时，为true，该函数或存储过程不执行 ，但继续后面的存储过程运行
     // ShowWaitText(Trim(FdqryAuto.FieldByName('t_name').AsString));
     ModlCodeValid(fdqryAuto, True, True);
-    ShowMessage(t_ProcFunName);
+
+    // 验证完毕结果：返回全局R_proc（参数数组）,t_ProcFunName（存储过程或函数名称），执行建立存储过程和函数
+    // 是存储过程，要执行；是函数则退出
+    // 若存在或建立成功则执行
+{$REGION '输入参数录入、校验和保存'}
+    // 循环输入各参数参数，同时校验参数
+    i_cnt1 := Length(R_proc);
+    if i_cnt1 > 0 then
+    begin
+      i := 1;
+      while (i <= i_cnt1) do
+      begin
+        ClickedOK := InputQuery('输入参数', R_proc[i - 1].s_para_tip + '            ', R_proc[i - 1].s_para_value);
+        if ClickedOK then { NewString contains new input string }
+        begin
+          // 根据提示参数“日期”“数”等判断数据是否输入正确
+          if R_proc[i - 1].s_para_lx = 'D' then
+          begin
+            // 判断是否日期
+            try
+              tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' +
+                Copy(R_proc[i - 1].s_para_value, 7, 2);
+              StrToDate(tmps1);
+            except
+              MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
+              Continue;
+            end;
+          end;
+          // 根据提示参数“日期”“数”等判断数据是否输入正确
+          if R_proc[i - 1].s_para_lx = 'N' then
+          begin
+            // 判断是否数字
+            if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf))
+            then
+            begin
+              MessageDlg('应该输入数字！', mtInformation, [mbOK], 0);
+              Continue;
+            end;
+          end;
+        end
+        else
+        begin
+          // MessageDlg('取消参数录入');
+          ClickNO := True;
+          Break;
+        end;
+        i := i + 1;
+      end;
+      // 重新开始新的自动存储过程
+      if ClickNO then
+      begin
+        // 若取消参数录入，则贝尔存储过程不执行，移到下一个存储过程
+        fdqryAuto.Next;
+        Continue;
+      end;
+
+      // 输入完毕，执行以前，记录本次输入的值
+      tmps1 := '';
+      tmps2 := '';
+      for i := 1 to i_cnt1 do
+      begin
+        tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' +
+          R_proc[i - 1].s_para_value;
+        tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
+      end;
+      fdqryAuto.Edit;
+      fdqryAuto.FieldByName('t_para').AsString := tmps1;
+      // FDQryTree.UpdateBatch(arAll);
+    end;
+{$ENDREGION}
+    // 执行一个存储过程（函数不要再执行）
+    if t_isProc then
+    begin
+      fdSPAuto.DisableControls;
+      fdSPAuto.close;
+      // fdSPAuto.CommandTimeout:=StrToInt(t_TimeOut)*1000;
+      // sp1的过滤要取消才能继续查询，否则出错？？？？？？？？？？？？？？？？？
+      fdSPAuto.Filtered := False;
+      fdSPAuto.Filter := '';
+      t_new_filter := True;
+      fdSPAuto.Connection := F_DT.fdconProj;
+      fdSPAuto.StoredProcName := t_ProcFunName;
+      // fdSPAuto.Params.Refresh; //参数起作用，这个语句很重要
+      fdSPAuto.Prepare;
+      // 先判断是否需要参数
+      if i_cnt1 > 0 then // 需要参数
+      begin
+        for i := 1 to i_cnt1 do
+        begin
+          fdSPAuto.Params.ParamByName(R_proc[i - 1].s_para_name).Value := R_proc[i - 1].s_para_value;
+        end;
+      end;
+      fdSPAuto.Prepared;
+      fdSPAuto.Open;
+      fdSPAuto.close;
+    end;
+    // 下一个存储过程
     fdqryAuto.Next;
   end;
   fdqryAuto.close;
@@ -561,92 +645,92 @@ function TMainFrm.Disp_txn(): Boolean;
 var
   s_key_name, sqltext1, sqltext2: string;
 begin
-  // if (adoq2['t_table2'] <> '1') or (adoq2['t_table1'] <> '1') then //显示人行账户或商行交易
-  // Exit;
-  if chk2.Checked and (fdQryTree['t_table1'] = '1') then
-  begin
-    try
-      // 获得账号
-      s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
-
-      F_DT.ADOconGD2.Connected := False;
-      F_DT.ADOconGD2.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
-      F_DT.ADOconGD2.ConnectionString :=
-        'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
-        ';Data Source=' + sComputerName + t_connect;
-      if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
-        sqltext1 := t_table1_sql_dw + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-      if (t_modl_type = '3') or (t_modl_type = '6') then
-        sqltext1 := t_table1_sql_gr + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-      if (t_modl_type = '7') then
-        sqltext1 := t_table1_sql_other + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-
-      // ShowMessage(sqltext2);
-      // exit ;
-      qrygd2.Connection := F_DT.ADOconGD2;
-      qrygd2.close;
-      qrygd2.DisableControls;
-      qrygd2.SQL.Clear;
-      qrygd2.SQL.Add(sqltext1);
-      // ShowMessage(qrygd2.SQL.Text);
-      qrygd2.Prepared;
-      qrygd2.Open;
-      qrygd2.enableControls;
-      F_DT.ADOconGD2.Connected := True;
-      dbgrdh2.Enabled := True;
-      // OptimizeGrid(dbgrdh2);
-    except
-      dbgrdh2.Enabled := False;
-      qrygd2.close;
-      qrygd2.DisableControls;
-      raise Exception.Create('请确认人民银行个人账户数据是否导入或setting中table1_sql否正确!');
-    end;
-  end;
-
-  // 显示同步显示交易
-  if chk1.Checked and (fdQryTree['t_table2'] = '1') then
-  begin
-    try
-      // 获得账号
-      s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
-
-      F_DT.ADOconGD3.Connected := False;
-      F_DT.ADOconGD3.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
-      F_DT.ADOconGD3.ConnectionString :=
-        'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
-        ';Data Source=' + sComputerName + t_connect;
-      // sqltext2 := t_table2_sql + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' + t_table2_sql_order;
-      if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
-        sqltext2 := t_table2_sql_dw + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-          t_table2_sql_order;
-      if (t_modl_type = '3') or (t_modl_type = '6') then
-        sqltext2 := t_table2_sql_gr + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-          t_table2_sql_order;
-      if (t_modl_type = '7') then
-        sqltext2 := t_table2_sql_other + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-          t_table2_other_order;
-
-      // ShowMessage(sqltext2);
-      // exit;
-      qrygd3.Connection := F_DT.ADOconGD3;
-      qrygd3.close;
-      qrygd3.DisableControls;
-      qrygd3.SQL.Clear;
-      qrygd3.SQL.Add(sqltext2);
-      qrygd3.Prepared;
-      qrygd3.Open;
-      qrygd3.enableControls;
-      F_DT.ADOconGD3.Connected := True;
-      dbgrdh3.Enabled := True;
-      // OptimizeGrid(dbgrdh3);
-    except
-      dbgrdh3.Enabled := False;
-      qrygd3.close;
-      qrygd3.DisableControls;
-      raise Exception.Create('请确认同步显示的数据表是否导入!');
-      Exit;
-    end;
-  end;
+//  // if (adoq2['t_table2'] <> '1') or (adoq2['t_table1'] <> '1') then //显示人行账户或商行交易
+//  // Exit;
+//  if chk2.Checked and (fdQryTree['t_table1'] = '1') then
+//  begin
+//    try
+//      // 获得账号
+//      s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
+//
+//      F_DT.ADOconGD2.Connected := False;
+//      F_DT.ADOconGD2.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
+//      F_DT.ADOconGD2.ConnectionString :=
+//        'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
+//        ';Data Source=' + sComputerName + t_connect;
+//      if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
+//        sqltext1 := t_table1_sql_dw + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+//      if (t_modl_type = '3') or (t_modl_type = '6') then
+//        sqltext1 := t_table1_sql_gr + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+//      if (t_modl_type = '7') then
+//        sqltext1 := t_table1_sql_other + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+//
+//      // ShowMessage(sqltext2);
+//      // exit ;
+//      qrygd2.Connection := F_DT.ADOconGD2;
+//      qrygd2.close;
+//      qrygd2.DisableControls;
+//      qrygd2.SQL.Clear;
+//      qrygd2.SQL.Add(sqltext1);
+//      // ShowMessage(qrygd2.SQL.Text);
+//      qrygd2.Prepared;
+//      qrygd2.Open;
+//      qrygd2.enableControls;
+//      F_DT.ADOconGD2.Connected := True;
+//      dbgrdh2.Enabled := True;
+//      // OptimizeGrid(dbgrdh2);
+//    except
+//      dbgrdh2.Enabled := False;
+//      qrygd2.close;
+//      qrygd2.DisableControls;
+//      raise Exception.Create('请确认人民银行个人账户数据是否导入或setting中table1_sql否正确!');
+//    end;
+//  end;
+//
+//  // 显示同步显示交易
+//  if chk1.Checked and (fdQryTree['t_table2'] = '1') then
+//  begin
+//    try
+//      // 获得账号
+//      s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
+//
+//      F_DT.ADOconGD3.Connected := False;
+//      F_DT.ADOconGD3.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
+//      F_DT.ADOconGD3.ConnectionString :=
+//        'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
+//        ';Data Source=' + sComputerName + t_connect;
+//      // sqltext2 := t_table2_sql + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' + t_table2_sql_order;
+//      if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
+//        sqltext2 := t_table2_sql_dw + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+//          t_table2_sql_order;
+//      if (t_modl_type = '3') or (t_modl_type = '6') then
+//        sqltext2 := t_table2_sql_gr + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+//          t_table2_sql_order;
+//      if (t_modl_type = '7') then
+//        sqltext2 := t_table2_sql_other + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+//          t_table2_other_order;
+//
+//      // ShowMessage(sqltext2);
+//      // exit;
+//      qrygd3.Connection := F_DT.ADOconGD3;
+//      qrygd3.close;
+//      qrygd3.DisableControls;
+//      qrygd3.SQL.Clear;
+//      qrygd3.SQL.Add(sqltext2);
+//      qrygd3.Prepared;
+//      qrygd3.Open;
+//      qrygd3.enableControls;
+//      F_DT.ADOconGD3.Connected := True;
+//      dbgrdh3.Enabled := True;
+//      // OptimizeGrid(dbgrdh3);
+//    except
+//      dbgrdh3.Enabled := False;
+//      qrygd3.close;
+//      qrygd3.DisableControls;
+//      raise Exception.Create('请确认同步显示的数据表是否导入!');
+//      Exit;
+//    end;
+//  end;
 end;
 
 procedure TMainFrm.N10Click(Sender: TObject);
@@ -670,12 +754,12 @@ begin
   else
     lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   // 附属表checkBox名称
-  chk2.Caption := t_table1_name;
-  chk1.Caption := t_table2_name;
-  btn_jy.Left := chk1.Left + chk1.Width;
+//  chk2.Caption := t_table1_name;
+//  chk1.Caption := t_table2_name;
+//  btn_jy.Left := chk1.Left + chk1.Width;
   // 单击显示交易按钮，视为防治从表显示过慢，delphi11fireDac有了新机制可以不用此按钮类
   cxspltr3.Hint := '单击显示、隐藏或移动' + t_table1_name;
-  cxspltr4.Hint := '单击显示、隐藏或移动' + t_table2_name;
+//  cxspltr4.Hint := '单击显示、隐藏或移动' + t_table2_name;
   s_filename := ExtractFilePath(ParamStr(0));
   inprpstrgmnh1.IniFileName := s_filename + 'zh_layout'; // 保存的drid样式
   // prpstrgh1.LoadProperties;
@@ -730,13 +814,7 @@ begin
   // ADOQ2.close;
   F_DT.FDConSYS.Connected := False;
   F_DT.fdconProj.Connected := False;
-
   fdQryTree.close;
-  AdoEx1.close;
-  F_DT.ADOCN1.Connected := False;
-  F_DT.ADOCN2.Connected := False;
-  F_DT.ADOCN3.Connected := False;
-  F_DT.ADOCN4.Connected := False;
 
   // Application.Terminate;
 end;
@@ -749,6 +827,11 @@ end;
 procedure TMainFrm.N25Click(Sender: TObject);
 begin
   cxDBTreeList1.FullCollapse;
+end;
+
+procedure TMainFrm.bitbtnAssisClick(Sender: TObject);
+begin
+ShowMessage(mmoFields.Text );
 end;
 
 procedure TMainFrm.btn1Click(Sender: TObject);
@@ -1010,10 +1093,10 @@ end;
 
 procedure TMainFrm.pnl3Resize(Sender: TObject);
 begin
-  cxdbtxtdt1.Top := 0;
-  cxdbtxtdt1.Left := 0;
-  cxdbtxtdt1.Width := pnl3.Width;
-  cxdbtxtdt1.Height := pnl3.Height;
+//  cxdbtxtdt1.Top := 0;
+//  cxdbtxtdt1.Left := 0;
+//  cxdbtxtdt1.Width := pnl3.Width;
+//  cxdbtxtdt1.Height := pnl3.Height;
 end;
 
 procedure TMainFrm.pnl4Resize(Sender: TObject);
@@ -1464,9 +1547,9 @@ end;
 procedure TMainFrm.dbgrdh1DblClick(Sender: TObject);
 begin
   // OptimizeGrid(dbgrdh1);
-  if pnl9.Visible = True then
+//  if pnl9.Visible = True then
     // OptimizeGrid(dbgrdh2);
-    if pnl10.Visible = True then
+//    if pnl10.Visible = True then
       // OptimizeGrid(dbgrdh3);
 
 end;
@@ -1493,22 +1576,22 @@ end;
 
 procedure TMainFrm.N401Click(Sender: TObject);
 begin
-  ActiveControl := dbgrdh3;
-  if not(ActiveControl is TDBGridEh) then
-    Exit;
-  dbgrdh3.AutoFitColWidths := False;
-  N402.Checked := dbgrdh3.AutoFitColWidths;
-  N401.Checked := not N402.Checked;
+//  ActiveControl := dbgrdh3;
+//  if not(ActiveControl is TDBGridEh) then
+//    Exit;
+//  dbgrdh3.AutoFitColWidths := False;
+//  N402.Checked := dbgrdh3.AutoFitColWidths;
+//  N401.Checked := not N402.Checked;
 end;
 
 procedure TMainFrm.N402Click(Sender: TObject);
 begin
-  ActiveControl := dbgrdh3;
-  if not(ActiveControl is TDBGridEh) then
-    Exit;
-  dbgrdh3.AutoFitColWidths := True;
-  N402.Checked := dbgrdh3.AutoFitColWidths;
-  N401.Checked := not N402.Checked;
+//  ActiveControl := dbgrdh3;
+//  if not(ActiveControl is TDBGridEh) then
+//    Exit;
+//  dbgrdh3.AutoFitColWidths := True;
+//  N402.Checked := dbgrdh3.AutoFitColWidths;
+//  N401.Checked := not N402.Checked;
 end;
 
 procedure TMainFrm.N49Click(Sender: TObject);
@@ -1549,13 +1632,13 @@ end;
 
 procedure TMainFrm.pm4Popup(Sender: TObject);
 begin
-  N402.Checked := dbgrdh3.AutoFitColWidths;
+//  N402.Checked := dbgrdh3.AutoFitColWidths;
   N401.Checked := not N402.Checked
 end;
 
 procedure TMainFrm.N15Click(Sender: TObject);
 begin
-  ShowGridColEditor(dbgrdh3);
+//  ShowGridColEditor(dbgrdh3);
 end;
 
 procedure TMainFrm.N48Click(Sender: TObject);
@@ -1574,14 +1657,11 @@ begin
     lblInfo.Caption := '---首先设置当前项目，才能实施数据分析---'
   else
     lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
-  // if Length(Trim(t_proj_no)) <> 0 then
-  // begin
-  // del_proc();
-  // Auto_proc();
-  // F_DT.mscon1.Connected := False;
-  // F_DT.MScon2.Connected := False;
-  // F_DT.ADOCN4.Connected := False;
-  // end;
+  if Length(Trim(t_proj_no)) <> 0 then
+  begin
+    del_proc();
+    Auto_proc();
+  end;
 
 end;
 
@@ -1624,26 +1704,26 @@ begin
     qrygd3.enableControls;
     F_DT.ADOconGD3.Connected := True;
   except
-    dbgrdh3.Enabled := False;
+//    dbgrdh3.Enabled := False;
     qrygd3.close;
     qrygd3.DisableControls;
     raise Exception.Create('请确认同步显示的数据表是否导入!');
     Exit;
   end;
-  dbgrdh3.Enabled := True;
+//  dbgrdh3.Enabled := True;
   // OptimizeGrid(dbgrdh3);
 
 end;
 
 procedure TMainFrm.chk1Click(Sender: TObject);
 begin
-  if chk1.Checked then
-    btn_jy.Visible := False
-  else
-  begin
-    btn_jy.Visible := True;
-    btn_jy.Left := chk1.Left + chk1.Width;
-  end;
+//  if chk1.Checked then
+//    btn_jy.Visible := False
+//  else
+//  begin
+//    btn_jy.Visible := True;
+//    btn_jy.Left := chk1.Left + chk1.Width;
+//  end;
 
 end;
 

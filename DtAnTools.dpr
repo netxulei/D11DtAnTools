@@ -25,7 +25,8 @@ uses
   uSrcTabMaintain in 'uSrcTabMaintain.pas' {frmSrcTabMaintain},
   uDataImport1 in 'uDataImport1.pas' {FrmDataImport},
   uModMaintain in 'uModMaintain.pas' {FModMaintain},
-  U_import in 'U_import.pas' {F_import};
+  U_import in 'U_import.pas' {F_import},
+  uDisAsisTable in 'uDisAsisTable.pas' {fmDisAssiTable};
 
 {$R *.res}
 
@@ -36,5 +37,6 @@ begin
   Application.CreateForm(TF_DT, F_DT);
   Application.CreateForm(TF_float, F_float);
   Application.CreateForm(TF_import, F_import);
+  Application.CreateForm(TfmDisAssiTable, fmDisAssiTable);
   Application.Run;
 end.

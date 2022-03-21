@@ -142,8 +142,6 @@ object FModMaintain: TFModMaintain
     Height = 923
     Align = alClient
     TabOrder = 1
-    ExplicitLeft = 481
-    ExplicitWidth = 997
     object pnl6: TPanel
       Left = 1
       Top = 1
@@ -151,7 +149,6 @@ object FModMaintain: TFModMaintain
       Height = 32
       Align = alTop
       TabOrder = 0
-      ExplicitWidth = 995
       object bitbtnUndoAll: TBitBtn
         Left = 324
         Top = 7
@@ -304,8 +301,6 @@ object FModMaintain: TFModMaintain
       Height = 223
       Align = alTop
       TabOrder = 1
-      ExplicitTop = 26
-      ExplicitWidth = 995
       object lbl6: TLabel
         Left = 487
         Top = 4
@@ -342,6 +337,13 @@ object FModMaintain: TFModMaintain
         Alignment = taCenter
         Caption = #27169#22411#20195#30721#65288'SQL'#65289#65306
       end
+      object lblDataVer: TLabel
+        Left = 529
+        Top = 202
+        Width = 65
+        Height = 15
+        Caption = #25968#25454#24211#29256#26412
+      end
       object cxdbtxtdt2: TcxDBTextEdit
         Left = 24
         Top = 25
@@ -376,7 +378,7 @@ object FModMaintain: TFModMaintain
         Top = 105
         Width = 340
         Height = 58
-        Caption = #26159#21542#26174#31034
+        Caption = #26159#21542#26174#31034#36741#21161#20449#24687
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -385,7 +387,7 @@ object FModMaintain: TFModMaintain
         ParentFont = False
         TabOrder = 3
         object cxdbchckbx1: TcxDBCheckBox
-          Left = 3
+          Left = 4
           Top = 15
           Caption = #23545#24212#20154#34892#36134#25143#20449#24687
           DataBinding.DataField = 't_table1'
@@ -534,6 +536,23 @@ object FModMaintain: TFModMaintain
         OnEnter = cxDBLkUpComClassEnter
         Width = 234
       end
+      object cxdbtxtdtDataVer: TcxDBTextEdit
+        Left = 600
+        Top = 195
+        DataBinding.DataField = 't_right'
+        DataBinding.DataSource = ds1
+        Style.LookAndFeel.Kind = lfUltraFlat
+        Style.LookAndFeel.NativeStyle = True
+        Style.Shadow = False
+        StyleDisabled.LookAndFeel.Kind = lfUltraFlat
+        StyleDisabled.LookAndFeel.NativeStyle = True
+        StyleFocused.LookAndFeel.Kind = lfUltraFlat
+        StyleFocused.LookAndFeel.NativeStyle = True
+        StyleHot.LookAndFeel.Kind = lfUltraFlat
+        StyleHot.LookAndFeel.NativeStyle = True
+        TabOrder = 10
+        Width = 121
+      end
     end
     object cxdbm1: TcxDBMemo
       Left = 1
@@ -554,9 +573,6 @@ object FModMaintain: TFModMaintain
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 2
-      ExplicitTop = 249
-      ExplicitWidth = 995
-      ExplicitHeight = 673
       Height = 666
       Width = 1035
     end
@@ -574,7 +590,6 @@ object FModMaintain: TFModMaintain
     ShowHint = True
     ParentColor = False
     ParentShowHint = False
-    ExplicitLeft = 473
   end
   object StatusBar1: TStatusBar
     Left = 0

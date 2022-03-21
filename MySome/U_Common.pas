@@ -18,6 +18,7 @@ type
 var
   R_proc: array of TProcRec; // 参数数组
   t_ProcFunName: string;
+  t_isProc: Boolean;
   globle_tab, dict_list_col, // 字段类型列表
   dict_list_reg, // 校验规则列表
   t_connect, // 连接字
@@ -50,7 +51,8 @@ type
 const
   TextFormatFlag: array [Ansi .. Utf8] of Word = ($0000, $FFFE, $FEFF, $EFBB);
 
-procedure ModlCodeValid(FDQryTree: TFDQuery; isRun: Boolean; isAuto: Boolean); // 验证模型代码，返回全局R_proc,t_ProcFunName，执行情况下完成存储过程或函数的建立
+procedure ModlCodeValid(FDQryTree: TFDQuery; isRun: Boolean; isAuto: Boolean);
+// 验证模型代码，返回全局R_proc,t_ProcFunName,t_isProc（是否存储过程），执行情况下完成存储过程或函数的建立
 
 function IsIntStr(const S: string): Boolean;
 
@@ -99,7 +101,7 @@ implementation
 procedure ModlCodeValid(FDQryTree: TFDQuery; isRun: Boolean; isAuto: Boolean);
 
 var
-  sfilename, sParamField, sParamCode, sLine, sError, sqltext: string;
+  sfilename, sParamField, sParamCode, sLine, sError1, sError2, sError, sqltext: string;
   sTmp, sqlname: String;
   MS: TStringStream;
   MSSize: Integer;
@@ -109,8 +111,11 @@ var
   i, j, i_len, i_as, ii, i_pos1, i_pos2: Integer;
   i_cnt1, i_cnt2, i_cnt3, i_cnt4: Integer; // 代码@、参数字段@、!、:三个符号出现的数量
   creaFlag, procFlag, funcFlag, asFlag, withFlag, encrFlag, retuFlag, is_exist: Char; // 关键字判断
+  User_can: ShortString;
 begin
   SetLength(R_proc, 0); // 初始化参数数组
+  // 是否允许用户执行 函数不能设置用户执行
+  User_can := FDQryTree.FieldByName('t_hide').AsString;
   // 模型参数
   sParamField := Trim(FDQryTree.FieldByName('t_para').AsString); // 模型参数
   sParamField := StringReplace(sParamField, ' ', '', [rfReplaceAll]); // 去空格
@@ -135,7 +140,7 @@ begin
   sl_param.StrictDelimiter := True;
   sl_param.Delimiter := ' '; // 空格分割参数名和类型
   // --------------------------------------
-  sl.DelimitedText := UpperCase(sLine); // sl记录了文件的每行数据
+  sl.DelimitedText := sLine; // sl记录了文件的每行数据
   if sl.Count = 0 then
   begin
     MessageDlg('该模型没有对应实现代码！', mtInformation, [mbOK], 0);
@@ -144,6 +149,8 @@ begin
   end;
   // sl_count := sl.Count;
   // 读取文件头,获取参数等信息到sLine  ，同时清理空行和注释行
+  sError1 := '';
+  sError2 := '';
   sError := '';
   creaFlag := '0';
   procFlag := '0';
@@ -166,7 +173,7 @@ begin
         exit;
       end;
     end;
-    sParamCode := sParamCode + ' ' + sl[i] + ' ';
+    sParamCode := sParamCode + ' ' + UpperCase(sl[i]) + ' ';
     if pos(' CREATE ', sParamCode) > 0 then
       creaFlag := '1';
     if pos(' PROCEDURE ', sParamCode) > 0 then
@@ -186,25 +193,38 @@ begin
   end;
   // 循环之后得到参数行
   if creaFlag = '0' then
-    sError := sError + '"CREATE"';
+    sError1 := sError1 + '"CREATE"';
   if (procFlag = '0') and (funcFlag = '0') then
-    sError := sError + '"PROCEDURE或FUNCTION"';
+    sError1 := sError1 + '"PROCEDURE或FUNCTION"';
   if (retuFlag = '0') and (funcFlag = '1') then
-    sError := sError + '"RETURNS(Function)"';
+    sError1 := sError1 + '"RETURNS(Function)"';
   if asFlag = '0' then
-    sError := sError + '"AS"';
+    sError1 := sError1 + '"AS"';
   if withFlag = '0' then
-    sError := sError + '"WITH"';
+    sError1 := sError1 + '"WITH"';
   if (procFlag = '1') and (encrFlag = '0') then
-    sError := sError + '"ENCRYPTION(Procedure)"';
+    sError1 := sError1 + '"ENCRYPTION(Procedure)"';
+  if (funcFlag = '1') and (User_can = '1') then
+    sError2 := sError2 + '2."函数只能在代码中使用，不能设为用户执行"';
+  if Length(sError1) > 0 then
+    sError := '1.模型代码缺少必要的关键字:' + sError1;
+
+  if Length(sError2) > 0 then
+    sError := sError + sError2;
+
   if Length(sError) > 0 then
   begin
-    MessageDlg('模型代码缺少必要的关键字:' + PChar(sError) + '，请退出后完善模型代码！', mtError, [mbOK], 0);
+    MessageDlg(PChar(sError) + '，请退出后完善模型代码！', mtError, [mbOK], 0);
     sl.Free;
     sl_params.Free;
     sl_param.Free;
     exit;
   end;
+  //校验后返回类型是否存储过程（自动执行时函数不能执行，只执行存储过程）
+  if (procFlag = '1') then
+    t_isProc := True
+  else
+    t_isProc := False;
 
   var
     m: tmatch;

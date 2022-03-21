@@ -113,6 +113,8 @@ type
     MenuItem4: TMenuItem;
     dlgSaveExport: TSaveDialog;
     fdQryExport: TFDQuery;
+    cxdbtxtdtDataVer: TcxDBTextEdit;
+    lblDataVer: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
       AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);

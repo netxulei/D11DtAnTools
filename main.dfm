@@ -3,8 +3,8 @@ object MainFrm: TMainFrm
   Top = 206
   BorderIcons = [biSystemMenu, biMaximize]
   Caption = #24320#25918#24335#29616#22330#26816#26597#25968#25454#20998#26512#24037#20855'__'
-  ClientHeight = 846
-  ClientWidth = 1383
+  ClientHeight = 997
+  ClientWidth = 1510
   Color = clGradientInactiveCaption
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -23,7 +23,7 @@ object MainFrm: TMainFrm
     Left = 0
     Top = 0
     Width = 260
-    Height = 846
+    Height = 997
     Align = alLeft
     Bands = <
       item
@@ -65,6 +65,7 @@ object MainFrm: TMainFrm
     OnDblClick = cxDBTreeList1DblClick
     OnFocusedNodeChanged = cxDBTreeList1FocusedNodeChanged
     OnGetNodeImageIndex = cxDBTreeList1GetNodeImageIndex
+    ExplicitHeight = 846
     object cxDBTreeList1t_name: TcxDBTreeListColumn
       Caption.AlignHorz = taCenter
       Caption.GlyphAlignVert = vaBottom
@@ -81,21 +82,25 @@ object MainFrm: TMainFrm
   object Panel1: TPanel
     Left = 268
     Top = 0
-    Width = 1115
-    Height = 846
+    Width = 1242
+    Height = 997
     Align = alClient
     Caption = 'Panel1'
     ParentBackground = False
     TabOrder = 1
+    ExplicitWidth = 1115
+    ExplicitHeight = 846
     object Panel2: TPanel
       Left = 1
-      Top = 17
-      Width = 1113
+      Top = 25
+      Width = 1240
       Height = 32
       Align = alTop
       Caption = 'Panel2'
       ParentBackground = False
       TabOrder = 0
+      ExplicitTop = 17
+      ExplicitWidth = 1113
       object lblMemo: TLabel
         Left = 1
         Top = 1
@@ -109,7 +114,7 @@ object MainFrm: TMainFrm
       object pnl3: TPanel
         Left = 57
         Top = 1
-        Width = 1055
+        Width = 1182
         Height = 30
         Align = alClient
         BevelOuter = bvLowered
@@ -117,10 +122,12 @@ object MainFrm: TMainFrm
         ParentBackground = False
         TabOrder = 0
         OnResize = pnl3Resize
+        ExplicitWidth = 1055
         object cxdbtxtdt1: TcxDBTextEdit
           Left = 1
           Top = 1
           Align = alClient
+          AutoSize = False
           DataBinding.DataField = 't_memo'
           DataBinding.DataSource = dsTree
           Enabled = False
@@ -140,37 +147,45 @@ object MainFrm: TMainFrm
           StyleDisabled.Color = clWhite
           StyleDisabled.TextColor = clBlack
           TabOrder = 0
-          Width = 1053
+          ExplicitLeft = 15
+          ExplicitTop = -1
+          ExplicitWidth = 111
+          ExplicitHeight = 35
+          Height = 28
+          Width = 1180
         end
       end
     end
     object pnl1: TPanel
       Left = 1
-      Top = 49
-      Width = 1113
-      Height = 796
+      Top = 57
+      Width = 1240
+      Height = 939
       Align = alClient
       Caption = 'pnl1'
       Color = 16776176
       ParentBackground = False
       TabOrder = 1
+      ExplicitTop = 49
+      ExplicitWidth = 1113
+      ExplicitHeight = 796
       object pnl5: TPanel
         Left = 1
         Top = 1
-        Width = 1111
+        Width = 1238
         Height = 27
         Align = alTop
         Alignment = taLeftJustify
         Caption = 'Panel2'
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 1111
         object pnl6: TPanel
           Left = 1
           Top = 1
           Width = 281
           Height = 25
           Align = alLeft
-          Color = 16776176
           ParentBackground = False
           TabOrder = 0
           object spbtnFormat: TSpeedButton
@@ -255,7 +270,7 @@ object MainFrm: TMainFrm
           object btn1: TBitBtn
             Left = 187
             Top = 2
-            Width = 33
+            Width = 46
             Height = 23
             Caption = #25191#34892#21151#33021
             Font.Charset = GB2312_CHARSET
@@ -286,10 +301,9 @@ object MainFrm: TMainFrm
         object pnl4: TPanel
           Left = 282
           Top = 1
-          Width = 828
+          Width = 955
           Height = 25
           Align = alClient
-          Color = 16776176
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -8
@@ -299,18 +313,21 @@ object MainFrm: TMainFrm
           ParentFont = False
           TabOrder = 1
           OnResize = pnl4Resize
+          ExplicitWidth = 828
           object lblInfo: TLabel
             Left = 1
             Top = 1
-            Width = 826
+            Width = 953
             Height = 23
             Align = alClient
             Caption = #24403#21069#39033#30446
+            Color = clBtnFace
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -12
             Font.Name = 'Segoe UI'
             Font.Style = []
+            ParentColor = False
             ParentFont = False
             Layout = tlCenter
             ExplicitWidth = 52
@@ -321,10 +338,10 @@ object MainFrm: TMainFrm
       object dbgrdh1: TDBGridEh
         Left = 1
         Top = 52
-        Width = 1111
-        Height = 375
+        Width = 1238
+        Height = 749
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
-        Align = alClient
+        Align = alTop
         AllowedOperations = []
         Color = 16776176
         ColumnDefValues.AlwaysShowEditButton = True
@@ -378,12 +395,13 @@ object MainFrm: TMainFrm
       object pnl2: TPanel
         Left = 1
         Top = 28
-        Width = 1111
+        Width = 1238
         Height = 24
         Align = alTop
         ParentBackground = False
         TabOrder = 2
         OnResize = pnl2Resize
+        ExplicitWidth = 1111
         object lblResult: TLabel
           Left = 1
           Top = 1
@@ -428,147 +446,28 @@ object MainFrm: TMainFrm
           Width = 198
         end
       end
-      object cxspltr4: TcxSplitter
-        Left = 1
-        Top = 612
-        Width = 1111
-        Height = 8
-        Hint = #21333#20987#25110#19978#19979#25302#21160
-        HotZoneClassName = 'TcxSimpleStyle'
-        HotZone.SizePercent = 40
-        HotZone.ArrowColor = clBlue
-        HotZone.ArrowHighlightColor = clRed
-        HotZone.LightColor = clBlue
-        AlignSplitter = salBottom
-        AutoSnap = True
-        ResizeUpdate = True
-        Control = pnl10
-        ShowHint = True
-        ParentShowHint = False
-        Visible = False
-      end
-      object pnl10: TPanel
-        Left = 1
-        Top = 620
-        Width = 1111
-        Height = 175
-        Align = alBottom
-        Caption = 'pnl10'
-        TabOrder = 5
-        Visible = False
-        object dbgrdh3: TDBGridEh
-          Left = 1
-          Top = 24
-          Width = 1109
-          Height = 150
-          Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
-          Align = alClient
-          AllowedOperations = []
-          ColumnDefValues.AlwaysShowEditButton = True
-          ColumnDefValues.Layout = tlCenter
-          ColumnDefValues.Title.Alignment = taCenter
-          ColumnDefValues.Title.TitleButton = True
-          ColumnDefValues.Title.ToolTips = True
-          ColumnDefValues.ToolTips = True
-          Ctl3D = False
-          DataSource = ds3
-          DrawMemoText = True
-          DynProps = <>
-          EditActions = [geaCopyEh, geaSelectAllEh]
-          Enabled = False
-          EvenRowColor = clWindow
-          Flat = True
-          Font.Charset = GB2312_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          FooterRowCount = 1
-          FooterParams.Color = clWindow
-          HorzScrollBar.SmoothStep = False
-          ImeName = #20013#25991' ('#31616#20307') - '#32654#24335#38190#30424
-          IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
-          IndicatorTitle.ShowDropDownSign = True
-          IndicatorTitle.TitleButton = True
-          Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
-          OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghFitRowHeightToText, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
-          ParentCtl3D = False
-          ParentFont = False
-          ParentShowHint = False
-          PopupMenu = pm4
-          ReadOnly = True
-          RowHeight = 2
-          RowLines = 1
-          RowSizingAllowed = True
-          ShowHint = True
-          SortLocal = True
-          TabOrder = 0
-          TitleParams.RowLines = 2
-          OnDblClick = dbgrdh1DblClick
-          object RowDetailData: TRowDetailPanelControlEh
-          end
-        end
-        object Panel4: TPanel
-          Left = 1
-          Top = 1
-          Width = 1109
-          Height = 23
-          Align = alTop
-          TabOrder = 1
-          object chk1: TCheckBox
-            Left = 23
-            Top = 2
-            Width = 258
-            Height = 20
-            Hint = #36873#20013#21518#23545#24212#20132#26131#20449#24687#21516#27493#26174#31034
-            Caption = #21516#27493#26174#31034#20132#26131
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clHotLight
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            ParentFont = False
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 0
-            OnClick = chk1Click
-          end
-          object btn_jy: TButton
-            Left = 296
-            Top = 1
-            Width = 153
-            Height = 22
-            Caption = #21333#20987#26174#31034#20132#26131
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -12
-            Font.Name = #23435#20307
-            Font.Style = []
-            ParentFont = False
-            TabOrder = 1
-            OnClick = btn_jyClick
-          end
-        end
-      end
       object pnl9: TPanel
         Left = 1
-        Top = 435
-        Width = 1111
-        Height = 177
-        Align = alBottom
+        Top = 809
+        Width = 1238
+        Height = 129
+        Align = alClient
         Color = 16776176
         ParentBackground = False
-        TabOrder = 4
-        Visible = False
+        TabOrder = 3
         OnResize = pnl2Resize
+        ExplicitTop = 552
+        ExplicitWidth = 1111
+        ExplicitHeight = 243
         object dbgrdh2: TDBGridEh
           Left = 1
-          Top = 25
-          Width = 1109
-          Height = 151
+          Top = 97
+          Width = 1236
+          Height = 31
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
+          Color = 16776176
           ColumnDefValues.AlwaysShowEditButton = True
           ColumnDefValues.Layout = tlCenter
           ColumnDefValues.Title.Alignment = taCenter
@@ -616,30 +515,137 @@ object MainFrm: TMainFrm
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 1109
-          Height = 24
+          Width = 1236
+          Height = 96
           Align = alTop
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI Emoji'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          ShowCaption = False
           TabOrder = 1
-          object chk2: TCheckBox
-            Left = 22
-            Top = 2
-            Width = 267
-            Height = 17
-            Caption = #21516#27493#26174#31034#20154#34892#36134#25143#20449#24687
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clHotLight
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            ParentFont = False
+          ExplicitWidth = 1072
+          object lblFields: TLabel
+            Left = 123
+            Top = 29
+            Width = 17
+            Height = 65
+            Caption = #26597#35810#23383#27573
+            WordWrap = True
+          end
+          object bitbtnAssis: TBitBtn
+            Left = 3
+            Top = 63
+            Width = 103
+            Height = 26
+            Caption = #25191#34892#26597#35810
             TabOrder = 0
+            WordWrap = True
+            OnClick = bitbtnAssisClick
+          end
+          object chkAssis: TCheckBox
+            Left = 9
+            Top = 10
+            Width = 97
+            Height = 17
+            Caption = #23454#26102#26174#31034
+            TabOrder = 1
+          end
+          object cxbtnExp: TcxButton
+            Left = 3
+            Top = 35
+            Width = 103
+            Height = 26
+            Caption = #36741#21161#34920#26041#26696
+            DropDownMenu = pmAssis
+            Kind = cxbkOfficeDropDown
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 2
+          end
+          object lbledtKey: TLabeledEdit
+            Left = 387
+            Top = 5
+            Width = 118
+            Height = 24
+            EditLabel.Width = 48
+            EditLabel.Height = 16
+            EditLabel.Caption = #20851#32852#23383#27573
+            EditLabel.Layout = tlCenter
+            EditLabel.WordWrap = True
+            LabelPosition = lpLeft
+            TabOrder = 3
+            Text = #36134#21495
+          end
+          object lbledtTabName: TLabeledEdit
+            Left = 611
+            Top = 5
+            Width = 105
+            Height = 24
+            EditLabel.Width = 72
+            EditLabel.Height = 16
+            EditLabel.Caption = #26469#28304#25968#25454#34920#21517
+            EditLabel.Layout = tlCenter
+            EditLabel.WordWrap = True
+            LabelPosition = lpLeft
+            TabOrder = 4
+            Text = ' tb_rhzh_dw'
+          end
+          object lbledtSort: TLabeledEdit
+            Left = 811
+            Top = 5
+            Width = 118
+            Height = 22
+            EditLabel.Width = 48
+            EditLabel.Height = 16
+            EditLabel.Caption = #25490#24207#23383#27573
+            EditLabel.Layout = tlCenter
+            EditLabel.WordWrap = True
+            LabelPosition = lpLeft
+            TabOrder = 5
+            Text = #36134#21495','#20132#26131#26085#26399
+          end
+          object lbledtName: TLabeledEdit
+            Left = 187
+            Top = 5
+            Width = 109
+            Height = 24
+            EditLabel.Width = 60
+            EditLabel.Height = 16
+            EditLabel.Caption = #36741#21161#34920#21517#31216
+            EditLabel.Layout = tlCenter
+            LabelPosition = lpLeft
+            TabOrder = 6
+            Text = #21333#20301#36134#25143
+          end
+          object mmoFields: TMemo
+            Left = 138
+            Top = 35
+            Width = 870
+            Height = 54
+            Lines.Strings = (
+              
+                #23384#27454#20154#31867#21035','#27880#20876#22320#22320#21306#20195#30721','#24037#21830#33829#19994#25191#29031#26377#25928#26399','#27880#20876#36164#37329#37329#39069','#32852#31995#30005#35805','#27861#23450#20195#34920#20154#25110#36127#36131#20154#22995#21517','#27861#23450#20195#34920#20154#25110#36127#36131#20154#36523#20221#35777#20214#31181#31867',' +
+                #27861#23450#20195#34920#20154#25110#36127#36131#20154#36523#20221#35777
+              
+                #20214#32534#21495','#19978#32423#21333#20301#21517#31216','#31038#20250#20449#29992#20195#30721','#38134#34892#26426#26500#20195#30721','#36134#25143#24615#36136','#36134#21495','#36134#25143#21517#31216','#36134#25143#35777#26126#25991#20214'1'#32534#21495','#24320#25143#26085#26399','#38144#25143#21407#22240','#20037#24748#26085#26399','#38144 +
+                #25143#26085#26399','#36134#25143#29366#24577','#36134#25143#24320#25143#22320#22320#21306#20195
+              
+                #30721','#22522#26412#23384#27454#36134#25143#24320#25143#22320#22320#21306#20195#30721','#36134#25143#25152#22312#20154#27665#38134#34892#26426#26500#20195#30721','#36164#37329#24615#36136#20195#30721','#37096#38376#25110#36164#37329#31649#29702#20154#21517#31216','#20020#26102#23384#27454#36134#25143#26377#25928#26399','#20020#26102#23384#27454#36134#25143#24320 +
+                #25143#21407#22240','#22791#27880','#22320#22336','#32463#33829#33539#22260)
+            ParentShowHint = False
+            ShowHint = False
+            TabOrder = 7
           end
         end
       end
       object cxspltr3: TcxSplitter
         Left = 1
-        Top = 427
-        Width = 1111
+        Top = 801
+        Width = 1238
         Height = 8
         Hint = #21333#20987#25110#19978#19979#25302#21160
         HotZoneClassName = 'TcxSimpleStyle'
@@ -647,13 +653,15 @@ object MainFrm: TMainFrm
         HotZone.ArrowColor = clBlue
         HotZone.ArrowHighlightColor = clRed
         HotZone.LightColor = clBlue
-        AlignSplitter = salBottom
+        AlignSplitter = salTop
         AutoSnap = True
         ResizeUpdate = True
-        Control = pnl9
+        Control = dbgrdh1
         ShowHint = True
         ParentShowHint = False
-        Visible = False
+        ExplicitLeft = -31
+        ExplicitTop = 187
+        ExplicitWidth = 1074
       end
       object btn3: TButton
         Left = 424
@@ -661,32 +669,35 @@ object MainFrm: TMainFrm
         Width = 75
         Height = 25
         Caption = 'btn3'
-        TabOrder = 7
+        TabOrder = 5
         OnClick = btn3Click
       end
     end
     object pnl7: TPanel
       Left = 1
       Top = 1
-      Width = 1113
-      Height = 16
+      Width = 1240
+      Height = 24
       Align = alTop
       ParentBackground = False
       TabOrder = 2
+      ExplicitWidth = 1113
       object lblHlp: TLabel
         Left = 1
         Top = 1
-        Width = 1111
-        Height = 15
-        Align = alTop
+        Width = 1238
+        Height = 22
+        Align = alClient
         Caption = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
-        Font.Height = -12
+        Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
+        Layout = tlCenter
         ExplicitWidth = 712
+        ExplicitHeight = 13
       end
     end
   end
@@ -694,7 +705,7 @@ object MainFrm: TMainFrm
     Left = 260
     Top = 0
     Width = 8
-    Height = 846
+    Height = 997
     Hint = #21333#20987#25110#24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
     HotZone.SizePercent = 40
@@ -705,6 +716,7 @@ object MainFrm: TMainFrm
     Control = cxDBTreeList1
     ShowHint = True
     ParentShowHint = False
+    ExplicitHeight = 846
   end
   object MainMenu1: TMainMenu
     Left = 128
@@ -1950,38 +1962,10 @@ object MainFrm: TMainFrm
     Left = 160
     Top = 80
   end
-  object mtblh1: TMemTableEh
-    FetchAllOnOpen = True
-    Params = <>
-    DataDriver = adtdrvrh1
-    Left = 1038
-    Top = 422
-  end
-  object adtdrvrh1: TADODataDriverEh
-    DynaSQLParams.Options = []
-    MacroVars.Macros = <>
-    ProviderDataSet = fdSPRun
-    SelectCommand.Parameters = <>
-    UpdateCommand.Parameters = <>
-    InsertCommand.Parameters = <>
-    DeleteCommand.Parameters = <>
-    GetrecCommand.Parameters = <>
-    Left = 974
-    Top = 428
-  end
-  object AdoEx1: TADOQuery
-    CursorType = ctStatic
-    LockType = ltBatchOptimistic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from "X_Menus"')
-    Left = 113
-    Top = 155
-  end
   object ds2: TDataSource
     DataSet = qrygd2
-    Left = 1259
-    Top = 549
+    Left = 1219
+    Top = 613
   end
   object cxstylrpstry1: TcxStyleRepository
     Left = 32
@@ -1998,17 +1982,8 @@ object MainFrm: TMainFrm
   end
   object ds3: TDataSource
     DataSet = qrygd3
-    Left = 1299
-    Top = 757
-  end
-  object qry_aoto: TADOQuery
-    CursorType = ctStatic
-    LockType = ltBatchOptimistic
-    Parameters = <>
-    SQL.Strings = (
-      'select * from "X_Menus"')
-    Left = 9
-    Top = 291
+    Left = 1267
+    Top = 717
   end
   object prpstrgh1: TPropStorageEh
     Active = False
@@ -2095,13 +2070,13 @@ object MainFrm: TMainFrm
   end
   object qrygd2: TADOQuery
     Parameters = <>
-    Left = 1326
-    Top = 546
+    Left = 1286
+    Top = 618
   end
   object qrygd3: TADOQuery
     Parameters = <>
     Left = 1214
-    Top = 770
+    Top = 722
   end
   object fdSPRun: TFDStoredProc
     Left = 565
@@ -2229,5 +2204,21 @@ object MainFrm: TMainFrm
   object FDStanStorageXMLLink1: TFDStanStorageXMLLink
     Left = 1149
     Top = 177
+  end
+  object mtblh1: TMemTableEh
+    FetchAllOnOpen = True
+    Params = <>
+    Left = 862
+    Top = 366
+  end
+  object pmAssis: TPopupMenu
+    Left = 208
+    Top = 488
+    object N3: TMenuItem
+      Caption = #35843#21462#26597#35810#26041#26696
+    end
+    object N4: TMenuItem
+      Caption = #20445#23384#26597#35810#26041#26696
+    end
   end
 end
