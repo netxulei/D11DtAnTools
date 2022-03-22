@@ -8,7 +8,6 @@ uses
   main in 'main.pas' {MainFrm},
   U_DT in 'U_DT.pas' {F_DT: TDataModule},
   U_float in 'U_float.pas' {F_float},
-  U_item in 'U_item.pas' {f_item},
   UF_CHG_PASS in 'UF_CHG_PASS.pas' {F_CHG_PASS},
   U_user in 'U_user.pas' {F_user},
   U_Export in 'U_Export.pas' {F_Export},

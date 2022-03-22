@@ -4,7 +4,7 @@ object MainFrm: TMainFrm
   BorderIcons = [biSystemMenu, biMaximize]
   Caption = #24320#25918#24335#29616#22330#26816#26597#25968#25454#20998#26512#24037#20855'__'
   ClientHeight = 997
-  ClientWidth = 1510
+  ClientWidth = 1604
   Color = clGradientInactiveCaption
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -65,7 +65,6 @@ object MainFrm: TMainFrm
     OnDblClick = cxDBTreeList1DblClick
     OnFocusedNodeChanged = cxDBTreeList1FocusedNodeChanged
     OnGetNodeImageIndex = cxDBTreeList1GetNodeImageIndex
-    ExplicitHeight = 846
     object cxDBTreeList1t_name: TcxDBTreeListColumn
       Caption.AlignHorz = taCenter
       Caption.GlyphAlignVert = vaBottom
@@ -82,25 +81,21 @@ object MainFrm: TMainFrm
   object Panel1: TPanel
     Left = 268
     Top = 0
-    Width = 1242
+    Width = 1336
     Height = 997
     Align = alClient
     Caption = 'Panel1'
     ParentBackground = False
     TabOrder = 1
-    ExplicitWidth = 1115
-    ExplicitHeight = 846
     object Panel2: TPanel
       Left = 1
       Top = 25
-      Width = 1240
+      Width = 1334
       Height = 32
       Align = alTop
       Caption = 'Panel2'
       ParentBackground = False
       TabOrder = 0
-      ExplicitTop = 17
-      ExplicitWidth = 1113
       object lblMemo: TLabel
         Left = 1
         Top = 1
@@ -114,7 +109,7 @@ object MainFrm: TMainFrm
       object pnl3: TPanel
         Left = 57
         Top = 1
-        Width = 1182
+        Width = 1276
         Height = 30
         Align = alClient
         BevelOuter = bvLowered
@@ -122,7 +117,6 @@ object MainFrm: TMainFrm
         ParentBackground = False
         TabOrder = 0
         OnResize = pnl3Resize
-        ExplicitWidth = 1055
         object cxdbtxtdt1: TcxDBTextEdit
           Left = 1
           Top = 1
@@ -147,39 +141,31 @@ object MainFrm: TMainFrm
           StyleDisabled.Color = clWhite
           StyleDisabled.TextColor = clBlack
           TabOrder = 0
-          ExplicitLeft = 15
-          ExplicitTop = -1
-          ExplicitWidth = 111
-          ExplicitHeight = 35
           Height = 28
-          Width = 1180
+          Width = 1274
         end
       end
     end
     object pnl1: TPanel
       Left = 1
       Top = 57
-      Width = 1240
+      Width = 1334
       Height = 939
       Align = alClient
       Caption = 'pnl1'
       Color = 16776176
       ParentBackground = False
       TabOrder = 1
-      ExplicitTop = 49
-      ExplicitWidth = 1113
-      ExplicitHeight = 796
       object pnl5: TPanel
         Left = 1
         Top = 1
-        Width = 1238
+        Width = 1332
         Height = 27
         Align = alTop
         Alignment = taLeftJustify
         Caption = 'Panel2'
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 1111
         object pnl6: TPanel
           Left = 1
           Top = 1
@@ -301,7 +287,7 @@ object MainFrm: TMainFrm
         object pnl4: TPanel
           Left = 282
           Top = 1
-          Width = 955
+          Width = 1049
           Height = 25
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -313,11 +299,10 @@ object MainFrm: TMainFrm
           ParentFont = False
           TabOrder = 1
           OnResize = pnl4Resize
-          ExplicitWidth = 828
           object lblInfo: TLabel
             Left = 1
             Top = 1
-            Width = 953
+            Width = 1047
             Height = 23
             Align = alClient
             Caption = #24403#21069#39033#30446
@@ -338,8 +323,8 @@ object MainFrm: TMainFrm
       object dbgrdh1: TDBGridEh
         Left = 1
         Top = 52
-        Width = 1238
-        Height = 749
+        Width = 1332
+        Height = 349
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
         Align = alTop
         AllowedOperations = []
@@ -395,13 +380,12 @@ object MainFrm: TMainFrm
       object pnl2: TPanel
         Left = 1
         Top = 28
-        Width = 1238
+        Width = 1332
         Height = 24
         Align = alTop
         ParentBackground = False
         TabOrder = 2
         OnResize = pnl2Resize
-        ExplicitWidth = 1111
         object lblResult: TLabel
           Left = 1
           Top = 1
@@ -448,22 +432,19 @@ object MainFrm: TMainFrm
       end
       object pnl9: TPanel
         Left = 1
-        Top = 809
-        Width = 1238
-        Height = 129
+        Top = 409
+        Width = 1332
+        Height = 529
         Align = alClient
         Color = 16776176
         ParentBackground = False
         TabOrder = 3
         OnResize = pnl2Resize
-        ExplicitTop = 552
-        ExplicitWidth = 1111
-        ExplicitHeight = 243
         object dbgrdh2: TDBGridEh
           Left = 1
-          Top = 97
-          Width = 1236
-          Height = 31
+          Top = 61
+          Width = 1330
+          Height = 467
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -475,7 +456,7 @@ object MainFrm: TMainFrm
           ColumnDefValues.Title.ToolTips = True
           ColumnDefValues.ToolTips = True
           Ctl3D = False
-          DataSource = ds2
+          DataSource = dsAssis
           DrawMemoText = True
           DynProps = <>
           EditActions = [geaCopyEh, geaSelectAllEh]
@@ -515,8 +496,8 @@ object MainFrm: TMainFrm
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 1236
-          Height = 96
+          Width = 1330
+          Height = 60
           Align = alTop
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -527,47 +508,28 @@ object MainFrm: TMainFrm
           ParentFont = False
           ShowCaption = False
           TabOrder = 1
-          ExplicitWidth = 1072
-          object lblFields: TLabel
-            Left = 123
-            Top = 29
-            Width = 17
-            Height = 65
-            Caption = #26597#35810#23383#27573
-            WordWrap = True
-          end
-          object bitbtnAssis: TBitBtn
-            Left = 3
-            Top = 63
-            Width = 103
-            Height = 26
-            Caption = #25191#34892#26597#35810
-            TabOrder = 0
-            WordWrap = True
-            OnClick = bitbtnAssisClick
-          end
           object chkAssis: TCheckBox
             Left = 9
-            Top = 10
-            Width = 97
+            Top = 9
+            Width = 68
             Height = 17
             Caption = #23454#26102#26174#31034
-            TabOrder = 1
+            TabOrder = 0
           end
           object cxbtnExp: TcxButton
-            Left = 3
-            Top = 35
-            Width = 103
-            Height = 26
-            Caption = #36741#21161#34920#26041#26696
+            Left = 81
+            Top = 4
+            Width = 100
+            Height = 27
+            Caption = #36741#21161#34920#27169#26495
             DropDownMenu = pmAssis
             Kind = cxbkOfficeDropDown
             ParentShowHint = False
             ShowHint = True
-            TabOrder = 2
+            TabOrder = 1
           end
           object lbledtKey: TLabeledEdit
-            Left = 387
+            Left = 670
             Top = 5
             Width = 118
             Height = 24
@@ -577,11 +539,11 @@ object MainFrm: TMainFrm
             EditLabel.Layout = tlCenter
             EditLabel.WordWrap = True
             LabelPosition = lpLeft
-            TabOrder = 3
+            TabOrder = 2
             Text = #36134#21495
           end
           object lbledtTabName: TLabeledEdit
-            Left = 611
+            Left = 504
             Top = 5
             Width = 105
             Height = 24
@@ -591,61 +553,132 @@ object MainFrm: TMainFrm
             EditLabel.Layout = tlCenter
             EditLabel.WordWrap = True
             LabelPosition = lpLeft
-            TabOrder = 4
+            TabOrder = 3
             Text = ' tb_rhzh_dw'
           end
           object lbledtSort: TLabeledEdit
-            Left = 811
+            Left = 850
             Top = 5
-            Width = 118
-            Height = 22
+            Width = 209
+            Height = 24
             EditLabel.Width = 48
             EditLabel.Height = 16
             EditLabel.Caption = #25490#24207#23383#27573
             EditLabel.Layout = tlCenter
             EditLabel.WordWrap = True
             LabelPosition = lpLeft
-            TabOrder = 5
+            TabOrder = 4
             Text = #36134#21495','#20132#26131#26085#26399
           end
           object lbledtName: TLabeledEdit
-            Left = 187
+            Left = 262
             Top = 5
-            Width = 109
+            Width = 163
             Height = 24
             EditLabel.Width = 60
             EditLabel.Height = 16
             EditLabel.Caption = #36741#21161#34920#21517#31216
             EditLabel.Layout = tlCenter
             LabelPosition = lpLeft
-            TabOrder = 6
+            TabOrder = 5
             Text = #21333#20301#36134#25143
           end
-          object mmoFields: TMemo
-            Left = 138
-            Top = 35
-            Width = 870
-            Height = 54
-            Lines.Strings = (
-              
-                #23384#27454#20154#31867#21035','#27880#20876#22320#22320#21306#20195#30721','#24037#21830#33829#19994#25191#29031#26377#25928#26399','#27880#20876#36164#37329#37329#39069','#32852#31995#30005#35805','#27861#23450#20195#34920#20154#25110#36127#36131#20154#22995#21517','#27861#23450#20195#34920#20154#25110#36127#36131#20154#36523#20221#35777#20214#31181#31867',' +
-                #27861#23450#20195#34920#20154#25110#36127#36131#20154#36523#20221#35777
-              
-                #20214#32534#21495','#19978#32423#21333#20301#21517#31216','#31038#20250#20449#29992#20195#30721','#38134#34892#26426#26500#20195#30721','#36134#25143#24615#36136','#36134#21495','#36134#25143#21517#31216','#36134#25143#35777#26126#25991#20214'1'#32534#21495','#24320#25143#26085#26399','#38144#25143#21407#22240','#20037#24748#26085#26399','#38144 +
-                #25143#26085#26399','#36134#25143#29366#24577','#36134#25143#24320#25143#22320#22320#21306#20195
-              
-                #30721','#22522#26412#23384#27454#36134#25143#24320#25143#22320#22320#21306#20195#30721','#36134#25143#25152#22312#20154#27665#38134#34892#26426#26500#20195#30721','#36164#37329#24615#36136#20195#30721','#37096#38376#25110#36164#37329#31649#29702#20154#21517#31216','#20020#26102#23384#27454#36134#25143#26377#25928#26399','#20020#26102#23384#27454#36134#25143#24320 +
-                #25143#21407#22240','#22791#27880','#22320#22336','#32463#33829#33539#22260)
-            ParentShowHint = False
-            ShowHint = False
-            TabOrder = 7
+          object pnlFields: TPanel
+            Left = 1
+            Top = 33
+            Width = 1328
+            Height = 26
+            Align = alBottom
+            Caption = 'pnlFields'
+            TabOrder = 6
+            object lblFields: TLabel
+              Left = 92
+              Top = 1
+              Width = 48
+              Height = 24
+              Margins.Left = 30
+              Align = alLeft
+              Caption = #26597#35810#23383#27573
+              Layout = tlCenter
+              WordWrap = True
+              ExplicitHeight = 16
+            end
+            object lblBreak: TLabel
+              Left = 70
+              Top = 1
+              Width = 22
+              Height = 24
+              Margins.Left = 30
+              Align = alLeft
+              AutoSize = False
+              Layout = tlCenter
+              WordWrap = True
+              ExplicitLeft = 65
+            end
+            object lblBk2: TLabel
+              Left = 1
+              Top = 1
+              Width = 5
+              Height = 24
+              Margins.Left = 30
+              Align = alLeft
+              AutoSize = False
+              Layout = tlCenter
+              WordWrap = True
+            end
+            object lblbk3: TLabel
+              Left = 140
+              Top = 1
+              Width = 2
+              Height = 24
+              Margins.Left = 30
+              Align = alLeft
+              AutoSize = False
+              Layout = tlCenter
+              WordWrap = True
+              ExplicitLeft = 143
+            end
+            object bitbtnAssis: TBitBtn
+              Left = 6
+              Top = 1
+              Width = 64
+              Height = 24
+              Hint = #28857#20987#26174#31034#36741#21161#34920#20449#24687
+              Align = alLeft
+              Caption = #36741#21161#34920
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 0
+              WordWrap = True
+              OnClick = bitbtnAssisClick
+            end
+            object mmoFields: TMemo
+              Left = 142
+              Top = 1
+              Width = 1185
+              Height = 24
+              Align = alClient
+              Lines.Strings = (
+                
+                  #23384#27454#20154#31867#21035','#27880#20876#22320#22320#21306#20195#30721','#24037#21830#33829#19994#25191#29031#26377#25928#26399','#27880#20876#36164#37329#37329#39069','#32852#31995#30005#35805','#27861#23450#20195#34920#20154#25110#36127#36131#20154#22995#21517','#27861#23450#20195#34920#20154#25110#36127#36131#20154#36523#20221#35777#20214#31181#31867',' +
+                  #27861#23450#20195#34920#20154#25110#36127#36131#20154#36523#20221#35777#20214#32534#21495','#19978#32423#21333#20301#21517#31216','#31038#20250#20449#29992#20195#30721
+                
+                  ','#38134#34892#26426#26500#20195#30721','#36134#25143#24615#36136','#36134#21495','#36134#25143#21517#31216','#36134#25143#35777#26126#25991#20214'1'#32534#21495','#24320#25143#26085#26399','#38144#25143#21407#22240','#20037#24748#26085#26399','#38144#25143#26085#26399','#36134#25143#29366#24577','#36134#25143#24320#25143#22320#22320#21306#20195 +
+                  #30721','#22522#26412#23384#27454#36134#25143#24320#25143#22320#22320#21306#20195#30721','#36134#25143#25152#22312#20154#27665#38134#34892#26426#26500#20195#30721','#36164#37329#24615#36136
+                #20195#30721','#37096#38376#25110#36164#37329#31649#29702#20154#21517#31216','#20020#26102#23384#27454#36134#25143#26377#25928#26399','#20020#26102#23384#27454#36134#25143#24320#25143#21407#22240','#22791#27880','#22320#22336','#32463#33829#33539#22260)
+              ParentShowHint = False
+              ShowHint = False
+              TabOrder = 1
+              OnEnter = mmoFieldsEnter
+              OnExit = mmoFieldsExit
+            end
           end
         end
       end
       object cxspltr3: TcxSplitter
         Left = 1
-        Top = 801
-        Width = 1238
+        Top = 401
+        Width = 1332
         Height = 8
         Hint = #21333#20987#25110#19978#19979#25302#21160
         HotZoneClassName = 'TcxSimpleStyle'
@@ -659,9 +692,6 @@ object MainFrm: TMainFrm
         Control = dbgrdh1
         ShowHint = True
         ParentShowHint = False
-        ExplicitLeft = -31
-        ExplicitTop = 187
-        ExplicitWidth = 1074
       end
       object btn3: TButton
         Left = 424
@@ -676,16 +706,15 @@ object MainFrm: TMainFrm
     object pnl7: TPanel
       Left = 1
       Top = 1
-      Width = 1240
+      Width = 1334
       Height = 24
       Align = alTop
       ParentBackground = False
       TabOrder = 2
-      ExplicitWidth = 1113
       object lblHlp: TLabel
         Left = 1
         Top = 1
-        Width = 1238
+        Width = 1332
         Height = 22
         Align = alClient
         Caption = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
@@ -716,7 +745,6 @@ object MainFrm: TMainFrm
     Control = cxDBTreeList1
     ShowHint = True
     ParentShowHint = False
-    ExplicitHeight = 846
   end
   object MainMenu1: TMainMenu
     Left = 128
@@ -1948,7 +1976,7 @@ object MainFrm: TMainFrm
     Filter = 'Exce2007'#20197#19978#25991#20214' (*.xlsx)|*.XLSX|Exce97-2003'#25991#20214' (*.xls)|*.XLS'
     Title = #23548#20986'Excel'#25991#20214
     Left = 112
-    Top = 80
+    Top = 104
   end
   object OpenDialog1: TOpenDialog
     Filter = #21151#33021#25991#20214' (*.zh)|*.zh'
@@ -1960,12 +1988,7 @@ object MainFrm: TMainFrm
     Filter = #27169#22411#25991#20214' (*.Mod)|*.Mod'
     Title = #23548#20986#27169#22411
     Left = 160
-    Top = 80
-  end
-  object ds2: TDataSource
-    DataSet = qrygd2
-    Left = 1219
-    Top = 613
+    Top = 96
   end
   object cxstylrpstry1: TcxStyleRepository
     Left = 32
@@ -1980,10 +2003,10 @@ object MainFrm: TMainFrm
       Color = clGradientInactiveCaption
     end
   end
-  object ds3: TDataSource
-    DataSet = qrygd3
-    Left = 1267
-    Top = 717
+  object dsAssis: TDataSource
+    DataSet = fdQryAssis
+    Left = 1291
+    Top = 541
   end
   object prpstrgh1: TPropStorageEh
     Active = False
@@ -2067,16 +2090,6 @@ object MainFrm: TMainFrm
       ShortCut = 16467
       OnClick = N49Click
     end
-  end
-  object qrygd2: TADOQuery
-    Parameters = <>
-    Left = 1286
-    Top = 618
-  end
-  object qrygd3: TADOQuery
-    Parameters = <>
-    Left = 1214
-    Top = 722
   end
   object fdSPRun: TFDStoredProc
     Left = 565
@@ -2205,20 +2218,32 @@ object MainFrm: TMainFrm
     Left = 1149
     Top = 177
   end
-  object mtblh1: TMemTableEh
-    FetchAllOnOpen = True
-    Params = <>
-    Left = 862
-    Top = 366
-  end
   object pmAssis: TPopupMenu
-    Left = 208
-    Top = 488
+    Left = 336
+    Top = 728
     object N3: TMenuItem
-      Caption = #35843#21462#26597#35810#26041#26696
+      Caption = #35843#21462#35843#21462#36741#21161#34920#26597#35810#27169#26495
+      OnClick = N3Click
     end
     object N4: TMenuItem
-      Caption = #20445#23384#26597#35810#26041#26696
+      Caption = #20445#23384#21040#36741#21161#34920#26597#35810#27169#26495
+      OnClick = N4Click
     end
+  end
+  object dlgOpenAssis: TOpenDialog
+    Filter = #36741#21161#34920#26597#35810#27169#26495'(*.asi)|*.asi'
+    Title = #36741#21161#34920#26597#35810#27169#26495#25991#20214
+    Left = 421
+    Top = 625
+  end
+  object fdQryAssis: TFDQuery
+    Left = 1230
+    Top = 546
+  end
+  object dlgSaveAssis: TSaveDialog
+    Filter = #36741#21161#34920#26597#35810#27169#26495'(*.asi)|*.asi'
+    Title = #36741#21161#34920#26597#35810#27169#26495#25991#20214
+    Left = 422
+    Top = 570
   end
 end

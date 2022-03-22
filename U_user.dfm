@@ -140,14 +140,13 @@ object F_user: TF_user
     TabOrder = 6
     OnClick = btn6Click
   end
-  object ADOqr1: TADOQuery
-    Parameters = <>
-    Left = 298
-    Top = 7
-  end
   object ds1: TDataSource
-    DataSet = ADOqr1
-    Left = 261
-    Top = 6
+    DataSet = fdQryUser
+    Left = 133
+    Top = 38
+  end
+  object fdQryUser: TFDQuery
+    Left = 200
+    Top = 40
   end
 end

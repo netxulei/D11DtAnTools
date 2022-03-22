@@ -22,7 +22,6 @@ object F_Export: TF_Export
     Height = 97
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 671
     object spbtnFileName: TSpeedButton
       Left = 465
       Top = 32

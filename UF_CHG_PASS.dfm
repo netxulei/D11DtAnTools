@@ -3,15 +3,14 @@ object F_CHG_PASS: TF_CHG_PASS
   Top = 332
   BorderStyle = bsDialog
   Caption = #20462#25913#24403#21069#29992#25143#21475#20196
-  ClientHeight = 192
-  ClientWidth = 264
+  ClientHeight = 527
+  ClientWidth = 623
   Color = clBtnFace
   Font.Charset = GB2312_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   Visible = True
   OnClose = FormClose
@@ -180,9 +179,8 @@ object F_CHG_PASS: TF_CHG_PASS
     TabOrder = 4
     OnClick = BitBtn2Click
   end
-  object ADOqr1: TADOQuery
-    Parameters = <>
-    Left = 65533
-    Top = 153
+  object fdQryPass: TFDQuery
+    Left = 112
+    Top = 232
   end
 end

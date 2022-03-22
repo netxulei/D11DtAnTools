@@ -8,7 +8,7 @@ uses
   ADODB, PropFilerEh, PropStorageEh, DataDriverEh, ADODataDriverEh, MemTableEh,
   Dialogs, Classes, ActnList, StdActns, Menus, ImgList, Controls, StdCtrls,
   cxSplitter, cxTextEdit, GridsEh, DBGridEh, Buttons, cxContainer, cxEdit,
-  cxDBEdit, ExtCtrls, cxInplaceContainer, cxDBTL, cxControls, cxTLData, U_item,
+  cxDBEdit, ExtCtrls, cxInplaceContainer, cxDBTL, cxControls, cxTLData,
   DBGridEhImpExp, EhLibADO, U_mode, UF_CHG_PASS, U_user, U_import, ShellAPI,
   Windows, Messages, SysUtils, Variants, Graphics, Forms, Mask, DBCtrlsEh,
   cxLabel, cxMemo, StrUtils, DBCtrls, ComCtrls, cxNavigator, cxDBNavigator,
@@ -19,7 +19,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, EhLibMTE,
-  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON, cxButtons, AdvEdit;
+  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON, cxButtons, XlsMemFilesEh;
 
 type
   TMainFrm = class(TForm)
@@ -69,13 +69,12 @@ type
     N34: TMenuItem;
     N35: TMenuItem;
     N36: TMenuItem;
-    ds2: TDataSource;
     MnOpen: TMenuItem;
     cxspltr2: TcxSplitter;
     cxstylrpstry1: TcxStyleRepository;
     cxstyl1: TcxStyle;
     cxstyl2: TcxStyle;
-    ds3: TDataSource;
+    dsAssis: TDataSource;
     pnl9: TPanel;
     dbgrdh2: TDBGridEh;
     pnl2: TPanel;
@@ -97,8 +96,6 @@ type
     N53: TMenuItem;
     N15: TMenuItem;
     N48: TMenuItem;
-    qrygd2: TADOQuery;
-    qrygd3: TADOQuery;
     N_Proj: TMenuItem;
     pnl7: TPanel;
     mniN38: TMenuItem;
@@ -144,8 +141,6 @@ type
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
     FDStanStorageXMLLink1: TFDStanStorageXMLLink;
     btn3: TButton;
-    mtblh1: TMemTableEh;
-    bitbtnAssis: TBitBtn;
     chkAssis: TCheckBox;
     cxbtnExp: TcxButton;
     pmAssis: TPopupMenu;
@@ -155,8 +150,16 @@ type
     lbledtTabName: TLabeledEdit;
     lbledtSort: TLabeledEdit;
     lbledtName: TLabeledEdit;
-    mmoFields: TMemo;
+    dlgOpenAssis: TOpenDialog;
+    pnlFields: TPanel;
+    bitbtnAssis: TBitBtn;
     lblFields: TLabel;
+    mmoFields: TMemo;
+    lblBreak: TLabel;
+    lblBk2: TLabel;
+    lblbk3: TLabel;
+    fdQryAssis: TFDQuery;
+    dlgSaveAssis: TSaveDialog;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
@@ -208,8 +211,6 @@ type
     procedure N15Click(Sender: TObject);
     procedure N48Click(Sender: TObject);
     procedure N_ProjClick(Sender: TObject);
-    procedure btn_jyClick(Sender: TObject);
-    procedure chk1Click(Sender: TObject);
     procedure M_DR_SAZH1Click(Sender: TObject);
     procedure dbgrdh1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure N_ErrClick(Sender: TObject);
@@ -229,6 +230,10 @@ type
     procedure N2Click(Sender: TObject);
     procedure btn3Click(Sender: TObject);
     procedure bitbtnAssisClick(Sender: TObject);
+    procedure N3Click(Sender: TObject);
+    procedure mmoFieldsEnter(Sender: TObject);
+    procedure mmoFieldsExit(Sender: TObject);
+    procedure N4Click(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -247,38 +252,38 @@ uses
 
 function TMainFrm.table_visable(): Boolean;
 begin
-//  // MessageDlg('将要确定table显示');
-//  pnl10.Visible := False;
-//  cxspltr4.Visible := False;
-//  pnl9.Visible := False;
-//  cxspltr3.Visible := False;
-//  if fdQryTree['t_table2'] = '1' then
-//  begin
-//    pnl10.Visible := True;
-//    cxspltr4.Visible := True;
-//  end
-//  else
-//  begin
-//    pnl10.Visible := False;
-//    cxspltr4.Visible := False;
-//  end;
-//
-//  if fdQryTree['t_table1'] = '1' then
-//  begin
-//    pnl9.Visible := True;
-//    cxspltr3.Visible := True;
-//  end
-//  else
-//  begin
-//    pnl9.Visible := False;
-//    cxspltr3.Visible := False;
-//  end;
-//
-//  // if  pnl9.top<pnl10.Top then pnl9.top:=pnl10.Top-1;
-//  if cxspltr3.Top < cxspltr4.Top then
-//    cxspltr3.Top := cxspltr4.Top;
-//  cxspltr3.Top := pnl9.Top;
-//  cxspltr4.Top := pnl10.Top;
+  // // MessageDlg('将要确定table显示');
+  // pnl10.Visible := False;
+  // cxspltr4.Visible := False;
+  // pnl9.Visible := False;
+  // cxspltr3.Visible := False;
+  // if fdQryTree['t_table2'] = '1' then
+  // begin
+  // pnl10.Visible := True;
+  // cxspltr4.Visible := True;
+  // end
+  // else
+  // begin
+  // pnl10.Visible := False;
+  // cxspltr4.Visible := False;
+  // end;
+  //
+  // if fdQryTree['t_table1'] = '1' then
+  // begin
+  // pnl9.Visible := True;
+  // cxspltr3.Visible := True;
+  // end
+  // else
+  // begin
+  // pnl9.Visible := False;
+  // cxspltr3.Visible := False;
+  // end;
+  //
+  // // if  pnl9.top<pnl10.Top then pnl9.top:=pnl10.Top-1;
+  // if cxspltr3.Top < cxspltr4.Top then
+  // cxspltr3.Top := cxspltr4.Top;
+  // cxspltr3.Top := pnl9.Top;
+  // cxspltr4.Top := pnl10.Top;
 
 end;
 
@@ -329,8 +334,6 @@ var
 begin
   s_filename := ExtractFilePath(ParamStr(0)) + 'sql_DispInfo';
   sqlname := 'P_DispInfo';
-  F_DT.ADOconGD2.Connected := False;
-  F_DT.ADOconGD3.Connected := False;
   dbgrdh1.Color := clWindow;
   sqltext := 'select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and type =' + '''' + 'P' + '''';
   fdqryTmp.close;
@@ -645,92 +648,92 @@ function TMainFrm.Disp_txn(): Boolean;
 var
   s_key_name, sqltext1, sqltext2: string;
 begin
-//  // if (adoq2['t_table2'] <> '1') or (adoq2['t_table1'] <> '1') then //显示人行账户或商行交易
-//  // Exit;
-//  if chk2.Checked and (fdQryTree['t_table1'] = '1') then
-//  begin
-//    try
-//      // 获得账号
-//      s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
-//
-//      F_DT.ADOconGD2.Connected := False;
-//      F_DT.ADOconGD2.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
-//      F_DT.ADOconGD2.ConnectionString :=
-//        'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
-//        ';Data Source=' + sComputerName + t_connect;
-//      if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
-//        sqltext1 := t_table1_sql_dw + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-//      if (t_modl_type = '3') or (t_modl_type = '6') then
-//        sqltext1 := t_table1_sql_gr + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-//      if (t_modl_type = '7') then
-//        sqltext1 := t_table1_sql_other + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-//
-//      // ShowMessage(sqltext2);
-//      // exit ;
-//      qrygd2.Connection := F_DT.ADOconGD2;
-//      qrygd2.close;
-//      qrygd2.DisableControls;
-//      qrygd2.SQL.Clear;
-//      qrygd2.SQL.Add(sqltext1);
-//      // ShowMessage(qrygd2.SQL.Text);
-//      qrygd2.Prepared;
-//      qrygd2.Open;
-//      qrygd2.enableControls;
-//      F_DT.ADOconGD2.Connected := True;
-//      dbgrdh2.Enabled := True;
-//      // OptimizeGrid(dbgrdh2);
-//    except
-//      dbgrdh2.Enabled := False;
-//      qrygd2.close;
-//      qrygd2.DisableControls;
-//      raise Exception.Create('请确认人民银行个人账户数据是否导入或setting中table1_sql否正确!');
-//    end;
-//  end;
-//
-//  // 显示同步显示交易
-//  if chk1.Checked and (fdQryTree['t_table2'] = '1') then
-//  begin
-//    try
-//      // 获得账号
-//      s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
-//
-//      F_DT.ADOconGD3.Connected := False;
-//      F_DT.ADOconGD3.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
-//      F_DT.ADOconGD3.ConnectionString :=
-//        'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
-//        ';Data Source=' + sComputerName + t_connect;
-//      // sqltext2 := t_table2_sql + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' + t_table2_sql_order;
-//      if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
-//        sqltext2 := t_table2_sql_dw + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-//          t_table2_sql_order;
-//      if (t_modl_type = '3') or (t_modl_type = '6') then
-//        sqltext2 := t_table2_sql_gr + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-//          t_table2_sql_order;
-//      if (t_modl_type = '7') then
-//        sqltext2 := t_table2_sql_other + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-//          t_table2_other_order;
-//
-//      // ShowMessage(sqltext2);
-//      // exit;
-//      qrygd3.Connection := F_DT.ADOconGD3;
-//      qrygd3.close;
-//      qrygd3.DisableControls;
-//      qrygd3.SQL.Clear;
-//      qrygd3.SQL.Add(sqltext2);
-//      qrygd3.Prepared;
-//      qrygd3.Open;
-//      qrygd3.enableControls;
-//      F_DT.ADOconGD3.Connected := True;
-//      dbgrdh3.Enabled := True;
-//      // OptimizeGrid(dbgrdh3);
-//    except
-//      dbgrdh3.Enabled := False;
-//      qrygd3.close;
-//      qrygd3.DisableControls;
-//      raise Exception.Create('请确认同步显示的数据表是否导入!');
-//      Exit;
-//    end;
-//  end;
+  // // if (adoq2['t_table2'] <> '1') or (adoq2['t_table1'] <> '1') then //显示人行账户或商行交易
+  // // Exit;
+  // if chk2.Checked and (fdQryTree['t_table1'] = '1') then
+  // begin
+  // try
+  // // 获得账号
+  // s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
+  //
+  // F_DT.ADOconGD2.Connected := False;
+  // F_DT.ADOconGD2.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
+  // F_DT.ADOconGD2.ConnectionString :=
+  // 'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
+  // ';Data Source=' + sComputerName + t_connect;
+  // if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
+  // sqltext1 := t_table1_sql_dw + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+  // if (t_modl_type = '3') or (t_modl_type = '6') then
+  // sqltext1 := t_table1_sql_gr + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+  // if (t_modl_type = '7') then
+  // sqltext1 := t_table1_sql_other + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+  //
+  // // ShowMessage(sqltext2);
+  // // exit ;
+  // qrygd2.Connection := F_DT.ADOconGD2;
+  // qrygd2.close;
+  // qrygd2.DisableControls;
+  // qrygd2.SQL.Clear;
+  // qrygd2.SQL.Add(sqltext1);
+  // // ShowMessage(qrygd2.SQL.Text);
+  // qrygd2.Prepared;
+  // qrygd2.Open;
+  // qrygd2.enableControls;
+  // F_DT.ADOconGD2.Connected := True;
+  // dbgrdh2.Enabled := True;
+  // // OptimizeGrid(dbgrdh2);
+  // except
+  // dbgrdh2.Enabled := False;
+  // qrygd2.close;
+  // qrygd2.DisableControls;
+  // raise Exception.Create('请确认人民银行个人账户数据是否导入或setting中table1_sql否正确!');
+  // end;
+  // end;
+  //
+  // // 显示同步显示交易
+  // if chk1.Checked and (fdQryTree['t_table2'] = '1') then
+  // begin
+  // try
+  // // 获得账号
+  // s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
+  //
+  // F_DT.ADOconGD3.Connected := False;
+  // F_DT.ADOconGD3.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
+  // F_DT.ADOconGD3.ConnectionString :=
+  // 'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
+  // ';Data Source=' + sComputerName + t_connect;
+  // // sqltext2 := t_table2_sql + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' + t_table2_sql_order;
+  // if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
+  // sqltext2 := t_table2_sql_dw + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+  // t_table2_sql_order;
+  // if (t_modl_type = '3') or (t_modl_type = '6') then
+  // sqltext2 := t_table2_sql_gr + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+  // t_table2_sql_order;
+  // if (t_modl_type = '7') then
+  // sqltext2 := t_table2_sql_other + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+  // t_table2_other_order;
+  //
+  // // ShowMessage(sqltext2);
+  // // exit;
+  // qrygd3.Connection := F_DT.ADOconGD3;
+  // qrygd3.close;
+  // qrygd3.DisableControls;
+  // qrygd3.SQL.Clear;
+  // qrygd3.SQL.Add(sqltext2);
+  // qrygd3.Prepared;
+  // qrygd3.Open;
+  // qrygd3.enableControls;
+  // F_DT.ADOconGD3.Connected := True;
+  // dbgrdh3.Enabled := True;
+  // // OptimizeGrid(dbgrdh3);
+  // except
+  // dbgrdh3.Enabled := False;
+  // qrygd3.close;
+  // qrygd3.DisableControls;
+  // raise Exception.Create('请确认同步显示的数据表是否导入!');
+  // Exit;
+  // end;
+  // end;
 end;
 
 procedure TMainFrm.N10Click(Sender: TObject);
@@ -754,12 +757,12 @@ begin
   else
     lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   // 附属表checkBox名称
-//  chk2.Caption := t_table1_name;
-//  chk1.Caption := t_table2_name;
-//  btn_jy.Left := chk1.Left + chk1.Width;
+  // chk2.Caption := t_table1_name;
+  // chk1.Caption := t_table2_name;
+  // btn_jy.Left := chk1.Left + chk1.Width;
   // 单击显示交易按钮，视为防治从表显示过慢，delphi11fireDac有了新机制可以不用此按钮类
   cxspltr3.Hint := '单击显示、隐藏或移动' + t_table1_name;
-//  cxspltr4.Hint := '单击显示、隐藏或移动' + t_table2_name;
+  // cxspltr4.Hint := '单击显示、隐藏或移动' + t_table2_name;
   s_filename := ExtractFilePath(ParamStr(0));
   inprpstrgmnh1.IniFileName := s_filename + 'zh_layout'; // 保存的drid样式
   // prpstrgh1.LoadProperties;
@@ -830,8 +833,43 @@ begin
 end;
 
 procedure TMainFrm.bitbtnAssisClick(Sender: TObject);
+var
+
+  key_value, qryFields, sqltext, sError: string;
+  i_pos: Integer;
 begin
-ShowMessage(mmoFields.Text );
+  // 查看结果表是否存在字段名称
+  if fdmtblRun.Fields.FindField(Trim(lbledtKey.Text)) = nil then
+  // if fdmtblRun.FieldList.Find((Trim(lbledtKey.Text))) = nil then
+  begin
+    MessageDlg('上述结果表中没有关联字段"' + pchar(lbledtKey.Text) + '"，不能显示辅助信息。', mtWarning, [mbOK], 0);
+    Exit;
+  end;
+  key_value := fdmtblRun.Fields.FindField(Trim(lbledtKey.Text)).Value;
+  qryFields := Trim(mmoFields.Text);
+  qryFields := StringReplace(qryFields, #$D#$A, '', [rfReplaceAll]); // 删除回车换行空格
+  qryFields := StringReplace(qryFields, #$A, '', [rfReplaceAll]);
+  qryFields := StringReplace(qryFields, #$D, '', [rfReplaceAll]);
+  qryFields := StringReplace(qryFields, ' ', '', [rfReplaceAll]);
+
+  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKey.Text) + ' = ''' +
+    key_value + ''' Order by ' + Trim(lbledtTabName.Text);
+
+  try
+    fdQryAssis.close;
+    fdQryAssis.Connection := F_DT.fdconProj;
+    fdQryAssis.SQL.Clear;
+    fdQryAssis.SQL.Add(sqltext);
+    fdQryAssis.Open;
+    fdQryAssis.FetchAll;
+  except
+    sError := Exception(ExceptObject).Message;
+    i_pos := pos('对象名', sError);
+    if i_pos > 0 then
+      sError := Copy(sError, i_pos, Length(sError) - i_pos);
+    MessageDlg('查询辅助信息所需数据表未导入或相关字段不正确。(' + sError + ')。', mtWarning, [mbOK], 0);
+    fdQryAssis.close;
+  end;
 end;
 
 procedure TMainFrm.btn1Click(Sender: TObject);
@@ -982,6 +1020,7 @@ procedure TMainFrm.btn2Click(Sender: TObject);
 var
   ExpClass: TDBGridEhExportClass;
   Ext: string;
+  xlsFile: TXlsMemFileEh;
   // Dg2E: TDBGridToExcel;
 begin
   if not fdmtblRun.Active then
@@ -995,81 +1034,79 @@ begin
     Exit;
   end;
   SaveDialog1.FileName := Trim(StringReplace(cxtxtdt1.Text, '|', '', [rfReplaceAll]));
+
   if SaveDialog1.Execute then
   begin
 
   end;
 
-  // ActiveControl := dbgrdh1;
-  // if (ActiveControl is TDBGridEh) then
-  // if SaveDialog1.Execute then
-  // begin
-  // // ShowWaitText('请稍后，正在进行数据导出...');
-  // try
-  // case SaveDialog1.FilterIndex of
-  // 1:
-  // begin
-  // ExpClass := TDBGridEhExportAsXLS;
-  // Ext := 'xlsx';
-  // end;
-  // 2:
-  // begin
-  // ExpClass := TDBGridEhExportAsXLS;
-  // Ext := 'xls';
-  // end;
-  // 3:
-  // begin
-  // ExpClass := TDBGridEhExportAsText;
-  // Ext := 'txt';
-  // end;
-  // 4:
-  // begin
-  // ExpClass := TDBGridEhExportAsRTF;
-  // Ext := 'rtf';
-  // end;
-  // // 3:begin ExpClass := TDBGridEhExportAsCSV; Ext := 'csv'; end;
-  // else
-  // ExpClass := nil;
-  // Ext := '';
-  // end;
-  // if ExpClass <> nil then
-  // begin
-  // if UpperCase(Copy(SaveDialog1.FileName, Length(SaveDialog1.FileName) -
-  // 2, 4)) <> UpperCase(Ext) then
-  // SaveDialog1.FileName := SaveDialog1.FileName + '.' + Ext;
-  //
-  // if (Ext = 'xls') or (Ext = 'xlsx') then
-  // begin
-  // ShowMessage('要重写哦');
-  //
-  // // Dg2E := TDBGridToExcel.Create(nil);
-  // // Dg2E.FileName := SaveDialog1.FileName;
-  // // Dg2E.grid := true;
-  // // Dg2E.TitleFont.Style := [fsBold];
-  // // Dg2E.HeadFont.Style := [fsBold];
-  // // Dg2E.TitleFont.Size := 10;
-  // // Dg2E.HeadFont.Size := 10;
-  // // Dg2E.DataFont.Size := 10;
-  // // Dg2E.TitleFont.name := '宋体';
-  // // Dg2E.HeadFont.name := '宋体';
-  // // Dg2E.DataFont.name := '宋体';
-  // // Dg2E.Title := Dg2E.FileName;
-  // // Dg2E.TitleRow := 0;
-  // // Dg2E.TitleCol := 0;
-  // // Dg2E.MergeTitle := True;
-  // // Dg2E.ExportToExcel(dbgrdh1);
-  // // Dg2E.Free;
-  // // DBGridToExcel(dbgrdh1,SaveDialog1.FileName);
-  // end
-  // else
-  // SaveDBGridEhToExportFile(ExpClass, TDBGridEh(ActiveControl),
-  // SaveDialog1.FileName, True);
-  // end;
-  // finally
-  //
-  // // ShowWaitText; //不带入参数,则是关闭等待窗口
-  // end;
-  // end;
+  ActiveControl := dbgrdh1;
+  if (ActiveControl is TDBGridEh) then
+    if SaveDialog1.Execute then
+    begin
+      // ShowWaitText('请稍后，正在进行数据导出...');
+      try
+        case SaveDialog1.FilterIndex of
+          1:
+            begin
+              ExpClass := TDBGridEhExportAsXLS;
+              Ext := 'xlsx';
+            end;
+          2:
+            begin
+              ExpClass := TDBGridEhExportAsXLS;
+              Ext := 'xls';
+            end;
+          3:
+            begin
+              ExpClass := TDBGridEhExportAsText;
+              Ext := 'txt';
+            end;
+          4:
+            begin
+              ExpClass := TDBGridEhExportAsRTF;
+              Ext := 'rtf';
+            end;
+          // 3:begin ExpClass := TDBGridEhExportAsCSV; Ext := 'csv'; end;
+        else
+          ExpClass := nil;
+          Ext := '';
+        end;
+        if ExpClass <> nil then
+        begin
+          if UpperCase(Copy(SaveDialog1.FileName, Length(SaveDialog1.FileName) - 2, 4)) <> UpperCase(Ext) then
+            SaveDialog1.FileName := SaveDialog1.FileName + '.' + Ext;
+
+          if (Ext = 'xls') or (Ext = 'xlsx') then
+          begin
+            ShowMessage('要重写哦');
+//            GetDir(0, Path);
+//            Path := Path + '\TestXlsFile.xlsx';
+            xlsFile := TXlsMemFileEh.Create;
+            xlsFile.Workbook.Worksheets[0].Name := 'DBGrid';
+            xlsFile.Workbook.AddWorksheet('VertGrid');
+
+            ExportWorksheet1(xlsFile.Workbook.Worksheets[0]);
+            ExportWorksheet2(xlsFile.Workbook.Worksheets[1], 0);
+
+            xlsFile.SaveToFile(SaveDialog1.FileName);
+
+            xlsFile.Free;
+
+            if (CheckBox1.Checked) then
+              ShellExecute(Application.Handle, 'Open', pchar(Path), nil, nil, SW_SHOWNORMAL)
+            else
+              ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + Path + '"'), nil,
+                SW_SHOWNORMAL);
+          end
+          else
+            SaveDBGridEhToExportFile(ExpClass, TDBGridEh(ActiveControl), SaveDialog1.FileName, True);
+        end;
+      finally
+
+        // ShowWaitText; //不带入参数,则是关闭等待窗口
+      end;
+    end;
 end;
 
 procedure TMainFrm.btn3Click(Sender: TObject);
@@ -1093,10 +1130,10 @@ end;
 
 procedure TMainFrm.pnl3Resize(Sender: TObject);
 begin
-//  cxdbtxtdt1.Top := 0;
-//  cxdbtxtdt1.Left := 0;
-//  cxdbtxtdt1.Width := pnl3.Width;
-//  cxdbtxtdt1.Height := pnl3.Height;
+  // cxdbtxtdt1.Top := 0;
+  // cxdbtxtdt1.Left := 0;
+  // cxdbtxtdt1.Width := pnl3.Width;
+  // cxdbtxtdt1.Height := pnl3.Height;
 end;
 
 procedure TMainFrm.pnl4Resize(Sender: TObject);
@@ -1131,6 +1168,18 @@ begin
   // if not Assigned(F_float) then
   // F_float:=F_float.CreateParented(GetDesktopWindow);
   F_float.Hide;
+end;
+
+procedure TMainFrm.mmoFieldsEnter(Sender: TObject);
+begin
+  Panel3.Height := Panel3.Height + mmoFields.Height * 2;
+  pnlFields.Height := pnlFields.Height * 3;
+end;
+
+procedure TMainFrm.mmoFieldsExit(Sender: TObject);
+begin
+  pnlFields.Height := pnlFields.Height div 3;
+  Panel3.Height := Panel3.Height - mmoFields.Height * 2;
 end;
 
 procedure TMainFrm.excel1Click(Sender: TObject);
@@ -1494,7 +1543,8 @@ end;
 
 procedure TMainFrm.dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  Disp_txn();
+  if chkAssis.Checked then
+    bitbtnAssis.Click;
 end;
 
 procedure TMainFrm.dbgrdh1TitleBtnClick(Sender: TObject; ACol: Integer; Column: TColumnEh);
@@ -1547,10 +1597,10 @@ end;
 procedure TMainFrm.dbgrdh1DblClick(Sender: TObject);
 begin
   // OptimizeGrid(dbgrdh1);
-//  if pnl9.Visible = True then
-    // OptimizeGrid(dbgrdh2);
-//    if pnl10.Visible = True then
-      // OptimizeGrid(dbgrdh3);
+  // if pnl9.Visible = True then
+  // OptimizeGrid(dbgrdh2);
+  // if pnl10.Visible = True then
+  // OptimizeGrid(dbgrdh3);
 
 end;
 
@@ -1574,24 +1624,43 @@ begin
   N301.Checked := not N302.Checked;
 end;
 
+procedure TMainFrm.N3Click(Sender: TObject);
+var
+  s_filename: string;
+  MyIniFile: TIniFile;
+  AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
+begin
+  if dlgOpenAssis.Execute then
+  begin
+    s_filename := dlgOpenAssis.FileName;
+    MyIniFile := TIniFile.Create(s_filename);
+    lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
+    lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
+    lbledtKey.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '关联字段');
+    mmoFields.Text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
+    lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
+    MyIniFile.Free;
+  end;
+end;
+
 procedure TMainFrm.N401Click(Sender: TObject);
 begin
-//  ActiveControl := dbgrdh3;
-//  if not(ActiveControl is TDBGridEh) then
-//    Exit;
-//  dbgrdh3.AutoFitColWidths := False;
-//  N402.Checked := dbgrdh3.AutoFitColWidths;
-//  N401.Checked := not N402.Checked;
+  // ActiveControl := dbgrdh3;
+  // if not(ActiveControl is TDBGridEh) then
+  // Exit;
+  // dbgrdh3.AutoFitColWidths := False;
+  // N402.Checked := dbgrdh3.AutoFitColWidths;
+  // N401.Checked := not N402.Checked;
 end;
 
 procedure TMainFrm.N402Click(Sender: TObject);
 begin
-//  ActiveControl := dbgrdh3;
-//  if not(ActiveControl is TDBGridEh) then
-//    Exit;
-//  dbgrdh3.AutoFitColWidths := True;
-//  N402.Checked := dbgrdh3.AutoFitColWidths;
-//  N401.Checked := not N402.Checked;
+  // ActiveControl := dbgrdh3;
+  // if not(ActiveControl is TDBGridEh) then
+  // Exit;
+  // dbgrdh3.AutoFitColWidths := True;
+  // N402.Checked := dbgrdh3.AutoFitColWidths;
+  // N401.Checked := not N402.Checked;
 end;
 
 procedure TMainFrm.N49Click(Sender: TObject);
@@ -1601,6 +1670,25 @@ begin
   s_filename := ExtractFilePath(ParamStr(0));
   inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
   prpstrgh1.SaveProperties;
+end;
+
+procedure TMainFrm.N4Click(Sender: TObject);
+var
+  s_filename: string;
+  MyIniFile: TIniFile;
+  AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
+begin
+  if dlgSaveAssis.Execute then
+  begin
+    s_filename := dlgSaveAssis.FileName;
+    MyIniFile := TIniFile.Create(s_filename);
+    MyIniFile.WriteString('Base', 'AssisName', Trim(lbledtName.Text));
+    MyIniFile.WriteString('Base', 'AssisTabName', Trim(lbledtTabName.Text));
+    MyIniFile.WriteString('Base', 'AssisKeyField', Trim(lbledtKey.Text));
+    MyIniFile.WriteString('Base', 'AssisFields', Trim(mmoFields.Text));
+    MyIniFile.WriteString('Base', 'AssisSort', Trim(lbledtSort.Text));
+    MyIniFile.Free;
+  end;
 end;
 
 procedure TMainFrm.N53Click(Sender: TObject);
@@ -1632,13 +1720,13 @@ end;
 
 procedure TMainFrm.pm4Popup(Sender: TObject);
 begin
-//  N402.Checked := dbgrdh3.AutoFitColWidths;
+  // N402.Checked := dbgrdh3.AutoFitColWidths;
   N401.Checked := not N402.Checked
 end;
 
 procedure TMainFrm.N15Click(Sender: TObject);
 begin
-//  ShowGridColEditor(dbgrdh3);
+  // ShowGridColEditor(dbgrdh3);
 end;
 
 procedure TMainFrm.N48Click(Sender: TObject);
@@ -1648,9 +1736,9 @@ end;
 
 procedure TMainFrm.N_ProjClick(Sender: TObject);
 begin
-  F_DT.ADOCN4.Connected := False;
-  F_DT.ADOconGD2.Connected := False;
-  F_DT.ADOconGD3.Connected := False;
+  // F_DT.ADOCN4.Connected := False;
+  // F_DT.ADOconGD2.Connected := False;
+  // F_DT.ADOconGD3.Connected := False;
   Application.CreateForm(TF_Proj, F_Proj);
   F_Proj.ShowModal;
   if Length(Trim(t_proj_no)) = 0 then
@@ -1665,68 +1753,6 @@ begin
 
 end;
 
-procedure TMainFrm.btn_jyClick(Sender: TObject);
-var
-  s_key_name, sqltext2: string;
-begin
-  // 因为若检查逻辑不显示则此按钮不会执行，所以此处无需判断
-  // if (adoq2['t_table2'] <> '1') or (adoq2['t_table1'] <> '1') then
-  // Exit;
-  try
-    // 获得账号
-    s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
-
-    F_DT.ADOconGD3.Connected := False;
-    F_DT.ADOconGD3.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
-    F_DT.ADOconGD3.ConnectionString :=
-      'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
-      ';Data Source=' + sComputerName + t_connect;
-
-    // sqltext2 := t_table2_sql + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' + t_table2_sql_order;
-    if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
-      sqltext2 := t_table2_sql_dw + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-        t_table2_sql_order;
-    if (t_modl_type = '3') or (t_modl_type = '6') then
-      sqltext2 := t_table2_sql_gr + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-        t_table2_sql_order;
-    if (t_modl_type = '7') then
-      sqltext2 := t_table2_sql_other + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-        t_table2_other_order;
-
-    // MessageDlg(sqltext2);
-    qrygd3.Connection := F_DT.ADOconGD3;
-    qrygd3.close;
-    qrygd3.DisableControls;
-    qrygd3.SQL.Clear;
-    qrygd3.SQL.Add(sqltext2);
-    qrygd3.Prepared;
-    qrygd3.Open;
-    qrygd3.enableControls;
-    F_DT.ADOconGD3.Connected := True;
-  except
-//    dbgrdh3.Enabled := False;
-    qrygd3.close;
-    qrygd3.DisableControls;
-    raise Exception.Create('请确认同步显示的数据表是否导入!');
-    Exit;
-  end;
-//  dbgrdh3.Enabled := True;
-  // OptimizeGrid(dbgrdh3);
-
-end;
-
-procedure TMainFrm.chk1Click(Sender: TObject);
-begin
-//  if chk1.Checked then
-//    btn_jy.Visible := False
-//  else
-//  begin
-//    btn_jy.Visible := True;
-//    btn_jy.Left := chk1.Left + chk1.Width;
-//  end;
-
-end;
-
 procedure TMainFrm.M_DR_SAZH1Click(Sender: TObject);
 begin
   ShowMessage('等待程序更新');
@@ -1734,8 +1760,8 @@ end;
 
 procedure TMainFrm.dbgrdh1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if (Key = VK_UP) or (Key = VK_DOWN) or (Key = VK_PRIOR) or (Key = VK_NEXT) then
-    Disp_txn();
+  if ((Key = VK_UP) or (Key = VK_DOWN) or (Key = VK_PRIOR) or (Key = VK_NEXT)) and chkAssis.Checked then
+    bitbtnAssis.Click;
 end;
 
 procedure TMainFrm.N_ErrClick(Sender: TObject);

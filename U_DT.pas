@@ -13,12 +13,6 @@ uses
 
 type
   TF_DT = class(TDataModule)
-    ADOCN1: TADOConnection;
-    ADOCN2: TADOConnection;
-    ADOCN3: TADOConnection;
-    ADOcn4: TADOConnection;
-    ADOconGD2: TADOConnection;
-    ADOconGD3: TADOConnection;
     FDConSYS: TFDConnection;
     FDConProj: TFDConnection;
     FDconGen: TFDConnection;

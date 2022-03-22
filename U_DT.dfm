@@ -3,53 +3,17 @@ object F_DT: TF_DT
   Height = 752
   Width = 850
   PixelsPerInch = 96
-  object ADOCN1: TADOConnection
-    KeepConnection = False
-    LoginPrompt = False
-    Left = 49
-    Top = 18
-  end
-  object ADOCN2: TADOConnection
-    KeepConnection = False
-    LoginPrompt = False
-    Left = 103
-    Top = 19
-  end
-  object ADOCN3: TADOConnection
-    KeepConnection = False
-    LoginPrompt = False
-    Left = 49
-    Top = 74
-  end
-  object ADOcn4: TADOConnection
-    KeepConnection = False
-    LoginPrompt = False
-    Left = 105
-    Top = 74
-  end
-  object ADOconGD2: TADOConnection
-    KeepConnection = False
-    LoginPrompt = False
-    Left = 153
-    Top = 74
-  end
-  object ADOconGD3: TADOConnection
-    KeepConnection = False
-    LoginPrompt = False
-    Left = 217
-    Top = 74
-  end
   object FDConSYS: TFDConnection
-    Left = 88
-    Top = 256
+    Left = 200
+    Top = 72
   end
   object FDConProj: TFDConnection
-    Left = 157
-    Top = 259
+    Left = 197
+    Top = 115
   end
   object FDconGen: TFDConnection
-    Left = 16
-    Top = 256
+    Left = 200
+    Top = 16
   end
   object FDConSysTmp: TFDConnection
     Params.Strings = (
@@ -60,8 +24,8 @@ object F_DT: TF_DT
     ConnectedStoredUsage = [auDesignTime]
     Connected = True
     LoginPrompt = False
-    Left = 32
-    Top = 352
+    Left = 24
+    Top = 208
   end
   object FDConProjTmp: TFDConnection
     Params.Strings = (
@@ -71,14 +35,14 @@ object F_DT: TF_DT
       'DriverID=MSSQL')
     ConnectedStoredUsage = [auDesignTime]
     LoginPrompt = False
-    Left = 152
-    Top = 352
+    Left = 144
+    Top = 208
   end
   object imgLstStat: TImageList
     Height = 12
     Width = 12
-    Left = 464
-    Top = 328
+    Left = 456
+    Top = 184
     Bitmap = {
       494C01010400080004000C000C00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000300000001800000001002000000000000012
@@ -243,12 +207,12 @@ object F_DT: TF_DT
     ConnectedStoredUsage = [auDesignTime]
     Connected = True
     LoginPrompt = False
-    Left = 24
-    Top = 184
+    Left = 48
+    Top = 40
   end
   object FDqryTmp: TFDQuery
     Connection = FDConSYS
-    Left = 339
-    Top = 218
+    Left = 331
+    Top = 74
   end
 end

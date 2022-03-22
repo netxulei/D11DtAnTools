@@ -22,7 +22,6 @@ object F_import: TF_import
     Height = 97
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 568
     object spbtnFileName: TSpeedButton
       Left = 465
       Top = 32
@@ -106,8 +105,6 @@ object F_import: TF_import
     OptionsData.Editing = False
     RootValue = -1
     TabOrder = 1
-    ExplicitWidth = 568
-    ExplicitHeight = 406
     object cxdbtrlstclmnDBTreeLst1cxDBTreeListColumn1: TcxDBTreeListColumn
       Caption.Text = #27169#22411#21517#31216
       DataBinding.FieldName = 't_name'
@@ -155,7 +152,6 @@ object F_import: TF_import
     Height = 48
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 568
     object btn1: TBitBtn
       Left = 130
       Top = 12

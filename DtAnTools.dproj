@@ -124,10 +124,6 @@
             <Form>F_float</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="U_item.pas">
-            <Form>f_item</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="UF_CHG_PASS.pas">
             <Form>F_CHG_PASS</Form>
             <FormType>dfm</FormType>
@@ -1024,8 +1020,8 @@
                 <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>

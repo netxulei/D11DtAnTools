@@ -100,7 +100,7 @@ begin
     begin
       if Application.MessageBox('覆盖模式导入将导致原有模型被替换，确定吗？', '注意', MB_OKCANCEL + MB_ICONWARNING) = IDCANCEL then
       begin
-        F_DT.ADOCN1.RollbackTrans;
+        F_DT.FDConSYS.Rollback;
         FDqryTree.Close;
         exit;
       end;
@@ -223,7 +223,7 @@ begin
     MessageDlg('模型导入成功!', mtInformation, [mbOK], 0);
     Close;
   except
-    F_DT.ADOCN1.RollbackTrans;
+    F_DT.FDConSYS.Rollback;
     raise exception.Create('模型导入错误，可能导入的不是模型文件!');
   end;
 end;
