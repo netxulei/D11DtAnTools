@@ -843,7 +843,6 @@ object FrmDataImport: TFrmDataImport
     end
   end
   object fdQrySrcTab: TFDQuery
-    Connection = FDConSys
     SQL.Strings = (
       'select * from src_table order by tab_sort')
     Left = 316
@@ -914,7 +913,6 @@ object FrmDataImport: TFrmDataImport
     Top = 412
   end
   object FDQrySrcCol: TFDQuery
-    Connection = FDConSys
     SQL.Strings = (
       
         'select * from src_column where tab_id = :tab_id order by col_sor' +
@@ -934,22 +932,7 @@ object FrmDataImport: TFrmDataImport
     Left = 864
     Top = 307
   end
-  object FDConSys: TFDConnection
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    LoginPrompt = False
-    Left = 121
-    Top = 275
-  end
-  object FDConProj: TFDConnection
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    LoginPrompt = False
-    Left = 233
-    Top = 275
-  end
   object fdqryTmp: TFDQuery
-    Connection = FDConSys
     FetchOptions.AssignedValues = [evMode]
     Left = 409
     Top = 283

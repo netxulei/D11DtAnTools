@@ -49,9 +49,6 @@ type
     lbl5: TLabel;
     cxdbtxtdt2: TcxDBTextEdit;
     cxdbtxtdt3: TcxDBTextEdit;
-    grp1: TGroupBox;
-    cxdbchckbx1: TcxDBCheckBox;
-    cxdbchckbx2: TcxDBCheckBox;
     cxdbchckbx4: TcxDBCheckBox;
     cxdbchckbx3: TcxDBCheckBox;
     cxdbtxtdt4: TcxDBTextEdit;
@@ -68,8 +65,6 @@ type
     fdQryTreet_para: TStringField;
     fdQryTreet_proc: TMemoField;
     fdQryTreet_right: TStringField;
-    fdQryTreet_table1: TStringField;
-    fdQryTreet_table2: TStringField;
     fdQryTreet_auto: TStringField;
     fdQryTreet_hide: TStringField;
     fdQryTreet_type: TStringField;
@@ -864,7 +859,7 @@ begin
     s_filename := Trim(dlgSaveExport.FileName);
     if FileExists(s_filename) then
     begin
-      if MessageDlg('模型文件已存在，覆盖吗？''', mtWarning, [mbYes, mbNo], 0) = mrNo then
+      if MessageDlg('模型文件已存在，覆盖吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
       begin
         exit;
       end;
@@ -908,7 +903,7 @@ begin
     s_filename := Trim(dlgSaveExport.FileName);
     if FileExists(s_filename) then
     begin
-      if MessageDlg('模型文件已存在，覆盖吗？''', mtWarning, [mbYes, mbNo], 0) = mrNo then
+      if MessageDlg('模型文件已存在，覆盖吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
       begin
         exit;
       end;

@@ -204,47 +204,48 @@ begin
   t_ver_name := MyIniFile.ReadString('Base', 'Ver_name', '版本名称');
   t_ver_noLS := SplitString(t_ver_no, '|'); // 用于分离版本代码
   t_ver_nameLS := SplitString(t_ver_name, '|'); // 对应上述标本代码
-  t_TimeOut := MyIniFile.ReadString('Extend', 'Timeout', '120');
-  t_table1_sql_dw := MyIniFile.ReadString('Extend', 'table1_sql_dw', '单位账户显示');
-  t_table2_sql_dw := MyIniFile.ReadString('Extend', 'table2_sql_dw', '单位交易显示');
-  t_table1_sql_gr := MyIniFile.ReadString('Extend', 'table1_sql_gr', '个人账户显示');
-  t_table2_sql_gr := MyIniFile.ReadString('Extend', 'table2_sql_gr', '个人交易显示');
-  t_table1_sql_other := MyIniFile.ReadString('Extend', 'table1_sql_other', '其他显示');
-  t_table2_sql_other := MyIniFile.ReadString('Extend', 'table2_sql_other', '其他显示');
-  t_table2_sql_order := MyIniFile.ReadString('Extend', 'table2_sql_order', '交易表排序');
-  t_table2_other_order := MyIniFile.ReadString('Extend', 'table2_other_order', '其他表排序');
+
+//  t_TimeOut := MyIniFile.ReadString('Extend', 'Timeout', '120');
+//  t_table1_sql_dw := MyIniFile.ReadString('Extend', 'table1_sql_dw', '单位账户显示');
+//  t_table2_sql_dw := MyIniFile.ReadString('Extend', 'table2_sql_dw', '单位交易显示');
+//  t_table1_sql_gr := MyIniFile.ReadString('Extend', 'table1_sql_gr', '个人账户显示');
+//  t_table2_sql_gr := MyIniFile.ReadString('Extend', 'table2_sql_gr', '个人交易显示');
+//  t_table1_sql_other := MyIniFile.ReadString('Extend', 'table1_sql_other', '其他显示');
+//  t_table2_sql_other := MyIniFile.ReadString('Extend', 'table2_sql_other', '其他显示');
+//  t_table2_sql_order := MyIniFile.ReadString('Extend', 'table2_sql_order', '交易表排序');
+//  t_table2_other_order := MyIniFile.ReadString('Extend', 'table2_other_order', '其他表排序');
   // t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
   // t_key_name_other := MyIniFile.ReadString('Extend', 'key_name_other', '账号|账号|账号');
   case StrToInt(t_type) of
     1: // 版本1账户检查
       begin
-        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
-        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
-        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
+//        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
+//        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
+//        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no1', '');
         t_proj_name := MyIniFile.ReadString('Base', 'Proj_name1', '---没有设置当前项目---');
         t_Database := MyIniFile.ReadString('Base', 'Database1', '');
       end;
     2: // 版本2风险监测
       begin
-        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
-        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
-        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
+//        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
+//        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
+//        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no2', '');
         t_proj_name := MyIniFile.ReadString('Base', 'Proj_name2', '---没有设置当前项目---');
         t_Database := MyIniFile.ReadString('Base', 'Database2', '');
       end;
     3: // 版本3其他
       begin
-        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name_other', '对应表1标签');
-        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name_other', '对应表2标签');
-        t_key_name := MyIniFile.ReadString('Extend', 'key_name_other', '账号|账号|账号');
+//        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name_other', '对应表1标签');
+//        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name_other', '对应表2标签');
+//        t_key_name := MyIniFile.ReadString('Extend', 'key_name_other', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no3', '');
         t_proj_name := MyIniFile.ReadString('Base', 'Proj_name3', '---没有设置当前项目---');
         t_Database := MyIniFile.ReadString('Base', 'Database3', '');
       end;
   end;
-  t_key_nameLS := SplitString(t_key_name, '|');
+//  t_key_nameLS := SplitString(t_key_name, '|');
   t_Jclj_Ver := MyIniFile.ReadString('Base', 'Jclj_Ver', '0'); // 检查逻辑版本
   MyIniFile.Free;
   ver_name_index := t_ver_noLS.IndexOf(t_type);
@@ -349,9 +350,9 @@ begin
         s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
         MyIniFile := TIniFile.Create(s_filename);
         MyIniFile.WriteString('Base', 'Sys_type', '1');
-        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
-        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
-        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
+//        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
+//        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
+//        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no1', '');
         t_proj_name := MyIniFile.ReadString('Base', 'Proj_name1', '---没有设置当前项目---');
         t_Database := MyIniFile.ReadString('Base', 'Database1', '');
@@ -364,9 +365,9 @@ begin
         s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
         MyIniFile := TIniFile.Create(s_filename);
         MyIniFile.WriteString('Base', 'Sys_type', '2');
-        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
-        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
-        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
+//        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name', '对应人行账户信息标签');
+//        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
+//        t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no2', '');
         t_proj_name := MyIniFile.ReadString('Base', 'Proj_name2', '---没有设置当前项目---');
         t_Database := MyIniFile.ReadString('Base', 'Database2', '');
@@ -379,9 +380,9 @@ begin
         s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
         MyIniFile := TIniFile.Create(s_filename);
         MyIniFile.WriteString('Base', 'Sys_type', '3');
-        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name_other', '对应表1标签');
-        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name_other', '对应表2标签');
-        t_key_name := MyIniFile.ReadString('Extend', 'key_name_other', '账号|账号|账号');
+//        t_table1_name := MyIniFile.ReadString('Extend', 'table1_name_other', '对应表1标签');
+//        t_table2_name := MyIniFile.ReadString('Extend', 'table2_name_other', '对应表2标签');
+//        t_key_name := MyIniFile.ReadString('Extend', 'key_name_other', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no3', '');
         t_proj_name := MyIniFile.ReadString('Base', 'Proj_name3', '---没有设置当前项目---');
         t_Database := MyIniFile.ReadString('Base', 'Database3', '');

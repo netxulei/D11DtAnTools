@@ -169,13 +169,19 @@ object MainFrm: TMainFrm
         object pnl6: TPanel
           Left = 1
           Top = 1
-          Width = 281
+          Width = 312
           Height = 25
           Align = alLeft
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI Emoji'
+          Font.Style = []
           ParentBackground = False
+          ParentFont = False
           TabOrder = 0
           object spbtnFormat: TSpeedButton
-            Left = 99
+            Left = 190
             Top = 1
             Width = 82
             Height = 22
@@ -254,9 +260,9 @@ object MainFrm: TMainFrm
             OnClick = btn2Click
           end
           object btn1: TBitBtn
-            Left = 187
-            Top = 2
-            Width = 46
+            Left = 278
+            Top = 1
+            Width = 17
             Height = 23
             Caption = #25191#34892#21151#33021
             Font.Charset = GB2312_CHARSET
@@ -283,11 +289,21 @@ object MainFrm: TMainFrm
             Visible = False
             OnClick = btn1Click
           end
+          object chkAfterOpen: TCheckBox
+            Left = 99
+            Top = 3
+            Width = 97
+            Height = 17
+            Caption = #23548#20986#21518#25171#24320
+            Checked = True
+            State = cbChecked
+            TabOrder = 2
+          end
         end
         object pnl4: TPanel
-          Left = 282
+          Left = 313
           Top = 1
-          Width = 1049
+          Width = 1018
           Height = 25
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -299,10 +315,12 @@ object MainFrm: TMainFrm
           ParentFont = False
           TabOrder = 1
           OnResize = pnl4Resize
+          ExplicitLeft = 282
+          ExplicitWidth = 1049
           object lblInfo: TLabel
             Left = 1
             Top = 1
-            Width = 1047
+            Width = 1016
             Height = 23
             Align = alClient
             Caption = #24403#21069#39033#30446
@@ -315,8 +333,8 @@ object MainFrm: TMainFrm
             ParentColor = False
             ParentFont = False
             Layout = tlCenter
-            ExplicitWidth = 52
-            ExplicitHeight = 15
+            ExplicitLeft = 56
+            ExplicitWidth = 992
           end
         end
       end
@@ -324,7 +342,7 @@ object MainFrm: TMainFrm
         Left = 1
         Top = 52
         Width = 1332
-        Height = 349
+        Height = 748
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
         Align = alTop
         AllowedOperations = []
@@ -383,11 +401,17 @@ object MainFrm: TMainFrm
         Width = 1332
         Height = 24
         Align = alTop
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Segoe UI Emoji'
+        Font.Style = []
         ParentBackground = False
+        ParentFont = False
         TabOrder = 2
         OnResize = pnl2Resize
         object lblResult: TLabel
-          Left = 1
+          Left = 85
           Top = 1
           Width = 70
           Height = 22
@@ -400,13 +424,13 @@ object MainFrm: TMainFrm
           Font.Style = []
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = 1
           ExplicitHeight = 19
         end
         object cxtxtdt1: TcxTextEdit
-          Left = 71
+          Left = 155
           Top = 1
           Align = alLeft
-          AutoSize = False
           ParentFont = False
           ParentShowHint = False
           Properties.Alignment.Horz = taLeftJustify
@@ -426,25 +450,40 @@ object MainFrm: TMainFrm
           Style.TransparentBorder = False
           Style.IsFontAssigned = True
           TabOrder = 0
-          Height = 22
+          ExplicitLeft = 71
           Width = 198
+        end
+        object chkAssisDis: TCheckBox
+          Left = 1
+          Top = 1
+          Width = 84
+          Height = 22
+          Align = alLeft
+          Caption = #36741#21161#26597#35810
+          TabOrder = 1
+          OnClick = chkAssisDisClick
+          ExplicitLeft = -19
+          ExplicitTop = 3
         end
       end
       object pnl9: TPanel
         Left = 1
-        Top = 409
+        Top = 808
         Width = 1332
-        Height = 529
+        Height = 130
         Align = alClient
         Color = 16776176
         ParentBackground = False
         TabOrder = 3
+        Visible = False
         OnResize = pnl2Resize
+        ExplicitTop = 409
+        ExplicitHeight = 529
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 61
           Width = 1330
-          Height = 467
+          Height = 68
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -521,6 +560,7 @@ object MainFrm: TMainFrm
             Top = 4
             Width = 100
             Height = 27
+            Hint = #21517#31216#20026#8221#36741#21161#20449#24687'_'#40664#35748'.asi'#8220#30340#27169#26495#20026#31995#32479#27599#27425#25171#24320#26102#33258#21160#35843#29992#30340#27169#26495
             Caption = #36741#21161#34920#27169#26495
             DropDownMenu = pmAssis
             Kind = cxbkOfficeDropDown
@@ -645,7 +685,7 @@ object MainFrm: TMainFrm
               Height = 24
               Hint = #28857#20987#26174#31034#36741#21161#34920#20449#24687
               Align = alLeft
-              Caption = #36741#21161#34920
+              Caption = #26174#31034#36741#21161
               ParentShowHint = False
               ShowHint = True
               TabOrder = 0
@@ -677,7 +717,7 @@ object MainFrm: TMainFrm
       end
       object cxspltr3: TcxSplitter
         Left = 1
-        Top = 401
+        Top = 800
         Width = 1332
         Height = 8
         Hint = #21333#20987#25110#19978#19979#25302#21160
@@ -692,6 +732,8 @@ object MainFrm: TMainFrm
         Control = dbgrdh1
         ShowHint = True
         ParentShowHint = False
+        Visible = False
+        ExplicitTop = 937
       end
       object btn3: TButton
         Left = 424
@@ -2140,18 +2182,6 @@ object MainFrm: TMainFrm
     object fdQryTreet_order: TIntegerField
       FieldName = 't_order'
       Origin = 't_order'
-    end
-    object fdQryTreet_table1: TStringField
-      FieldName = 't_table1'
-      Origin = 't_table1'
-      FixedChar = True
-      Size = 1
-    end
-    object fdQryTreet_table2: TStringField
-      FieldName = 't_table2'
-      Origin = 't_table2'
-      FixedChar = True
-      Size = 1
     end
     object fdQryTreet_auto: TStringField
       FieldName = 't_auto'

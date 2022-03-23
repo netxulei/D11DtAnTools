@@ -3,7 +3,7 @@ unit main;
 interface
 
 uses
-  U_ShowError, FindPublic, FormColSelect, U_DT, U_float, U_Common, cxGraphics,
+  RegularExpressions, U_ShowError, FindPublic, FormColSelect, U_DT, U_float, U_Common, cxGraphics,
   cxCustomData, cxStyles, cxTL, cxMaskEdit, DBGridEhGrouping, MemTableDataEh, DB,
   ADODB, PropFilerEh, PropStorageEh, DataDriverEh, ADODataDriverEh, MemTableEh,
   Dialogs, Classes, ActnList, StdActns, Menus, ImgList, Controls, StdCtrls,
@@ -19,7 +19,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, EhLibMTE,
-  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON, cxButtons, XlsMemFilesEh;
+  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON, cxButtons, LibXL, math;
 
 type
   TMainFrm = class(TForm)
@@ -129,8 +129,6 @@ type
     fdQryTreet_proc: TMemoField;
     fdQryTreet_right: TStringField;
     fdQryTreet_order: TIntegerField;
-    fdQryTreet_table1: TStringField;
-    fdQryTreet_table2: TStringField;
     fdQryTreet_auto: TStringField;
     fdQryTreet_hide: TStringField;
     fdQryTreet_type: TStringField;
@@ -160,6 +158,8 @@ type
     lblbk3: TLabel;
     fdQryAssis: TFDQuery;
     dlgSaveAssis: TSaveDialog;
+    chkAfterOpen: TCheckBox;
+    chkAssisDis: TCheckBox;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
@@ -234,6 +234,7 @@ type
     procedure mmoFieldsEnter(Sender: TObject);
     procedure mmoFieldsExit(Sender: TObject);
     procedure N4Click(Sender: TObject);
+    procedure chkAssisDisClick(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -745,6 +746,7 @@ procedure TMainFrm.FormCreate(Sender: TObject);
 var
   s_filename, sqltext: string;
   i: Integer;
+  MyIniFile: TIniFile;
 begin
   i := t_ver_noLS.IndexOf(t_type); // 系统版本的索引号
   MainFrm.Caption := t_ver_nameLS[i] + t_ver + '---' + User_info;
@@ -804,15 +806,31 @@ begin
   // cxDBTreeList1.FullExpand;
   Application.HintHidePause := 10000;
   // dbgrdh1.Hint:='在表格上选中后右键可复制'+#13#10+'点按标题可排序';
+  dbgrdh1.Align := alClient;
+  // 调取默认的辅助查询
+  s_filename := ExtractFilePath(ParamStr(0));
+  s_filename := s_filename + '辅助信息_默认.asi';
+
+  if FileExists(s_filename) then
+  begin
+    MyIniFile := TIniFile.Create(s_filename);
+    lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
+    lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
+    lbledtKey.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '关联字段');
+    mmoFields.Text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
+    lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
+    MyIniFile.Free;
+  end;
+
 end;
 
 procedure TMainFrm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   s_filename: string;
 begin
-  // s_filename := ExtractFilePath(ParamStr(0));
-  // inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
-  // prpstrgh1.SaveProperties;
+//  s_filename := ExtractFilePath(ParamStr(0));
+//  inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
+//  prpstrgh1.SaveProperties;
   // ADOQ1.close;
   // ADOQ2.close;
   F_DT.FDConSYS.Connected := False;
@@ -1018,10 +1036,20 @@ end;
 
 procedure TMainFrm.btn2Click(Sender: TObject);
 var
-  ExpClass: TDBGridEhExportClass;
-  Ext: string;
-  xlsFile: TXlsMemFileEh;
-  // Dg2E: TDBGridToExcel;
+  i, ci, i_pos, gridLen: Integer;
+  FieldType: TFieldType;
+  isNum: Boolean;
+  ValueNum: Double;
+  ValueStr: string;
+  s_filename, Ext: string;
+  xlBook: TXLBook;
+  xlSheet: TXLSheet;
+  titleFont, headerFont, cellsFont: TXLFont;
+  titleFormat, headerFormat, cellsFormat: TXLFormat;
+  a_max_width: array of Integer;
+  // xlCellType: CellType;
+  // xld: Double;
+  // xls: string;
 begin
   if not fdmtblRun.Active then
   begin
@@ -1033,80 +1061,170 @@ begin
     MessageDlg('没有要导出的数据！', mtInformation, [mbOK], 0);
     Exit;
   end;
+
   SaveDialog1.FileName := Trim(StringReplace(cxtxtdt1.Text, '|', '', [rfReplaceAll]));
-
-  if SaveDialog1.Execute then
+  if not SaveDialog1.Execute then
   begin
+    // ShowMessage('exit');
+    Exit;
+  end;
+  // s_filename := Trim(SaveDialog1.FileName);
+  // FileExt := UpperCase(ExtractFileExt(s_filename)); // 文件扩展名
+  // showmessage(s_filename);
+  // showmessage(FileExt);
+  // exit;
 
+  case SaveDialog1.FilterIndex of
+    1:
+      Ext := 'XLSX';
+
+    2:
+      Ext := 'XLS';
+  else
+    Ext := '';
+  end;
+  if Length(Ext) = 0 then
+    Exit;
+
+  // 保存的文件名---------------------------
+  s_filename := Trim(SaveDialog1.FileName);
+  // 若匹配.XLS,则文件名不变，且不管 SaveDialog1.FilterIndex的选择
+  if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLS$')) then
+    Ext := 'XLS'
+  else // 若不匹配.XLS,再看是否匹配XLSX
+    if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLSX$')) then
+      Ext := 'XLSX'
+    else
+      s_filename := s_filename + '.' + Ext;
+
+  if FileExists(s_filename) then
+  begin
+    if MessageDlg('导出的Excel文件已存在，覆盖吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
+    begin
+      Exit;
+    end;
   end;
 
+  // 保存的文件名---------------------------
+  // --------准备Excel导入
+  if (Ext = 'XLS') then
+    xlBook := TBinBook.Create;
+  if (Ext = 'XLSX') then
+    xlBook := TXmlBook.Create;
+  xlBook.setKey('TommoT', 'windows-2421220b07c2e10a6eb96768a2p7r6gc');
+  xlSheet := xlBook.addSheet('数据分析结果');
+
+  titleFont := xlBook.addFont;
+  titleFont.name := '微软雅黑';
+  titleFont.size := 12;
+  titleFormat := xlBook.addFormat();
+  titleFormat.alignH := ALIGNH_CENTER;
+  titleFormat.alignV := ALIGNV_CENTER;
+  titleFormat.font := titleFont;
+
+  headerFont := xlBook.addFont;
+  headerFont.name := '微软雅黑';
+  headerFont.size := 10;
+  headerFont.bold := True;
+  headerFormat := xlBook.addFormat();
+  headerFormat.alignH := ALIGNH_CENTER;
+  headerFormat.alignV := ALIGNV_CENTER;
+  headerFormat.font := headerFont;
+  headerFormat.setBorder(BORDERSTYLE_THIN);
+
+  cellsFont := xlBook.addFont;
+  cellsFont.name := '微软雅黑';
+  cellsFont.size := 9;
+  cellsFormat := xlBook.addFormat();
+  cellsFormat.alignH := ALIGNH_LEFT;
+  cellsFormat.alignV := ALIGNV_CENTER;
+  cellsFormat.font := cellsFont;
+  cellsFormat.setBorder(BORDERSTYLE_THIN);
+
+  // 标题
+  xlSheet.setMerge(0, 0, 0, dbgrdh1.VisibleColumns.Count - 1);
+  xlSheet.writeStr(0, 0, PWideChar(cxtxtdt1.Text), titleFormat);
+
+  // 字段名
+  gridLen := dbgrdh1.VisibleColumns.Count; // grid的列数
+  for i := 0 to gridLen - 1 do
+  begin
+    xlSheet.writeStr(1, i, PWideChar(dbgrdh1.VisibleColumns[i].FieldName), headerFormat);
+  end;
+
+  // xlSheet.writeNum(3, 1, 1000);
+
+  // --------------------------------------------------------------------------------
   ActiveControl := dbgrdh1;
-  if (ActiveControl is TDBGridEh) then
-    if SaveDialog1.Execute then
+  i := 2;
+  fdmtblRun.DisableControls;
+  fdmtblRun.First;
+  ValueNum := 0;
+  ValueStr := '';
+  SetLength(a_max_width, gridLen);
+  while not fdmtblRun.Eof do
+  begin
+    for ci := 0 to gridLen - 1 do
     begin
-      // ShowWaitText('请稍后，正在进行数据导出...');
-      try
-        case SaveDialog1.FilterIndex of
-          1:
-            begin
-              ExpClass := TDBGridEhExportAsXLS;
-              Ext := 'xlsx';
-            end;
-          2:
-            begin
-              ExpClass := TDBGridEhExportAsXLS;
-              Ext := 'xls';
-            end;
-          3:
-            begin
-              ExpClass := TDBGridEhExportAsText;
-              Ext := 'txt';
-            end;
-          4:
-            begin
-              ExpClass := TDBGridEhExportAsRTF;
-              Ext := 'rtf';
-            end;
-          // 3:begin ExpClass := TDBGridEhExportAsCSV; Ext := 'csv'; end;
+      // ifthen(VarIsNull(b), 'null时的默认值', b);
+      { ftUnknown, ftString, ftSmallint, ftInteger, ftWord, // 0..4
+        ftBoolean, ftFloat, ftCurrency, ftBCD, ftDate, ftTime, ftDateTime, // 5..11
+        ftBytes, ftVarBytes, ftAutoInc, ftBlob, ftMemo, ftGraphic, ftFmtMemo, // 12..18
+        ftParadoxOle, ftDBaseOle, ftTypedBinary, ftCursor, ftFixedChar, ftWideString, // 19..24
+        ftLargeint, ftADT, ftArray, ftReference, ftDataSet, ftOraBlob, ftOraClob, // 25..31
+        ftVariant, ftInterface, ftIDispatch, ftGuid, ftTimeStamp, ftFMTBcd, // 32..37
+        ftFixedWideChar, ftWideMemo, ftOraTimeStamp, ftOraInterval, // 38..41
+        ftLongWord, ftShortint, ftByte, ftExtended, ftConnection, ftParams, ftStream, //42..48
+        ftTimeStampOffset, ftObject, ftSingle); //49..51 }
+      // 判断是否为空、判断数据类型
+      // 判断是否数字
+      FieldType := dbgrdh1.VisibleColumns[ci].Field.DataType;
+      if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
+        isNum := True
+      else
+        isNum := False;
+      // 字段为空的处理
+      if VarIsNull(dbgrdh1.VisibleColumns[ci].Field.Value) then
+      begin
+        if isNum then
+          ValueNum := 0
         else
-          ExpClass := nil;
-          Ext := '';
-        end;
-        if ExpClass <> nil then
-        begin
-          if UpperCase(Copy(SaveDialog1.FileName, Length(SaveDialog1.FileName) - 2, 4)) <> UpperCase(Ext) then
-            SaveDialog1.FileName := SaveDialog1.FileName + '.' + Ext;
-
-          if (Ext = 'xls') or (Ext = 'xlsx') then
-          begin
-            ShowMessage('要重写哦');
-//            GetDir(0, Path);
-//            Path := Path + '\TestXlsFile.xlsx';
-            xlsFile := TXlsMemFileEh.Create;
-            xlsFile.Workbook.Worksheets[0].Name := 'DBGrid';
-            xlsFile.Workbook.AddWorksheet('VertGrid');
-
-            ExportWorksheet1(xlsFile.Workbook.Worksheets[0]);
-            ExportWorksheet2(xlsFile.Workbook.Worksheets[1], 0);
-
-            xlsFile.SaveToFile(SaveDialog1.FileName);
-
-            xlsFile.Free;
-
-            if (CheckBox1.Checked) then
-              ShellExecute(Application.Handle, 'Open', pchar(Path), nil, nil, SW_SHOWNORMAL)
-            else
-              ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + Path + '"'), nil,
-                SW_SHOWNORMAL);
-          end
-          else
-            SaveDBGridEhToExportFile(ExpClass, TDBGridEh(ActiveControl), SaveDialog1.FileName, True);
-        end;
-      finally
-
-        // ShowWaitText; //不带入参数,则是关闭等待窗口
+          ValueStr := '';
+      end
+      else
+      begin
+        if isNum then
+          ValueNum := dbgrdh1.VisibleColumns[ci].Field.Value
+        else
+          ValueStr := dbgrdh1.VisibleColumns[ci].Field.Value;
       end;
+      if isNum then
+        xlSheet.writeNum(i, ci, ValueNum, cellsFormat)
+      else
+        xlSheet.writeStr(i, ci, PWideChar(ValueStr), cellsFormat);
+      a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
+      // showmessage(FloatToStr(ValueNum));
+      // showmessage(ValueStr);
     end;
+    i := i + 1;
+    // ShowMessage(IntToStr(i));
+    fdmtblRun.Next;
+  end;
+
+  // 设置宽度
+  for i := 0 to gridLen - 1 do
+  begin
+    xlSheet.setCol(i, i, a_max_width[i]);
+  end;
+
+  xlBook.save(PWideChar(s_filename));
+  xlBook.Free;
+  fdmtblRun.First;
+  fdmtblRun.enableControls;
+  if (chkAfterOpen.Checked) then
+    ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil, SW_SHOWNORMAL)
+  else
+    ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
 end;
 
 procedure TMainFrm.btn3Click(Sender: TObject);
@@ -1123,8 +1241,8 @@ end;
 procedure TMainFrm.pnl2Resize(Sender: TObject);
 begin
   cxtxtdt1.Top := 0;
-  cxtxtdt1.Left := lblResult.Width;
-  cxtxtdt1.Width := pnl2.Width - lblResult.Width;
+  cxtxtdt1.Left := lblResult.Width + chkAfterOpen.Width;
+  cxtxtdt1.Width := pnl2.Width - lblResult.Width - chkAfterOpen.Width - 10;
   cxtxtdt1.Height := pnl2.Height;
 end;
 
@@ -1428,7 +1546,7 @@ var
 begin
   // i_id := fdQryTree['t_id'];
   i_parent_id := fdQryTree['t_parent_id'];
-  if varIsNull(fdQryTree['isClass']) then
+  if VarIsNull(fdQryTree['isClass']) then
     isClass := '0'
   else
     isClass := fdQryTree['isClass'];
@@ -1699,6 +1817,23 @@ begin
   s_filename := ExtractFilePath(ParamStr(0));
   inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
   prpstrgh1.LoadProperties;
+end;
+
+procedure TMainFrm.chkAssisDisClick(Sender: TObject);
+begin
+  if chkAssisDis.Checked then
+  begin
+    cxspltr3.Visible := True;
+    pnl9.Visible := True;
+    dbgrdh1.Align := alTop;
+    dbgrdh1.Height := dbgrdh1.Height div 2;
+  end
+  else
+  begin
+    cxspltr3.Visible := False;
+    pnl9.Visible := False;
+    dbgrdh1.Align := alClient;
+  end;
 end;
 
 procedure TMainFrm.cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas;

@@ -1,0 +1,3 @@
+create NONCLUSTERED index idx0tb_yeb on tb_yeb([户名]);
+create NONCLUSTERED index idx1tb_yeb on tb_yeb([账号]);
+create NONCLUSTERED index idx2tb_yeb on tb_yeb([余额日期]);

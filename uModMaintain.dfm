@@ -373,42 +373,6 @@ object FModMaintain: TFModMaintain
         TabOrder = 1
         Width = 697
       end
-      object grp1: TGroupBox
-        Left = 381
-        Top = 105
-        Width = 340
-        Height = 58
-        Caption = #26159#21542#26174#31034#36741#21161#20449#24687
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 3
-        object cxdbchckbx1: TcxDBCheckBox
-          Left = 4
-          Top = 15
-          Caption = #23545#24212#20154#34892#36134#25143#20449#24687
-          DataBinding.DataField = 't_table1'
-          DataBinding.DataSource = ds1
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          TabOrder = 0
-          Transparent = True
-        end
-        object cxdbchckbx2: TcxDBCheckBox
-          Left = 4
-          Top = 34
-          Caption = #23545#24212#21830#34892#20132#26131#20449#24687
-          DataBinding.DataField = 't_table2'
-          DataBinding.DataSource = ds1
-          Properties.ValueChecked = 1
-          Properties.ValueUnchecked = 0
-          TabOrder = 1
-          Transparent = True
-        end
-      end
       object cxdbchckbx4: TcxDBCheckBox
         Left = 227
         Top = 114
@@ -420,7 +384,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 4
+        TabOrder = 3
         Transparent = True
       end
       object cxdbchckbx3: TcxDBCheckBox
@@ -434,7 +398,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 5
+        TabOrder = 4
         Transparent = True
       end
       object cxdbtxtdt4: TcxDBTextEdit
@@ -459,7 +423,7 @@ object FModMaintain: TFModMaintain
         BevelOuter = bvNone
         Ctl3D = False
         ParentCtl3D = False
-        TabOrder = 6
+        TabOrder = 5
         object bitbtn3: TBitBtn
           Left = 0
           Top = 24
@@ -493,7 +457,7 @@ object FModMaintain: TFModMaintain
         Width = 146
         Height = 25
         Caption = #20195#30721#35268#33539#27979#35797
-        TabOrder = 7
+        TabOrder = 6
         OnClick = btnTestClick
       end
       object cxdbchkbxIsClass: TcxDBCheckBox
@@ -507,7 +471,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 8
+        TabOrder = 7
         Transparent = True
         OnEditing = cxdbchkbxIsClassEditing
         OnExit = cxdbchkbxIsClassExit
@@ -531,7 +495,7 @@ object FModMaintain: TFModMaintain
         Properties.ListSource = ds2
         Properties.MaxLength = 400
         Style.Shadow = False
-        TabOrder = 9
+        TabOrder = 8
         OnClick = cxDBLkUpComClassClick
         OnEnter = cxDBLkUpComClassEnter
         Width = 234
@@ -550,7 +514,7 @@ object FModMaintain: TFModMaintain
         StyleFocused.LookAndFeel.NativeStyle = True
         StyleHot.LookAndFeel.Kind = lfUltraFlat
         StyleHot.LookAndFeel.NativeStyle = True
-        TabOrder = 10
+        TabOrder = 9
         Width = 121
       end
     end
@@ -618,8 +582,8 @@ object FModMaintain: TFModMaintain
         'select t_id,t_parent_id,t_sort,repeat('#39'  '#39',length(t_sort))||'#39#8857'--' +
         #39'||t_name as t_name from fdQryTree where t_parent_id=0 or isClas' +
         's='#39'1'#39'  union select 0,0,'#39#39','#39'*=================*'#39' order by t_sort')
-    Left = 1027
-    Top = 256
+    Left = 1003
+    Top = 272
   end
   object fdQrySameLev: TFDQuery
     Connection = F_DT.FDConSQLite
@@ -686,18 +650,6 @@ object FModMaintain: TFModMaintain
       FieldName = 't_sort'
       Origin = 't_sort'
       Size = 12
-    end
-    object fdQryTreet_table1: TStringField
-      FieldName = 't_table1'
-      Origin = 't_table1'
-      FixedChar = True
-      Size = 1
-    end
-    object fdQryTreet_table2: TStringField
-      FieldName = 't_table2'
-      Origin = 't_table2'
-      FixedChar = True
-      Size = 1
     end
     object fdQryTreet_auto: TStringField
       FieldName = 't_auto'
