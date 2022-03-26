@@ -53,14 +53,14 @@ type
     fdQryDictTypedict_type_name_cn: TStringField;
     fdQryDictTypedict_type_name_en: TStringField;
     fdQryDictTypedict_type_sort: TIntegerField;
-    fdQryDictTypedict_type_memo: TStringField;
     fdQryDictTypemodiState: TStringField;
     fdQryDictValdict_val_id: TStringField;
     fdQryDictValdict_type_id: TStringField;
     fdQryDictValdict_val: TStringField;
     fdQryDictValdict_lable: TStringField;
-    fdQryDictValdict_val_memo: TStringField;
     fdQryDictValdict_val_sort: TIntegerField;
+    fdQryDictTypedict_type_memo: TStringField;
+    fdQryDictValdict_val_memo: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);

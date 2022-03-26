@@ -1,9 +1,9 @@
 object frmDictMaintain: TfrmDictMaintain
   Left = 0
   Top = 0
-  Caption = #25968#25454#23383#20856#32500#25252
-  ClientHeight = 657
-  ClientWidth = 990
+  Caption = #25968#25454#23383#20856#32500#25252#65288#23383#20856#20462#25913#21518#27880#24847#28304#25968#25454#34920#30340#19968#33268#24615#65289
+  ClientHeight = 755
+  ClientWidth = 1295
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,8 +18,8 @@ object frmDictMaintain: TfrmDictMaintain
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
     Top = 54
-    Width = 990
-    Height = 584
+    Width = 1295
+    Height = 682
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
@@ -99,7 +99,7 @@ object frmDictMaintain: TfrmDictMaintain
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 942
+        Width = 569
         Height = 136
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -179,8 +179,8 @@ object frmDictMaintain: TfrmDictMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 942
-        Height = 27
+        Width = 569
+        Height = 52
         Align = alTop
         AutoSize = True
         Font.Charset = DEFAULT_CHARSET
@@ -229,8 +229,8 @@ object frmDictMaintain: TfrmDictMaintain
           OnClick = bitbtnValUpClick
         end
         object bitbtnValDown: TBitBtn
-          Left = 553
-          Top = 1
+          Left = 1
+          Top = 26
           Width = 61
           Height = 25
           Caption = #19979#31227
@@ -240,8 +240,8 @@ object frmDictMaintain: TfrmDictMaintain
           OnClick = bitbtnValDownClick
         end
         object FlowPanel1: TFlowPanel
-          Left = 614
-          Top = 1
+          Left = 62
+          Top = 26
           Width = 307
           Height = 24
           Align = alRight
@@ -260,7 +260,7 @@ object frmDictMaintain: TfrmDictMaintain
   object flwpnlDictType: TFlowPanel
     Left = 0
     Top = 27
-    Width = 990
+    Width = 1295
     Height = 27
     Align = alTop
     AutoSize = True
@@ -325,7 +325,7 @@ object frmDictMaintain: TfrmDictMaintain
   object flwpnlTop: TFlowPanel
     Left = 0
     Top = 0
-    Width = 990
+    Width = 1295
     Height = 27
     Align = alTop
     AutoSize = True
@@ -406,8 +406,8 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 638
-    Width = 990
+    Top = 736
+    Width = 1295
     Height = 19
     Panels = <>
     SimplePanel = True
@@ -423,6 +423,7 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
+    ScreenCursor = gcrHourGlass
     Left = 504
     Top = 576
   end
@@ -1013,9 +1014,11 @@ object frmDictMaintain: TfrmDictMaintain
       000000000000}
   end
   object fdQryDictType: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'dict_type_sort'
     OnUpdateRecord = fdQryDictTypeUpdateRecord
+    Connection = F_DT.FDConSysTmp
     SchemaAdapter = FDSchemaAdapterAll
     SQL.Strings = (
       'select * from Dict_type order by dict_type_sort')
@@ -1052,15 +1055,17 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictTypedict_type_memo: TStringField
       FieldName = 'dict_type_memo'
       Origin = 'dict_type_memo'
-      Size = 60
+      Size = 100
     end
   end
   object fdQryDictVal: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'dict_type_id;dict_val_sort'
     MasterSource = dsDictTypeMsDt
     MasterFields = 'dict_type_id'
     OnUpdateRecord = fdQryDictValUpdateRecord
+    Connection = F_DT.FDConSysTmp
     SchemaAdapter = FDSchemaAdapterAll
     SQL.Strings = (
       
@@ -1071,9 +1076,10 @@ object frmDictMaintain: TfrmDictMaintain
     ParamData = <
       item
         Name = 'DICT_TYPE_ID'
-        DataType = ftString
+        DataType = ftFixedChar
         ParamType = ptInput
-        Value = Null
+        Size = 32
+        Value = '9DA1A56BB935419182BDAB4C86ABF003'
       end>
     object fdQryDictValmodiState: TStringField
       DisplayLabel = ' '
@@ -1106,14 +1112,14 @@ object frmDictMaintain: TfrmDictMaintain
       Origin = 'dict_lable'
       Size = 40
     end
-    object fdQryDictValdict_val_memo: TStringField
-      FieldName = 'dict_val_memo'
-      Origin = 'dict_val_memo'
-      Size = 40
-    end
     object fdQryDictValdict_val_sort: TIntegerField
       FieldName = 'dict_val_sort'
       Origin = 'dict_val_sort'
+    end
+    object fdQryDictValdict_val_memo: TStringField
+      FieldName = 'dict_val_memo'
+      Origin = 'dict_val_memo'
+      Size = 100
     end
   end
 end

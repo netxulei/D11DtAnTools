@@ -1,20 +1,20 @@
 object frmSrcTabMaintain: TfrmSrcTabMaintain
   Left = 0
   Top = 0
-  Caption = #25968#25454#35268#33539#28304#34920#32500#25252
+  Caption = #25509#21475#35268#33539#28304#34920#32500#25252
   ClientHeight = 918
   ClientWidth = 1708
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
-  Font.Name = #24494#36719#38597#40657
+  Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 17
+  TextHeight = 15
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
     Top = 54
@@ -78,7 +78,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         EditButtons = <>
         FieldName = 'tab_name_cn'
         Footers = <>
-        Title.Caption = #25968#25454#35268#33539#28304#34920#20013#25991#21517#31216
+        Title.Caption = #25509#21475#35268#33539#28304#34920#20013#25991#21517#31216
         Width = 335
       end
       item
@@ -87,7 +87,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         EditButtons = <>
         FieldName = 'tab_name_en'
         Footers = <>
-        Title.Caption = #25968#25454#35268#33539#28304#34920#33521#25991#21517#31216
+        Title.Caption = #25509#21475#35268#33539#28304#34920#33521#25991#21517#31216
         Width = 190
       end
       item
@@ -127,7 +127,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = #20013#25991#23383#27573
-        Title.Hint = #36873#20013#21017#24314#31435#25968#25454#34920#26102#20351#29992#20013#25991#21517#31216#23383#27573#65292#21542#21017#20351#29992#33521#25991#21517#31216#23383#27573
+        Title.Hint = #36873#20013#21017#24314#31435#25968#25454#34920#26102#20351#29992#20013#25991#21517#31216#23383#27573#65288#33521#25991#21517#31216#23383#27573#21487#20026#31354#65289#65292#13#10#21542#21017#20351#29992#33521#25991#21517#31216#23383#27573#12290
         Width = 56
       end
       item
@@ -252,7 +252,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             FieldName = 'col_all_len'
             Footers = <>
             Title.Caption = #23383#27573#38271#24230
-            Title.Hint = #34920#36798#20869#23481#30340#23383#31526#20018#21487#21462#26368#22823#38271#24230#65307#34920#36798#20195#30721#30340#23383#31526#20018#21487#21462#23454#38469#20869#23481#30340#38271#24230#65307#25968#20540#22411#26681#25454#21487#33021#26368#22823#20540#21462#25968#23567#25968#28857#21069#20960#20301#38271#24230
+            Title.Hint = #33509#26377#8220#32534#30721#20851#32852#8221#65292#24212#21462#32534#30721#23545#24212#20449#24687#26368#22823#38271#24230#65307#13#10#33509#26080#8220#32534#30721#20851#32852#8221#65292#21462#32534#30721#26368#22823#38271#24230#65307#13#10#25968#20540#22411#26681#25454#21487#33021#26368#22823#20540#21462#25968#23567#25968#28857#21069#20960#20301#38271#24230#12290
           end
           item
             CellButtons = <>
@@ -300,6 +300,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           end
           item
             CellButtons = <>
+            DropDownBox.ColumnDefValues.EndEllipsis = True
+            DropDownBox.ColumnDefValues.Layout = tlCenter
+            DropDownRows = 10
             DropDownSizing = True
             DropDownSpecRow.CellsText = '<Null>'
             DropDownSpecRow.Visible = True
@@ -307,6 +310,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             EditButtons = <>
             FieldName = 'col_Dict'
             Footers = <>
+            Layout = tlCenter
+            LimitTextToListValues = True
             LookupParams.KeyFieldNames = 'col_Dict'
             LookupParams.LookupDataSet = fdQryDictList
             LookupParams.LookupDisplayFieldName = 'dict_type_name_cn'
@@ -401,7 +406,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
-        Font.Name = #24494#36719#38597#40657' Light'
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentCtl3D = False
         ParentFont = False
@@ -475,7 +480,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Left = 89
             Top = -2
             Hint = #23383#27573#31867#22411#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
-            Properties.DropDownListStyle = lsFixedList
+            Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
             Properties.KeyFieldNames = 'dict_type_id'
             Properties.ListColumns = <
               item
@@ -533,7 +538,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           Left = 985
           Top = 1
           Hint = #26657#39564#35268#21017#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
-          Properties.DropDownListStyle = lsFixedList
+          Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
           Properties.KeyFieldNames = 'dict_type_id'
           Properties.ListColumns = <
             item
@@ -563,7 +568,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
-    Font.Name = #24494#36719#38597#40657
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 1
@@ -629,8 +634,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     FlowStyle = fsTopBottomLeftRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = #24494#36719#38597#40657
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentCtl3D = False
     ParentFont = False
@@ -1516,6 +1521,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       end>
   end
   object fdQryDictList: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Active = True
+    Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       
         'select dict_type_id, dict_type_name_cn,dict_type_name_en from di' +

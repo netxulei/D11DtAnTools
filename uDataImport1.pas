@@ -16,7 +16,7 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, AdvUtil, AdvObj, BaseGrid, AdvGrid,
-  FireDAC.Comp.UI, LibXL, System.Diagnostics;
+  FireDAC.Comp.UI, LibXL, System.Diagnostics, U_ShowError;
 
 type
   TFrmDataImport = class(TForm)
@@ -69,8 +69,6 @@ type
     lbl3: TLabel;
     lbl_line: TLabel;
     strngrd1: TAdvStringGrid;
-    Edit1: TEdit;
-    Edit2: TEdit;
     lbledtValNo: TLabeledEdit;
     bitbtnErr: TBitBtn;
     rb1: TRadioButton;
@@ -92,6 +90,8 @@ type
     procedure btnExitClick(Sender: TObject);
     procedure rb1Click(Sender: TObject);
     procedure rb2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure bitbtnErrClick(Sender: TObject);
   private { Private declarations }
     type
 
@@ -220,6 +220,12 @@ begin
   strngrd1.setfocus;
 end;
 
+procedure TFrmDataImport.bitbtnErrClick(Sender: TObject);
+begin
+  Application.CreateForm(TF_showError, F_showError);
+  F_showError.ShowModal;
+end;
+
 procedure TFrmDataImport.btnExitClick(Sender: TObject);
 var
   s: string;
@@ -228,21 +234,7 @@ var
   i: Integer;
 
 begin
-  s := 'assd';
-  s := 'aaaaabbb' + s.QuotedString;
-  SetLength(sa, 6);
-  sa[0] := 'aaa';
-  sa[1] := '456';
-  sa[2] := 'bbb5';
-  sa[3] := 'wrw';
-  sa[4] := 'rwf';
-  sa[5] := 'sdfsf';
-  sl := TStringList.Create;
-  sl.StrictDelimiter := True;
-  sl.Delimiter := lblEdtSplt.Text[1];
-  sl.QuoteChar := lblEdtQalif.Text[1];
-  sl.DelimitedText := 'aaa|bbb';
-  // ShowMessage(IntToStr(findStrList(sa, sl)));
+  close;
   //
   // if TRegEx.IsMatch(Edit1.Text, Edit2.Text) then
   // begin
@@ -356,34 +348,34 @@ begin
       chkTXT.Checked := False;
 
     // 赋值参数,打开字段类型列表
-    FDQrySrcCol.Close;
+    FDQrySrcCol.close;
     FDQrySrcCol.ParamByName('tab_id').AsString := tab_id;
     // cxLCbBSrcTab.EditValue;
     FDQrySrcCol.Open();
   end;
 end;
 
+procedure TFrmDataImport.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  fdQrySrcTab.close;
+  FDQrySrcCol.close;
+end;
+
 procedure TFrmDataImport.FormCreate(Sender: TObject);
 begin
-  // t_connect:='DriverID=MSSQL;Server=.;OSAuthent=Yes;Database=';
+  if Length(Trim(t_proj_no)) = 0 then
+    lblProj.Caption := '---首先设置当前项目，才能实施数据分析---'
+  else
+    lblProj.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   // // 全局表
   // t_sys_dbname := 'hnxlsys';
-  // // 项目表
-  // t_Database := 'ZH_20210813102357';
-  // t_Database := 'ZH_2022021995141';
-  // ----------------
-  // FDConSys.Connected := False;
-  // FDConSys.ConnectionString := t_connect + t_sys_dbname + ';';
-  // FDConSys.Params.Add('DriverID=MSSQL');
-  // FDConSys.Params.Add('Server=.');
-  // FDConSys.Params.Add('Database=' + t_sys_dbname);
-  // FDConSys.Params.Add('OSAuthent=Yes');
-  // FDConSys.Connected := True;
+
   fdQrySrcTab.Connection := f_dt.FDConSys;
   FDQrySrcCol.Connection := f_dt.FDConSys;
   fdQrySrcTab.Open();
   FDQrySrcCol.Open();
   // 项目表
+  // t_Database := 'ZH_20210813102357';
   f_dt.FDConProj.Connected := False;
   f_dt.FDConProj.ConnectionString := t_connect + t_Database + ';';
 
@@ -433,18 +425,18 @@ begin
   if rgSelSrc.ItemIndex = 0 then
   begin
     globle_tab := '0';
-    FrmDataImport.Caption := '基于项目的数据采集（数据存于项目 仅本项目可用）';
+    FrmDataImport.Caption := '项目数据采集（数据存于项目 仅本项目可用）';
     sqltext := 'select * from src_table where GloImp = ' + '''0''' + ' order by tab_sort';
   end;
 
   if rgSelSrc.ItemIndex = 1 then
   begin
     globle_tab := '1';
-    FrmDataImport.Caption := '全局数据采集（数据存于系统 所有项目可用）';
+    FrmDataImport.Caption := '全局数据采集（数据存于系统 引用系统数据库使用）';
     sqltext := 'select * from src_table where GloImp = ' + '''1''' + ' order by tab_sort';
   end;
 
-  fdQrySrcTab.Close;
+  fdQrySrcTab.close;
   fdQrySrcTab.SQL.Clear;
   fdQrySrcTab.SQL.Add(sqltext);
   fdQrySrcTab.Open();
@@ -482,7 +474,7 @@ begin
 end;
 
 procedure TFrmDataImport.ValidData(s_filename: string; i_start, i_max_count: Integer; dis_or_Val: Char);
-// dis_or_Val:0显示，1校验
+// dis_or_Val:0预览，1校验
 var
   col_num, // column's amount    //源数据表字段个数，校验时比较数据字段长度使用
   title_count // 数据文件标题行或第一行（无标题行）字段个数
@@ -560,19 +552,19 @@ begin
     i_col := 0;
     while not FDQrySrcCol.eof do
     begin
-      a_Col_record[i_col].col_name_cn := VarToStrDef(FDQrySrcCol['col_name_cn'], '');
-      a_Col_record[i_col].col_name_en := VarToStrDef(FDQrySrcCol['col_name_en'], '');
-      a_Col_record[i_col].col_type := VarToStrDef(FDQrySrcCol['col_type'], '');
-      a_Col_record[i_col].col_all_len := VarToStrDef(FDQrySrcCol['col_all_len'], '');
-      a_Col_record[i_col].col_dot_len := VarToStrDef(FDQrySrcCol['col_dot_len'], '');
-      a_Col_record[i_col].col_Dict := VarToStrDef(FDQrySrcCol['col_Dict'], '');
-      a_Col_record[i_col].col_index := VarToStrDef(FDQrySrcCol['col_index'], '');
-      a_Col_record[i_col].col_rept := VarToStrDef(FDQrySrcCol['col_rept'], '');
-      a_Col_record[i_col].col_date_deal := VarToStrDef(FDQrySrcCol['col_date_deal'], '');
-      a_Col_record[i_col].col_xls_loc := VarToStrDef(FDQrySrcCol['col_xls_loc'], '');
-      a_Col_record[i_col].col_reg := VarToStrDef(FDQrySrcCol['col_reg'], '');
-      a_Col_record[i_col].col_reg_str := VarToStrDef(FDQrySrcCol['col_reg_str'], '');
-      a_Col_record[i_col].col_reg_ok := VarToStrDef(FDQrySrcCol['col_reg_ok'], '');
+      a_Col_record[i_col].col_name_cn := Trim(VarToStrDef(FDQrySrcCol['col_name_cn'], ''));
+      a_Col_record[i_col].col_name_en := Trim(VarToStrDef(FDQrySrcCol['col_name_en'], ''));
+      a_Col_record[i_col].col_type := Trim(VarToStrDef(FDQrySrcCol['col_type'], ''));
+      a_Col_record[i_col].col_all_len := Trim(VarToStrDef(FDQrySrcCol['col_all_len'], ''));
+      a_Col_record[i_col].col_dot_len := Trim(VarToStrDef(FDQrySrcCol['col_dot_len'], ''));
+      a_Col_record[i_col].col_Dict := Trim(VarToStrDef(FDQrySrcCol['col_Dict'], ''));
+      a_Col_record[i_col].col_index := Trim(VarToStrDef(FDQrySrcCol['col_index'], ''));
+      a_Col_record[i_col].col_rept := Trim(VarToStrDef(FDQrySrcCol['col_rept'], ''));
+      a_Col_record[i_col].col_date_deal := Trim(VarToStrDef(FDQrySrcCol['col_date_deal'], ''));
+      a_Col_record[i_col].col_xls_loc := Trim(VarToStrDef(FDQrySrcCol['col_xls_loc'], ''));
+      a_Col_record[i_col].col_reg := Trim(VarToStrDef(FDQrySrcCol['col_reg'], ''));
+      a_Col_record[i_col].col_reg_str := Trim(VarToStrDef(FDQrySrcCol['col_reg_str'], ''));
+      a_Col_record[i_col].col_reg_ok := Trim(VarToStrDef(FDQrySrcCol['col_reg_ok'], ''));
       // --------------------
       if is_chn_col = '1' then // col_name建表语句使用，确定此处中文或英文字段
         a_Col_record[i_col].col_name := a_Col_record[i_col].col_name_cn
@@ -787,6 +779,7 @@ begin
         Continue;
       end;
       sl_count := slColumName.Count; // 当前数据列数
+
 {$REGION '校验数据'}
       if dis_or_Val = '1' then
       begin
@@ -884,17 +877,21 @@ begin
     end;
 
     // 显示数据字段长度
-    grd_row := strngrd1.RowCount;
-    strngrd1.RowCount := grd_row + 2; // grid增加2行
-    strngrd1.Cells[0, grd_row] := '各字段长度(含空格)';
-    strngrd1.Cells[0, grd_row + 1] := '各字段长度(无空格)';
     i_a_col_len := Length(MaxColLen); // 数组长度
-    for i_col := 1 to i_a_col_len do // 写入长度数据
+    if i_a_col_len > 0 then
     begin
-      strngrd1.Cells[i_col, grd_row] := IntToStr(MaxColLen[i_col - 1]);
-      strngrd1.Cells[i_col, grd_row + 1] := IntToStr(MaxColLen_no[i_col - 1]);
-      strngrd1.ColWidths[i_col] := Max(MaxColLen_no[i_col - 1] * 7, 80);
-      // 设置每列宽度
+      grd_row := strngrd1.RowCount;
+      strngrd1.RowCount := grd_row + 2; // grid增加2行
+      strngrd1.Cells[0, grd_row] := '各字段长度(含空格)';
+      strngrd1.Cells[0, grd_row + 1] := '各字段长度(无空格)';
+
+      for i_col := 1 to i_a_col_len do // 写入长度数据
+      begin
+        strngrd1.Cells[i_col, grd_row] := IntToStr(MaxColLen[i_col - 1]);
+        strngrd1.Cells[i_col, grd_row + 1] := IntToStr(MaxColLen_no[i_col - 1]);
+        strngrd1.ColWidths[i_col] := Max(MaxColLen_no[i_col - 1] * 7, 80);
+        // 设置每列宽度
+      end;
     end;
 
     if dis_col = 1 then // 最后显示源数据表字段名长度
@@ -1237,7 +1234,7 @@ begin
   // pnl1.Enabled := False;
   // pnl2.Enabled := False;
   // pnl3.Enabled := False;
-  fdqryTmp.Connection := f_dt.FDConSYS;
+  fdqryTmp.Connection := f_dt.FDConSys;
   col_name_def := '(';
   col_name_insert := '';
   col_name_deal := '';
@@ -1292,7 +1289,7 @@ begin
         .col_Dict.QuotedString;
       // ShowMessage(sqltext);
       // exit;
-      fdqryTmp.Close;
+      fdqryTmp.close;
       fdqryTmp.SQL.Clear;
       fdqryTmp.SQL.Add(sqltext);
       fdqryTmp.Open;
@@ -1319,7 +1316,7 @@ begin
         else
           col_name_deal := col_name_deal + a_Col_record[i].col_name + ',';
       end;
-      fdqryTmp.Close;
+      fdqryTmp.close;
     end
     else // 非编码字段处理
     begin
@@ -1358,14 +1355,14 @@ begin
   // 根据源表选择数据库链接
 
   if globle_tab = '0' then
-    fdQryExec.Connection := F_DT.FDConProj
+    fdQryExec.Connection := f_dt.FDConProj
   else
-    fdQryExec.Connection := F_DT.FDConSys;
+    fdQryExec.Connection := f_dt.FDConSys;
 
   t1 := Now(); // 获取开始计时时间
   // -------------------------删除临时表-------导入临时表设定为了可以增量导入---------------
   fdQryExec.DisableControls;
-  fdQryExec.Close;
+  fdQryExec.close;
   fdQryExec.SQL.Clear;
   sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' +
     ') AND type in (N' + '''' + 'U' + '''' + '))' + ' DROP TABLE [dbo].[tb_tmp]';
@@ -1420,7 +1417,7 @@ begin
     fdQryExec.SQL.Add(sqltext);
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
-    fdQryExec.Close;
+    fdQryExec.close;
   end;
 
   if cbbCode.ItemIndex = 0 then
@@ -1537,7 +1534,7 @@ begin
       fdQryExec.Prepared;
       fdQryExec.ExecSQL;
     end;
-    fdqryTmp.Close;
+    fdqryTmp.close;
   end;
   mmo2.Lines.Add('数据正在入库……');
   // --------insert from bulk---------处理字段，用col_name_deal，否则用col_name_insert-------------------
@@ -1626,7 +1623,7 @@ begin
   i_dst_cnt_all := fdQryExec['cnt']; // 目标表最终记录数
   if i_dst_cnt = 0 then // 目标表原始记录数若为0，
     i_tmp_cnt := i_dst_cnt_all;
-  fdQryExec.Close;
+  fdQryExec.close;
   mmo2.Lines.Add('建立索引……');
   // ===建立目标表的非聚集索引===
   if Length(col_ind_name_s) > 0 then // 若存在索引
@@ -1763,7 +1760,7 @@ begin
   // pnl1.Enabled := False;
   // pnl2.Enabled := False;
   // pnl3.Enabled := False;
-  fdqryTmp.Connection := F_DT.FDConSys;
+  fdqryTmp.Connection := f_dt.FDConSys;
   col_name_def := '(';
   col_name_insert := '';
   col_name_deal := '';
@@ -1818,7 +1815,7 @@ begin
         .col_Dict.QuotedString;
       // ShowMessage(sqltext);
       // exit;
-      fdqryTmp.Close;
+      fdqryTmp.close;
       fdqryTmp.SQL.Clear;
       fdqryTmp.SQL.Add(sqltext);
       fdqryTmp.Open;
@@ -1845,7 +1842,7 @@ begin
         else
           col_name_deal := col_name_deal + a_Col_record[i].col_name + ',';
       end;
-      fdqryTmp.Close;
+      fdqryTmp.close;
     end
     else // 非编码字段处理
     begin
@@ -1884,14 +1881,14 @@ begin
   // 根据源表选择数据库链接
 
   if globle_tab = '0' then
-    fdQryExec.Connection := F_DT.FDConProj
+    fdQryExec.Connection := f_dt.FDConProj
   else
-    fdQryExec.Connection := F_DT.FDConSys;
+    fdQryExec.Connection := f_dt.FDConSys;
 
   t1 := Now(); // 获取开始计时时间
   // -------------------------删除临时表-------导入临时表设定为了可以增量导入---------------
   fdQryExec.DisableControls;
-  fdQryExec.Close;
+  fdQryExec.close;
   fdQryExec.SQL.Clear;
   sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' +
     ') AND type in (N' + '''' + 'U' + '''' + '))' + ' DROP TABLE [dbo].[tb_tmp]';
@@ -1946,7 +1943,7 @@ begin
     fdQryExec.SQL.Add(sqltext);
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
-    fdQryExec.Close;
+    fdQryExec.close;
   end;
 
   // 清空导入，直接导入到表中，增量导入托工tmp表过渡，有个查重的问题
@@ -2000,7 +1997,7 @@ begin
       fdQryExec.Prepared;
       fdQryExec.ExecSQL;
     end;
-    fdqryTmp.Close;
+    fdqryTmp.close;
   end;
   mmo2.Lines.Add('数据正在入库……');
 {$ENDREGION}
@@ -2233,7 +2230,7 @@ begin
   finally
     sl_col_xls_cloc.Free;
     xlBook.Free;
-    fdQryExec.Close;
+    fdQryExec.close;
   end;
 
   // -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2309,7 +2306,7 @@ begin
   i_dst_cnt_all := fdQryExec['cnt']; // 目标表最终记录数
   if i_dst_cnt = 0 then // 目标表原始记录数若为0，
     i_tmp_cnt := i_dst_cnt_all;
-  fdQryExec.Close;
+  fdQryExec.close;
   mmo2.Lines.Add('建立索引……');
   // ===建立目标表的非聚集索引===
   if Length(col_ind_name_s) > 0 then // 若存在索引
@@ -2447,7 +2444,7 @@ begin
   // pnl1.Enabled := False;
   // pnl2.Enabled := False;
   // pnl3.Enabled := False;
-  fdqryTmp.Connection := F_DT.FDConSys;
+  fdqryTmp.Connection := f_dt.FDConSys;
   col_name_def := '(';
   col_name_insert := '';
   col_name_param := ''; // 参数字段
@@ -2510,7 +2507,7 @@ begin
         .col_Dict.QuotedString;
       // ShowMessage(sqltext);
       // exit;
-      fdqryTmp.Close;
+      fdqryTmp.close;
       fdqryTmp.SQL.Clear;
       fdqryTmp.SQL.Add(sqltext);
       fdqryTmp.Open;
@@ -2537,7 +2534,7 @@ begin
         else
           col_name_deal := col_name_deal + a_Col_record[i].col_name + ',';
       end;
-      fdqryTmp.Close;
+      fdqryTmp.close;
     end
     else // 非编码字段处理
     begin
@@ -2576,16 +2573,16 @@ begin
   // 根据源表选择数据库链接
 
   if globle_tab = '0' then
-    fdQryExec.Connection := F_DT.FDConProj
+    fdQryExec.Connection := f_dt.FDConProj
   else
-    fdQryExec.Connection := F_DT.FDConSys;
+    fdQryExec.Connection := f_dt.FDConSys;
 
   t1 := Now(); // 获取开始计时时间
   // StopWatch := TStopWatch.StartNew;
 
   // -------------------------删除临时表-------导入临时表设定为了可以增量导入---------------
   fdQryExec.DisableControls;
-  fdQryExec.Close;
+  fdQryExec.close;
   fdQryExec.SQL.Clear;
   sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' +
     ') AND type in (N' + '''' + 'U' + '''' + '))' + ' DROP TABLE [dbo].[tb_tmp]';
@@ -2640,7 +2637,7 @@ begin
     fdQryExec.SQL.Add(sqltext);
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
-    fdQryExec.Close;
+    fdQryExec.close;
   end;
 
   // 清空导入，直接导入到表中，增量导入托工tmp表过渡，有个查重的问题
@@ -2694,7 +2691,7 @@ begin
       fdQryExec.Prepared;
       fdQryExec.ExecSQL;
     end;
-    fdqryTmp.Close;
+    fdqryTmp.close;
   end;
   mmo2.Lines.Add('数据正在入库……');
 {$ENDREGION}
@@ -2936,7 +2933,7 @@ begin
   finally
     sl_col_xls_cloc.Free;
     xlBook.Free;
-    fdQryExec.Close;
+    fdQryExec.close;
   end;
 
   // -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3012,7 +3009,7 @@ begin
   i_dst_cnt_all := fdQryExec['cnt']; // 目标表最终记录数
   if i_dst_cnt = 0 then // 目标表原始记录数若为0，
     i_tmp_cnt := i_dst_cnt_all;
-  fdQryExec.Close;
+  fdQryExec.close;
   mmo2.Lines.Add('建立索引……');
   // ===建立目标表的非聚集索引===
   if Length(col_ind_name_s) > 0 then // 若存在索引

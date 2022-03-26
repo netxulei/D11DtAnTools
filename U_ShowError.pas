@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, cxControls, cxContainer, cxEdit, cxTextEdit,
-  cxMemo, ExtCtrls, cxLabel;
+  cxMemo, ExtCtrls, cxLabel, cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore, dxSkinsDefaultPainters;
 
 type
   TF_showError = class(TForm)

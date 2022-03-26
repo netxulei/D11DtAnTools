@@ -3,7 +3,7 @@ unit main;
 interface
 
 uses
-  RegularExpressions, U_ShowError, FindPublic, FormColSelect, U_DT, U_float, U_Common, cxGraphics,
+  RegularExpressions, FindPublic, FormColSelect, U_DT, U_float, U_Common, cxGraphics,
   cxCustomData, cxStyles, cxTL, cxMaskEdit, DBGridEhGrouping, MemTableDataEh, DB,
   ADODB, PropFilerEh, PropStorageEh, DataDriverEh, ADODataDriverEh, MemTableEh,
   Dialogs, Classes, ActnList, StdActns, Menus, ImgList, Controls, StdCtrls,
@@ -24,11 +24,11 @@ uses
 type
   TMainFrm = class(TForm)
     MainMenu1: TMainMenu;
-    N1: TMenuItem;
+    MnProjData: TMenuItem;
     MnPass: TMenuItem;
     MnUser: TMenuItem;
     N9: TMenuItem;
-    N10: TMenuItem;
+    MnExit: TMenuItem;
     cxDBTreeList1: TcxDBTreeList;
     dsTree: TDataSource;
     cxDBTreeList1t_name: TcxDBTreeListColumn;
@@ -63,7 +63,7 @@ type
     OpenDialog1: TOpenDialog;
     SaveDialog2: TSaveDialog;
     N20: TMenuItem;
-    N31: TMenuItem;
+    MnHelp: TMenuItem;
     N32: TMenuItem;
     N33: TMenuItem;
     N34: TMenuItem;
@@ -102,8 +102,6 @@ type
     Panel3: TPanel;
     N38: TMenuItem;
     N39: TMenuItem;
-    N_Err: TMenuItem;
-    N40: TMenuItem;
     lblHlp: TLabel;
     lblResult: TLabel;
     lblInfo: TLabel;
@@ -160,6 +158,7 @@ type
     dlgSaveAssis: TSaveDialog;
     chkAfterOpen: TCheckBox;
     chkAssisDis: TCheckBox;
+    N5: TMenuItem;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
@@ -169,7 +168,7 @@ type
     function Auto_proc(): Boolean;
     function Disp_txn(): Boolean;
     function table_visable(): Boolean;
-    procedure N10Click(Sender: TObject);
+    procedure MnExitClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure N24Click(Sender: TObject);
@@ -213,7 +212,6 @@ type
     procedure N_ProjClick(Sender: TObject);
     procedure M_DR_SAZH1Click(Sender: TObject);
     procedure dbgrdh1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure N_ErrClick(Sender: TObject);
     procedure M_DR_FXZHClick(Sender: TObject);
     procedure M_DR_FXDWClick(Sender: TObject);
     procedure M_DR_FXGRClick(Sender: TObject);
@@ -737,7 +735,7 @@ begin
   // end;
 end;
 
-procedure TMainFrm.N10Click(Sender: TObject);
+procedure TMainFrm.MnExitClick(Sender: TObject);
 begin
   close;
 end;
@@ -763,7 +761,7 @@ begin
   // chk1.Caption := t_table2_name;
   // btn_jy.Left := chk1.Left + chk1.Width;
   // 单击显示交易按钮，视为防治从表显示过慢，delphi11fireDac有了新机制可以不用此按钮类
-  cxspltr3.Hint := '单击显示、隐藏或移动' + t_table1_name;
+  // cxspltr3.Hint := '单击显示、隐藏或移动' + t_table1_name;
   // cxspltr4.Hint := '单击显示、隐藏或移动' + t_table2_name;
   s_filename := ExtractFilePath(ParamStr(0));
   inprpstrgmnh1.IniFileName := s_filename + 'zh_layout'; // 保存的drid样式
@@ -828,9 +826,9 @@ procedure TMainFrm.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   s_filename: string;
 begin
-//  s_filename := ExtractFilePath(ParamStr(0));
-//  inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
-//  prpstrgh1.SaveProperties;
+  // s_filename := ExtractFilePath(ParamStr(0));
+  // inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
+  // prpstrgh1.SaveProperties;
   // ADOQ1.close;
   // ADOQ2.close;
   F_DT.FDConSYS.Connected := False;
@@ -1897,12 +1895,6 @@ procedure TMainFrm.dbgrdh1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftSta
 begin
   if ((Key = VK_UP) or (Key = VK_DOWN) or (Key = VK_PRIOR) or (Key = VK_NEXT)) and chkAssis.Checked then
     bitbtnAssis.Click;
-end;
-
-procedure TMainFrm.N_ErrClick(Sender: TObject);
-begin
-  Application.CreateForm(TF_showError, F_showError);
-  F_showError.ShowModal;
 end;
 
 procedure TMainFrm.M_DR_FXZHClick(Sender: TObject);

@@ -102,20 +102,21 @@ type
     procedure bitbtnValUpClick(Sender: TObject);
     procedure bitbtnValDownClick(Sender: TObject);
     procedure bitbtnExitClick(Sender: TObject);
-    procedure fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
-    procedure fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+    procedure fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
+    procedure fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
     procedure cxLookupComboBoxDictListPropertiesEditValueChanged(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxLookupComboBoxRegPropertiesEditValueChanged(Sender: TObject);
-  private    { Private declarations }
+  private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
-  public    { Public declarations }
+  public { Public declarations }
   end;
 
 var
   frmSrcTabMaintain: TfrmSrcTabMaintain;
-
 
 implementation
 
@@ -223,7 +224,7 @@ begin
     // 默认字段列表
     // fdQryDictList.First;
     fdQrySrcCol['col_type'] := col_type;
-    fdQrySrcCol['col_index'] := '0';    //强制校验默认为不强制，即校验不通过也可以导入，只是影响分析精准度
+    fdQrySrcCol['col_index'] := '0'; // 强制校验默认为不强制，即校验不通过也可以导入，只是影响分析精准度
     fdQrySrcCol['col_rept'] := '0';
     fdQrySrcCol['col_date_deal'] := '0';
     fdQrySrcCol['col_reg_ok'] := '0';
@@ -256,12 +257,14 @@ begin
   end;
 end;
 
-procedure TfrmSrcTabMaintain.fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+procedure TfrmSrcTabMaintain.fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest;
+  var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
 end;
 
-procedure TfrmSrcTabMaintain.fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+procedure TfrmSrcTabMaintain.fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest;
+  var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
 end;
@@ -360,7 +363,7 @@ end;
 
 procedure TfrmSrcTabMaintain.bitbtnExitClick(Sender: TObject);
 begin
-  Close;
+  close;
   // dict_list_col := '9DA1A56BB935419182BDAB4C86ABF003';
   // fdQryDictList.locate('dict_type_id', dict_list_col, []);
   // cxLookupComboBoxDictList.EditValue := '9DA1A56BB935419182BDAB4C86ABF003';
@@ -529,7 +532,7 @@ begin
     MyIniFile := TIniFile.Create(iniFilename);
     MyIniFile.WriteString('Other', 'dict_list_col', dict_list_col);
     MyIniFile.Free; // ……
-    ShowMessage('write to ini file');
+    // ShowMessage('write to ini file');
   end;
   // 赋值参数,打开字段类型列表
   fdQryColType.close;
@@ -552,7 +555,7 @@ begin
     MyIniFile := TIniFile.Create(iniFilename);
     MyIniFile.WriteString('Other', 'dict_list_reg', dict_list_reg);
     MyIniFile.Free; // ……
-    ShowMessage('write to ini file');
+    // ShowMessage('write to ini file');
   end;
   // 赋值参数,打开字段类型列表
   fdQryReg.close;
@@ -565,7 +568,8 @@ begin
 {$IF CompilerVersion >= 29.0}
   ToggleButtons(FDSchemaAdapterAll.UpdatesPending);
   if FDSchemaAdapterAll.UpdatesPending then
-    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。字典类型表有' + fdQrySrcTab.ChangeCount.ToString + ' 条，字典值表中有' + fdQrySrcCol.ChangeCount.ToString + '条。'
+    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。字典类型表有' +
+      fdQrySrcTab.ChangeCount.ToString + ' 条，字典值表中有' + fdQrySrcCol.ChangeCount.ToString + '条。'
   else
 {$ENDIF}
     StatusBar1.SimpleText := '存盘前没有记录改变';
@@ -579,4 +583,3 @@ begin
 end;
 
 end.
-

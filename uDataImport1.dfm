@@ -12,6 +12,7 @@ object FrmDataImport: TFrmDataImport
   Font.Style = []
   KeyPreview = True
   Position = poScreenCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   PixelsPerInch = 96
@@ -44,7 +45,8 @@ object FrmDataImport: TFrmDataImport
       Top = 24
       Margins.Bottom = 0
       ParentFont = False
-      Properties.DropDownListStyle = lsFixedList
+      Properties.DropDownSizeable = True
+      Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
       Properties.KeyFieldNames = 'tab_id'
       Properties.ListColumns = <
         item
@@ -55,6 +57,7 @@ object FrmDataImport: TFrmDataImport
         end>
       Properties.ListOptions.ShowHeader = False
       Properties.ListSource = dsSrcTab
+      Properties.ReadOnly = False
       Properties.OnEditValueChanged = cxLCbBSrcTabPropertiesEditValueChanged
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
@@ -119,22 +122,6 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 5
       OnClick = btnImpTxtClick
     end
-    object Edit1: TEdit
-      Left = 1143
-      Top = 18
-      Width = 154
-      Height = 28
-      TabOrder = 6
-      Text = 'Edit1'
-    end
-    object Edit2: TEdit
-      Left = 1007
-      Top = 18
-      Width = 130
-      Height = 28
-      TabOrder = 7
-      Text = '0'
-    end
     object rb1: TRadioButton
       Left = 490
       Top = 5
@@ -148,7 +135,7 @@ object FrmDataImport: TFrmDataImport
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
-      TabOrder = 8
+      TabOrder = 6
       TabStop = True
       OnClick = rb1Click
     end
@@ -164,7 +151,7 @@ object FrmDataImport: TFrmDataImport
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
-      TabOrder = 9
+      TabOrder = 7
       OnClick = rb2Click
     end
     object chkReptCol: TCheckBox
@@ -182,7 +169,7 @@ object FrmDataImport: TFrmDataImport
       Font.Style = []
       ParentFont = False
       State = cbChecked
-      TabOrder = 10
+      TabOrder = 8
     end
   end
   object pnl3: TPanel
@@ -612,6 +599,7 @@ object FrmDataImport: TFrmDataImport
       ShowHint = True
       TabOrder = 7
       WordWrap = True
+      OnClick = bitbtnErrClick
     end
   end
   object pnl4: TPanel

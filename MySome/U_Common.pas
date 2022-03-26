@@ -25,11 +25,11 @@ var
   t_proj_no, t_proj_name, // 项目编号和名称
   t_Database, t_ZHSys_Date, // 项目数据库和系统数据库
   t_bank_code: string;
-  t_table1_name, t_table2_name, // 附属表名称
-  t_table1_name_other, t_table2_name_other: string;
+  // t_table1_name, t_table2_name, // 附属表名称
+  // t_table1_name_other, t_table2_name_other: string;
   // t_Getdata_Mod, t_Getdata_Mod_yh: string;
-  t_table1_sql_dw, t_table2_sql_dw, t_table1_sql_gr, t_table2_sql_gr, t_table1_sql_other, t_table2_sql_other: string;
-  t_table2_sql_order, t_table2_other_order: string;
+  // t_table1_sql_dw, t_table2_sql_dw, t_table1_sql_gr, t_table2_sql_gr, t_table1_sql_other, t_table2_sql_other: string;
+  // t_table2_sql_order, t_table2_other_order: string;
   t_key_name, t_ver_no, t_ver_name, t_TimeOut, t_Jclj_Ver, t_Jrjgbm: string;
   t_key_nameLS, t_ver_noLS, t_ver_nameLS: TStrings;
   t_Last_RHZH_EX, t_Last_RHJX_EX, t_Last_RHZH_DW, t_Last_RHZH_GR, t_Last_SHZH_DW, t_Last_SHZH_GR, t_Last_SHJY_DW,
@@ -220,7 +220,7 @@ begin
     sl_param.Free;
     exit;
   end;
-  //校验后返回类型是否存储过程（自动执行时函数不能执行，只执行存储过程）
+  // 校验后返回类型是否存储过程（自动执行时函数不能执行，只执行存储过程）
   if (procFlag = '1') then
     t_isProc := True
   else
@@ -607,7 +607,8 @@ var
   readSize: Int64;
   context: AnsiString;
 const
-  MaxReadSize: Int64 = 536870912; // 最多读取512M数据判断
+//  MaxReadSize: Int64 = 536870912; // 最多读取512M数据判断
+  MaxReadSize: Int64 = 104857600;  // 最多读取100M数据判断
 begin
 
   fStream := TBufferedFileStream.Create(fileName, fmOpenRead or fmShareDenyNone, 32768);

@@ -21,6 +21,7 @@ type
     imgLstStat: TImageList;
     FDConSQLite: TFDConnection;
     FDqryTmp: TFDQuery;
+    imgLstBtn: TImageList;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
