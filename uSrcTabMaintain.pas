@@ -43,7 +43,6 @@ type
     bitbtnUndoOnce: TBitBtn;
     bitbtnUndoAll: TBitBtn;
     bitbtnExport: TBitBtn;
-    bitbtnImport: TBitBtn;
     bitbtnSave: TBitBtn;
     bitbtnExit: TBitBtn;
     StatusBar1: TStatusBar;

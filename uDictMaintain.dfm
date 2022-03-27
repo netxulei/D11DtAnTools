@@ -7,19 +7,20 @@ object frmDictMaintain: TfrmDictMaintain
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
-  Font.Name = #24494#36719#38597#40657
+  Font.Height = -15
+  Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
-  TextHeight = 17
+  TextHeight = 20
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
-    Top = 54
+    Top = 61
     Width = 1295
-    Height = 682
+    Height = 675
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
@@ -30,11 +31,17 @@ object frmDictMaintain: TfrmDictMaintain
     DataSource = dsDictType
     DynProps = <>
     EditActions = [geaCopyEh]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     HorzScrollBar.ExtraPanel.Visible = True
     HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
     IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
     Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
+    ParentFont = False
     ParentShowHint = False
     RowDetailPanel.Active = True
     RowDetailPanel.Height = 173
@@ -76,6 +83,11 @@ object frmDictMaintain: TfrmDictMaintain
         FieldName = 'dict_type_name_cn'
         Footers = <>
         Title.Caption = #23383#20856#31867#22411#20013#25991#21517#31216
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
         Width = 335
       end
       item
@@ -85,6 +97,11 @@ object frmDictMaintain: TfrmDictMaintain
         FieldName = 'dict_type_name_en'
         Footers = <>
         Title.Caption = #23383#20856#31867#22411#33521#25991#21517#31216
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
         Width = 158
       end
       item
@@ -94,12 +111,17 @@ object frmDictMaintain: TfrmDictMaintain
         FieldName = 'dict_type_memo'
         Footers = <>
         Title.Caption = #35828#26126
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -15
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = [fsBold]
       end>
     object RowDetailData: TRowDetailPanelControlEh
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 569
+        Width = 1223
         Height = 136
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -112,12 +134,18 @@ object frmDictMaintain: TfrmDictMaintain
         DataSource = dsDictVal
         DynProps = <>
         EditActions = [geaCopyEh]
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Style = []
         HorzScrollBar.ExtraPanel.Visible = True
         HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
         HorzScrollBar.VisibleMode = sbAlwaysShowEh
         IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
         Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
         OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
+        ParentFont = False
         ParentShowHint = False
         ShowHint = True
         TabOrder = 0
@@ -154,6 +182,11 @@ object frmDictMaintain: TfrmDictMaintain
             FieldName = 'dict_val'
             Footers = <>
             Title.Caption = #23383#20856#20540
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -13
+            Title.Font.Name = 'Segoe UI'
+            Title.Font.Style = [fsBold]
           end
           item
             CellButtons = <>
@@ -162,6 +195,11 @@ object frmDictMaintain: TfrmDictMaintain
             FieldName = 'dict_lable'
             Footers = <>
             Title.Caption = #23383#20856#20013#25991#21517#31216
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -13
+            Title.Font.Name = 'Segoe UI'
+            Title.Font.Style = [fsBold]
             Width = 261
           end
           item
@@ -171,6 +209,11 @@ object frmDictMaintain: TfrmDictMaintain
             FieldName = 'dict_val_memo'
             Footers = <>
             Title.Caption = #35828#26126
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -13
+            Title.Font.Name = 'Segoe UI'
+            Title.Font.Style = [fsBold]
             Width = 303
           end>
         object RowDetailData: TRowDetailPanelControlEh
@@ -179,14 +222,14 @@ object frmDictMaintain: TfrmDictMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 569
-        Height = 52
+        Width = 1223
+        Height = 27
         Align = alTop
         AutoSize = True
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #24494#36719#38597#40657' Light'
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
         TabOrder = 1
@@ -229,8 +272,8 @@ object frmDictMaintain: TfrmDictMaintain
           OnClick = bitbtnValUpClick
         end
         object bitbtnValDown: TBitBtn
-          Left = 1
-          Top = 26
+          Left = 553
+          Top = 1
           Width = 61
           Height = 25
           Caption = #19979#31227
@@ -240,15 +283,15 @@ object frmDictMaintain: TfrmDictMaintain
           OnClick = bitbtnValDownClick
         end
         object FlowPanel1: TFlowPanel
-          Left = 62
-          Top = 26
+          Left = 614
+          Top = 1
           Width = 307
           Height = 24
           Align = alRight
           FlowStyle = fsRightLeftBottomTop
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
+          Font.Height = -15
           Font.Name = #24494#36719#38597#40657' Light'
           Font.Style = []
           ParentFont = False
@@ -259,18 +302,19 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object flwpnlDictType: TFlowPanel
     Left = 0
-    Top = 27
+    Top = 34
     Width = 1295
     Height = 27
     Align = alTop
     AutoSize = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -15
     Font.Name = #24494#36719#38597#40657
     Font.Style = []
     ParentFont = False
     TabOrder = 1
+    ExplicitTop = 27
     object dbnvgrDictType: TDBNavigator
       Left = 1
       Top = 1
@@ -305,8 +349,14 @@ object frmDictMaintain: TfrmDictMaintain
       Width = 59
       Height = 25
       Caption = #19978#31227
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       ImageIndex = 2
       Images = imgLstBtn
+      ParentFont = False
       TabOrder = 1
       OnClick = bitbtnTypeUpClick
     end
@@ -316,8 +366,14 @@ object frmDictMaintain: TfrmDictMaintain
       Width = 72
       Height = 25
       Caption = #19979#31227
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       ImageIndex = 3
       Images = imgLstBtn
+      ParentFont = False
       TabOrder = 2
       OnClick = bitbtnTypeDownClick
     end
@@ -326,7 +382,7 @@ object frmDictMaintain: TfrmDictMaintain
     Left = 0
     Top = 0
     Width = 1295
-    Height = 27
+    Height = 34
     Align = alTop
     AutoSize = True
     Ctl3D = True
@@ -342,8 +398,9 @@ object frmDictMaintain: TfrmDictMaintain
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
-      Width = 88
-      Height = 25
+      Width = 144
+      Height = 32
+      Align = alLeft
       Caption = #25764#38144#19968#27425
       ImageIndex = 4
       Images = imgLstBtn
@@ -351,56 +408,50 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = bitbtnUndoOnceClick
     end
     object bitbtnUndoAll: TBitBtn
-      Left = 89
+      Left = 145
       Top = 1
-      Width = 88
-      Height = 25
+      Width = 144
+      Height = 32
       Caption = #25764#38144#25152#26377
       ImageIndex = 5
       Images = imgLstBtn
       TabOrder = 1
       OnClick = bitbtnUndoAllClick
     end
-    object bitbtnExport: TBitBtn
-      Left = 177
-      Top = 1
-      Width = 88
-      Height = 25
-      Caption = #23548#20986
-      ImageIndex = 6
-      Images = imgLstBtn
-      TabOrder = 2
-    end
-    object bitbtnImport: TBitBtn
-      Left = 265
-      Top = 1
-      Width = 88
-      Height = 25
-      Caption = #23548#20837
-      ImageIndex = 7
-      Images = imgLstBtn
-      TabOrder = 3
-    end
     object bitbtnSave: TBitBtn
-      Left = 353
+      Left = 289
       Top = 1
-      Width = 88
-      Height = 25
+      Width = 144
+      Height = 32
       Caption = #20445#23384
       ImageIndex = 8
       Images = imgLstBtn
-      TabOrder = 4
+      TabOrder = 2
       OnClick = bitbtnSaveClick
     end
+    object bitbtnExport: TBitBtn
+      Left = 433
+      Top = 1
+      Width = 144
+      Height = 32
+      Hint = #23548#20986'Excel'#26041#20415#32534#20889#27169#22411#20195#30721#26597#38405
+      Caption = #23548#20986'Excel'
+      ImageIndex = 6
+      Images = imgLstBtn
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+      OnClick = bitbtnExportClick
+    end
     object bitbtnExit: TBitBtn
-      Left = 441
+      Left = 577
       Top = 1
       Width = 88
-      Height = 25
+      Height = 32
       Caption = #36864#20986
       ImageIndex = 10
       Images = imgLstBtn
-      TabOrder = 5
+      TabOrder = 4
       OnClick = bitbtnExitClick
     end
   end
@@ -1067,6 +1118,7 @@ object frmDictMaintain: TfrmDictMaintain
     OnUpdateRecord = fdQryDictValUpdateRecord
     Connection = F_DT.FDConSysTmp
     SchemaAdapter = FDSchemaAdapterAll
+    FetchOptions.AssignedValues = [evDetailCascade]
     SQL.Strings = (
       
         'SELECT * FROM Dict_val WHERE dict_type_id = :dict_type_id order ' +
@@ -1121,5 +1173,12 @@ object frmDictMaintain: TfrmDictMaintain
       Origin = 'dict_val_memo'
       Size = 100
     end
+  end
+  object dlgSave1: TSaveDialog
+    FileName = 'file1'
+    Filter = 'Exce2007'#20197#19978#25991#20214' (*.xlsx)|*.XLSX|Exce97-2003'#25991#20214' (*.xls)|*.XLS'
+    Title = #23548#20986'Excel'#25991#20214
+    Left = 140
+    Top = 130
   end
 end

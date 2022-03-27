@@ -11,6 +11,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
+  WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -667,41 +668,34 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Top = 1
       Width = 88
       Height = 25
-      Caption = #23548#20986
+      Hint = #23548#20986'Excel'#26041#20415#32534#20889#27169#22411#20195#30721#26597#38405
+      Caption = #23548#20986'Excel'
       ImageIndex = 6
       Images = imgLstBtn
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
     end
-    object bitbtnImport: TBitBtn
-      Left = 265
-      Top = 1
-      Width = 88
-      Height = 25
-      Caption = #23548#20837
-      ImageIndex = 7
-      Images = imgLstBtn
-      TabOrder = 3
-    end
     object bitbtnSave: TBitBtn
-      Left = 353
+      Left = 265
       Top = 1
       Width = 88
       Height = 25
       Caption = #20445#23384
       ImageIndex = 8
       Images = imgLstBtn
-      TabOrder = 4
+      TabOrder = 3
       OnClick = bitbtnSaveClick
     end
     object bitbtnExit: TBitBtn
-      Left = 441
+      Left = 353
       Top = 1
       Width = 88
       Height = 25
       Caption = #36864#20986
       ImageIndex = 10
       Images = imgLstBtn
-      TabOrder = 5
+      TabOrder = 4
       OnClick = bitbtnExitClick
     end
   end
@@ -1522,7 +1516,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQryDictList: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       

@@ -1465,8 +1465,8 @@ begin
   F_import.ShowModal;
   if Length(Trim(t_proj_no)) > 0 then
   begin
-    // del_proc(); // 删除存储过程
-    // Auto_proc() // 自动执行的存储过程
+     del_proc(); // 删除存储过程
+     Auto_proc() // 自动执行的存储过程
   end;
   // ADOQ1.close;
   // ADOQ1.Open;

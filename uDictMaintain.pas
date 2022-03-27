@@ -13,7 +13,7 @@ uses
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Comp.UI,
   FireDAC.Phys.ODBCBase, EhLibVCL, GridsEh, DBAxisGridsEh, DBGridEh,
   Vcl.ExtCtrls, Vcl.DBCtrls, System.ImageList, Vcl.ImgList, Vcl.StdCtrls,
-  Vcl.Buttons, Vcl.ComCtrls;
+  Vcl.Buttons, Vcl.ComCtrls, LibXL, System.RegularExpressions, ShellAPI;
 
 type
   TMyNavgator = class(TDBNavigator);
@@ -39,10 +39,7 @@ type
     flwpnlTop: TFlowPanel;
     bitbtnUndoOnce: TBitBtn;
     bitbtnUndoAll: TBitBtn;
-    bitbtnExport: TBitBtn;
-    bitbtnImport: TBitBtn;
     bitbtnSave: TBitBtn;
-    bitbtnExit: TBitBtn;
     StatusBar1: TStatusBar;
     imgLstStat: TImageList;
     fdQryDictType: TFDQuery;
@@ -61,6 +58,9 @@ type
     fdQryDictValdict_val_sort: TIntegerField;
     fdQryDictTypedict_type_memo: TStringField;
     fdQryDictValdict_val_memo: TStringField;
+    dlgSave1: TSaveDialog;
+    bitbtnExport: TBitBtn;
+    bitbtnExit: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -78,15 +78,15 @@ type
     procedure fdQryDictTypeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
     procedure fdQryDictValUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-  private    { Private declarations }
+    procedure bitbtnExportClick(Sender: TObject);
+  private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
-  public    { Public declarations }
+  public { Public declarations }
   end;
 
 var
   frmDictMaintain: TfrmDictMaintain;
-
 
 implementation
 
@@ -141,7 +141,7 @@ begin
   // ShowMessage('1条');
   // nbNext:
   // ShowMessage(fdQryDictType['Dict_type_name_cn']);
-  /// /      fdQryDictType['Dict_type_name_cn']:='';
+  // ShowMessage(fdQryDictVal['Dict_val']);
   // nbPrior:
   // ShowMessage('3');
   // nbLast:
@@ -240,7 +240,7 @@ end;
 
 procedure TfrmDictMaintain.FormCreate(Sender: TObject);
 begin
-//  dict_list_col := '9DA1A56BB935419182BDAB4C86ABF003'; // 此为暂时，集成时要读取ini文件
+  // dict_list_col := '9DA1A56BB935419182BDAB4C86ABF003'; // 此为暂时，集成时要读取ini文件
 {$IF CompilerVersion >= 30.0}
   FDSchemaAdapterAll.UpdateOptions.AutoCommitUpdates := True;
 {$ENDIF}
@@ -285,6 +285,249 @@ end;
 procedure TfrmDictMaintain.bitbtnExitClick(Sender: TObject);
 begin
   close;
+end;
+
+procedure TfrmDictMaintain.bitbtnExportClick(Sender: TObject);
+var
+  aMasterColName: array of string;
+  aDetailColName: array of string;
+  aMasterFieldName: array of string;
+  aDetailFieldName: array of string;
+  i, ci, i_pos, masterGridLen, detailGridLen, gridLen: Integer;
+  FieldType: TFieldType;
+  isNum: Boolean;
+  ValueNum: Double;
+  ValueStr: string;
+  s_filename, Ext: string;
+  xlBook: TXLBook;
+  xlSheet: TXLSheet;
+  titleFont, headerFont, cellsFont: TXLFont;
+  titleFormat, headerFormat, cellsFormat: TXLFormat;
+  a_max_width: array of Integer;
+begin
+  if fdQryDictType.RecordCount = 0 then
+  begin
+    MessageDlg('没有要导出的数据！', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+
+  dlgSave1.FileName := '数据字典' + datetostr(Now());
+  if not dlgSave1.Execute then
+  begin
+    // ShowMessage('exit');
+    Exit;
+  end;
+  case dlgSave1.FilterIndex of
+    1:
+      Ext := 'XLSX';
+    2:
+      Ext := 'XLS';
+  else
+    Ext := '';
+  end;
+  if Length(Ext) = 0 then
+    Exit;
+  // 保存的文件名---------------------------
+  s_filename := Trim(dlgSave1.FileName);
+  // 若匹配.XLS,则文件名不变，且不管 SaveDialog1.FilterIndex的选择
+  if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLS$')) then
+    Ext := 'XLS'
+  else // 若不匹配.XLS,再看是否匹配XLSX
+    if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLSX$')) then
+      Ext := 'XLSX'
+    else
+      s_filename := s_filename + '.' + Ext;
+
+  if FileExists(s_filename) then
+  begin
+    if MessageDlg('导出的Excel文件已存在，覆盖吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
+    begin
+      Exit;
+    end;
+  end;
+
+  // 读取grid有关信息
+  masterGridLen := DBGridEhSrcTab.VisibleColumns.Count - 1; // 字段个数 ，第一列不使用
+  detailGridLen := DBGridEhSrcCol.VisibleColumns.Count - 1;
+  gridLen := Max(masterGridLen, detailGridLen);
+  SetLength(a_max_width, gridLen); // 记录每列宽度
+
+  SetLength(aMasterColName, masterGridLen); // 列名数组
+  SetLength(aDetailColName, detailGridLen);
+  SetLength(aMasterFieldName, masterGridLen); // 字段名数组
+  SetLength(aDetailFieldName, detailGridLen);
+
+  for i := 0 to masterGridLen - 1 do // 注意第一列状态栏下面不使用
+  begin
+    aMasterColName[i] := DBGridEhSrcTab.VisibleColumns[i + 1].Title.Caption;
+    aMasterFieldName[i] := DBGridEhSrcTab.VisibleColumns[i + 1].FieldName;
+  end;
+
+  for i := 0 to detailGridLen - 1 do
+  begin
+    aDetailColName[i] := DBGridEhSrcCol.VisibleColumns[i + 1].Title.Caption;
+    aDetailFieldName[i] := DBGridEhSrcCol.VisibleColumns[i + 1].FieldName;
+  end;;
+  // --------准备Excel导入
+  if (Ext = 'XLS') then
+    xlBook := TBinBook.Create;
+  if (Ext = 'XLSX') then
+    xlBook := TXmlBook.Create;
+  xlBook.setKey('TommoT', 'windows-2421220b07c2e10a6eb96768a2p7r6gc');
+  xlSheet := xlBook.addSheet('数据分析结果');
+
+  titleFont := xlBook.addFont;
+  titleFont.name := '微软雅黑';
+  titleFont.size := 12;
+  titleFormat := xlBook.addFormat();
+  titleFormat.alignH := ALIGNH_CENTER;
+  titleFormat.alignV := ALIGNV_CENTER;
+  titleFormat.font := titleFont;
+
+  headerFont := xlBook.addFont;
+  headerFont.name := '微软雅黑';
+  headerFont.size := 10;
+  headerFont.bold := True;
+  headerFormat := xlBook.addFormat();
+  headerFormat.alignH := ALIGNH_CENTER;
+  headerFormat.alignV := ALIGNV_CENTER;
+  headerFormat.font := headerFont;
+  headerFormat.setBorder(BORDERSTYLE_THIN);
+
+  cellsFont := xlBook.addFont;
+  cellsFont.name := '微软雅黑';
+  cellsFont.size := 9;
+  cellsFormat := xlBook.addFormat();
+  cellsFormat.alignH := ALIGNH_LEFT;
+  cellsFormat.alignV := ALIGNV_CENTER;
+  cellsFormat.font := cellsFont;
+  cellsFormat.setBorder(BORDERSTYLE_THIN);
+
+  // 主表标题
+  xlSheet.setMerge(0, 0, 0, masterGridLen - 1);
+  xlSheet.writeStr(0, 0, PWideChar('数据字典导出' + datetostr(Now())), titleFormat);
+  // 主表字段
+  for i := 0 to masterGridLen - 1 do
+  begin
+    xlSheet.writeStr(1, i, PWideChar(aMasterColName[i]), headerFormat);
+  end;
+  // 循环主表 ，内嵌套循环子表
+  i := 2;
+  fdQryDictType.DisableControls;
+  fdQryDictVal.DisableControls;
+  fdQryDictType.First;
+  ValueNum := 0;
+  ValueStr := '';
+  while not fdQryDictType.Eof do
+  begin
+    fdQryDictVal.Refresh;
+    fdQryDictVal.First;
+     while not fdQryDictVal.Eof do
+    begin
+      ShowMessage(fdQryDictType['Dict_type_name_cn']);
+      ShowMessage(VarToStrDef(fdQryDictVal['Dict_val'], ''));
+      fdQryDictVal.Next;
+    end;
+    fdQryDictType.Next;
+  end;
+
+  // while not fdQryDictType.Eof do // 循环主表
+  // begin
+  // for ci := 0 to masterGridLen - 1 do
+  // begin
+  // FieldType := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.DataType;
+  // if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
+  // isNum := True
+  // else
+  // isNum := False;
+  // // 字段为空的处理
+  // if VarIsNull(DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value) then
+  // begin
+  // if isNum then
+  // ValueNum := 0
+  // else
+  // ValueStr := '';
+  // end
+  // else
+  // begin
+  // if isNum then
+  // ValueNum := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value
+  // else
+  // ValueStr := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value;
+  // end;
+  // if isNum then
+  // xlSheet.writeNum(i, ci, ValueNum, cellsFormat)
+  // else
+  // xlSheet.writeStr(i, ci, PWideChar(ValueStr), cellsFormat);
+  // a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
+  //
+  // end;
+  //
+  // i := i + 1;
+  // // 子表字段
+  // for ci := 0 to detailGridLen - 1 do
+  // begin
+  // xlSheet.writeStr(i, ci, PWideChar(aDetailColName[ci]), headerFormat);
+  // end;
+  // fdQryDictVal.First;
+  // i := i + 1;
+  // while not fdQryDictVal.Eof do
+  // // 循环子表  ,子表没有及时显示，试着数据集
+  // begin
+  // for ci := 0 to detailGridLen - 1 do
+  // begin
+  // // FieldType := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.DataType;
+  // FieldType := fdQryDictVal.FieldByName(aDetailFieldName[ci]).DataType;
+  // if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
+  // isNum := True
+  // else
+  // isNum := False;
+  // // 字段为空的处理
+  // if VarIsNull(fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value) then
+  // begin
+  // if isNum then
+  // ValueNum := 0
+  // else
+  // ValueStr := '';
+  // end
+  // else
+  // begin
+  // if isNum then
+  // ValueNum := fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value
+  // // ValueNum := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value
+  // else
+  // fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value;
+  // // ValueStr := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value;
+  // end;
+  // if isNum then
+  // xlSheet.writeNum(i, ci, ValueNum, cellsFormat)
+  // else
+  // xlSheet.writeStr(i, ci, PWideChar(ValueStr), cellsFormat);
+  // a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
+  // end;
+  // i := i + 1;
+  // fdQryDictVal.Next;
+  // end;
+  // i := i + 1;
+  // fdQryDictType.Next;
+  // end;
+  // // 设置宽度
+  // for i := 0 to gridLen - 1 do
+  // begin
+  // xlSheet.setCol(i, i, a_max_width[i]);
+  // end;
+
+  // xlBook.save(PWideChar(s_filename));
+  // xlBook.Free;
+  // fdQryDictType.First;
+  // fdQryDictType.EnableControls;
+  // fdQryDictVal.EnableControls;
+  //
+  // // if (chkAfterOpen.Checked) then
+  // ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil, SW_SHOWNORMAL)
+  // // else
+  // ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
+
 end;
 
 procedure TfrmDictMaintain.bitbtnSaveClick(Sender: TObject);
@@ -451,4 +694,3 @@ begin
 end;
 
 end.
-
