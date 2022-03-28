@@ -1,7 +1,7 @@
 object frmSrcTabMaintain: TfrmSrcTabMaintain
   Left = 0
   Top = 0
-  Caption = #25509#21475#35268#33539#28304#34920#32500#25252
+  Caption = #25509#21475#35268#33539#23450#20041#32500#25252
   ClientHeight = 918
   ClientWidth = 1708
   Color = clBtnFace
@@ -18,9 +18,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   TextHeight = 15
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
-    Top = 54
+    Top = 59
     Width = 1708
-    Height = 845
+    Height = 840
     Align = alClient
     AllowedOperations = [alopInsertEh, alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
@@ -31,11 +31,17 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     DataSource = dsSrcTab
     DynProps = <>
     EditActions = [geaCopyEh]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     HorzScrollBar.ExtraPanel.Visible = True
     HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
     IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
     Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     OptionsEh = [dghFixed3D, dghResizeWholeRightPart, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghTraceColSizing, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
+    ParentFont = False
     ParentShowHint = False
     RowDetailPanel.Active = True
     RowDetailPanel.Height = 314
@@ -48,8 +54,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     TitleParams.Font.Charset = DEFAULT_CHARSET
     TitleParams.Font.Color = clWindowText
     TitleParams.Font.Height = -12
-    TitleParams.Font.Name = #24494#36719#38597#40657
-    TitleParams.Font.Style = [fsBold]
+    TitleParams.Font.Name = 'Segoe UI'
+    TitleParams.Font.Style = []
     TitleParams.MultiTitle = True
     TitleParams.ParentFont = False
     VertScrollBar.SmoothStep = True
@@ -129,7 +135,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '0')
         Title.Caption = #20013#25991#23383#27573
         Title.Hint = #36873#20013#21017#24314#31435#25968#25454#34920#26102#20351#29992#20013#25991#21517#31216#23383#27573#65288#33521#25991#21517#31216#23383#27573#21487#20026#31354#65289#65292#13#10#21542#21017#20351#29992#33521#25991#21517#31216#23383#27573#12290
-        Width = 56
+        Width = 76
       end
       item
         CellButtons = <>
@@ -158,7 +164,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 1232
+        Width = 1252
         Height = 277
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -185,9 +191,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
         TitleParams.Font.Color = clWindowText
-        TitleParams.Font.Height = -12
-        TitleParams.Font.Name = #24494#36719#38597#40657
-        TitleParams.Font.Style = [fsBold]
+        TitleParams.Font.Height = -11
+        TitleParams.Font.Name = 'Segoe UI'
+        TitleParams.Font.Style = []
         TitleParams.ParentFont = False
         VertScrollBar.SmoothStep = True
         Columns = <
@@ -263,7 +269,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Footers = <>
             Title.Caption = #23567#25968#28857#38271#24230
             Title.Hint = #28014#28857#25968#23567#25968#28857#21518#20960#20301#65288#20854#20182#31867#22411#19981#29992#20851#27880#65289
-            Width = 68
+            Width = 94
           end
           item
             CellButtons = <>
@@ -336,7 +342,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
               '1')
             Title.Caption = #26085#26399
             Title.Hint = #36873#20013#26631#26126#20026#26085#26399#31867#23383#27573#65292#31995#32479#23613#21487#33021#33258#21160#22788#29702#12290#22914#65306#21024#38500#8216'-'#8217#31561
-            Width = 29
+            Width = 39
           end
           item
             CellButtons = <>
@@ -399,7 +405,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 1232
+        Width = 1252
         Height = 27
         Align = alTop
         AutoSize = True
@@ -561,14 +567,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object flwpnlDictType: TFlowPanel
     Left = 0
-    Top = 27
+    Top = 32
     Width = 1708
     Height = 27
     Align = alTop
     AutoSize = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -628,14 +634,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Left = 0
     Top = 0
     Width = 1708
-    Height = 27
+    Height = 32
     Align = alTop
     AutoSize = True
     Ctl3D = True
     FlowStyle = fsTopBottomLeftRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -13
+    Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentCtl3D = False
@@ -644,8 +650,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
-      Width = 88
-      Height = 25
+      Width = 112
+      Height = 30
       Caption = #25764#38144#19968#27425
       ImageIndex = 4
       Images = imgLstBtn
@@ -653,49 +659,71 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       OnClick = bitbtnUndoOnceClick
     end
     object bitbtnUndoAll: TBitBtn
-      Left = 89
+      Left = 113
       Top = 1
-      Width = 88
-      Height = 25
+      Width = 112
+      Height = 30
       Caption = #25764#38144#25152#26377
       ImageIndex = 5
       Images = imgLstBtn
       TabOrder = 1
       OnClick = bitbtnUndoAllClick
     end
-    object bitbtnExport: TBitBtn
-      Left = 177
+    object bitbtnSave: TBitBtn
+      Left = 225
       Top = 1
-      Width = 88
-      Height = 25
+      Width = 112
+      Height = 30
+      Caption = #20445#23384
+      ImageIndex = 8
+      Images = imgLstBtn
+      TabOrder = 2
+      OnClick = bitbtnSaveClick
+    end
+    object bitbtnExport: TBitBtn
+      Left = 337
+      Top = 1
+      Width = 112
+      Height = 30
       Hint = #23548#20986'Excel'#26041#20415#32534#20889#27169#22411#20195#30721#26597#38405
       Caption = #23548#20986'Excel'
       ImageIndex = 6
       Images = imgLstBtn
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 2
-    end
-    object bitbtnSave: TBitBtn
-      Left = 265
-      Top = 1
-      Width = 88
-      Height = 25
-      Caption = #20445#23384
-      ImageIndex = 8
-      Images = imgLstBtn
       TabOrder = 3
-      OnClick = bitbtnSaveClick
+      OnClick = bitbtnExportClick
+    end
+    object chkOpen: TCheckBox
+      AlignWithMargins = True
+      Left = 452
+      Top = 4
+      Width = 112
+      Height = 24
+      Align = alLeft
+      Caption = #23548#20986#21518#25171#24320
+      Checked = True
+      Ctl3D = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentCtl3D = False
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 4
+      WordWrap = True
     end
     object bitbtnExit: TBitBtn
-      Left = 353
+      Left = 567
       Top = 1
-      Width = 88
-      Height = 25
+      Width = 112
+      Height = 30
       Caption = #36864#20986
       ImageIndex = 10
       Images = imgLstBtn
-      TabOrder = 4
+      TabOrder = 5
       OnClick = bitbtnExitClick
     end
   end
@@ -1309,9 +1337,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       000000000000}
   end
   object fdQrySrcTab: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_sort'
     OnUpdateRecord = fdQrySrcTabUpdateRecord
+    Connection = F_DT.FDConSysTmp
     SchemaAdapter = FDSchemaAdapterAll
     SQL.Strings = (
       'select * from src_table order by tab_sort')
@@ -1378,11 +1409,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     end
   end
   object fdQrySrcCol: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_id;col_sort'
     MasterSource = dsSrcTabMsDt
     MasterFields = 'tab_id'
     OnUpdateRecord = fdQrySrcColUpdateRecord
+    Connection = F_DT.FDConSysTmp
     SchemaAdapter = FDSchemaAdapterAll
     SQL.Strings = (
       
@@ -1393,9 +1427,10 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     ParamData = <
       item
         Name = 'TAB_ID'
-        DataType = ftString
+        DataType = ftFixedChar
         ParamType = ptInput
-        Value = Null
+        Size = 32
+        Value = '6AD26ACD3C53485DB7D27469C1A1D916'
       end>
     object fdQrySrcColmodiState: TStringField
       DisplayLabel = ' '
@@ -1498,6 +1533,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     end
   end
   object fdQryColType: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       
         'select distinct dict_type_name_cn,dict_type_name_en,b.dict_val,b' +
@@ -1535,6 +1572,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Top = 224
   end
   object fdQryReg: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       
         'select distinct dict_type_name_cn,dict_type_name_en,b.dict_val,b' +
@@ -1550,5 +1589,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParamType = ptInput
         Value = '9DA1A56BB935419182BDAB4C86ABF003'
       end>
+  end
+  object dlgSave1: TSaveDialog
+    FileName = 'file1'
+    Filter = 'Exce2007'#20197#19978#25991#20214' (*.xlsx)|*.XLSX|Exce97-2003'#25991#20214' (*.xls)|*.XLS'
+    Title = #23548#20986'Excel'#25991#20214
+    Left = 140
+    Top = 130
   end
 end

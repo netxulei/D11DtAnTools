@@ -16,7 +16,7 @@ uses
   Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox;
+  cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions;
 
 type
   TMyNavgator = class(TDBNavigator);
@@ -42,9 +42,7 @@ type
     flwpnlTop: TFlowPanel;
     bitbtnUndoOnce: TBitBtn;
     bitbtnUndoAll: TBitBtn;
-    bitbtnExport: TBitBtn;
     bitbtnSave: TBitBtn;
-    bitbtnExit: TBitBtn;
     StatusBar1: TStatusBar;
     imgLstStat: TImageList;
     fdQrySrcTab: TFDQuery;
@@ -87,6 +85,10 @@ type
     fdQrySrcColcol_sort: TIntegerField;
     fdQrySrcColcol_rept: TStringField;
     fdQrySrcColcol_index: TStringField;
+    dlgSave1: TSaveDialog;
+    bitbtnExport: TBitBtn;
+    chkOpen: TCheckBox;
+    bitbtnExit: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -108,6 +110,7 @@ type
     procedure cxLookupComboBoxDictListPropertiesEditValueChanged(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxLookupComboBoxRegPropertiesEditValueChanged(Sender: TObject);
+    procedure bitbtnExportClick(Sender: TObject);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -369,6 +372,288 @@ begin
   // cxLookupComboBoxDictList.
   // ShowMessage(cxLookupComboBoxDictList.EditText);
   // FDConnection1.GetLastAutoGenValue('Dict_type');
+end;
+
+procedure TfrmSrcTabMaintain.bitbtnExportClick(Sender: TObject);
+var
+  aMasterColName: array of string;
+  aDetailColName: array of string;
+  aMasterFieldName: array of string;
+  aDetailFieldName: array of string;
+  fieldNamesStr: string;
+  fieldNamesLst: TStringList;
+  i, j, k, ci, i_pos, masterGridLen, detailGridLen, gridLen: Integer;
+  FieldType: TFieldType;
+  isNum: Boolean;
+  ValueNum: Double;
+  ValueStr: string;
+  s_filename, Ext: string;
+  xlBook: TXLBook;
+  xlSheet: TXLSheet;
+  titleFont, headerFont, cellsFont: TXLFont;
+  titleFormat, headerFormat, cellsFormat: TXLFormat;
+  a_max_width: array of Integer;
+begin
+  if fdQrySrcTab.RecordCount = 0 then
+  begin
+    MessageDlg('没有要导出的数据！', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+
+  dlgSave1.FileName := '接口规范定义' + datetostr(Now());
+  if not dlgSave1.Execute then
+  begin
+    // ShowMessage('exit');
+    Exit;
+  end;
+  case dlgSave1.FilterIndex of
+    1:
+      Ext := 'XLSX';
+    2:
+      Ext := 'XLS';
+  else
+    Ext := '';
+  end;
+  if Length(Ext) = 0 then
+    Exit;
+  // 保存的文件名---------------------------
+  s_filename := Trim(dlgSave1.FileName);
+  // 若匹配.XLS,则文件名不变，且不管 SaveDialog1.FilterIndex的选择
+  if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLS$')) then
+    Ext := 'XLS'
+  else // 若不匹配.XLS,再看是否匹配XLSX
+    if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLSX$')) then
+      Ext := 'XLSX'
+    else
+      s_filename := s_filename + '.' + Ext;
+
+  if FileExists(s_filename) then
+  begin
+    if MessageDlg('导出的Excel文件已存在，覆盖吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
+    begin
+      Exit;
+    end;
+  end;
+
+  // 读取grid有关信息
+  masterGridLen := DBGridEhSrcTab.VisibleColumns.Count - 1; // 字段个数 ，第一列不使用
+  detailGridLen := DBGridEhSrcCol.VisibleColumns.Count - 1;
+
+  SetLength(aMasterColName, masterGridLen); // 列名数组
+  SetLength(aDetailColName, detailGridLen);
+  SetLength(aMasterFieldName, masterGridLen); // 字段名数组
+  SetLength(aDetailFieldName, detailGridLen);
+  fieldNamesLst := TStringList.Create;
+  fieldNamesLst.Delimiter := ';';
+  fieldNamesLst.StrictDelimiter := True;
+  for i := 0 to masterGridLen - 1 do // 注意第一列状态栏下面不使用
+  begin
+    aMasterColName[i] := DBGridEhSrcTab.VisibleColumns[i + 1].Title.Caption;
+    aMasterFieldName[i] := DBGridEhSrcTab.VisibleColumns[i + 1].FieldName;
+  end;
+
+  i := 0;
+  j := 1;
+  while i <= detailGridLen - 1 do
+  begin
+    fieldNamesStr := DBGridEhSrcCol.VisibleColumns[j].FieldName;
+    fieldNamesLst.DelimitedText := fieldNamesStr;
+    k := fieldNamesLst.Count;
+    if k > 1 then // 若gridvisible含有2个以上字段  ，取第一个字段
+    begin
+      aDetailFieldName[i] := fieldNamesLst[0];
+      aDetailColName[i] := DBGridEhSrcCol.VisibleColumns[j].Title.Caption;
+      // detailGridLen := detailGridLen + (k - 1); // excel列数要+1
+      // SetLength(aDetailColName, detailGridLen); // 数组也要+1
+      // SetLength(aDetailFieldName, detailGridLen);
+      // for ci := 0 to k - 1 do
+      // begin
+      // aDetailFieldName[i + ci] := fieldNamesLst[ci];
+      // aDetailColName[i + ci] := DBGridEhSrcCol.VisibleColumns[j].Title.Caption;
+      // end;
+      // i := i + k;
+    end
+    else
+    begin
+      aDetailFieldName[i] := fieldNamesStr;
+      aDetailColName[i] := DBGridEhSrcCol.VisibleColumns[j].Title.Caption;
+    end;
+    i := i + 1;
+    j := j + 1;
+  end;
+  fieldNamesLst.Free;
+
+  gridLen := Max(masterGridLen, detailGridLen);
+  SetLength(a_max_width, gridLen); // 记录每列宽度
+
+  // --------准备Excel导入
+  if (Ext = 'XLS') then
+    xlBook := TBinBook.Create;
+  if (Ext = 'XLSX') then
+    xlBook := TXmlBook.Create;
+  xlBook.setKey('TommoT', 'windows-2421220b07c2e10a6eb96768a2p7r6gc');
+  xlSheet := xlBook.addSheet('接口规范定义');
+
+  titleFont := xlBook.addFont;
+  titleFont.name := '微软雅黑';
+  titleFont.size := 12;
+  titleFormat := xlBook.addFormat();
+  titleFormat.alignH := ALIGNH_CENTER;
+  titleFormat.alignV := ALIGNV_CENTER;
+  titleFormat.font := titleFont;
+
+  headerFont := xlBook.addFont;
+  headerFont.name := '微软雅黑';
+  headerFont.size := 10;
+  headerFont.bold := True;
+  headerFormat := xlBook.addFormat();
+  headerFormat.alignH := ALIGNH_CENTER;
+  headerFormat.alignV := ALIGNV_CENTER;
+  headerFormat.font := headerFont;
+  headerFormat.setBorder(BORDERSTYLE_THIN);
+
+  cellsFont := xlBook.addFont;
+  cellsFont.name := '微软雅黑';
+  cellsFont.size := 9;
+  cellsFormat := xlBook.addFormat();
+  cellsFormat.alignH := ALIGNH_LEFT;
+  cellsFormat.alignV := ALIGNV_CENTER;
+  cellsFormat.font := cellsFont;
+  cellsFormat.setBorder(BORDERSTYLE_THIN);
+
+  // 主表标题
+  xlSheet.setMerge(0, 0, 0, masterGridLen - 1);
+  xlSheet.writeStr(0, 0, PWideChar('接口规范定义导出' + datetostr(Now())), titleFormat);
+  // 主表字段
+  for i := 0 to masterGridLen - 1 do
+  begin
+    xlSheet.writeStr(1, i, PWideChar(aMasterColName[i]), headerFormat);
+  end;
+  // 循环主表 ，内嵌套循环子表
+  i := 2;
+  // fdQrySrcTab.DisableControls;  此时若disable，从表无法更新
+  // fdQrySrcCol.DisableControls;
+  DBGridEhSrcTab.Enabled := False;
+  fdQrySrcTab.First;
+  ValueNum := 0;
+  ValueStr := '';
+  // while not fdQrySrcTab.Eof do
+  // begin
+  // fdQrySrcCol.Refresh;
+  // fdQrySrcCol.First;
+  // while not fdQrySrcCol.Eof do
+  // begin
+  // ShowMessage(fdQrySrcTab['Dict_type_name_cn']);
+  // ShowMessage(VarToStrDef(fdQrySrcCol['Dict_val'], ''));
+  // fdQrySrcCol.Next;
+  // end;
+  // fdQrySrcTab.Next;
+  // end;
+
+  while not fdQrySrcTab.Eof do // 循环主表
+  begin
+    for ci := 0 to masterGridLen - 1 do
+    begin
+      FieldType := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.DataType;
+      if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
+        isNum := True
+      else
+        isNum := False;
+      // 字段为空的处理
+      if VarIsNull(DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value) then
+      begin
+        if isNum then
+          ValueNum := 0
+        else
+          ValueStr := '';
+      end
+      else
+      begin
+        if isNum then
+          ValueNum := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value
+        else
+          ValueStr := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value;
+      end;
+      if isNum then
+        xlSheet.writeNum(i, ci, ValueNum, headerFormat)
+      else
+        xlSheet.writeStr(i, ci, PWideChar(ValueStr), headerFormat);
+      a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
+
+    end;
+
+    i := i + 1;
+    // 子表字段
+    for ci := 0 to detailGridLen - 1 do
+    begin
+      xlSheet.writeStr(i, ci, PWideChar(aDetailColName[ci]), headerFormat);
+    end;
+    fdQrySrcCol.First;
+    i := i + 1;
+    while not fdQrySrcCol.Eof do
+    // 循环子表  ,子表没有及时显示，试着数据集
+    begin
+      for ci := 0 to detailGridLen - 1 do
+      begin
+        // FieldType := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.DataType;
+        FieldType := fdQrySrcCol.FieldByName(aDetailFieldName[ci]).DataType;
+        if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
+          isNum := True
+        else
+          isNum := False;
+        // 字段为空的处理
+        // if VarIsNull(DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value) then
+        if VarIsNull(fdQrySrcCol.FieldByName(aDetailFieldName[ci]).Value) then
+        begin
+          if isNum then
+            ValueNum := 0
+          else
+            ValueStr := '';
+        end
+        else
+        begin
+          if isNum then
+            ValueNum := fdQrySrcCol.FieldByName(aDetailFieldName[ci]).Value
+            // ValueNum := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value
+          else
+          begin
+            ValueStr := VarToStrDef(DBGridEhSrcCol.VisibleColumns[ci + 1].GetLookupValue, ''); // 取lookup的值
+            if Length(ValueStr) = 0 then
+              ValueStr := fdQrySrcCol.FieldByName(aDetailFieldName[ci]).Value;
+            // ValueStr := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value;
+          end;
+
+        end;
+        if isNum then
+          xlSheet.writeNum(i, ci, ValueNum, cellsFormat)
+        else
+          xlSheet.writeStr(i, ci, PWideChar(ValueStr), cellsFormat);
+        a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
+      end;
+      i := i + 1;
+      fdQrySrcCol.Next;
+    end;
+    i := i + 1;
+    fdQrySrcTab.Next;
+  end;
+  // 设置宽度
+  for i := 0 to gridLen - 1 do
+  begin
+    xlSheet.setCol(i, i, a_max_width[i]);
+  end;
+  //
+  xlBook.save(PWideChar(s_filename));
+  xlBook.Free;
+  fdQrySrcTab.First;
+  // fdQrySrcTab.EnableControls;
+  // fdQrySrcCol.EnableControls;
+  DBGridEhSrcTab.Enabled := True;
+
+  if (chkOpen.Checked) then
+    ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil, SW_SHOWNORMAL)
+  else
+    ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
+
 end;
 
 procedure TfrmSrcTabMaintain.bitbtnSaveClick(Sender: TObject);

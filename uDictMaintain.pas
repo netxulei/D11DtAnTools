@@ -60,6 +60,7 @@ type
     fdQryDictValdict_val_memo: TStringField;
     dlgSave1: TSaveDialog;
     bitbtnExport: TBitBtn;
+    chkOpen: TCheckBox;
     bitbtnExit: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
@@ -75,8 +76,10 @@ type
     procedure bitbtnValUpClick(Sender: TObject);
     procedure bitbtnValDownClick(Sender: TObject);
     procedure bitbtnExitClick(Sender: TObject);
-    procedure fdQryDictTypeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
-    procedure fdQryDictValUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+    procedure fdQryDictTypeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
+    procedure fdQryDictValUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
+      AOptions: TFDUpdateRowOptions);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bitbtnExportClick(Sender: TObject);
   private { Private declarations }
@@ -203,12 +206,14 @@ begin
   end;
 end;
 
-procedure TfrmDictMaintain.fdQryDictTypeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+procedure TfrmDictMaintain.fdQryDictTypeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest;
+  var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
 end;
 
-procedure TfrmDictMaintain.fdQryDictValUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+procedure TfrmDictMaintain.fdQryDictValUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest;
+  var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
 end;
@@ -367,7 +372,7 @@ begin
   begin
     aDetailColName[i] := DBGridEhSrcCol.VisibleColumns[i + 1].Title.Caption;
     aDetailFieldName[i] := DBGridEhSrcCol.VisibleColumns[i + 1].FieldName;
-  end;;
+  end;
   // --------准备Excel导入
   if (Ext = 'XLS') then
     xlBook := TBinBook.Create;
@@ -413,120 +418,122 @@ begin
   end;
   // 循环主表 ，内嵌套循环子表
   i := 2;
-  fdQryDictType.DisableControls;
-  fdQryDictVal.DisableControls;
+  // fdQryDictType.DisableControls;  此时若disable，从表无法更新
+  // fdQryDictVal.DisableControls;
+  DBGridEhSrcTab.Enabled := False;
   fdQryDictType.First;
   ValueNum := 0;
   ValueStr := '';
-  while not fdQryDictType.Eof do
-  begin
-    fdQryDictVal.Refresh;
-    fdQryDictVal.First;
-     while not fdQryDictVal.Eof do
-    begin
-      ShowMessage(fdQryDictType['Dict_type_name_cn']);
-      ShowMessage(VarToStrDef(fdQryDictVal['Dict_val'], ''));
-      fdQryDictVal.Next;
-    end;
-    fdQryDictType.Next;
-  end;
-
-  // while not fdQryDictType.Eof do // 循环主表
+  // while not fdQryDictType.Eof do
   // begin
-  // for ci := 0 to masterGridLen - 1 do
-  // begin
-  // FieldType := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.DataType;
-  // if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
-  // isNum := True
-  // else
-  // isNum := False;
-  // // 字段为空的处理
-  // if VarIsNull(DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value) then
-  // begin
-  // if isNum then
-  // ValueNum := 0
-  // else
-  // ValueStr := '';
-  // end
-  // else
-  // begin
-  // if isNum then
-  // ValueNum := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value
-  // else
-  // ValueStr := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value;
-  // end;
-  // if isNum then
-  // xlSheet.writeNum(i, ci, ValueNum, cellsFormat)
-  // else
-  // xlSheet.writeStr(i, ci, PWideChar(ValueStr), cellsFormat);
-  // a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
-  //
-  // end;
-  //
-  // i := i + 1;
-  // // 子表字段
-  // for ci := 0 to detailGridLen - 1 do
-  // begin
-  // xlSheet.writeStr(i, ci, PWideChar(aDetailColName[ci]), headerFormat);
-  // end;
+  // fdQryDictVal.Refresh;
   // fdQryDictVal.First;
-  // i := i + 1;
   // while not fdQryDictVal.Eof do
-  // // 循环子表  ,子表没有及时显示，试着数据集
   // begin
-  // for ci := 0 to detailGridLen - 1 do
-  // begin
-  // // FieldType := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.DataType;
-  // FieldType := fdQryDictVal.FieldByName(aDetailFieldName[ci]).DataType;
-  // if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
-  // isNum := True
-  // else
-  // isNum := False;
-  // // 字段为空的处理
-  // if VarIsNull(fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value) then
-  // begin
-  // if isNum then
-  // ValueNum := 0
-  // else
-  // ValueStr := '';
-  // end
-  // else
-  // begin
-  // if isNum then
-  // ValueNum := fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value
-  // // ValueNum := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value
-  // else
-  // fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value;
-  // // ValueStr := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value;
-  // end;
-  // if isNum then
-  // xlSheet.writeNum(i, ci, ValueNum, cellsFormat)
-  // else
-  // xlSheet.writeStr(i, ci, PWideChar(ValueStr), cellsFormat);
-  // a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
-  // end;
-  // i := i + 1;
+  // ShowMessage(fdQryDictType['Dict_type_name_cn']);
+  // ShowMessage(VarToStrDef(fdQryDictVal['Dict_val'], ''));
   // fdQryDictVal.Next;
   // end;
-  // i := i + 1;
   // fdQryDictType.Next;
   // end;
-  // // 设置宽度
-  // for i := 0 to gridLen - 1 do
-  // begin
-  // xlSheet.setCol(i, i, a_max_width[i]);
-  // end;
 
-  // xlBook.save(PWideChar(s_filename));
-  // xlBook.Free;
-  // fdQryDictType.First;
+  while not fdQryDictType.Eof do // 循环主表
+  begin
+    for ci := 0 to masterGridLen - 1 do
+    begin
+      FieldType := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.DataType;
+      if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
+        isNum := True
+      else
+        isNum := False;
+      // 字段为空的处理
+      if VarIsNull(DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value) then
+      begin
+        if isNum then
+          ValueNum := 0
+        else
+          ValueStr := '';
+      end
+      else
+      begin
+        if isNum then
+          ValueNum := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value
+        else
+          ValueStr := DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value;
+      end;
+      if isNum then
+        xlSheet.writeNum(i, ci, ValueNum, headerFormat)
+      else
+        xlSheet.writeStr(i, ci, PWideChar(ValueStr), headerFormat);
+      a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
+
+    end;
+
+    i := i + 1;
+    // 子表字段
+    for ci := 0 to detailGridLen - 1 do
+    begin
+      xlSheet.writeStr(i, ci, PWideChar(aDetailColName[ci]), headerFormat);
+    end;
+    fdQryDictVal.First;
+    i := i + 1;
+    while not fdQryDictVal.Eof do
+    // 循环子表  ,子表没有及时显示，试着数据集
+    begin
+      for ci := 0 to detailGridLen - 1 do
+      begin
+        FieldType := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.DataType;
+        // FieldType := fdQryDictVal.FieldByName(aDetailFieldName[ci]).DataType;
+        if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
+          isNum := True
+        else
+          isNum := False;
+        // 字段为空的处理
+        if VarIsNull(DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value) then
+        begin
+          if isNum then
+            ValueNum := 0
+          else
+            ValueStr := '';
+        end
+        else
+        begin
+          if isNum then
+            // ValueNum := fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value
+            ValueNum := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value
+          else
+            // ValueStr := fdQryDictVal.FieldByName(aDetailFieldName[ci]).Value;
+            ValueStr := DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value;
+        end;
+        if isNum then
+          xlSheet.writeNum(i, ci, ValueNum, cellsFormat)
+        else
+          xlSheet.writeStr(i, ci, PWideChar(ValueStr), cellsFormat);
+        a_max_width[ci] := Max(a_max_width[ci], Length(ValueStr));
+      end;
+      i := i + 1;
+      fdQryDictVal.Next;
+    end;
+    i := i + 1;
+    fdQryDictType.Next;
+  end;
+  // 设置宽度
+  for i := 0 to gridLen - 1 do
+  begin
+    xlSheet.setCol(i, i, a_max_width[i]);
+  end;
+  //
+  xlBook.save(PWideChar(s_filename));
+  xlBook.Free;
+  fdQryDictType.First;
   // fdQryDictType.EnableControls;
   // fdQryDictVal.EnableControls;
-  //
-  // // if (chkAfterOpen.Checked) then
-  // ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil, SW_SHOWNORMAL)
-  // // else
-  // ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
+  DBGridEhSrcTab.Enabled := True;
+
+  if (chkOpen.Checked) then
+    ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil, SW_SHOWNORMAL)
+  else
+    ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
 
 end;
 
@@ -680,7 +687,8 @@ begin
 {$IF CompilerVersion >= 29.0}
   ToggleButtons(FDSchemaAdapterAll.UpdatesPending);
   if FDSchemaAdapterAll.UpdatesPending then
-    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。字典类型表有' + fdQryDictType.ChangeCount.ToString + ' 条，字典值表中有' + fdQryDictVal.ChangeCount.ToString + '条。'
+    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。字典类型表有' +
+      fdQryDictType.ChangeCount.ToString + ' 条，字典值表中有' + fdQryDictVal.ChangeCount.ToString + '条。'
   else
 {$ENDIF}
     StatusBar1.SimpleText := '存盘前没有记录改变';

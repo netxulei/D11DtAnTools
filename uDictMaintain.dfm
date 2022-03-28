@@ -18,9 +18,9 @@ object frmDictMaintain: TfrmDictMaintain
   TextHeight = 20
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
-    Top = 61
+    Top = 59
     Width = 1295
-    Height = 675
+    Height = 677
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
@@ -33,7 +33,7 @@ object frmDictMaintain: TfrmDictMaintain
     EditActions = [geaCopyEh]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -13
+    Font.Height = -12
     Font.Name = 'Segoe UI'
     Font.Style = []
     HorzScrollBar.ExtraPanel.Visible = True
@@ -85,7 +85,7 @@ object frmDictMaintain: TfrmDictMaintain
         Title.Caption = #23383#20856#31867#22411#20013#25991#21517#31216
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -12
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = [fsBold]
         Width = 335
@@ -99,7 +99,7 @@ object frmDictMaintain: TfrmDictMaintain
         Title.Caption = #23383#20856#31867#22411#33521#25991#21517#31216
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -12
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = [fsBold]
         Width = 158
@@ -113,7 +113,7 @@ object frmDictMaintain: TfrmDictMaintain
         Title.Caption = #35828#26126
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -12
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = [fsBold]
       end>
@@ -121,7 +121,7 @@ object frmDictMaintain: TfrmDictMaintain
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 1223
+        Width = 1123
         Height = 136
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -136,7 +136,7 @@ object frmDictMaintain: TfrmDictMaintain
         EditActions = [geaCopyEh]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -12
+        Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
         HorzScrollBar.ExtraPanel.Visible = True
@@ -151,8 +151,8 @@ object frmDictMaintain: TfrmDictMaintain
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
         TitleParams.Font.Color = clWindowText
-        TitleParams.Font.Height = -12
-        TitleParams.Font.Name = #24494#36719#38597#40657
+        TitleParams.Font.Height = -11
+        TitleParams.Font.Name = 'Segoe UI'
         TitleParams.Font.Style = [fsBold]
         TitleParams.ParentFont = False
         Columns = <
@@ -184,7 +184,7 @@ object frmDictMaintain: TfrmDictMaintain
             Title.Caption = #23383#20856#20540
             Title.Font.Charset = DEFAULT_CHARSET
             Title.Font.Color = clWindowText
-            Title.Font.Height = -13
+            Title.Font.Height = -11
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
           end
@@ -197,7 +197,7 @@ object frmDictMaintain: TfrmDictMaintain
             Title.Caption = #23383#20856#20013#25991#21517#31216
             Title.Font.Charset = DEFAULT_CHARSET
             Title.Font.Color = clWindowText
-            Title.Font.Height = -13
+            Title.Font.Height = -11
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
             Width = 261
@@ -211,7 +211,7 @@ object frmDictMaintain: TfrmDictMaintain
             Title.Caption = #35828#26126
             Title.Font.Charset = DEFAULT_CHARSET
             Title.Font.Color = clWindowText
-            Title.Font.Height = -13
+            Title.Font.Height = -11
             Title.Font.Name = 'Segoe UI'
             Title.Font.Style = [fsBold]
             Width = 303
@@ -222,7 +222,7 @@ object frmDictMaintain: TfrmDictMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 1223
+        Width = 1123
         Height = 27
         Align = alTop
         AutoSize = True
@@ -233,6 +233,7 @@ object frmDictMaintain: TfrmDictMaintain
         Font.Style = []
         ParentFont = False
         TabOrder = 1
+        ExplicitWidth = 1223
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -292,7 +293,7 @@ object frmDictMaintain: TfrmDictMaintain
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15
-          Font.Name = #24494#36719#38597#40657' Light'
+          Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
           TabOrder = 3
@@ -302,19 +303,19 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object flwpnlDictType: TFlowPanel
     Left = 0
-    Top = 34
+    Top = 32
     Width = 1295
     Height = 27
     Align = alTop
     AutoSize = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = #24494#36719#38597#40657
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    ExplicitTop = 27
+    ExplicitTop = 34
     object dbnvgrDictType: TDBNavigator
       Left = 1
       Top = 1
@@ -351,7 +352,7 @@ object frmDictMaintain: TfrmDictMaintain
       Caption = #19978#31227
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
       ImageIndex = 2
@@ -368,7 +369,7 @@ object frmDictMaintain: TfrmDictMaintain
       Caption = #19979#31227
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = 'Segoe UI'
       Font.Style = []
       ImageIndex = 3
@@ -382,15 +383,15 @@ object frmDictMaintain: TfrmDictMaintain
     Left = 0
     Top = 0
     Width = 1295
-    Height = 34
+    Height = 32
     Align = alTop
     AutoSize = True
     Ctl3D = True
     FlowStyle = fsTopBottomLeftRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = #24494#36719#38597#40657
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
     Font.Style = []
     ParentCtl3D = False
     ParentFont = False
@@ -398,8 +399,8 @@ object frmDictMaintain: TfrmDictMaintain
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
-      Width = 144
-      Height = 32
+      Width = 112
+      Height = 30
       Align = alLeft
       Caption = #25764#38144#19968#27425
       ImageIndex = 4
@@ -408,10 +409,10 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = bitbtnUndoOnceClick
     end
     object bitbtnUndoAll: TBitBtn
-      Left = 145
+      Left = 113
       Top = 1
-      Width = 144
-      Height = 32
+      Width = 112
+      Height = 30
       Caption = #25764#38144#25152#26377
       ImageIndex = 5
       Images = imgLstBtn
@@ -419,10 +420,10 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = bitbtnUndoAllClick
     end
     object bitbtnSave: TBitBtn
-      Left = 289
+      Left = 225
       Top = 1
-      Width = 144
-      Height = 32
+      Width = 112
+      Height = 30
       Caption = #20445#23384
       ImageIndex = 8
       Images = imgLstBtn
@@ -430,10 +431,10 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = bitbtnSaveClick
     end
     object bitbtnExport: TBitBtn
-      Left = 433
+      Left = 337
       Top = 1
-      Width = 144
-      Height = 32
+      Width = 112
+      Height = 30
       Hint = #23548#20986'Excel'#26041#20415#32534#20889#27169#22411#20195#30721#26597#38405
       Caption = #23548#20986'Excel'
       ImageIndex = 6
@@ -443,15 +444,36 @@ object frmDictMaintain: TfrmDictMaintain
       TabOrder = 3
       OnClick = bitbtnExportClick
     end
+    object chkOpen: TCheckBox
+      AlignWithMargins = True
+      Left = 452
+      Top = 4
+      Width = 112
+      Height = 24
+      Align = alLeft
+      Caption = #23548#20986#21518#25171#24320
+      Checked = True
+      Ctl3D = True
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentCtl3D = False
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 4
+      WordWrap = True
+    end
     object bitbtnExit: TBitBtn
-      Left = 577
+      Left = 567
       Top = 1
-      Width = 88
-      Height = 32
+      Width = 112
+      Height = 30
       Caption = #36864#20986
       ImageIndex = 10
       Images = imgLstBtn
-      TabOrder = 4
+      TabOrder = 5
       OnClick = bitbtnExitClick
     end
   end

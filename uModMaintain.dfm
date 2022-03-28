@@ -161,6 +161,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 5
+        Images = F_DT.imgLstBtn
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
@@ -178,6 +180,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 8
+        Images = F_DT.imgLstBtn
         ParentFont = False
         TabOrder = 5
         OnClick = bitbtnSaveClick
@@ -194,6 +198,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 4
+        Images = F_DT.imgLstBtn
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
@@ -211,6 +217,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 10
+        Images = F_DT.imgLstBtn
         ParentFont = False
         TabOrder = 8
         OnClick = bitbtnExitClick
@@ -227,6 +235,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 0
+        Images = F_DT.imgLstBtn
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
@@ -245,6 +255,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 0
+        Images = F_DT.imgLstBtn
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
@@ -262,6 +274,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 1
+        Images = F_DT.imgLstBtn
         ParentFont = False
         TabOrder = 2
         OnClick = bitbtnDeleteClick
@@ -277,6 +291,8 @@ object FModMaintain: TFModMaintain
         Font.Height = -11
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ImageIndex = 7
+        Images = F_DT.imgLstBtn
         ParentFont = False
         TabOrder = 7
         OnClick = bitbtnImportClick
@@ -289,6 +305,8 @@ object FModMaintain: TFModMaintain
         Caption = #23548#20986
         DropDownMenu = pmExport
         Kind = cxbkOfficeDropDown
+        OptionsImage.ImageIndex = 6
+        OptionsImage.Images = F_DT.imgLstBtn
         ParentShowHint = False
         ShowHint = True
         TabOrder = 6
