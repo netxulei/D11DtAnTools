@@ -6,19 +6,21 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, Mask, DBCtrlsEh, DB, ADODB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
-  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ExtCtrls;
 
 type
   TF_CHG_PASS = class(TForm)
-    lbl1: TLabel;
-    Label1: TLabel;
-    Label2: TLabel;
-    DBEDTSET1: TDBEditEh;
-    DBEDTSET11: TDBEditEh;
-    DBEDTSET12: TDBEditEh;
+    fdQryPass: TFDQuery;
+    pnl1: TPanel;
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
-    fdQryPass: TFDQuery;
+    pnlTop: TPanel;
+    lbl1: TLabel;
+    DBEDTSET1: TDBEditEh;
+    DBEDTSET11: TDBEditEh;
+    Label1: TLabel;
+    Label2: TLabel;
+    DBEDTSET12: TDBEditEh;
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -92,7 +94,7 @@ begin
     begin
       fdQryPass.Edit;
       fdQryPass.FieldValues['managerpassword'] := encryptstr(sNewPass1, User_name + 'AML');
-      fdQryPass.ApplyUpdates;
+      fdQryPass.post;
       MessageDlg('ÃÜÂëÐÞ¸Ä³É¹¦£¡', mtInformation, [mbOK], 0);
       BitBtn2.SetFocus;
     end;
@@ -102,7 +104,6 @@ end;
 
 procedure TF_CHG_PASS.BitBtn2Click(Sender: TObject);
 begin
-  fdQryPass.Close;
   Close;
 end;
 

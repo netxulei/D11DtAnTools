@@ -35,7 +35,5 @@ begin
   Application.CreateForm(TLoginFrm, LoginFrm);
   Application.CreateForm(TF_DT, F_DT);
   Application.CreateForm(TF_float, F_float);
-  Application.CreateForm(TF_import, F_import);
-  Application.CreateForm(TfmDisAssiTable, fmDisAssiTable);
   Application.Run;
 end.

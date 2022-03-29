@@ -33,7 +33,6 @@ type
     dbnvgrDictVal: TDBNavigator;
     bitbtnValUp: TBitBtn;
     bitbtnValDown: TBitBtn;
-    imgLstBtn: TImageList;
     flwpnlDictType: TFlowPanel;
     dbnvgrDictType: TDBNavigator;
     bitbtn3: TBitBtn;
@@ -44,7 +43,6 @@ type
     bitbtnUndoAll: TBitBtn;
     bitbtnSave: TBitBtn;
     StatusBar1: TStatusBar;
-    imgLstStat: TImageList;
     fdQrySrcTab: TFDQuery;
     fdQrySrcCol: TFDQuery;
     fdQrySrcTabmodiState: TStringField;

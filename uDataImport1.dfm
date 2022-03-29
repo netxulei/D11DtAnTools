@@ -37,6 +37,9 @@ object FrmDataImport: TFrmDataImport
       Width = 139
       Height = 31
       Caption = '4.'#36864#20986
+      ImageIndex = 9
+      ImageName = #23567#36864#20986
+      Images = F_DT.vrtlmglst1
       TabOrder = 0
       OnClick = btnExitClick
     end
@@ -119,6 +122,9 @@ object FrmDataImport: TFrmDataImport
       Width = 136
       Height = 31
       Caption = '3.'#25968#25454#23548#20837
+      ImageIndex = 2
+      ImageName = #25968#25454#23548#20837
+      Images = F_DT.vrtlmglstMenu
       TabOrder = 5
       OnClick = btnImpTxtClick
     end
@@ -312,6 +318,9 @@ object FrmDataImport: TFrmDataImport
       Height = 27
       Hint = 'Excel'#25991#20214#39044#35272#25152#26377'Sheet'#30340#26631#39064#21644'2'#34892#25968#25454
       Caption = #39044#35272#25968#25454
+      ImageIndex = 12
+      ImageName = #39044#35272
+      Images = F_DT.vrtlmglst1
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
@@ -323,6 +332,9 @@ object FrmDataImport: TFrmDataImport
       Width = 107
       Height = 27
       Caption = #26657#39564#25968#25454
+      ImageIndex = 11
+      ImageName = #26657#39564
+      Images = F_DT.vrtlmglst1
       TabOrder = 2
       OnClick = btnValidClick
     end
@@ -917,6 +929,8 @@ object FrmDataImport: TFrmDataImport
   end
   object fdQryExec: TFDQuery
     FetchOptions.AssignedValues = [evMode]
+    ResourceOptions.AssignedValues = [rvCmdExecMode]
+    ResourceOptions.CmdExecMode = amCancelDialog
     Left = 864
     Top = 307
   end
@@ -927,8 +941,19 @@ object FrmDataImport: TFrmDataImport
   end
   object fdgxwtcrsr1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    ScreenCursor = gcrHourGlass
     Left = 704
     Top = 440
+  end
+  object FDGUIxAsyncExecuteDialog1: TFDGUIxAsyncExecuteDialog
+    Provider = 'Forms'
+    Caption = #23548#20837#25968#25454
+    Prompt = #25968#25454#27491#22312#20837#24211#65292#35831#31245#21518'...'
+    Left = 1033
+    Top = 323
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 1041
+    Top = 387
   end
 end

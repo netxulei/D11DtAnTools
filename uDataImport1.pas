@@ -16,7 +16,7 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, AdvUtil, AdvObj, BaseGrid, AdvGrid,
-  FireDAC.Comp.UI, LibXL, System.Diagnostics, U_ShowError;
+  FireDAC.Comp.UI, LibXL, System.Diagnostics, U_ShowError, FireDAC.VCLUI.Async;
 
 type
   TFrmDataImport = class(TForm)
@@ -77,6 +77,8 @@ type
     fdqryTmp: TFDQuery;
     chkReptCol: TCheckBox;
     fdgxwtcrsr1: TFDGUIxWaitCursor;
+    FDGUIxAsyncExecuteDialog1: TFDGUIxAsyncExecuteDialog;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     procedure FormCreate(Sender: TObject);
     procedure btnInfoClick(Sender: TObject);
     procedure spbtnFileNameClick(Sender: TObject);

@@ -30,7 +30,6 @@ type
     dbnvgrDictVal: TDBNavigator;
     bitbtnValUp: TBitBtn;
     bitbtnValDown: TBitBtn;
-    imgLstBtn: TImageList;
     flwpnlDictType: TFlowPanel;
     dbnvgrDictType: TDBNavigator;
     bitbtnTypeUp: TBitBtn;
@@ -41,7 +40,6 @@ type
     bitbtnUndoAll: TBitBtn;
     bitbtnSave: TBitBtn;
     StatusBar1: TStatusBar;
-    imgLstStat: TImageList;
     fdQryDictType: TFDQuery;
     fdQryDictVal: TFDQuery;
     fdQryDictValmodiState: TStringField;
@@ -257,6 +255,8 @@ begin
   fdQryDictVal.open();
   CHNDBNavigator(dbnvgrDictType);
   CHNDBNavigator(dbnvgrDictVal);
+//  DBGridEhSrcTab.Columns[0].width:=40;
+//  DBGridEhSrcCol.Columns[0].width:=20;
 end;
 
 procedure TfrmDictMaintain.bitbtnTypeUpClick(Sender: TObject);

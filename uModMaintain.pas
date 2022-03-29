@@ -71,7 +71,6 @@ type
     cxdbtrlst1t_name: TcxDBTreeListColumn;
     fdQryTreemodiState2: TStringField;
     cxdbtrlst1modiState: TcxDBTreeListColumn;
-    imgLstBtn: TImageList;
     ImageList1: TImageList;
     FDLocalSQL1: TFDLocalSQL;
     pm1: TPopupMenu;

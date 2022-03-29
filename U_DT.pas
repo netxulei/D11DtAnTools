@@ -9,7 +9,7 @@ uses
   FireDAC.VCLUI.Wait, FireDAC.Comp.Client, FireDAC.Phys.MSSQL,
   FireDAC.Phys.MSSQLDef, System.ImageList, Vcl.ImgList, Vcl.Controls, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet;
+  FireDAC.Comp.DataSet, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.VirtualImageList;
 
 type
   TF_DT = class(TDataModule)
@@ -18,10 +18,14 @@ type
     FDconGen: TFDConnection;
     FDConSysTmp: TFDConnection;
     FDConProjTmp: TFDConnection;
-    imgLstStat: TImageList;
     FDConSQLite: TFDConnection;
     FDqryTmp: TFDQuery;
-    imgLstBtn: TImageList;
+    vrtlmglstMenu: TVirtualImageList;
+    imgClectMenu: TImageCollection;
+    vrtlmglstState: TVirtualImageList;
+    imgClectState: TImageCollection;
+    imgClect1: TImageCollection;
+    vrtlmglst1: TVirtualImageList;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
