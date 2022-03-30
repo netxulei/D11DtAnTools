@@ -71,7 +71,6 @@ type
     cxdbtrlst1t_name: TcxDBTreeListColumn;
     fdQryTreemodiState2: TStringField;
     cxdbtrlst1modiState: TcxDBTreeListColumn;
-    ImageList1: TImageList;
     FDLocalSQL1: TFDLocalSQL;
     pm1: TPopupMenu;
     MnExpand: TMenuItem;
@@ -109,6 +108,7 @@ type
     fdQryExport: TFDQuery;
     cxdbtxtdtDataVer: TcxDBTextEdit;
     lblDataVer: TLabel;
+    cxdbtrlst1isClass: TcxDBTreeListColumn;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
       AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
@@ -451,27 +451,16 @@ procedure TFModMaintain.cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; A
 begin
   if AIndexType = tlitStateIndex then
     exit;
-
-  if ANode.Expanded then
-    AIndex := 1
+  if VarToStrDef(ANode.Values[5], '0') = '0' then
+    AIndex := 16
   else
-    AIndex := 0;
-  // if AIndexType = tlitStateIndex then
-  // exit;
-  //
-  // if ANode.Level = 0 then
-  // begin
-  // AIndex := 0;
-  // if ANode.Expanded then
-  // AIndex := 1;
-  // end
-  // else
-  // AIndex := 2;
-  // if ANode.HotTrack then
-  // if ANode.Level = 0 then
-  // AIndex := 1
-  // else
-  // AIndex := 0;
+  begin
+    if ANode.Expanded then
+      AIndex := 15
+    else
+      AIndex := 14;
+  end;
+
 end;
 
 procedure TFModMaintain.fdQryTreeCalcFields(DataSet: TDataSet);

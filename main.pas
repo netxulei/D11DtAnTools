@@ -19,7 +19,8 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error,
   FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client, EhLibMTE,
-  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON, cxButtons, LibXL, math, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls,
+  cxImageComboBox, FireDAC.Stan.StorageBin, FireDAC.Stan.StorageXML, FireDAC.Stan.StorageJSON, cxButtons, LibXL, math,
+  Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls,
   Vcl.ActnMenus, FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.ConsoleUI.Wait;
 
 type
@@ -39,7 +40,6 @@ type
     MnOpenMode: TMenuItem;
     MnModBack: TMenuItem;
     MnModRest: TMenuItem;
-    ImageList1: TImageList;
     pm1: TPopupMenu;
     N24: TMenuItem;
     N25: TMenuItem;
@@ -137,7 +137,6 @@ type
     FDStanStorageBinLink1: TFDStanStorageBinLink;
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
     FDStanStorageXMLLink1: TFDStanStorageXMLLink;
-    btn3: TButton;
     chkAssis: TCheckBox;
     cxbtnExp: TcxButton;
     pmAssis: TPopupMenu;
@@ -161,6 +160,7 @@ type
     chkAssisDis: TCheckBox;
     N5: TMenuItem;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    cxDBTreeList1isClass: TcxDBTreeListColumn;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
@@ -228,7 +228,6 @@ type
     procedure MnDictClick(Sender: TObject);
     procedure MnRuleClick(Sender: TObject);
     procedure N2Click(Sender: TObject);
-    procedure btn3Click(Sender: TObject);
     procedure bitbtnAssisClick(Sender: TObject);
     procedure N3Click(Sender: TObject);
     procedure mmoFieldsEnter(Sender: TObject);
@@ -297,8 +296,12 @@ begin
 end;
 
 procedure TMainFrm.spbtnFormatClick(Sender: TObject);
+var
+  Pt: Tpoint;
 begin
-  spbtnFormat.PopupMenu.Popup(spbtnFormat.Left, spbtnFormat.Top);
+  GetCursorPos(Pt); { 这是获取的相对于屏幕的坐标 }
+  Pt := ScreenToClient(Pt); { 转换成本地坐标 }
+  spbtnFormat.PopupMenu.Popup(Pt.X, Pt.Y);
 end;
 
 function TMainFrm.RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
@@ -1227,12 +1230,6 @@ begin
     ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
 end;
 
-procedure TMainFrm.btn3Click(Sender: TObject);
-begin
-  del_proc();
-  Auto_proc();
-end;
-
 procedure TMainFrm.N19Click(Sender: TObject);
 begin
   btn1.Click;
@@ -1467,8 +1464,8 @@ begin
   F_import.ShowModal;
   if Length(Trim(t_proj_no)) > 0 then
   begin
-     del_proc(); // 删除存储过程
-     Auto_proc() // 自动执行的存储过程
+    del_proc(); // 删除存储过程
+    Auto_proc() // 自动执行的存储过程
   end;
   // ADOQ1.close;
   // ADOQ1.Open;
@@ -1612,11 +1609,16 @@ procedure TMainFrm.cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANo
 begin
   if AIndexType = tlitStateIndex then
     Exit;
-
-  if ANode.Expanded then
-    AIndex := 1
+  if VarToStrDef(ANode.Values[1], '0') = '0' then
+    AIndex := 16
   else
-    AIndex := 0;
+  begin
+    if ANode.Expanded then
+      AIndex := 15
+    else
+      AIndex := 14;
+  end;
+
   // if ANode.Level = 0 then
   // begin
   // AIndex := 0;
@@ -1826,7 +1828,7 @@ begin
     cxspltr3.Visible := True;
     pnl9.Visible := True;
     dbgrdh1.Align := alTop;
-    dbgrdh1.Height := dbgrdh1.Height div 2;
+    // dbgrdh1.Height := dbgrdh1.Height div 2;
   end
   else
   begin

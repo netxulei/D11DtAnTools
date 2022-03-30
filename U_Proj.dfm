@@ -123,6 +123,9 @@ object F_Proj: TF_Proj
     Width = 193
     Height = 25
     Caption = #35774#32622#25152#36873#20026#24403#21069#39033#30446
+    ImageIndex = 10
+    ImageName = #30830#35748
+    Images = F_DT.vrtlmglst1
     TabOrder = 1
     OnClick = btn3Click
   end
@@ -175,6 +178,9 @@ object F_Proj: TF_Proj
       Width = 121
       Height = 25
       Caption = #36820#22238
+      ImageIndex = 9
+      ImageName = #23567#36864#20986
+      Images = F_DT.vrtlmglst1
       TabOrder = 0
       OnClick = btn4Click
     end
@@ -184,6 +190,9 @@ object F_Proj: TF_Proj
       Width = 121
       Height = 25
       Caption = #20462#25913#39033#30446#20449#24687
+      ImageIndex = 14
+      ImageName = #20462#25913
+      Images = F_DT.vrtlmglstMenu
       TabOrder = 1
       OnClick = btn2Click
     end
@@ -193,6 +202,9 @@ object F_Proj: TF_Proj
       Width = 115
       Height = 25
       Caption = #26032#24314#39033#30446
+      ImageIndex = 2
+      ImageName = #26032#22686
+      Images = F_DT.vrtlmglst1
       TabOrder = 2
       OnClick = btn1Click
     end
@@ -246,6 +258,9 @@ object F_Proj: TF_Proj
     Width = 153
     Height = 25
     Caption = #21024#38500#25152#36873#39033#30446
+    ImageIndex = 3
+    ImageName = #21024#38500' '
+    Images = F_DT.vrtlmglst1
     TabOrder = 9
     OnClick = btn5Click
   end

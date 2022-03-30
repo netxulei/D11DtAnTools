@@ -118,9 +118,9 @@ type
 
   var
     tab_id, tab_name_en, is_chn_col, is_XLS, is_TXT: string;
-    val_warn: Char; // 指示数据校验警告性错误，0无，1有不影响导入，可选择
-    val_falt: Char; // 指示数据校验知名性错误，0无，1有，影响导入，退出导入过程
-    a_Col_record: array of TCol_record; // 字段数组
+    val_warn: Char; // 指示数据校验警告性错误，0无，1有不影响导入，可选择，校验过程返回
+    val_falt: Char; // 指示数据校验知名性错误，0无，1有，影响导入，退出导入过程 。校验过程返回
+    a_Col_record: array of TCol_record; // 字段数组      ，校验过程返回
     procedure ValidData(s_filename: string; i_start, i_max_count: Integer; dis_or_Val: Char); // 文本检验和显示过程
     procedure ValidDataXLS(s_filename: string; i_start, i_max_count: Integer; dis_or_Val: Char); // Excel检验和显示过程
     procedure ImportTxt;
@@ -999,7 +999,7 @@ begin
   val_falt := '0';
   // 判断校验时是否在致命性错误，列数和字段长度，存在则退出导入过程
   val_warn := '0'; // 警告性错误
-{$REGION ' 判断数据文件好额源数据表合理性'}
+{$REGION ' 判断数据文件和源数据表合理性'}
   // s_filename := Trim(lbledtFileName.Text);   //入口参数
   FileExt := UpperCase(ExtractFileExt(s_filename)); // 文件扩展名
   if IfIncludeKG(s_filename) then
@@ -2380,8 +2380,8 @@ var
   year, month, day: Integer;
 
   a_colNames: array of string; // Excel每行数据
-  cell_str: string; // 单元格数据
-  cell_str_all: string; // 单纯连接单元格，根据长度判断本行是否为空
+  cell_str: ansistring; // 单元格数据
+  cell_str_all: ansistring; // 单纯连接单元格，根据长度判断本行是否为空
   cell_int: Integer;
   cell_float: Real;
 
@@ -2395,7 +2395,7 @@ var
   // 标记目标表是否存在、是否新建（清空导入或第一次增量导入），若是，就不用tb_tab过渡，加快速度
 
 begin
-{$REGION '规范表表信息和初始表处理'}
+{$REGION '1.确认清空或新增导入2.设置导入错误文件'}
   if rb1.Checked then
   begin
     if MessageDlg('原有数据将全部清空并用新数据替换，是否确定？', mtConfirmation, mbOKCancel, 0) = mrCancel then
@@ -2419,13 +2419,15 @@ begin
     end;
   finally
   end;
-
-  dis_or_Val := '1'; // 校验
+{$ENDREGION}
+{$REGION '校验Excel（目前校验基本无效，仅返回原表字段信息a_Col_record，必要时重写）'}
+  dis_or_Val := '1'; // 校验，导入时要校验而不是预览，传递给ValidDataXLS
   i_start := 1;
-  i_max_count := Min(StrToInt(lbledtValNo.Text), 1000); // 导入时最多交易1000行
+  i_max_count := Min(StrToInt(lbledtValNo.Text), 1000); // 导入时最多校验1000行
   s_filename := Trim(lbledtFileName.Text);
   FileExt := UpperCase(ExtractFileExt(s_filename)); // 文件扩展名
   ValidDataXLS(s_filename, i_start, i_max_count, dis_or_Val);
+
   // 目前仅读取和显示源表字段信息 （暂未校验）
 
   if val_falt = '1' then // 存在致命性错误
@@ -2440,22 +2442,23 @@ begin
       Exit;
     end;
   end;
-
+{$ENDREGION}
+{$REGION '根据校验获得组成sql的字段信息'}
   mmo2.Lines.Add('校验了前' + IntToStr(i_max_count) + '行数据，基本不影响数据导入（全部校验请返回后使用校验功能），下面开始导入数据文件……'); // 1.建立数据表
   // 暂停屏幕响应
   // pnl1.Enabled := False;
   // pnl2.Enabled := False;
   // pnl3.Enabled := False;
   fdqryTmp.Connection := f_dt.FDConSys;
-  col_name_def := '(';
-  col_name_insert := '';
+  col_name_def := '('; // 建立字段列表
+  col_name_insert := ''; // 插入值
   col_name_param := ''; // 参数字段
   col_name_deal := '';
   col_rept_name_s := ''; // 查重字段连接
   col_rept_type_s := ''; // 每个查重字段的类型
-  col_ind_name_s := '';
+  col_ind_name_s := ''; // 索引字段
   // 获取字段定义字符串
-  a_col_rec_len := Length(a_Col_record);
+  a_col_rec_len := Length(a_Col_record); // 校验返回a_col_record字段信息数组
   for i := 0 to a_col_rec_len - 1 do
   begin
     // -----字段定义---------------------------------------->col_name_def
@@ -2500,6 +2503,8 @@ begin
     if a_Col_record[i].col_index = '1' then
       col_ind_name_s := col_ind_name_s + a_Col_record[i].col_name + ',';
     // ===================================
+
+
     // ---openrowset数据集选择字段，可以处理---------------->col_name_deal
 
     if Length(a_Col_record[i].col_Dict) > 0 then // 编码字段处理
@@ -2560,6 +2565,7 @@ begin
     end;
 
   end;
+
   // ----------------------------------------------
   if Length(col_rept_name_s) > 0 then // 准备给stringList用
     col_rept_name_s := Copy(col_rept_name_s, 1, Length(col_rept_name_s) - 1);
@@ -2578,7 +2584,8 @@ begin
     fdQryExec.Connection := f_dt.FDConProj
   else
     fdQryExec.Connection := f_dt.FDConSys;
-
+{$ENDREGION}
+{$REGION '临时表处理、目标表、索引删除等处理'}
   t1 := Now(); // 获取开始计时时间
   // StopWatch := TStopWatch.StartNew;
 
@@ -2626,7 +2633,7 @@ begin
     fdQryExec.ExecSQL;
     // 标记目标表原表不存在
     is_exist := '0';
-    // fdQryExec.Close;
+    fdQryExec.close;
   end;
   // // -------------------------------------------------------------------------------------------------------
   // 若表不存在（包括追加导入的情况）或清空导入的，重建新表
@@ -2695,8 +2702,9 @@ begin
     end;
     fdqryTmp.close;
   end;
-  mmo2.Lines.Add('数据正在入库……');
+
 {$ENDREGION}
+  mmo2.Lines.Add('数据正在入库……');
   // ------------------------------------------------------------------------------------------------------------
   mmo2.Lines.Add('开始导入Excel格式数据（导入条件：1.第一行为标题栏；2列标题名称与数据规范确定名称一致；3.列位置和多余入其他列不影响导入）……');
   try
@@ -2706,38 +2714,30 @@ begin
     if (FileExt = '.XLSX') then
       xlBook := TXmlBook.Create;
     xlBook.setKey('TommoT', 'windows-2421220b07c2e10a6eb96768a2p7r6gc');
-    // strFormat := xlBook.addFormat();
-    // numFormat := xlBook.addFormat();
-    // numFormat.setNumFormat(NUMFORMAT_CURRENCY_NEGBRA);
-    // strFormat.setNumFormat(NUMFORMAT_TEXT);
     if not xlBook.load(PWideChar(s_filename)) then
     begin
 
-      // MessageDlg('文件可能处于保护状态，不能导入，请修正后再行导入！！！', mtError, [mbOK], 0);
+      xlBook.Free;
+      fdQryExec.close;
       mmo2.Lines.Add(s_filename + '文件可能处于保护状态，不能导入，请修正后再行导入！！！');
-      raise Exception.Create('文件可能处于保护状态，不能导入，请修正后再行导入！！！');
-      // xlBook.Free;
-      // fdQryExec.Close;
-      // abort;
+      MessageDlg('文件可能处于保护状态，不能导入，请修正后再行导入！！！', mtError, [mbOK], 0);
+      Exit;
     end;
 
-    xl_page := xlBook.sheetCount;
-    // xlSheet := Book.getSheet(0);
-    // s := Sheet.readStr(2, 1);
-    // d := Sheet.readNum(3, 1);
+    xl_page := xlBook.sheetCount; // excel页数
     in_ok := 0;
     in_not := 0;
     // i_retry := 0;
-    sl_col_xls_cloc := TStringList.Create;
+    sl_col_xls_cloc := TStringList.Create; // 用于判断excel字段名称是否在其中
     sl_col_xls_cloc.StrictDelimiter := True;
     sl_col_xls_cloc.Delimiter := '|';
 
     for i := 0 to xl_page - 1 do
     begin
       // 一页一页处理
-      colSrcYesXlsNo := '';
-      colSrcYesXlsMore := '';
-      colSrcNoXlsYes := '';
+      colSrcYesXlsNo := ''; // 字段信息中，源表有excel没有
+      colSrcYesXlsMore := ''; // 字段信息中，源表有excel多余
+      colSrcNoXlsYes := ''; // 字段信息中，源表无excel有
       // X.worksheets[j].activate;
       xlSheet := xlBook.getSheet(i);
       if xlSheet.protect then
@@ -2930,7 +2930,7 @@ begin
           Inc(i_param);
       end; // excel记录循环完毕
       // fdQryExec.Params.ArraySize := NumParams;  { Reset to actual number }
-      fdQryExec.Execute(fdQryExec.Params.ArraySize);
+      fdQryExec.Execute(fdQryExec.Params.ArraySize);  //此处应分批次执行，否则out of memory
     end;
   finally
     sl_col_xls_cloc.Free;

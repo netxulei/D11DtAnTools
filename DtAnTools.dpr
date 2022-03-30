@@ -32,6 +32,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  Application.Title := '通用数据分析工具';
   Application.CreateForm(TLoginFrm, LoginFrm);
   Application.CreateForm(TF_DT, F_DT);
   Application.CreateForm(TF_float, F_float);

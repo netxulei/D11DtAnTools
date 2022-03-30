@@ -223,9 +223,6 @@ Coordinates=669,427,55,33
 [MnUser]
 Coordinates=130,731,52,33
 
-[btn3]
-Coordinates=83,10,41,51
-
 [pmAssis]
 Coordinates=71,731,57,33
 
@@ -319,9 +316,6 @@ Coordinates=499,806,40,33
 [N20]
 Coordinates=450,806,40,33
 
-[ImageList1]
-Coordinates=381,806,68,33
-
 [MnRule]
 Coordinates=322,806,51,33
 
@@ -408,4 +402,7 @@ Coordinates=290,10,88,51
 
 [ds1]
 Coordinates=422,421,40,33
+
+[]
+Coordinates=381,806,68,33
 
