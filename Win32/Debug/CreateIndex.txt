@@ -1,2 +1,3 @@
-create NONCLUSTERED index idx0tb_PbcPers on tb_PbcPers([账号]);
-create NONCLUSTERED index idx1tb_PbcPers on tb_PbcPers([开户日期]);
+create NONCLUSTERED index idx0tb_BankAmoutUnit on tb_BankAmoutUnit([户名]);
+create NONCLUSTERED index idx1tb_BankAmoutUnit on tb_BankAmoutUnit([账号]);
+create NONCLUSTERED index idx2tb_BankAmoutUnit on tb_BankAmoutUnit([余额日期]);

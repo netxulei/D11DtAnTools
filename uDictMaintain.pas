@@ -51,7 +51,6 @@ type
     fdQryDictTypemodiState: TStringField;
     fdQryDictValdict_val_id: TStringField;
     fdQryDictValdict_type_id: TStringField;
-    fdQryDictValdict_val: TStringField;
     fdQryDictValdict_lable: TStringField;
     fdQryDictValdict_val_sort: TIntegerField;
     fdQryDictTypedict_type_memo: TStringField;
@@ -60,6 +59,7 @@ type
     bitbtnExport: TBitBtn;
     chkOpen: TCheckBox;
     bitbtnExit: TBitBtn;
+    fdQryDictValdict_val: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);

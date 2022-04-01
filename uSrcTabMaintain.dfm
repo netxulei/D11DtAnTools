@@ -192,7 +192,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
         TitleParams.Font.Color = clWindowText
-        TitleParams.Font.Height = -11
+        TitleParams.Font.Height = -12
         TitleParams.Font.Name = 'Segoe UI'
         TitleParams.Font.Style = []
         TitleParams.ParentFont = False
@@ -420,7 +420,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1252
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -852,7 +851,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcCol: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_id;col_sort'
     MasterSource = dsSrcTabMsDt
@@ -951,11 +949,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object fdQrySrcColcol_reg: TStringField
       FieldName = 'col_reg'
       Origin = 'col_reg'
+      Size = 60
     end
     object fdQrySrcColcol_reg_str: TStringField
       FieldName = 'col_reg_str'
       Origin = 'col_reg_str'
-      Size = 40
+      Size = 80
     end
     object fdQrySrcColcol_reg_ok: TStringField
       FieldName = 'col_reg_ok'

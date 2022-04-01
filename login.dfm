@@ -3671,7 +3671,6 @@ object LoginFrm: TLoginFrm
       Top = 130
       Width = 505
       Height = 182
-      Caption = #36864#20986
       ParentBackground = False
       TabOrder = 1
       object rg1: TRadioGroup

@@ -1,0 +1,1 @@
+INSERT INTO tb_BankAmoutUnit Select 网点机构代码,网点名,户名,账号,余额,余额日期 From tb_tmp a  Where NOT EXISTS (SELECT 户名,账号,余额,余额日期 FROM tb_BankAmoutUnit b WHERE Isnull(a.户名,'') = Isnull(b.户名,'') AND Isnull(a.账号,'') = Isnull(b.账号,'') AND a.余额 = b.余额 AND Isnull(a.余额日期,'') = Isnull(b.余额日期,''))

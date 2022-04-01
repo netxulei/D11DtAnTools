@@ -137,7 +137,7 @@ object frmDictMaintain: TfrmDictMaintain
         EditActions = [geaCopyEh]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -11
+        Font.Height = -12
         Font.Name = 'Segoe UI'
         Font.Style = []
         HorzScrollBar.ExtraPanel.Visible = True
@@ -152,7 +152,7 @@ object frmDictMaintain: TfrmDictMaintain
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
         TitleParams.Font.Color = clWindowText
-        TitleParams.Font.Height = -11
+        TitleParams.Font.Height = -12
         TitleParams.Font.Name = 'Segoe UI'
         TitleParams.Font.Style = [fsBold]
         TitleParams.ParentFont = False
@@ -220,7 +220,6 @@ object frmDictMaintain: TfrmDictMaintain
         Font.Style = []
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1123
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -559,7 +558,6 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object fdQryDictVal: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'dict_type_id;dict_val_sort'
     MasterSource = dsDictTypeMsDt
@@ -606,7 +604,7 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictValdict_val: TStringField
       FieldName = 'dict_val'
       Origin = 'dict_val'
-      Size = 40
+      Size = 80
     end
     object fdQryDictValdict_lable: TStringField
       FieldName = 'dict_lable'

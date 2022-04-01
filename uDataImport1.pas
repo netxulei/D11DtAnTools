@@ -124,7 +124,6 @@ type
     procedure ValidData(s_filename: string; i_start, i_max_count: Integer; dis_or_Val: Char); // 文本检验和显示过程
     procedure ValidDataXLS(s_filename: string; i_start, i_max_count: Integer; dis_or_Val: Char); // Excel检验和显示过程
     procedure ImportTxt;
-    procedure ImportExcel;
     procedure ImportExcelDML;
     procedure TxtInfo;
     procedure ExcelInfo;
@@ -171,7 +170,10 @@ begin
   begin
     if (FileExt = '.XLS') or (FileExt = '.XLSX') then
       if chkXLS.Checked then
-        ValidDataXLS(s_filename, i_start, i_max_count, dis_or_Val)
+      begin
+        ValidDataXLS(s_filename, i_start, i_max_count, dis_or_Val);
+        MessageDlg('Excel文件只显示数据规范要求信息，具体校验在导入数据时进行。', mtInformation, [mbOK], 0);
+      end
       else
       begin
         MessageDlg('未选择源数据表或该数据不能导入Excel文件！', mtInformation, [mbOK], 0);
@@ -209,7 +211,11 @@ begin
   if (FileExt = '.TXT') or (FileExt = '.CSV') then
     ValidData(s_filename, i_start, i_max_count, dis_or_Val)
   else if (FileExt = '.XLS') or (FileExt = '.XLSX') then
-    ValidDataXLS(s_filename, i_start, i_max_count, dis_or_Val)
+  begin
+    ValidDataXLS(s_filename, i_start, i_max_count, dis_or_Val);
+    MessageDlg('Excel文件只显示数据规范要求信息，具体预览信息请用WPS或Excel。', mtInformation, [mbOK], 0);
+  end
+
   else
   begin
     lbledtFileName.setfocus;
@@ -1213,7 +1219,7 @@ begin
 
   dis_or_Val := '1'; // 校验
   i_start := 1;
-  i_max_count := Min(StrToInt(lbledtValNo.Text), 1000); // 导入时最多交易1000行
+  i_max_count := Min(StrToInt(lbledtValNo.Text), 1000); // 导入时最多校验1000行
   s_filename := Trim(lbledtFileName.Text);
   FileExt := UpperCase(ExtractFileExt(s_filename)); // 文件扩展名
   ValidData(s_filename, i_start, i_max_count, dis_or_Val);
@@ -1506,19 +1512,9 @@ begin
     // 获得原有索引----------------------------
     fdqryTmp.Connection := fdQryExec.Connection;
     fdqryTmp.SQL.Clear;
-    sqltext := 'WITH  tmp AS ( SELECT   indexname = a.name ,tablename = c.name ,indexcolumns = d.name ,a.indid';
+    sqltext := ' SELECT i.[name] AS indexName  FROM sys.objects t INNER JOIN sys.indexes i ON t.object_id=i.object_id ';
     fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'FROM     sysindexes a  JOIN sysindexkeys b ON a.id = b.id  AND a.indid = b.indid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'JOIN sysobjects c ON b.id = c.id  JOIN syscolumns d ON b.id = d.id AND b.colid = d.colid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'WHERE a.indid NOT IN (0,255 ) AND c.name = ' + tab_name_en.QuotedString + ')';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext :=
-      'SELECT  tmp.indexName ,tmp.tableName , (SELECT A.indexcolumns + '','' FROM tmp A WHERE A.indexname = tmp.indexname  AND A.indid = tmp.indid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext :=
-      'FOR  XML PATH('''') ) indexCol, tmp.indid indexID   FROM  tmp GROUP BY tmp.indexname ,tmp.tablename ,tmp.indid;';
+    sqltext := 'WHERE t.is_ms_shipped<>1 AND index_id>0 and t.name=' + tab_name_en.QuotedString;
     fdqryTmp.SQL.Add(sqltext);
     fdqryTmp.Prepared;
     fdqryTmp.Open;
@@ -1645,690 +1641,7 @@ begin
         col_ind_name_ls[i] + ']);';
       fdQryExec.SQL.Add(sqltext);
     end;
-    fdQryExec.SQL.SaveToFile('CreateIndex.txt');
-    fdQryExec.Prepared;
-    fdQryExec.ExecSQL;
-  end;
-
-  // ============================
-
-  t2 := Now(); // 获取结束计时时间
-  r1 := SecondsBetween(t2, t1); // 取得计时时间，单位秒(s)
-  r1 := MilliSecondsBetween(t2, t1) / 1000;
-
-  mmo2.Lines.Add('OK！导入结束！OK');
-  mmo2.Lines.Add('本次导入花费时间（' + FormatFloat('0.00', r1) + '秒）。');
-  mmo2.Lines.Add('系统原有数据：' + IntToStr(i_dst_cnt) + '条；数据文件：' + IntToStr(i_tmp_cnt) + '条;导入成功：' +
-    IntToStr(i_dst_cnt_all - i_dst_cnt) + '条！');
-  mmo2.setfocus;
-  SendMessage(mmo2.Handle, EM_SCROLLCARET, 0, 0);
-  // ------------------------------------------------------------------------------
-  pnl1.Enabled := True;
-  pnl2.Enabled := True;
-  pnl3.Enabled := True;
-end;
-
-procedure TFrmDataImport.ImportExcel;
-var
-  FileExt, s_filename, s_error: string; // 文件名、文件编码类型
-  a_col_rec_len: Integer; // 规范表字段长度
-  i, j, k, i_tmp, grd_row, i_start, i_max_count: Integer;
-  dis_or_Val: Char;
-  dis_ok: Char; // 校验错误时为1，显示在grid
-  col_tmp_str, rept_tmp_where: string;
-  col_name_def, col_name_insert, col_name_deal, sqltext, col_val: string;
-  col_rept_name_s, col_rept_type_s, col_ind_name_s: string;
-  // 查重字段和索引字段 “|” 连接     ,col_rept_type_ls同时记录查重字段的类型，以正确生成where子句时
-  col_rept_name_ls, col_rept_type_ls, col_ind_name_ls: TStringList; // 遍历使用
-  t1, t2: TDateTime;
-  r1: Real;
-
-  is_exist: Char;
-  i_dst_cnt, // 原数据的记录数
-  i_tmp_cnt, // 临时表记录数
-  i_dst_cnt_all: Integer; // 结果表记录数
-
-  xlBook: TXLBook;
-  xlSheet: TXLSheet;
-  xl_page, xl_row_cnt, xl_col_cnt, in_ok, in_not: Integer;
-  // strFormat, numFormat: TFormat;
-  xlCellType: CellType;
-  year, month, day: Integer;
-
-  a_colNames: array of string; // Excel每行数据
-  cell_str: string; // 单元格数据
-  cell_str_all: string; // 单纯连接单元格，根据长度判断本行是否为空
-  cell_int: Integer;
-  cell_float: Real;
-
-  sl_col_xls_cloc: TStringList;
-  // 源表excel处理，a_Col_record[i].col_xls_loc赋值给 sl_xls_colNames.delimetetertetx
-  Find_state: Integer; // 记录从数组中查找列表的状态,是指参数带入函数
-  colSrcYesXlsNo, // 源表有，excel无
-  colSrcNoXlsYes, // Excel有，源表无
-  colSrcYesXlsMore // Excel有，源表无
-    : string; // 每列错误信息
-  // 标记目标表是否存在、是否新建（清空导入或第一次增量导入），若是，就不用tb_tab过渡，加快速度
-
-begin
-{$REGION '规范表表信息和初始表处理'}
-  if rb1.Checked then
-  begin
-    if MessageDlg('原有数据将全部清空并用新数据替换，是否确定？', mtConfirmation, mbOKCancel, 0) = mrCancel then
-    begin
-      Abort;
-    end;
-  end
-  else
-  begin
-    if MessageDlg('追加方式导入，因系统需判断查重，数据量较大时，速度较慢！！！是否确定？', mtConfirmation, mbOKCancel, 0) = mrCancel then
-    begin
-      Abort;
-    end;
-  end;
-  s_error := ExtractFilePath(ParamStr(0)) + 'error.txt'; // 记录导入时的出错信息
-  try
-    if FileExists(s_error) then
-    begin
-      DeleteFile(s_error);
-      DeleteFile(s_error + '.Error.Txt');
-    end;
-  finally
-  end;
-
-  dis_or_Val := '1'; // 校验
-  i_start := 1;
-  i_max_count := Min(StrToInt(lbledtValNo.Text), 1000); // 导入时最多校验1000行
-  s_filename := Trim(lbledtFileName.Text);
-  FileExt := UpperCase(ExtractFileExt(s_filename)); // 文件扩展名
-  ValidDataXLS(s_filename, i_start, i_max_count, dis_or_Val);
-  // 目前仅读取和显示源表字段信息 （暂未校验）
-
-  if val_falt = '1' then // 存在致命性错误
-  begin
-    MessageDlg('Excel文件部分校验不通过，请修正后再行导入！', mtError, [mbOK], 0);
-    Exit;
-  end;
-  if val_warn = '1' then // 存在警告性错误
-  begin
-    if MessageDlg('Excel文件部分校验存在不符合校验规则数据，是否继续导入？', mtWarning, [mbYes, mbNo], 0) = mrNo then
-    begin
-      Exit;
-    end;
-  end;
-
-  mmo2.Lines.Add('校验了前' + IntToStr(i_max_count) + '行数据，基本不影响数据导入（全部校验请返回后使用校验功能），下面开始导入数据文件……'); // 1.建立数据表
-  // 暂停屏幕响应
-  // pnl1.Enabled := False;
-  // pnl2.Enabled := False;
-  // pnl3.Enabled := False;
-  fdqryTmp.Connection := f_dt.FDConSys;
-  col_name_def := '(';
-  col_name_insert := '';
-  col_name_deal := '';
-  col_rept_name_s := ''; // 查重字段连接
-  col_rept_type_s := ''; // 每个查重字段的类型
-  col_ind_name_s := '';
-  // 获取字段定义字符串
-  a_col_rec_len := Length(a_Col_record);
-  for i := 0 to a_col_rec_len - 1 do
-  begin
-    // -----字段定义---------------------------------------->col_name_def
-    col_tmp_str := '';
-    // 每个字段生成数据类型及长度，先判断数据长度是否存在，再判断小数点长度是否存在
-    if StrToIntDef(a_Col_record[i].col_all_len, 0) > 0 then
-    begin
-      col_tmp_str := col_tmp_str + '(' + a_Col_record[i].col_all_len;
-      if StrToIntDef(a_Col_record[i].col_dot_len, 0) > 0 then
-        col_tmp_str := col_tmp_str + ',' + a_Col_record[i].col_dot_len;
-      col_tmp_str := col_tmp_str + ')';
-    end;
-    col_name_def := col_name_def + a_Col_record[i].col_name + ' ' + a_Col_record[i].col_type + ' ' + col_tmp_str + ',';
-    // ------------------------------------------------------> col_name_def
-    //
-    // ----插入字段----------------------------------------> col_name_insert
-    if i = a_col_rec_len - 1 then
-      col_name_insert := col_name_insert + a_Col_record[i].col_name
-    else
-      col_name_insert := col_name_insert + a_Col_record[i].col_name + ',';
-    // ----------------------------------------------------> col_name_insert
-    // ========查重字段==========================
-    if a_Col_record[i].col_rept = '1' then
-    begin
-      col_rept_name_s := col_rept_name_s + a_Col_record[i].col_name + ',';
-      if (LowerCase(a_Col_record[i].col_type) = 'varchar') then
-        col_rept_type_s := col_rept_type_s + '0,' // 字符为0
-      else if (LowerCase(a_Col_record[i].col_type) = 'decimal') then
-        col_rept_type_s := col_rept_type_s + '1,' // 浮点数1
-      else
-        col_rept_type_s := col_rept_type_s + '2,'; // 整数2
-    end;
-    // ===================================
-    // ========索引字段==========================
-    if a_Col_record[i].col_index = '1' then
-      col_ind_name_s := col_ind_name_s + a_Col_record[i].col_name + ',';
-    // ===================================
-    // ---openrowset数据集选择字段，可以处理---------------->col_name_deal
-
-    if Length(a_Col_record[i].col_Dict) > 0 then // 编码字段处理
-    begin
-      // col_name_deal := '(Case trim(' + a_Col_record[i].col_name + ')';
-      sqltext := 'select dict_val,dict_lable from dict_val where dict_type_id = ' + a_Col_record[i]
-        .col_Dict.QuotedString;
-      // ShowMessage(sqltext);
-      // exit;
-      fdqryTmp.close;
-      fdqryTmp.SQL.Clear;
-      fdqryTmp.SQL.Add(sqltext);
-      fdqryTmp.Open;
-      fdqryTmp.First;
-      if not fdqryTmp.eof then
-      begin
-        col_tmp_str := '(CASE Trim(' + a_Col_record[i].col_name + ')';
-        while not fdqryTmp.eof do // 遍历
-        begin
-          col_tmp_str := col_tmp_str + ' WHEN ' + '''' + fdqryTmp['dict_val'] + '''' + ' THEN ' + '''' +
-            fdqryTmp['dict_lable'] + ''' ';
-          fdqryTmp.Next;
-        end;
-        col_tmp_str := col_tmp_str + ' ELSE Trim(' + a_Col_record[i].col_name + ') END) ' + a_Col_record[i].col_name;
-        if i = a_col_rec_len - 1 then
-          col_name_deal := col_name_deal + col_tmp_str
-        else
-          col_name_deal := col_name_deal + col_tmp_str + ',';
-      end
-      else
-      begin // 若编码字典没有准备好，则直接取字段名
-        if i = a_col_rec_len - 1 then
-          col_name_deal := col_name_deal + a_Col_record[i].col_name
-        else
-          col_name_deal := col_name_deal + a_Col_record[i].col_name + ',';
-      end;
-      fdqryTmp.close;
-    end
-    else // 非编码字段处理
-    begin
-      if a_Col_record[i].col_date_deal = '1' then // 日期字段处理 ，一般费编码字段才能有日期字段
-      begin
-        col_tmp_str := 'trim(Replace(' + a_Col_record[i].col_name + ',' + '''' + '-' + '''' + ',' + '''''' + ')) ' +
-          a_Col_record[i].col_name;
-        if i = a_col_rec_len - 1 then
-          col_name_deal := col_name_deal + col_tmp_str
-        else
-          col_name_deal := col_name_deal + col_tmp_str + ',';
-      end
-      else
-      begin // 费日期字段，直接取字段非
-        if i = a_col_rec_len - 1 then
-          col_name_deal := col_name_deal + a_Col_record[i].col_name
-        else
-          col_name_deal := col_name_deal + a_Col_record[i].col_name + ',';
-      end;
-
-    end;
-
-  end;
-  // ----------------------------------------------
-  if Length(col_rept_name_s) > 0 then // 准备给stringList用
-    col_rept_name_s := Copy(col_rept_name_s, 1, Length(col_rept_name_s) - 1);
-  if Length(col_rept_type_s) > 0 then //
-    col_rept_type_s := Copy(col_rept_type_s, 1, Length(col_rept_type_s) - 1);
-  // 去除最后一个字符
-  if Length(col_ind_name_s) > 0 then
-    col_ind_name_s := Copy(col_ind_name_s, 1, Length(col_ind_name_s) - 1);
-  // 去除最后一个字符
-  // --------------------------------
-  col_name_def := col_name_def + '[id] [bigint] IDENTITY(1,1) not null) ';
-
-  // 根据源表选择数据库链接
-
-  if globle_tab = '0' then
-    fdQryExec.Connection := f_dt.FDConProj
-  else
-    fdQryExec.Connection := f_dt.FDConSys;
-
-  t1 := Now(); // 获取开始计时时间
-  // -------------------------删除临时表-------导入临时表设定为了可以增量导入---------------
-  fdQryExec.DisableControls;
-  fdQryExec.close;
-  fdQryExec.SQL.Clear;
-  sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' +
-    ') AND type in (N' + '''' + 'U' + '''' + '))' + ' DROP TABLE [dbo].[tb_tmp]';
-  fdQryExec.SQL.Add(sqltext);
-  fdQryExec.Prepared;
-  fdQryExec.ExecSQL;
-  // fdQryExec.DisableControls;
-  // fdQryExec.Close;
-  // ----------------------------------------------------------------------------------------
-  // -------------建立临时导入表------------------------------------
-  fdQryExec.SQL.Clear;
-  sqltext := 'Create table tb_tmp ' + col_name_def;
-  fdQryExec.SQL.Add(sqltext);
-  fdQryExec.Prepared;
-  fdQryExec.ExecSQL;
-  // fdQryExec.Close;
-  // ---------------------------------------------------------------
-  // ------------判断导入表是否存在，再根据清空或增量导入选项确定是否删除------------------------------
-  sqltext := 'select name from sysobjects where Name =' + '''' + tab_name_en + '''' + ' and type =' + '''' + 'U' + '''';
-  fdQryExec.SQL.Clear;
-  fdQryExec.SQL.Add(sqltext);
-  fdQryExec.Prepared;
-  fdQryExec.Open;
-  if fdQryExec.RecordCount > 0 then
-    is_exist := '1' // 目标表原来已存在
-  else
-    is_exist := '0';
-
-  // fdQryExec.EnableControls;
-  // 若表存在并且清空导入，则删除表，并建立新表
-  if (is_exist = '1') and (rb1.Checked) then
-  begin
-    // 直接删除tb_shzh_gr
-    mmo2.Lines.Add('删除原有数据......');
-    fdQryExec.SQL.Clear;
-    sqltext := 'drop TABLE [' + tab_name_en + ']';
-    fdQryExec.SQL.Add(sqltext);
-    fdQryExec.Prepared;
-    fdQryExec.ExecSQL;
-    // 标记目标表原表不存在
-    is_exist := '0';
-    // fdQryExec.Close;
-  end;
-  // // -------------------------------------------------------------------------------------------------------
-  // 若表不存在（包括追加导入的情况）或清空导入的，重建新表
-  if is_exist = '0' then
-  begin
-    // 建立导入表，
-    mmo2.Lines.Add('建立数据表......');
-    fdQryExec.SQL.Clear;
-    sqltext := 'CREATE TABLE [' + tab_name_en + '] ' + col_name_def;
-    fdQryExec.SQL.Add(sqltext);
-    fdQryExec.Prepared;
-    fdQryExec.ExecSQL;
-    fdQryExec.close;
-  end;
-
-  // 清空导入，直接导入到表中，增量导入托工tmp表过渡，有个查重的问题
-  var
-    impTab: string;
-  if is_exist = '0' then // 目标表原来不存在，不需tmp过渡
-  begin
-    impTab := tab_name_en;
-    i_dst_cnt := 0;
-  end
-  else
-  begin
-    impTab := 'tb_tmp';
-    fdQryExec.SQL.Clear;
-    sqltext := 'SELECT Count(*) cnt From ' + tab_name_en;
-    fdQryExec.SQL.Add(sqltext);
-    fdQryExec.Prepared;
-    fdQryExec.Open;
-    i_dst_cnt := fdQryExec['cnt']; // 原表最大记录数
-    mmo2.Lines.Add('删除原表索引准备重建索引……');
-    // 获得原有索引----------------------------
-    fdqryTmp.Connection := fdQryExec.Connection;
-    fdqryTmp.SQL.Clear;
-    sqltext := 'WITH  tmp AS ( SELECT   indexname = a.name ,tablename = c.name ,indexcolumns = d.name ,a.indid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'FROM     sysindexes a  JOIN sysindexkeys b ON a.id = b.id  AND a.indid = b.indid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'JOIN sysobjects c ON b.id = c.id  JOIN syscolumns d ON b.id = d.id AND b.colid = d.colid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'WHERE a.indid NOT IN (0,255 ) AND c.name = ' + tab_name_en.QuotedString + ')';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext :=
-      'SELECT  tmp.indexName ,tmp.tableName , (SELECT A.indexcolumns + '','' FROM tmp A WHERE A.indexname = tmp.indexname  AND A.indid = tmp.indid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext :=
-      'FOR  XML PATH('''') ) indexCol, tmp.indid indexID   FROM  tmp GROUP BY tmp.indexname ,tmp.tablename ,tmp.indid;';
-    fdqryTmp.SQL.Add(sqltext);
-    fdqryTmp.Prepared;
-    fdqryTmp.Open;
-    if fdqryTmp.RecordCount > 0 then
-    begin
-      fdqryTmp.First;
-      // --循环获得索引名,----------------------
-      fdQryExec.SQL.Clear;
-      while not fdqryTmp.eof do
-      begin
-        sqltext := 'drop index [' + fdqryTmp['indexName'] + '] on [' + tab_name_en + '];';
-        fdQryExec.SQL.Add(sqltext);
-        fdqryTmp.Next;
-      end;
-      fdQryExec.Prepared;
-      fdQryExec.ExecSQL;
-    end;
-    fdqryTmp.close;
-  end;
-  mmo2.Lines.Add('数据正在入库……');
-{$ENDREGION}
-  // ------------------------------------------------------------------------------------------------------------
-  mmo2.Lines.Add('开始导入Excel格式数据（导入条件：1.第一行为标题栏；2列标题名称与数据规范确定名称一致；3.列位置和多余入其他列不影响导入）……');
-  try
-    // --------------------------------page 、row、col均从0开始---------注意
-    if (FileExt = '.XLS') then
-      xlBook := TBinBook.Create;
-    if (FileExt = '.XLSX') then
-      xlBook := TXmlBook.Create;
-    xlBook.setKey('TommoT', 'windows-2421220b07c2e10a6eb96768a2p7r6gc');
-    // strFormat := xlBook.addFormat();
-    // numFormat := xlBook.addFormat();
-    // numFormat.setNumFormat(NUMFORMAT_CURRENCY_NEGBRA);
-    // strFormat.setNumFormat(NUMFORMAT_TEXT);
-    if not xlBook.load(PWideChar(s_filename)) then
-    begin
-
-      // MessageDlg('文件可能处于保护状态，不能导入，请修正后再行导入！！！', mtError, [mbOK], 0);
-      mmo2.Lines.Add(s_filename + '文件可能处于保护状态，不能导入，请修正后再行导入！！！');
-      raise Exception.Create('文件可能处于保护状态，不能导入，请修正后再行导入！！！');
-      // xlBook.Free;
-      // fdQryExec.Close;
-      // abort;
-    end;
-
-    xl_page := xlBook.sheetCount;
-    // xlSheet := Book.getSheet(0);
-    // s := Sheet.readStr(2, 1);
-    // d := Sheet.readNum(3, 1);
-    in_ok := 0;
-    in_not := 0;
-    // i_retry := 0;
-    sl_col_xls_cloc := TStringList.Create;
-    sl_col_xls_cloc.StrictDelimiter := True;
-    sl_col_xls_cloc.Delimiter := '|';
-
-    for i := 0 to xl_page - 1 do
-    begin
-      // 一页一页处理
-      colSrcYesXlsNo := '';
-      colSrcYesXlsMore := '';
-      colSrcNoXlsYes := '';
-      // X.worksheets[j].activate;
-      xlSheet := xlBook.getSheet(i);
-      if xlSheet.protect then
-      begin
-        mmo2.Lines.Add('sheet[' + IntToStr(i + 1) + ']为保护状态，不能导入，继续其他数据导入工作……');
-        Continue;
-      end;
-      // i_count := X.ActiveSheet.usedRange.Rows.count;
-      xl_row_cnt := xlSheet.lastFilledRow; // 行数
-      xl_col_cnt := xlSheet.lastFilledCol; // 列数
-      if (xl_row_cnt < 1) or (xl_col_cnt < 1) then
-      begin
-        mmo2.Lines.Add('sheet[' + IntToStr(i + 1) + ']没有数据，自动忽略，继续其他数据导入工作……');
-        Continue;
-      end;
-      // ShowMessage(IntToStr(i_count)+'|'+inttostr(j_count));
-{$REGION '查找excel中对应数据列，列号保存到a_col_record.xl_col_no'}
-      SetLength(a_colNames, xl_col_cnt); // 设定Excel字段数组长度
-      for j := 0 to xl_col_cnt - 1 do // 读取当前sheet第一行，保存到字段数组，看是否符合要取的数据
-      begin
-        a_colNames[j] := Trim(xlSheet.readStr(0, j));
-        // 此处可以在grid中展示标题------------------------------------------------------------------------------------------------
-        // ShowMessage(colNames[j]);
-      end;
-
-      for j := 0 to a_col_rec_len - 1 do
-      // 循环规范表字段确定的标题名称，在excel标题中查找，找到为列号，找不到为-1，找多了-2
-      begin
-        sl_col_xls_cloc.DelimitedText := a_Col_record[j].col_xls_loc;
-        a_Col_record[j].xls_col_no := findStrList(Find_state, a_colNames, sl_col_xls_cloc);
-
-        if Find_state = -1 then
-          colSrcYesXlsNo := colSrcYesXlsNo + '<' + a_Col_record[j].col_xls_loc + '>';
-        // a_Col_record[j].col_name;
-        if Find_state = -2 then
-          colSrcYesXlsMore := colSrcYesXlsMore + '<' + a_Col_record[j].col_xls_loc + '>';
-        // a_Col_record[j].col_name;
-      end;
-
-      for j := 0 to xl_col_cnt - 1 do
-      begin
-        for k := 0 to a_col_rec_len - 1 do
-          if j = a_Col_record[k].xls_col_no then
-            Break;
-        if k = a_col_rec_len then // 循环结束且循环值大于终止值，说明未找到
-          colSrcNoXlsYes := colSrcNoXlsYes + '<' + a_colNames[j] + '>'
-      end;
-
-      if Length(colSrcYesXlsNo) > 0 then
-      begin
-        colSrcYesXlsNo := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcYesXlsNo;
-        mmo2.Lines.Add('规范中如下字段Excel表未提供：' + colSrcYesXlsNo + '……');
-      end;
-
-      if Length(colSrcYesXlsMore) > 0 then
-      begin
-        colSrcYesXlsMore := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcYesXlsMore;
-        mmo2.Lines.Add('规范中如下字段Excel表提供重复字段：' + colSrcYesXlsMore + '读入第一个符合规范的数据列……');
-      end;
-
-      // 找未记录的excel列
-      if Length(colSrcNoXlsYes) > 0 then
-      begin
-        colSrcNoXlsYes := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcNoXlsYes;
-        mmo2.Lines.Add('Excel表中如下数据列不在规范内或为重复数据列:' + colSrcNoXlsYes + '，这些数据列不导入，但不影响其他数据列的导入……');
-      end;
-{$ENDREGION}
-      //
-      // 准备数据集，导入到tmp表
-      // fdQryExec.SQL.Clear;
-      for j := 1 to xl_row_cnt - 1 do // 遍历excel记录从第二行到最后一行   --------------------------------------？行数要-1
-      begin
-        // for k := 0 to xl_col_cnt - 1 do   //遍历excel单元格，查看数据读取情况
-        // begin
-        // xlCellType := xlSheet.getCellType(j, k);
-        // cell_str := xlSheet.readStr(j, k);
-        // end;
-        fdQryExec.SQL.Clear;
-        sqltext := 'INSERT INTO ' + impTab + ' (' + col_name_insert + ') VALUES ';
-        col_val := '(';
-        cell_str_all := ''; // 单纯连接excel每条记录的字段，根据长度判断词条记录是否为空
-        for k := 0 to a_col_rec_len - 1 do // 遍历规范表字段,同时获得插入值
-        begin
-          // grd_row := strngrd1.RowCount;
-          // strngrd1.RowCount := grd_row + 1; // grid增加一行
-          // ----------------读取一个cell到cell_str------------------------------
-          i_tmp := a_Col_record[k].xls_col_no; // excel中列号
-          if i_tmp >= 0 then // 若列号大于等于0，就读取单元信息
-          begin
-            // 若是日期
-            if a_Col_record[k].col_date_deal = '1' then
-            begin
-              if xlSheet.isDate(j, i_tmp) then
-              begin
-                xlBook.dateUnpack(xlSheet.readNum(i, i_tmp), year, month, day);
-                cell_str := IntToStr(year) + StringOfChar('0', 2 - Length(IntToStr(month))) + IntToStr(month) +
-                  StringOfChar('0', 2 - Length(IntToStr(day))) + IntToStr(day);
-              end
-              else
-              begin
-                cell_str := Trim(xlSheet.readStr(j, i_tmp));
-                cell_str := StringReplace(cell_str, '-', '', [rfReplaceAll]);
-              end;
-            end
-            else
-              cell_str := Trim(xlSheet.readStr(j, i_tmp));
-            // ------------------------------字段长度校验-------------------------------------------------------
-            if (Length(cell_str) > StrToInt(a_Col_record[k].col_len)) and (StrToInt(a_Col_record[k].col_len) > 0) then
-            // col_len已转换为有数字。源表数据字段含有长度时才判断长度，无长度信息，依赖正则判断
-            begin
-              dis_ok := '1';
-              val_falt := '1';
-              mmo2.Lines.Add(IntToStr(j) + '行第' + IntToStr(i_tmp) + '列' + a_Col_record[i].col_name_cn + '数据为“' +
-                cell_str + '”，长度' + IntToStr(Length(cell_str)) + '超出数据规范，数据无法导入！');
-            end;
-            // -------------------------------------------------------------------------------------------------
-            // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）-----------------------
-            if Length(a_Col_record[k].col_reg_str) <> 0 then
-            begin
-              if not TRegEx.IsMatch(cell_str, a_Col_record[k].col_reg_str) then
-              begin
-                dis_ok := '1';
-                if a_Col_record[k].col_reg_ok = '1' then // 强制校验
-                begin
-                  mmo2.Lines.Add(IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' + a_Col_record[k].col_name_cn +
-                    '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg + '”校验规则，数据无法导入！');
-                  val_falt := '1';
-                end
-                else
-                begin
-                  mmo2.Lines.Add(IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' + a_Col_record[k].col_name_cn +
-                    '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg + '”校验规则。可以导入数据，但影响数据分析准确性！');
-                  val_warn := '1';
-                end;
-              end
-            end;
-            // ------------------------------------------------------------------------------------
-          end;
-
-          // -----------获取col_val--------
-          if i_tmp >= 0 then
-          begin
-            cell_str_all := cell_str_all + cell_str; // 本行所有有用单元格合并
-            if (LowerCase(a_Col_record[k].col_type) = 'int') or (LowerCase(a_Col_record[k].col_type) = 'bigint') then
-            begin
-              if k = a_col_rec_len - 1 then
-                col_val := col_val + IntToStr(Round(StrToFloatDef(cell_str, 0))) + ')' // 转换出错变为0
-              else
-                col_val := col_val + IntToStr(Round(StrToFloatDef(cell_str, 0))) + ', '
-            end
-            else if LowerCase(a_Col_record[k].col_type) = 'decimal' then
-            begin
-              if k = a_col_rec_len - 1 then
-                col_val := col_val + FloatToStr(StrToFloatDef(cell_str, 0)) + ')'
-              else
-                col_val := col_val + FloatToStr(StrToFloatDef(cell_str, 0)) + ', '
-            end
-            else
-            begin
-              if k = a_col_rec_len - 1 then
-                col_val := col_val + '''' + cell_str + ''')'
-              else
-                col_val := col_val + '''' + cell_str + ''', '
-            end
-          end
-          else if k = a_col_rec_len - 1 then
-            col_val := col_val + ' NULL)'
-          else
-            col_val := col_val + ' NULL, ';
-          // ------------------------------
-        end;
-        // 插入记录
-        if Length(Trim(cell_str_all)) < a_col_rec_len then
-        begin
-          mmo2.Lines.Add('Excel表' + IntToStr(j + 1) + '行数据为空，跳过继续导入……');
-          Continue;
-        end;
-        sqltext := sqltext + col_val; // 一条记录，一条插入语句
-        fdQryExec.SQL.Add(sqltext);
-        // fdQryExec.SQL.SaveToFile('insertSQL.SQL');
-        fdQryExec.Prepared;
-        fdQryExec.ExecSQL; // 插入一条记录
-      end;
-
-    end;
-  finally
-    sl_col_xls_cloc.Free;
-    xlBook.Free;
-    fdQryExec.close;
-  end;
-
-  // -------------------------------------------------------------------------------------------------------------------------------------------------
-  // --------insert from bulk---------处理字段，用col_name_deal，否则用col_name_insert-------------------
-  // ----------------------清空导入或无原始数据的导入，此时导入工作结束--------------------------------------------------------------
-  // 若增量方式，则必须从tmp倒回到目标表
-  if is_exist = '1' then // 增量方式导入且原来有表数据
-  begin
-    fdQryExec.SQL.Clear;
-    // ====增量方法2 ，利用查重字段============
-    if (Length(col_rept_name_s) > 0) and (chkReptCol.Checked) then
-    // 若存在查重字段并且要求用此字段，就用查重字段的增量方法，否则用方法一
-    begin
-      col_rept_name_ls := TStringList.Create;
-      col_rept_name_ls.StrictDelimiter := True;
-      col_rept_name_ls.Delimiter := ',';
-      col_rept_name_ls.DelimitedText := col_rept_name_s;
-      col_rept_type_ls := TStringList.Create;
-      col_rept_type_ls.StrictDelimiter := True;
-      col_rept_type_ls.Delimiter := ',';
-      col_rept_type_ls.DelimitedText := col_rept_type_s;
-
-      var
-        rept_count: Integer;
-      rept_count := col_rept_name_ls.Count;
-      rept_tmp_where := '';
-      for i := 0 to rept_count - 1 do
-      begin
-        if i < rept_count - 1 then
-          if col_rept_type_ls[i] = '0' then
-            rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' +
-              col_rept_name_ls[i] + ','''') AND '
-          else
-            rept_tmp_where := rept_tmp_where + 'a.' + col_rept_name_ls[i] + ' = b.' + col_rept_name_ls[i] + ' AND '
-        else
-        begin
-          if col_rept_type_ls[i] = '0' then
-            rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' +
-              col_rept_name_ls[i] + ','''')'
-          else
-            rept_tmp_where := rept_tmp_where + 'a.' + col_rept_name_ls[i] + ' = b.' + col_rept_name_ls[i]
-        end;
-      end;
-
-      sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp a ' +
-        ' Where NOT EXISTS (SELECT ' + col_rept_name_s + ' FROM ' + tab_name_en + ' b WHERE ' + rept_tmp_where + ')';
-    end
-    else
-      // ===不用查重字段，用except的方法===
-      sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp except Select ' +
-        col_name_insert + ' From ' + tab_name_en;
-    // ===============
-    fdQryExec.SQL.Add(sqltext);
-    fdQryExec.SQL.SaveToFile('importSQLAdd.txt');
-    fdQryExec.Prepared;
-    fdQryExec.ExecSQL;
-
-    // 获取tmp表记录数（过渡表）
-    fdQryExec.SQL.Clear;
-    sqltext := 'SELECT Count(*) cnt From tb_tmp';
-    fdQryExec.SQL.Add(sqltext);
-    fdQryExec.Prepared;
-    fdQryExec.Open;
-    i_tmp_cnt := fdQryExec['cnt']; // 过渡表记录数
-
-  end;
-  // 获取目标表最后记录数
-  fdQryExec.SQL.Clear;
-  sqltext := 'SELECT Count(*) cnt From ' + tab_name_en;
-  fdQryExec.SQL.Add(sqltext);
-  fdQryExec.Prepared;
-  fdQryExec.Open;
-  i_dst_cnt_all := fdQryExec['cnt']; // 目标表最终记录数
-  if i_dst_cnt = 0 then // 目标表原始记录数若为0，
-    i_tmp_cnt := i_dst_cnt_all;
-  fdQryExec.close;
-  mmo2.Lines.Add('建立索引……');
-  // ===建立目标表的非聚集索引===
-  if Length(col_ind_name_s) > 0 then // 若存在索引
-  // 若存在查重字段并且要求用此字段，就用查重字段的增量方法，否则用方法一
-  begin
-    col_ind_name_ls := TStringList.Create;
-    col_ind_name_ls.StrictDelimiter := True;
-    col_ind_name_ls.Delimiter := ',';
-    col_ind_name_ls.DelimitedText := col_ind_name_s;
-    var
-      ind_count: Integer;
-    ind_count := col_ind_name_ls.Count;
-    fdQryExec.SQL.Clear;
-    for i := 0 to ind_count - 1 do
-    begin
-      sqltext := 'create NONCLUSTERED index ' + 'idx' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '([' +
-        col_ind_name_ls[i] + ']);';
-      fdQryExec.SQL.Add(sqltext);
-    end;
-    fdQryExec.SQL.SaveToFile('CreateIndex.txt');
+    // fdQryExec.SQL.SaveToFile('CreateIndex.txt');
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
   end;
@@ -2352,6 +1665,8 @@ begin
 end;
 
 procedure TFrmDataImport.ImportExcelDML;
+Const
+  BatchSize = 10000; // 分批次DML导入数据库的每个批次记录数
 var
   FileExt, s_filename, s_error: string; // 文件名、文件编码类型
   a_col_rec_len: Integer; // 规范表字段长度
@@ -2366,7 +1681,6 @@ var
   t1, t2: TDateTime;
   r1: Real;
   // StopWatch: TStopWatch;
-
   is_exist: Char;
   i_dst_cnt, // 原数据的记录数
   i_tmp_cnt, // 临时表记录数
@@ -2374,7 +1688,7 @@ var
 
   xlBook: TXLBook;
   xlSheet: TXLSheet;
-  xl_page, xl_row_cnt, xl_col_cnt, in_ok, in_not: Integer;
+  xl_page, xl_row_cnt, xl_col_cnt, in_ok, in_not, batchMod: Integer; // batchMod 为xl_row_cn / BatchSize的余数
   // strFormat, numFormat: TFormat;
   xlCellType: CellType;
   year, month, day: Integer;
@@ -2577,18 +1891,19 @@ begin
   // 去除最后一个字符
   // --------------------------------
   col_name_def := col_name_def + '[id] [bigint] IDENTITY(1,1) not null) ';
-
+{$ENDREGION}
   // 根据源表选择数据库链接
 
   if globle_tab = '0' then
     fdQryExec.Connection := f_dt.FDConProj
   else
     fdQryExec.Connection := f_dt.FDConSys;
-{$ENDREGION}
+
 {$REGION '临时表处理、目标表、索引删除等处理'}
   t1 := Now(); // 获取开始计时时间
   // StopWatch := TStopWatch.StartNew;
 
+  fdQryExec.Connection.StartTransaction;
   // -------------------------删除临时表-------导入临时表设定为了可以增量导入---------------
   fdQryExec.DisableControls;
   fdQryExec.close;
@@ -2670,20 +1985,12 @@ begin
     // 获得原有索引----------------------------
     fdqryTmp.Connection := fdQryExec.Connection;
     fdqryTmp.SQL.Clear;
-    sqltext := 'WITH  tmp AS ( SELECT   indexname = a.name ,tablename = c.name ,indexcolumns = d.name ,a.indid';
+    sqltext := ' SELECT i.[name] AS indexName  FROM sys.objects t INNER JOIN sys.indexes i ON t.object_id=i.object_id ';
     fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'FROM     sysindexes a  JOIN sysindexkeys b ON a.id = b.id  AND a.indid = b.indid';
+    sqltext := 'WHERE t.is_ms_shipped<>1 AND index_id>0 and t.name=' + tab_name_en.QuotedString;
     fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'JOIN sysobjects c ON b.id = c.id  JOIN syscolumns d ON b.id = d.id AND b.colid = d.colid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'WHERE a.indid NOT IN (0,255 ) AND c.name = ' + tab_name_en.QuotedString + ')';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext :=
-      'SELECT  tmp.indexName ,tmp.tableName , (SELECT A.indexcolumns + '','' FROM tmp A WHERE A.indexname = tmp.indexname  AND A.indid = tmp.indid';
-    fdqryTmp.SQL.Add(sqltext);
-    sqltext :=
-      'FOR  XML PATH('''') ) indexCol, tmp.indid indexID   FROM  tmp GROUP BY tmp.indexname ,tmp.tablename ,tmp.indid;';
-    fdqryTmp.SQL.Add(sqltext);
+    // fdqryTmp.SQL.SaveToFile('d:\x.sql');
+    // exit;
     fdqryTmp.Prepared;
     fdqryTmp.Open;
     if fdqryTmp.RecordCount > 0 then
@@ -2704,239 +2011,324 @@ begin
   end;
 
 {$ENDREGION}
-  mmo2.Lines.Add('数据正在入库……');
+  mmo2.Lines.Add('开始数据校验并入库……');
   // ------------------------------------------------------------------------------------------------------------
-  mmo2.Lines.Add('开始导入Excel格式数据（导入条件：1.第一行为标题栏；2列标题名称与数据规范确定名称一致；3.列位置和多余入其他列不影响导入）……');
-  try
-    // --------------------------------page 、row、col均从0开始---------注意
-    if (FileExt = '.XLS') then
-      xlBook := TBinBook.Create;
-    if (FileExt = '.XLSX') then
-      xlBook := TXmlBook.Create;
-    xlBook.setKey('TommoT', 'windows-2421220b07c2e10a6eb96768a2p7r6gc');
-    if not xlBook.load(PWideChar(s_filename)) then
-    begin
+  mmo2.Lines.Add('Excel数据规范：1.第一行为标题栏；2列标题名称与数据规范确定名称一致；3.关键列（列名）缺少不能导入；4.列位置和多余入其他列不影响导入……');
+  // --------------------------------page 、row、col均从0开始---------注意
+  if (FileExt = '.XLS') then
+    xlBook := TBinBook.Create;
+  if (FileExt = '.XLSX') then
+    xlBook := TXmlBook.Create;
+  xlBook.setKey('TommoT', 'windows-2421220b07c2e10a6eb96768a2p7r6gc');
+  //
+  // try
+  // xlBook.load(PWideChar(s_filename));
+  // Except
+  // col_rept_name_ls.Free;
+  // xlBook.Free;
+  // fdQryExec.close;
+  // mmo2.Lines.Add(s_filename + '文件状态不正常，不能导入，请用WPS或Excel打开修正后再行导入！！！');
+  // MessageDlg('文件状态不正常，不能导入，请用WPS或Excel打开修正后再行导入！！！', mtError, [mbOK], 0);
+  // Exit;
+  // end;
 
-      xlBook.Free;
-      fdQryExec.close;
-      mmo2.Lines.Add(s_filename + '文件可能处于保护状态，不能导入，请修正后再行导入！！！');
-      MessageDlg('文件可能处于保护状态，不能导入，请修正后再行导入！！！', mtError, [mbOK], 0);
-      Exit;
-    end;
-
-    xl_page := xlBook.sheetCount; // excel页数
-    in_ok := 0;
-    in_not := 0;
-    // i_retry := 0;
-    sl_col_xls_cloc := TStringList.Create; // 用于判断excel字段名称是否在其中
-    sl_col_xls_cloc.StrictDelimiter := True;
-    sl_col_xls_cloc.Delimiter := '|';
-
-    for i := 0 to xl_page - 1 do
-    begin
-      // 一页一页处理
-      colSrcYesXlsNo := ''; // 字段信息中，源表有excel没有
-      colSrcYesXlsMore := ''; // 字段信息中，源表有excel多余
-      colSrcNoXlsYes := ''; // 字段信息中，源表无excel有
-      // X.worksheets[j].activate;
-      xlSheet := xlBook.getSheet(i);
-      if xlSheet.protect then
-      begin
-        mmo2.Lines.Add('sheet[' + IntToStr(i + 1) + ']为保护状态，不能导入，继续其他数据导入工作……');
-        Continue;
-      end;
-      // i_count := X.ActiveSheet.usedRange.Rows.count;
-      xl_row_cnt := xlSheet.lastFilledRow; // 行数
-      xl_col_cnt := xlSheet.lastFilledCol; // 列数
-      if (xl_row_cnt < 1) or (xl_col_cnt < 1) then
-      begin
-        mmo2.Lines.Add('sheet[' + IntToStr(i + 1) + ']没有数据，自动忽略，继续其他数据导入工作……');
-        Continue;
-      end;
-      // ShowMessage(IntToStr(i_count)+'|'+inttostr(j_count));
-{$REGION '查找excel中对应数据列，列号保存到a_col_record.xl_col_no'}
-      SetLength(a_colNames, xl_col_cnt); // 设定Excel字段数组长度
-      for j := 0 to xl_col_cnt - 1 do // 读取当前sheet第一行，保存到字段数组，看是否符合要取的数据
-      begin
-        a_colNames[j] := Trim(xlSheet.readStr(0, j));
-        // 此处可以在grid中展示标题------------------------------------------------------------------------------------------------
-        // ShowMessage(colNames[j]);
-      end;
-
-      for j := 0 to a_col_rec_len - 1 do
-      // 循环规范表字段确定的标题名称，在excel标题中查找，找到为列号，找不到为-1，找多了-2
-      begin
-        sl_col_xls_cloc.DelimitedText := a_Col_record[j].col_xls_loc;
-        a_Col_record[j].xls_col_no := findStrList(Find_state, a_colNames, sl_col_xls_cloc);
-
-        if Find_state = -1 then
-          colSrcYesXlsNo := colSrcYesXlsNo + '<' + a_Col_record[j].col_xls_loc + '>';
-        // a_Col_record[j].col_name;
-        if Find_state = -2 then
-          colSrcYesXlsMore := colSrcYesXlsMore + '<' + a_Col_record[j].col_xls_loc + '>';
-        // a_Col_record[j].col_name;
-      end;
-
-      for j := 0 to xl_col_cnt - 1 do
-      begin
-        for k := 0 to a_col_rec_len - 1 do
-          if j = a_Col_record[k].xls_col_no then
-            Break;
-        if k = a_col_rec_len then // 循环结束且循环值大于终止值，说明未找到
-          colSrcNoXlsYes := colSrcNoXlsYes + '<' + a_colNames[j] + '>'
-      end;
-
-      if Length(colSrcYesXlsNo) > 0 then
-      begin
-        colSrcYesXlsNo := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcYesXlsNo;
-        mmo2.Lines.Add('规范中如下字段Excel表未提供：' + colSrcYesXlsNo + '……');
-      end;
-
-      if Length(colSrcYesXlsMore) > 0 then
-      begin
-        colSrcYesXlsMore := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcYesXlsMore;
-        mmo2.Lines.Add('规范中如下字段Excel表提供重复字段：' + colSrcYesXlsMore + '读入第一个符合规范的数据列……');
-      end;
-
-      // 找未记录的excel列
-      if Length(colSrcNoXlsYes) > 0 then
-      begin
-        colSrcNoXlsYes := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcNoXlsYes;
-        mmo2.Lines.Add('Excel表中如下数据列不在规范内或为重复数据列:' + colSrcNoXlsYes + '，这些数据列不导入，但不影响其他数据列的导入……');
-      end;
-{$ENDREGION}
-      //
-      // 准备数据集，导入到tmp表
-
-      fdQryExec.SQL.Clear;
-      sqltext := 'INSERT INTO ' + impTab + ' (' + col_name_insert + ') VALUES (' + col_name_param + ')';
-      fdQryExec.SQL.Text := sqltext;
-      fdQryExec.Params.Bindmode := pbByNumber; { more efficient than by name }
-      fdQryExec.Params.ArraySize := xl_row_cnt - 1; { large enough to load all of them }
-
-      for j := 1 to xl_row_cnt - 1 do // 遍历excel记录从第二行到最后一行   --------------------------------------？行数要-1
-      begin
-        // for k := 0 to xl_col_cnt - 1 do   //遍历excel单元格，查看数据读取情况
-        // begin
-        // xlCellType := xlSheet.getCellType(j, k);
-        // cell_str := xlSheet.readStr(j, k);
-        // end;
-        i_param := 0; // 数组参数循环，用于剔除空数据
-        cell_str_all := ''; // 单纯连接excel每条记录的字段，根据长度判断词条记录是否为空
-        for k := 0 to a_col_rec_len - 1 do // 遍历规范表字段,同时获得插入值
-        begin
-          // grd_row := strngrd1.RowCount;
-          // strngrd1.RowCount := grd_row + 1; // grid增加一行
-          // ----------------读取一个cell到cell_str------------------------------
-          i_tmp := a_Col_record[k].xls_col_no; // excel中列号
-          if i_tmp >= 0 then // 若列号大于等于0，就读取单元信息
-          begin
-            // 若是日期
-            if a_Col_record[k].col_date_deal = '1' then
-            begin
-              if xlSheet.isDate(j, i_tmp) then
-              begin
-                xlBook.dateUnpack(xlSheet.readNum(i, i_tmp), year, month, day);
-                cell_str := IntToStr(year) + StringOfChar('0', 2 - Length(IntToStr(month))) + IntToStr(month) +
-                  StringOfChar('0', 2 - Length(IntToStr(day))) + IntToStr(day);
-              end
-              else
-              begin
-                cell_str := Trim(xlSheet.readStr(j, i_tmp));
-                cell_str := StringReplace(cell_str, '-', '', [rfReplaceAll]);
-              end;
-            end
-            else
-              cell_str := Trim(xlSheet.readStr(j, i_tmp));
-            // ------------------------------字段长度校验-------------------------------------------------------
-            if (Length(cell_str) > StrToInt(a_Col_record[k].col_len)) and (StrToInt(a_Col_record[k].col_len) > 0) then
-            // col_len已转换为有数字。源表数据字段含有长度时才判断长度，无长度信息，依赖正则判断
-            begin
-              dis_ok := '1';
-              val_falt := '1';
-              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j) + '行第' + IntToStr(i_tmp) + '列' +
-                a_Col_record[i].col_name_cn + '数据为“' + cell_str + '”，长度' + IntToStr(Length(cell_str)) +
-                '超出数据规范，数据无法导入！');
-            end;
-            // -------------------------------------------------------------------------------------------------
-            // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）-----------------------
-            if Length(a_Col_record[k].col_reg_str) <> 0 then
-            begin
-              if not TRegEx.IsMatch(cell_str, a_Col_record[k].col_reg_str) then
-              begin
-                dis_ok := '1';
-                if a_Col_record[k].col_reg_ok = '1' then // 强制校验
-                begin
-                  mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) +
-                    '列' + a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg +
-                    '”校验规则，数据无法导入！');
-                  val_falt := '1';
-                end
-                else
-                begin
-                  mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) +
-                    '列' + a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg +
-                    '”校验规则。可以导入数据，但影响数据分析准确性！');
-                  val_warn := '1';
-                end;
-              end
-            end;
-            // ------------------------------------------------------------------------------------
-          end;
-
-          // -----------数组参数赋值--------
-          if i_tmp >= 0 then
-          begin
-            cell_str_all := cell_str_all + cell_str; // 本行所有有用单元格合并
-
-            if (LowerCase(a_Col_record[k].col_type) = 'int') or (LowerCase(a_Col_record[k].col_type) = 'bigint') then
-            begin
-              fdQryExec.Params[k].AsIntegers[i_param] := Round(StrToFloatDef(cell_str, 0));
-            end
-            else if LowerCase(a_Col_record[k].col_type) = 'decimal' then
-            begin
-              fdQryExec.Params[k].AsFloats[i_param] := StrToFloatDef(cell_str, 0);
-            end
-            else
-            begin
-              fdQryExec.Params[k].AsStrings[i_param] := cell_str;
-            end
-          end
-          else
-          begin
-            if (LowerCase(a_Col_record[k].col_type) = 'int') or (LowerCase(a_Col_record[k].col_type) = 'bigint') then
-            begin
-              fdQryExec.Params[k].AsIntegers[i_param] := 0;
-            end
-            else if LowerCase(a_Col_record[k].col_type) = 'decimal' then
-            begin
-              fdQryExec.Params[k].AsFloats[i_param] := 0;
-            end
-            else
-            begin
-              fdQryExec.Params[k].AsStrings[i_param] := '';
-            end
-          end;
-          // ------------------------------
-        end; // 字段循环完毕
-        // 插入记录
-        if Length(Trim(cell_str_all)) < a_col_rec_len then
-        begin
-          fdQryExec.Params.ArraySize := fdQryExec.Params.ArraySize - 1;
-          mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行数据为空，跳过继续导入……');
-          Continue;
-        end
-        else
-          Inc(i_param);
-      end; // excel记录循环完毕
-      // fdQryExec.Params.ArraySize := NumParams;  { Reset to actual number }
-      fdQryExec.Execute(fdQryExec.Params.ArraySize);  //此处应分批次执行，否则out of memory
-    end;
-  finally
+  if not xlBook.load(PWideChar(s_filename)) then
+  begin
+    fdQryExec.Connection.Rollback;
+    col_rept_name_ls.Free;
+    col_rept_type_ls.Free;
+    col_ind_name_ls.Free;
     sl_col_xls_cloc.Free;
     xlBook.Free;
     fdQryExec.close;
+    mmo2.Lines.Add(s_filename + '文件状态不正常，不能导入，请用WPS或Excel打开修正后再行导入！！！');
+    MessageDlg('文件状态不正常，不能导入，请用WPS或Excel打开修正后再行导入！！！', mtError, [mbOK], 0);
+    // raise Exception.Create(s_filename + '文件可能处于保护状态，不能导入，请修正后再行导入！！！');
+
+    Exit;
   end;
+
+  xl_page := xlBook.sheetCount; // excel页数
+  in_ok := 0;
+  in_not := 0;
+  // i_retry := 0;
+  sl_col_xls_cloc := TStringList.Create; // 用于判断excel字段名称是否在其中
+  sl_col_xls_cloc.StrictDelimiter := True;
+  sl_col_xls_cloc.Delimiter := '|';
+
+  for i := 0 to xl_page - 1 do
+  begin
+    // 一页一页处理
+    colSrcYesXlsNo := ''; // 字段信息中，源表有excel没有
+    colSrcYesXlsMore := ''; // 字段信息中，源表有excel多余
+    colSrcNoXlsYes := ''; // 字段信息中，源表无excel有
+    // X.worksheets[j].activate;
+    xlSheet := xlBook.getSheet(i);
+    if xlSheet.protect then
+    begin
+      mmo2.Lines.Add('sheet[' + IntToStr(i + 1) + ']为保护状态，不能导入，继续其他数据导入工作……');
+      Continue;
+    end;
+    // i_count := X.ActiveSheet.usedRange.Rows.count;
+    xl_row_cnt := xlSheet.lastFilledRow; // 行数
+    xl_col_cnt := xlSheet.lastFilledCol; // 列数
+    if (xl_row_cnt < 1) or (xl_col_cnt < 1) then
+    begin
+      mmo2.Lines.Add('sheet[' + IntToStr(i + 1) + ']没有数据，自动忽略，继续下一个Sheet导入……');
+      Continue;
+    end;
+    // ShowMessage(IntToStr(i_count)+'|'+inttostr(j_count));
+{$REGION '查找excel中对应标题列，列号保存到a_col_record.xl_col_no'}
+    SetLength(a_colNames, xl_col_cnt); // 设定Excel字段数组长度
+    for j := 0 to xl_col_cnt - 1 do // 读取当前sheet第一行，保存到字段数组，看是否符合要取的数据
+    begin
+      a_colNames[j] := Trim(xlSheet.readStr(0, j));
+      // 此处可以在grid中展示标题------------------------------------------------------------------------------------------------
+      // ShowMessage(colNames[j]);
+    end;
+
+    for j := 0 to a_col_rec_len - 1 do
+    // 循环规范表字段确定的标题名称，在excel标题中查找，找到为列号，找不到为-1，找多了-2
+    begin
+      sl_col_xls_cloc.DelimitedText := a_Col_record[j].col_xls_loc;
+      a_Col_record[j].xls_col_no := findStrList(Find_state, a_colNames, sl_col_xls_cloc);
+
+      if Find_state = -1 then
+      begin
+        colSrcYesXlsNo := colSrcYesXlsNo + '<' + a_Col_record[j].col_xls_loc + '>';
+        if a_Col_record[j].col_reg_ok = '1' then
+          val_falt := '1'
+        else
+          val_warn := '1'; // 若为关键字段，导入无意义，则退出
+      end;
+
+      // a_Col_record[j].col_name;
+      if Find_state = -2 then
+        colSrcYesXlsMore := colSrcYesXlsMore + '<' + a_Col_record[j].col_xls_loc + '>';
+      // a_Col_record[j].col_name;
+    end;
+
+    for j := 0 to xl_col_cnt - 1 do
+    begin
+      for k := 0 to a_col_rec_len - 1 do
+        if j = a_Col_record[k].xls_col_no then
+          Break;
+      if k = a_col_rec_len then // 循环结束且循环值大于终止值，说明未找到
+        colSrcNoXlsYes := colSrcNoXlsYes + '<' + a_colNames[j] + '>'
+    end;
+
+    if Length(colSrcYesXlsNo) > 0 then
+    begin
+      colSrcYesXlsNo := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcYesXlsNo;
+      mmo2.Lines.Add('规范中如下字段Excel表未提供：' + colSrcYesXlsNo + '……');
+    end;
+
+    if Length(colSrcYesXlsMore) > 0 then
+    begin
+      colSrcYesXlsMore := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcYesXlsMore;
+      mmo2.Lines.Add('规范中如下字段Excel表提供重复字段：' + colSrcYesXlsMore + '读入第一个符合规范的数据列……');
+    end;
+
+    // 找未记录的excel列
+    if Length(colSrcNoXlsYes) > 0 then
+    begin
+      colSrcNoXlsYes := '_sheet[' + IntToStr(i + 1) + ']:' + colSrcNoXlsYes;
+      mmo2.Lines.Add('Excel表中如下数据列不在规范内或为重复数据列:' + colSrcNoXlsYes + '，这些数据列不导入，但不影响其他数据列的导入……');
+    end;
+
+    if val_falt = '1' then
+    begin
+      fdQryExec.Connection.Rollback;
+      col_rept_name_ls.Free;
+      col_rept_type_ls.Free;
+      col_ind_name_ls.Free;
+      sl_col_xls_cloc.Free;
+      xlBook.Free;
+      fdQryExec.close;
+      MessageDlg('Excel表关键字段未提供，不能导入，请修正后再导入！！！', mtError, [mbOK], 0);
+      // raise Exception.Create(s_filename + '文件可能处于保护状态，不能导入，请修正后再行导入！！！');
+      Exit;
+    end;
+
+{$ENDREGION}
+    //
+    // 准备数据集，导入到tmp表
+
+    fdQryExec.SQL.Clear;
+    sqltext := 'INSERT INTO ' + impTab + ' (' + col_name_insert + ') VALUES (' + col_name_param + ')';
+    fdQryExec.SQL.Text := sqltext;
+    fdQryExec.Params.Bindmode := pbByNumber; { more efficient than by name }
+    // fdQryExec.Params.ArraySize := xl_row_cnt - 1; { large enough to load all of them }
+    batchMod := (xl_row_cnt - 1) mod BatchSize; // 最后一批的记录数
+    fdQryExec.Params.ArraySize := BatchSize; // 分批次DML方式导入，1批暂定1000
+    i_param := 0; // 数组参数循环，用于剔除空数据
+    for j := 1 to xl_row_cnt - 1 do // 遍历excel记录从第二行到最后一行   --------------------------------------？行数要-1
+    begin
+
+      cell_str_all := ''; // 单纯连接excel每条记录的字段，根据长度判断词条记录是否为空
+
+      for k := 0 to a_col_rec_len - 1 do // 遍历规范表字段,同时获得插入值
+      begin
+        // grd_row := strngrd1.RowCount;
+        // strngrd1.RowCount := grd_row + 1; // grid增加一行
+        // ----------------读取一个cell到cell_str------------------------------
+        i_tmp := a_Col_record[k].xls_col_no; // excel中列号
+
+        if i_tmp < 0 then // 若列号小于0，直接赋予参数并继续字段循环
+        begin
+          if (LowerCase(a_Col_record[k].col_type) = 'int') or (LowerCase(a_Col_record[k].col_type) = 'bigint') then
+          begin
+            fdQryExec.Params[k].AsIntegers[i_param] := 0;
+          end
+          else if LowerCase(a_Col_record[k].col_type) = 'decimal' then
+          begin
+            fdQryExec.Params[k].AsFloats[i_param] := 0;
+          end
+          else
+          begin
+            fdQryExec.Params[k].AsStrings[i_param] := '';
+          end;
+          Continue;
+        end;
+
+{$REGION 'i_tmp>=0,根据单元格类型，读取单元格、校验、参数赋值'}
+        // 若是日期
+        if a_Col_record[k].col_date_deal = '1' then
+        begin
+          if xlSheet.isDate(j, i_tmp) then
+          begin
+            xlBook.dateUnpack(xlSheet.readNum(j, i_tmp), year, month, day);
+            cell_str := IntToStr(year) + StringOfChar('0', 2 - Length(IntToStr(month))) + IntToStr(month) +
+              StringOfChar('0', 2 - Length(IntToStr(day))) + IntToStr(day);
+          end
+          else
+          begin
+            cell_str := Trim(xlSheet.readStr(j, i_tmp)); // 非日期格式直接读字符串，但后面要处理
+            // 若含有分隔字段，则取出年月日合并
+            var
+              m: TMatch;
+            var
+              sYear, sMonth, sDay: string;
+            m := TRegEx.Match(cell_str, '^(\d{4})[|\-|\/|\.|年]?(\d{1,2})[|\-|\/|\.|月]?(\d{1,2})[日]?$');
+            //此处只考虑提取年月日的数字并形成yyymmdd格式，不考虑合理性，合理性可在字典中的校验表达式考虑
+            if m.Groups.Count = 4 then // 若匹配值数量不是4个，则cell_str不处理，正则表达式时也不会通过
+            begin
+              // cell_str := m.Groups.Item[0].Value;
+              // 提取日期中的数字
+              sYear := m.Groups.Item[1].Value;
+              sMonth := m.Groups.Item[2].Value;
+              sDay := m.Groups.Item[3].Value;
+              // 不足的位数补0
+              cell_str := StringOfChar('0', 4 - Length(sYear)) + sYear + StringOfChar('0', 2 - Length(sMonth)) + sMonth
+                + StringOfChar('0', 2 - Length(sDay)) + sDay;
+            end
+            else
+              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' +
+                a_Col_record[k].col_name_cn + '数据“' + cell_str +
+                '”，不符合日期表达式规范yyyymmdd或yyyy-mm-dd或yyyy/mm/dd或yyyy.mm.dd或yyyy年mm月dd日！');;
+          end;
+        end
+        else
+          cell_str := Trim(xlSheet.readStr(j, i_tmp));
+        // ------------------------------字段长度校验-------------------------------------------------------
+        if (Length(cell_str) > StrToInt(a_Col_record[k].col_len)) and (StrToInt(a_Col_record[k].col_len) > 0) then
+        // col_len已转换为有数字。源表数据字段含有长度时才判断长度，无长度信息，依赖正则判断
+        begin
+          dis_ok := '1';
+          val_falt := '1';
+          mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j) + '行第' + IntToStr(i_tmp) + '列' +
+            a_Col_record[i].col_name_cn + '数据为“' + cell_str + '”，长度' + IntToStr(Length(cell_str)) + '超出数据规范，数据无法导入！');
+        end;
+        // -------------------------------------------------------------------------------------------------
+        // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）-----------------------
+        if Length(a_Col_record[k].col_reg_str) <> 0 then
+        begin
+          if not TRegEx.IsMatch(cell_str, a_Col_record[k].col_reg_str) then
+          begin
+            dis_ok := '1';
+            if a_Col_record[k].col_reg_ok = '1' then // 强制校验
+            begin
+              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' +
+                a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg +
+                '”强制校验规则，数据无法导入！');
+              val_falt := '1';
+            end
+            else
+            begin
+              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' +
+                a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg +
+                '”校验规则。可以导入数据，但影响数据分析准确性！');
+              val_warn := '1';
+            end;
+          end
+        end;
+        // ------------------------------------------------------------------------------------
+        // -----------数组参数赋值--------
+        cell_str_all := cell_str_all + cell_str; // 本行所有有用单元格合并
+        if (LowerCase(a_Col_record[k].col_type) = 'int') or (LowerCase(a_Col_record[k].col_type) = 'bigint') then
+        begin
+          fdQryExec.Params[k].AsIntegers[i_param] := Round(StrToFloatDef(cell_str, 0));
+        end
+        else if LowerCase(a_Col_record[k].col_type) = 'decimal' then
+        begin
+          fdQryExec.Params[k].AsFloats[i_param] := StrToFloatDef(cell_str, 0);
+        end
+        else
+        begin
+          // 日期要转换
+
+          fdQryExec.Params[k].AsStrings[i_param] := cell_str;
+        end
+        // ------------------------------
+{$ENDREGION}
+      end; // 字段循环完毕
+
+      if val_falt = '1' then
+      begin
+        fdQryExec.Connection.Rollback;
+        col_rept_name_ls.Free;
+        col_rept_type_ls.Free;
+        col_ind_name_ls.Free;
+        sl_col_xls_cloc.Free;
+        xlBook.Free;
+        fdQryExec.close;
+        MessageDlg('存在数据长度超出规范或不符合强制校验规则的数据，不能导入，请修正后再导入！！！', mtError, [mbOK], 0);
+        // raise Exception.Create(s_filename + '文件可能处于保护状态，不能导入，请修正后再行导入！！！');
+        Exit; // ?处理前面已导入的数据
+      end;
+
+      // 分批次插入记录
+
+      // if Length(Trim(cell_str_all)) < a_col_rec_len then
+      // begin
+      // fdQryExec.Params.ArraySize := fdQryExec.Params.ArraySize - 1;
+      // mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行数据为空，跳过继续导入……');
+      // Continue;
+      // end
+      // else
+      // Inc(i_param);
+      if (j = xl_row_cnt - 1) then // 到了最后一条记录
+        if j < BatchSize then
+          fdQryExec.Params.ArraySize := j
+        else if batchMod > 0 then
+          fdQryExec.Params.ArraySize := batchMod;
+
+      if (i_param = BatchSize - 1) or (j = xl_row_cnt - 1) then
+      begin
+        fdQryExec.Execute(fdQryExec.Params.ArraySize); // 此处应分批次执行，否则out of memory
+        i_param := 0;
+      end
+      else
+        Inc(i_param); // 参数+1
+
+    end; // excel记录循环完毕
+    // fdQryExec.Params.ArraySize := NumParams;  { Reset to actual number }
+
+  end;
+
+  sl_col_xls_cloc.Free;
+  xlBook.Free;
+  fdQryExec.close;
 
   // -------------------------------------------------------------------------------------------------------------------------------------------------
   // --------insert from bulk---------处理字段，用col_name_deal，否则用col_name_insert-------------------
@@ -2989,7 +2381,7 @@ begin
         col_name_insert + ' From ' + tab_name_en;
     // ===============
     fdQryExec.SQL.Add(sqltext);
-    fdQryExec.SQL.SaveToFile('importSQLAdd.txt');
+    // fdQryExec.SQL.SaveToFile('importSQLAdd.txt');
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
 
@@ -3031,13 +2423,13 @@ begin
         col_ind_name_ls[i] + ']);';
       fdQryExec.SQL.Add(sqltext);
     end;
-    fdQryExec.SQL.SaveToFile('CreateIndex.txt');
+    // fdQryExec.SQL.SaveToFile('CreateIndex.txt');
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
   end;
 
   // ============================
-
+  fdQryExec.Connection.Commit;
   t2 := Now(); // 获取结束计时时间
   // StopWatch.Stop;
   r1 := SecondsBetween(t2, t1); // 取得计时时间，单位秒(s)
@@ -3051,6 +2443,10 @@ begin
   mmo2.setfocus;
   SendMessage(mmo2.Handle, EM_SCROLLCARET, 0, 0);
   // ------------------------------------------------------------------------------
+  col_rept_name_ls.Free;
+  col_rept_type_ls.Free;
+  col_ind_name_ls.Free;
+  fdQryExec.close;
   pnl1.Enabled := True;
   pnl2.Enabled := True;
   pnl3.Enabled := True;
