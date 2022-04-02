@@ -161,6 +161,7 @@ type
     N5: TMenuItem;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     cxDBTreeList1isClass: TcxDBTreeListColumn;
+    cxstylTraceHot: TcxStyle;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;

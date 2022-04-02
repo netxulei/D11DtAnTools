@@ -117,7 +117,7 @@ begin
     FDQry1.SQL.Add('SELECT * FROM "X_Users"');
     FDQry1.SQL.Add('WHERE(managername=:username) AND (managerpassword=:pass)');
     FDQry1.ParamByName('username').Value := Trim(edtUserText.Text);
-    FDQry1.ParamByName('pass').Value := encryptstr(Trim(medtPassText.Text), Trim(edtUserText.Text) + 'AML');
+    FDQry1.ParamByName('pass').Value := encryptstr(Trim(medtPassText.Text), Trim(edtUserText.Text) + 'XLudat');
     FDQry1.Prepared;
     FDQry1.Open;
     if FDQry1.RecordCount > 0 then

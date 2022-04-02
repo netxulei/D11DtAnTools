@@ -1,148 +1,113 @@
 object F_mode: TF_mode
   Left = 484
   Top = 323
-  AutoSize = True
   Caption = #35831#36755#20837#23494#30721
-  ClientHeight = 203
-  ClientWidth = 482
+  ClientHeight = 227
+  ClientWidth = 472
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -10
-  Font.Name = 'Tahoma'
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
   Font.Style = []
-  OldCreateOrder = False
   Position = poMainFormCenter
   OnActivate = FormActivate
   PixelsPerInch = 96
-  TextHeight = 12
+  TextHeight = 15
   object pnl2: TPanel
     Left = 0
     Top = 103
-    Width = 482
-    Height = 68
-    Align = alTop
-    TabOrder = 3
+    Width = 472
+    Height = 124
+    Align = alClient
+    TabOrder = 1
     object lbl2: TLabel
-      Left = 168
+      Left = 152
       Top = 3
-      Width = 144
-      Height = 13
+      Width = 156
+      Height = 15
       Alignment = taCenter
       Caption = #35831#36755#20837#25171#24320#24320#25918#27169#24335#30340#23494#30721
-      Font.Charset = GB2312_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
       Layout = tlCenter
     end
     object PassText: TMaskEdit
-      Left = 147
-      Top = 27
+      Left = 125
+      Top = 22
       Width = 187
-      Height = 21
-      Font.Charset = GB2312_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
+      Height = 23
       ImeName = #20013#25991' ('#31616#20307') - '#32654#24335#38190#30424
-      ParentFont = False
       PasswordChar = '*'
       TabOrder = 0
       Text = ''
+    end
+    object BitBtn1: TBitBtn
+      Left = 119
+      Top = 69
+      Width = 74
+      Height = 25
+      Caption = #30830#23450
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ImageIndex = 10
+      ImageName = #30830#35748
+      Images = F_DT.vrtlmglst1
+      ModalResult = 1
+      NumGlyphs = 2
+      ParentFont = False
+      TabOrder = 1
+      OnClick = BitBtn1Click
+    end
+    object BitBtn2: TBitBtn
+      Left = 271
+      Top = 67
+      Width = 81
+      Height = 27
+      Caption = #21462#28040
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ImageIndex = 9
+      ImageName = #23567#36864#20986
+      Images = F_DT.vrtlmglst1
+      NumGlyphs = 2
+      ParentFont = False
+      TabOrder = 2
+      OnClick = BitBtn2Click
     end
   end
   object pnl1: TPanel
     Left = 0
     Top = 0
-    Width = 482
+    Width = 472
     Height = 103
     Align = alTop
-    TabOrder = 2
+    TabOrder = 0
     object lbl1: TLabel
       Left = 1
       Top = 1
-      Width = 480
-      Height = 101
-      Align = alClient
+      Width = 470
+      Height = 75
+      Align = alTop
       Caption = 
-        '1.'#24320#25918#27169#24335#25552#20379#32473#25026#24471'SQL Server'#25968#25454#24211'SQL'#35821#35328#30340#29992#25143#20351#29992#12290#13#10'2.'#24320#25918#27169#24335#19979#65292#29992#25143#21487#20197#25353#29031#36719#20214#25552#20379#30340#20195#30721#35268#33539#65292#22312#36719#20214 +
-        #20013#28155#21152#12289#20462#25913#21644#21024#38500#26816#26597#26041#27861#65292#21487#20197#23450#21046#26816#26597#32467#26524#30028#38754#20004#20010#36741#34920#19982#20027#34920#30340#20851#31995#65292#21487#20197#23450#21046#33258#21160#22788#29702#30340#23384#20648#36807#31243#65292#20174#32780#21487#20197#24314#31435#33258#24049#30340#26816#26597#26041#27861#20307#31995 +
-        #12290#13#10'3.'#25171#24320#24320#25918#27169#24335#38656#35201#23494#30721#65292#24744#33509#26377#20852#36259#21487#20197#32852#31995#24320#21457#20154#21592#12290
+        #13#10'1.'#24320#25918#27169#24335#20026#28385#36275#36890#26195'SQL'#35821#35328#29992#25143#20108#27425#24320#21457#20351#29992#12290#13#10'2.'#24320#25918#27169#24335#25552#20379#25968#25454#23383#20856#32500#25252#12289#25968#25454#35268#33539#32500#25252#12289#27169#22411#32500#25252#21151#33021#19977#22823#32500#25252#21151#33021#12290 +
+        #13#10'3.'#24320#25918#27169#24335#19977#22823#32500#25252#21151#21487#20197#24110#21161#36890#26195'SQL'#35821#35328#30340#29992#25143#24314#31435#33258#24049#30340#25968#25454#20998#26512#20307#31995#12290#13#10'4.'#24212#29992#24320#25918#27169#24335#19977#22823#32500#25252#21151#33021#37197#20197#30456#20851#35774#32622#21487#20197#32452 +
+        #25104#29420#31435#25968#25454#20998#26512#24037#20855#12290
       Font.Charset = GB2312_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       ShowAccelChar = False
       Transparent = True
       Layout = tlCenter
       WordWrap = True
-      ExplicitHeight = 65
+      ExplicitWidth = 446
     end
-  end
-  object BitBtn1: TBitBtn
-    Left = 135
-    Top = 178
-    Width = 74
-    Height = 25
-    Caption = #30830#23450
-    Font.Charset = GB2312_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Tahoma'
-    Font.Pitch = fpVariable
-    Font.Style = []
-    Glyph.Data = {
-      76010000424D7601000000000000760000002800000020000000100000000100
-      04000000000000010000120B0000120B00001000000000000000000000000000
-      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
-      555555555555555555555555555555555555555555FF55555555555559055555
-      55555555577FF5555555555599905555555555557777F5555555555599905555
-      555555557777FF5555555559999905555555555777777F555555559999990555
-      5555557777777FF5555557990599905555555777757777F55555790555599055
-      55557775555777FF5555555555599905555555555557777F5555555555559905
-      555555555555777FF5555555555559905555555555555777FF55555555555579
-      05555555555555777FF5555555555557905555555555555777FF555555555555
-      5990555555555555577755555555555555555555555555555555}
-    ModalResult = 1
-    NumGlyphs = 2
-    ParentFont = False
-    TabOrder = 0
-    OnClick = BitBtn1Click
-  end
-  object BitBtn2: TBitBtn
-    Left = 287
-    Top = 176
-    Width = 81
-    Height = 27
-    Caption = #21462#28040
-    Font.Charset = GB2312_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Glyph.Data = {
-      76010000424D7601000000000000760000002800000020000000100000000100
-      04000000000000010000130B0000130B00001000000000000000000000000000
-      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
-      3333333333FFFFF3333333333999993333333333F77777FFF333333999999999
-      3333333777333777FF3333993333339993333377FF3333377FF3399993333339
-      993337777FF3333377F3393999333333993337F777FF333337FF993399933333
-      399377F3777FF333377F993339993333399377F33777FF33377F993333999333
-      399377F333777FF3377F993333399933399377F3333777FF377F993333339993
-      399377FF3333777FF7733993333339993933373FF3333777F7F3399933333399
-      99333773FF3333777733339993333339933333773FFFFFF77333333999999999
-      3333333777333777333333333999993333333333377777333333}
-    NumGlyphs = 2
-    ParentFont = False
-    TabOrder = 1
-    OnClick = BitBtn2Click
   end
 end

@@ -109,6 +109,7 @@ type
     cxdbtxtdtDataVer: TcxDBTextEdit;
     lblDataVer: TLabel;
     cxdbtrlst1isClass: TcxDBTreeListColumn;
+    cxstylHotTrace: TcxStyle;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
       AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);

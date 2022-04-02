@@ -2420,6 +2420,7 @@ object MainFrm: TMainFrm
     Navigator.Buttons.CustomButtons = <>
     OptionsBehavior.CellHints = True
     OptionsBehavior.ImmediateEditor = False
+    OptionsBehavior.HotTrack = True
     OptionsBehavior.Sorting = False
     OptionsData.Editing = False
     OptionsData.Deleting = False
@@ -2435,16 +2436,19 @@ object MainFrm: TMainFrm
     RootValue = -1
     Styles.Background = cxstyl1
     Styles.Content = cxstyl1
-    Styles.Inactive = cxstyl2
     Styles.BandBackground = cxstyl1
     Styles.BandContent = cxstyl1
-    Styles.BandHeader = cxstyl1
+    Styles.BandHeader = cxstylTraceHot
     Styles.ColumnFooter = cxstyl1
+    Styles.ColumnHeader = cxstylTraceHot
+    Styles.HotTrack = cxstylTraceHot
     TabOrder = 0
     OnDblClick = cxDBTreeList1DblClick
     OnFocusedNodeChanged = cxDBTreeList1FocusedNodeChanged
     OnGetNodeImageIndex = cxDBTreeList1GetNodeImageIndex
+    ExplicitLeft = 2
     object cxDBTreeList1t_name: TcxDBTreeListColumn
+      Styles.Header = cxstylTraceHot
       Caption.AlignHorz = taCenter
       Caption.GlyphAlignVert = vaBottom
       Caption.Text = #27169#22411#21015#34920#65288#21452#20987#25191#34892#65289
@@ -4990,6 +4994,10 @@ object MainFrm: TMainFrm
     object cxstyl2: TcxStyle
       AssignedValues = [svColor]
       Color = clGradientInactiveCaption
+    end
+    object cxstylTraceHot: TcxStyle
+      AssignedValues = [svColor]
+      Color = clMenuHighlight
     end
   end
   object dsAssis: TDataSource

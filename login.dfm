@@ -3668,7 +3668,7 @@ object LoginFrm: TLoginFrm
     end
     object pnlVer: TPanel
       Left = 64
-      Top = 130
+      Top = 117
       Width = 505
       Height = 182
       ParentBackground = False

@@ -12,7 +12,6 @@ uses
   U_user in 'U_user.pas' {F_user},
   U_Export in 'U_Export.pas' {F_Export},
   U_mode in 'U_mode.pas' {F_mode},
-  JMCode in 'JMCode.pas',
   log4me in 'log4me.pas',
   U_Proj in 'U_Proj.pas' {F_Proj},
   FindPublic in 'FindPublic.pas' {frmFindPublic},
@@ -25,7 +24,10 @@ uses
   uDataImport1 in 'uDataImport1.pas' {FrmDataImport},
   uModMaintain in 'uModMaintain.pas' {FModMaintain},
   U_import in 'U_import.pas' {F_import},
-  uDisAsisTable in 'uDisAsisTable.pas' {fmDisAssiTable};
+  uDisAsisTable in 'uDisAsisTable.pas' {fmDisAssiTable},
+  JMCode in 'JM\JMCode.pas',
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 

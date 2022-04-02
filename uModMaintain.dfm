@@ -35,6 +35,7 @@ object FModMaintain: TFModMaintain
     LookAndFeel.Kind = lfFlat
     LookAndFeel.SkinName = ''
     Navigator.Buttons.CustomButtons = <>
+    OptionsBehavior.HotTrack = True
     OptionsBehavior.MultiSort = False
     OptionsData.Deleting = False
     OptionsData.SmartRefresh = True
@@ -48,7 +49,11 @@ object FModMaintain: TFModMaintain
     RootValue = 0
     Styles.Background = cxstyl1
     Styles.Content = cxstyl1
-    Styles.BandHeader = cxstyl1
+    Styles.BandBackground = cxstyl1
+    Styles.BandHeader = cxstylHotTrace
+    Styles.ColumnFooter = cxstyl1
+    Styles.ColumnHeader = cxstylHotTrace
+    Styles.HotTrack = cxstylHotTrace
     TabOrder = 0
     OnGetNodeImageIndex = cxdbtrlst1GetNodeImageIndex
     object cxdbtrlst1modiState: TcxDBTreeListColumn
@@ -137,6 +142,7 @@ object FModMaintain: TFModMaintain
     object cxdbtrlst1isClass: TcxDBTreeListColumn
       Visible = False
       DataBinding.FieldName = 'isClass'
+      Width = 100
       Position.ColIndex = 5
       Position.RowIndex = 0
       Position.BandIndex = 0
@@ -770,6 +776,10 @@ object FModMaintain: TFModMaintain
     object cxstyl2: TcxStyle
       AssignedValues = [svColor]
       Color = clGradientInactiveCaption
+    end
+    object cxstylHotTrace: TcxStyle
+      AssignedValues = [svColor]
+      Color = clMenuHighlight
     end
   end
   object fdQryMov: TFDQuery
