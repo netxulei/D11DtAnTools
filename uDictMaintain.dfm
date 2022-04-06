@@ -184,6 +184,7 @@ object frmDictMaintain: TfrmDictMaintain
             FieldName = 'dict_val'
             Footers = <>
             Title.Caption = #23383#20856#20540
+            Width = 643
           end
           item
             CellButtons = <>
@@ -558,6 +559,7 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object fdQryDictVal: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'dict_type_id;dict_val_sort'
     MasterSource = dsDictTypeMsDt
@@ -604,7 +606,7 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictValdict_val: TStringField
       FieldName = 'dict_val'
       Origin = 'dict_val'
-      Size = 80
+      Size = 120
     end
     object fdQryDictValdict_lable: TStringField
       FieldName = 'dict_lable'
@@ -618,7 +620,7 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictValdict_val_memo: TStringField
       FieldName = 'dict_val_memo'
       Origin = 'dict_val_memo'
-      Size = 100
+      Size = 200
     end
   end
   object dlgSave1: TSaveDialog

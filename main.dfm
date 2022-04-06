@@ -2446,7 +2446,6 @@ object MainFrm: TMainFrm
     OnDblClick = cxDBTreeList1DblClick
     OnFocusedNodeChanged = cxDBTreeList1FocusedNodeChanged
     OnGetNodeImageIndex = cxDBTreeList1GetNodeImageIndex
-    ExplicitLeft = 2
     object cxDBTreeList1t_name: TcxDBTreeListColumn
       Styles.Header = cxstylTraceHot
       Caption.AlignHorz = taCenter
@@ -3834,7 +3833,7 @@ object MainFrm: TMainFrm
         0000000000000000000000000000000000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
         00000000000000000000041A031A147D0D8025E117E5147D0D7F}
-      Caption = #9679#24320#25918#27169#24335#21151#33021
+      Caption = #27169#22411#21644#25968#25454#25509#21475#32500#25252
       ImageIndex = 4
       ImageName = #24320#25918#24179#21488
       object MnModel: TMenuItem

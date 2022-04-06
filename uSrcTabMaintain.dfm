@@ -253,6 +253,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             LookupParams.LookupKeyFieldNames = 'dict_val'
             Title.Caption = #23383#27573#31867#22411
             Title.Hint = #26085#26399#36873#25321'10'#20301#23383#31526#20018
+            Width = 84
           end
           item
             CellButtons = <>
@@ -851,6 +852,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcCol: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_id;col_sort'
     MasterSource = dsSrcTabMsDt
@@ -954,7 +956,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object fdQrySrcColcol_reg_str: TStringField
       FieldName = 'col_reg_str'
       Origin = 'col_reg_str'
-      Size = 80
+      Size = 120
     end
     object fdQrySrcColcol_reg_ok: TStringField
       FieldName = 'col_reg_ok'
@@ -965,7 +967,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object fdQrySrcColcol_memo: TStringField
       FieldName = 'col_memo'
       Origin = 'col_memo'
-      Size = 60
+      Size = 200
     end
     object fdQrySrcColcol_sort: TIntegerField
       FieldName = 'col_sort'

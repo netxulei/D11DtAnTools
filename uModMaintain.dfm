@@ -85,6 +85,7 @@ object FModMaintain: TFModMaintain
       Caption.AlignVert = vaTop
       Caption.Text = ' '
       DataBinding.FieldName = 'modiState'
+      Options.Sizing = False
       Options.Editing = False
       Options.Sorting = False
       Width = 60
@@ -643,7 +644,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
