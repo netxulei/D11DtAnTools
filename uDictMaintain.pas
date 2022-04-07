@@ -60,6 +60,9 @@ type
     chkOpen: TCheckBox;
     bitbtnExit: TBitBtn;
     fdQryDictValdict_val: TStringField;
+    edt1: TEdit;
+    edt2: TEdit;
+    btn1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -80,6 +83,7 @@ type
       AOptions: TFDUpdateRowOptions);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bitbtnExportClick(Sender: TObject);
+    procedure btn1Click(Sender: TObject);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -255,8 +259,8 @@ begin
   fdQryDictVal.open();
   CHNDBNavigator(dbnvgrDictType);
   CHNDBNavigator(dbnvgrDictVal);
-//  DBGridEhSrcTab.Columns[0].width:=40;
-//  DBGridEhSrcCol.Columns[0].width:=20;
+  // DBGridEhSrcTab.Columns[0].width:=40;
+  // DBGridEhSrcCol.Columns[0].width:=20;
 end;
 
 procedure TfrmDictMaintain.bitbtnTypeUpClick(Sender: TObject);
@@ -665,6 +669,21 @@ begin
   fdQryDictVal['dict_val_sort'] := next_sort;
   fdQryDictVal.Post; // post很关键，否则序号会乱
 
+end;
+
+procedure TfrmDictMaintain.btn1Click(Sender: TObject);
+// var
+// m: TMatch;
+begin
+  // m := TRegEx.Match(edt2.text, edt1.text);
+  // if m.Success then
+  // ShowMessage('OK')
+  // else
+  // ShowMessage('No')
+//  if TRegEx.IsMatch(edt2.text, edt1.text,[roIgnorePatternSpace]) then
+//    ShowMessage('OK匹配')
+//  else
+//    ShowMessage('No不匹配')
 end;
 
 // 增加数据库导航条caption显示

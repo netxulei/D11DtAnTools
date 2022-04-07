@@ -3,7 +3,7 @@ object frmDictMaintain: TfrmDictMaintain
   Top = 0
   Caption = #25968#25454#23383#20856#32500#25252#65288#23383#20856#20462#25913#21518#27880#24847#28304#25968#25454#34920#30340#19968#33268#24615#65289
   ClientHeight = 755
-  ClientWidth = 1295
+  ClientWidth = 1627
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object frmDictMaintain: TfrmDictMaintain
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
     Top = 59
-    Width = 1295
+    Width = 1627
     Height = 677
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -47,6 +47,7 @@ object frmDictMaintain: TfrmDictMaintain
     RowDetailPanel.Height = 173
     RowDetailPanel.VertSizing = True
     RowSizingAllowed = True
+    SearchPanel.Enabled = True
     ShowHint = True
     TabOrder = 0
     TitleParams.Font.Charset = DEFAULT_CHARSET
@@ -148,6 +149,7 @@ object frmDictMaintain: TfrmDictMaintain
         OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
         ParentFont = False
         ParentShowHint = False
+        SearchPanel.Enabled = True
         ShowHint = True
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
@@ -293,7 +295,7 @@ object frmDictMaintain: TfrmDictMaintain
   object flwpnlDictType: TFlowPanel
     Left = 0
     Top = 32
-    Width = 1295
+    Width = 1627
     Height = 27
     Align = alTop
     AutoSize = True
@@ -368,11 +370,42 @@ object frmDictMaintain: TfrmDictMaintain
       TabOrder = 2
       OnClick = bitbtnTypeDownClick
     end
+    object edt1: TEdit
+      Left = 692
+      Top = 1
+      Width = 493
+      Height = 23
+      Align = alClient
+      TabOrder = 3
+      TextHint = #27491#21017#34920#36798#24335
+      Visible = False
+    end
+    object edt2: TEdit
+      Left = 1185
+      Top = 1
+      Width = 144
+      Height = 24
+      Align = alRight
+      TabOrder = 4
+      TextHint = #38656#39564#35777#23383#31526#20018
+      Visible = False
+    end
+    object btn1: TButton
+      Left = 1329
+      Top = 1
+      Width = 105
+      Height = 25
+      Align = alRight
+      Caption = #27491#21017#34920#36798#24335#39564#35777
+      TabOrder = 5
+      Visible = False
+      OnClick = btn1Click
+    end
   end
   object flwpnlTop: TFlowPanel
     Left = 0
     Top = 0
-    Width = 1295
+    Width = 1627
     Height = 32
     Align = alTop
     AutoSize = True
@@ -386,6 +419,7 @@ object frmDictMaintain: TfrmDictMaintain
     ParentCtl3D = False
     ParentFont = False
     TabOrder = 2
+    ExplicitWidth = 1295
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
@@ -475,10 +509,11 @@ object frmDictMaintain: TfrmDictMaintain
   object StatusBar1: TStatusBar
     Left = 0
     Top = 736
-    Width = 1295
+    Width = 1627
     Height = 19
     Panels = <>
     SimplePanel = True
+    ExplicitWidth = 1295
   end
   object dsDictTypeMsDt: TDataSource
     DataSet = fdQryDictType

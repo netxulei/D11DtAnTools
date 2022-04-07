@@ -269,7 +269,13 @@ begin
   if (FileExt = '.TXT') or (FileExt = '.CSV') then
   begin
     if chkTXT.Checked then
-      ImportTxt
+    begin
+      // 清理表格
+
+      // 导入文本
+      ImportTxt;
+    end
+
     else
     begin
       MessageDlg('未选择源数据表或该数据不能导入文本文件！', mtInformation, [mbOK], 0);
@@ -595,7 +601,13 @@ begin
   pnl2.Enabled := False;
   pnl3.Enabled := False;
   strngrd1.Visible := False;
-  strngrd1.RowCount := 1; // 列号
+
+  for i := 0 to strngrd1.ColCount - 1 do
+    strngrd1.cols[i].Clear; // 清空每列数据
+
+  strngrd1.RowCount := 1; // 行号
+  strngrd1.ColCount := 1; // 列号
+
   strngrd1.ColWidths[0] := 132; // grid第一列宽度设置
   strngrd1.Cells[0, 0] := '数据行号(实际行号)';
   mmo2.Clear; // 清空信息
@@ -606,8 +618,7 @@ begin
   else
     strngrd1.Height := pnl4.Height - strngrd1.RowHeights[0] * 5;
 
-  for i := 0 to strngrd1.ColCount - 1 do
-    strngrd1.cols[i].Clear; // 清空每列数据
+
   // -------------------------------------------------
 {$REGION '----根据dis_col显示源表字段信息-----'}
   if dis_col = 1 then
@@ -828,7 +839,7 @@ begin
           // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）
           if Length(a_Col_record[i].col_reg_str) <> 0 then
           begin
-            if not TRegEx.IsMatch(Trim(slColumName[i]), a_Col_record[i].col_reg_str) then
+            if not TRegEx.IsMatch(Trim(slColumName[i]), a_Col_record[i].col_reg_str,[roIgnorePatternSpace]) then
             begin
               dis_ok := '1';
               if a_Col_record[i].col_reg_ok = '1' then
@@ -1091,7 +1102,10 @@ begin
   // pnl2.Enabled := False;
   // pnl3.Enabled := False;
   // strngrd1.Visible := False;
+  for i := 0 to strngrd1.ColCount - 1 do
+    strngrd1.cols[i].Clear; // 清空每列数据
   strngrd1.RowCount := 1; // 列号
+  strngrd1.ColCount := 1; // 列号
   strngrd1.ColWidths[0] := 132; // grid第一列宽度设置
   strngrd1.Cells[0, 0] := '数据行号(实际行号)';
   mmo2.Clear; // 清空信息
@@ -1102,8 +1116,7 @@ begin
   else
     strngrd1.Height := pnl4.Height - strngrd1.RowHeights[0] * 5;
 
-  for i := 0 to strngrd1.ColCount - 1 do
-    strngrd1.cols[i].Clear; // 清空每列数据
+
   // -------------------------------------------------
 {$REGION '----根据dis_col显示源表字段信息-----'}
   if dis_col = 1 then
@@ -1332,6 +1345,7 @@ begin
       begin
         col_tmp_str := 'trim(Replace(' + a_Col_record[i].col_name + ',' + '''' + '-' + '''' + ',' + '''''' + ')) ' +
           a_Col_record[i].col_name;
+
         if i = Length(a_Col_record) - 1 then
           col_name_deal := col_name_deal + col_tmp_str
         else
@@ -2210,7 +2224,7 @@ begin
             var
               sYear, sMonth, sDay: string;
             m := TRegEx.Match(cell_str, '^(\d{4})[|\-|\/|\.|年]?(\d{1,2})[|\-|\/|\.|月]?(\d{1,2})[日]?$');
-            //此处只考虑提取年月日的数字并形成yyymmdd格式，不考虑合理性，合理性可在字典中的校验表达式考虑
+            // 此处只考虑提取年月日的数字并形成yyymmdd格式，不考虑合理性，合理性可在字典中的校验表达式考虑
             if m.Groups.Count = 4 then // 若匹配值数量不是4个，则cell_str不处理，正则表达式时也不会通过
             begin
               // cell_str := m.Groups.Item[0].Value;
@@ -2243,7 +2257,7 @@ begin
         // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）-----------------------
         if Length(a_Col_record[k].col_reg_str) <> 0 then
         begin
-          if not TRegEx.IsMatch(cell_str, a_Col_record[k].col_reg_str) then
+          if not TRegEx.IsMatch(cell_str, a_Col_record[k].col_reg_str,[roIgnorePatternSpace]) then
           begin
             dis_ok := '1';
             if a_Col_record[k].col_reg_ok = '1' then // 强制校验

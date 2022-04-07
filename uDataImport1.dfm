@@ -656,7 +656,7 @@ object FrmDataImport: TFrmDataImport
       Align = alTop
       ColCount = 1
       Ctl3D = False
-      DrawingStyle = gdsClassic
+      DrawingStyle = gdsGradient
       FixedColor = clSkyBlue
       RowCount = 1
       FixedRows = 0
@@ -941,6 +941,7 @@ object FrmDataImport: TFrmDataImport
   end
   object fdgxwtcrsr1: TFDGUIxWaitCursor
     Provider = 'Forms'
+    ScreenCursor = gcrHourGlass
     Left = 704
     Top = 440
   end
@@ -953,6 +954,7 @@ object FrmDataImport: TFrmDataImport
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
+    ScreenCursor = gcrHourGlass
     Left = 1041
     Top = 387
   end

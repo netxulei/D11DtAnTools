@@ -44,11 +44,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     ParentFont = False
     ParentShowHint = False
     RowDetailPanel.Active = True
-    RowDetailPanel.Height = 314
+    RowDetailPanel.Height = 388
     RowDetailPanel.VertSizing = True
     RowHeight = 4
     RowLines = 1
     RowSizingAllowed = True
+    SearchPanel.Enabled = True
     ShowHint = True
     TabOrder = 0
     TitleParams.Font.Charset = DEFAULT_CHARSET
@@ -159,14 +160,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'tab_memo'
         Footers = <>
         Title.Caption = #35828#26126
-        Width = 437
+        Width = 619
       end>
     object RowDetailData: TRowDetailPanelControlEh
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 1237
-        Height = 277
+        Width = 1419
+        Height = 351
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
         AutoFitColWidths = True
@@ -188,6 +189,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         RowHeight = 4
         RowLines = 1
         RowSizingAllowed = True
+        SearchPanel.Enabled = True
         ShowHint = True
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
@@ -241,7 +243,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           item
             CellButtons = <>
             DropDownSizing = True
-            DropDownWidth = 160
+            DropDownWidth = 200
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_type'
@@ -262,7 +264,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             FieldName = 'col_all_len'
             Footers = <>
             Title.Caption = #23383#27573#38271#24230
-            Title.Hint = #33509#26377#8220#32534#30721#20851#32852#8221#65292#24212#21462#32534#30721#23545#24212#20449#24687#26368#22823#38271#24230#65307#13#10#33509#26080#8220#32534#30721#20851#32852#8221#65292#21462#32534#30721#26368#22823#38271#24230#65307#13#10#25968#20540#22411#26681#25454#21487#33021#26368#22823#20540#21462#25968#23567#25968#28857#21069#20960#20301#38271#24230#12290
+            Title.Hint = 
+              #33509#26377#8220#32534#30721#20851#32852#8221#65292#21462#25968#25454#23383#20856#20013#32534#30721#23545#24212#20449#24687#26368#22823#38271#24230#65307#13#10#33509#26080#8220#32534#30721#20851#32852#8221#65292#21462#32534#30721#26368#22823#38271#24230#65307#13#10#25968#20540#22411#26681#25454#21487#33021#26368#22823#20540#21462#25968#23567#25968#28857#21069#20960 +
+              #20301#38271#24230#12290
           end
           item
             CellButtons = <>
@@ -316,6 +320,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             DropDownSizing = True
             DropDownSpecRow.CellsText = '<Null>'
             DropDownSpecRow.Visible = True
+            DropDownWidth = 260
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_Dict'
@@ -355,14 +360,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Footers = <>
             Title.Caption = 'XLS'#23545#24212#23383#27573
             Title.Hint = 'Excel'#34920#23545#24212#21015#30340#21517#31216#65292#21487#33021#22810#20010#21517#31216#30340#20197#8220'|'#8221#31526#21495#20998#21106
-            Width = 287
+            Width = 276
           end
           item
             CellButtons = <>
             DropDownSizing = True
             DropDownSpecRow.CellsText = '<null>'
             DropDownSpecRow.Visible = True
-            DropDownWidth = 300
+            DropDownWidth = 400
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_reg;col_reg_str'
@@ -408,7 +413,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 1237
+        Width = 1419
         Height = 27
         Align = alTop
         AutoSize = True
@@ -421,6 +426,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
+        ExplicitWidth = 1237
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -475,7 +481,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         object FlowPanel1: TFlowPanel
           Left = 614
           Top = 1
-          Width = 283
+          Width = 323
           Height = 24
           Align = alRight
           Ctl3D = False
@@ -489,7 +495,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           ParentFont = False
           TabOrder = 3
           object cxLookupComboBoxDictList: TcxLookupComboBox
-            Left = 89
+            Left = 96
             Top = -2
             Hint = #23383#27573#31867#22411#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
             Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
@@ -507,10 +513,10 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Style.Shadow = True
             Style.ButtonStyle = btsHotFlat
             TabOrder = 0
-            Width = 193
+            Width = 226
           end
           object lblDict: TLabel
-            Left = 1
+            Left = 8
             Top = 0
             Width = 88
             Height = 23
@@ -529,7 +535,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           end
         end
         object lblReg: TLabel
-          Left = 897
+          Left = 937
           Top = 1
           Width = 88
           Height = 23
@@ -547,7 +553,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           Layout = tlCenter
         end
         object cxLookupComboBoxReg: TcxLookupComboBox
-          Left = 985
+          Left = 1025
           Top = 1
           Hint = #26657#39564#35268#21017#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
           Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
@@ -565,7 +571,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           Style.Shadow = True
           Style.ButtonStyle = btsHotFlat
           TabOrder = 4
-          Width = 193
+          Width = 280
         end
       end
     end
@@ -852,7 +858,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcCol: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_id;col_sort'
     MasterSource = dsSrcTabMsDt
@@ -967,7 +972,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object fdQrySrcColcol_memo: TStringField
       FieldName = 'col_memo'
       Origin = 'col_memo'
-      Size = 200
+      Size = 300
     end
     object fdQrySrcColcol_sort: TIntegerField
       FieldName = 'col_sort'
