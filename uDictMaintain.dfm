@@ -384,7 +384,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 1185
       Top = 1
       Width = 144
-      Height = 24
+      Height = 23
       Align = alRight
       TabOrder = 4
       TextHint = #38656#39564#35777#23383#31526#20018
@@ -400,6 +400,16 @@ object frmDictMaintain: TfrmDictMaintain
       TabOrder = 5
       Visible = False
       OnClick = btn1Click
+    end
+    object btnUpdateSrcCol: TButton
+      Left = 1434
+      Top = 1
+      Width = 135
+      Height = 25
+      Caption = #26356#26032#28304#34920#23383#27573#20449#24687
+      TabOrder = 6
+      Visible = False
+      OnClick = btnUpdateSrcColClick
     end
   end
   object flwpnlTop: TFlowPanel
@@ -419,7 +429,6 @@ object frmDictMaintain: TfrmDictMaintain
     ParentCtl3D = False
     ParentFont = False
     TabOrder = 2
-    ExplicitWidth = 1295
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
@@ -450,10 +459,13 @@ object frmDictMaintain: TfrmDictMaintain
       Top = 1
       Width = 112
       Height = 30
+      Hint = #20445#23384#26102#23558#21516#26102#26356#26032#25968#25454#35268#33539#28304#25968#25454#34920#20351#29992#30340#23383#20856#31867#22411#21644#23383#20856#20540
       Caption = #20445#23384
       ImageIndex = 8
       ImageName = #20445#23384
       Images = F_DT.vrtlmglst1
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 2
       OnClick = bitbtnSaveClick
     end
@@ -513,7 +525,6 @@ object frmDictMaintain: TfrmDictMaintain
     Height = 19
     Panels = <>
     SimplePanel = True
-    ExplicitWidth = 1295
   end
   object dsDictTypeMsDt: TDataSource
     DataSet = fdQryDictType
@@ -664,5 +675,34 @@ object frmDictMaintain: TfrmDictMaintain
     Title = #23548#20986'Excel'#25991#20214
     Left = 284
     Top = 306
+  end
+  object fdQryDictValList: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    UpdateOptions.AssignedValues = [uvCountUpdatedRecords]
+    SQL.Strings = (
+      
+        'select dict_val_id,dict_val from dict_val order by dict_type_id,' +
+        'dict_val_sort')
+    Left = 1184
+    Top = 336
+  end
+  object fdQrySrcCol: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    UpdateOptions.AssignedValues = [uvCountUpdatedRecords]
+    SQL.Strings = (
+      'select col_dict,col_reg,col_reg_str,col_reg_ok from src_Column')
+    Left = 1272
+    Top = 336
+  end
+  object fdQryDictTypeList: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    UpdateOptions.AssignedValues = [uvCountUpdatedRecords]
+    SQL.Strings = (
+      'select dict_type_id from dict_type order by dict_type_sort')
+    Left = 1184
+    Top = 416
   end
 end

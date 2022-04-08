@@ -376,7 +376,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             LookupParams.KeyFieldNames = 'col_reg;col_reg_str'
             LookupParams.LookupDataSet = fdQryReg
             LookupParams.LookupDisplayFieldName = 'dict_lable'
-            LookupParams.LookupKeyFieldNames = 'dict_lable;dict_val'
+            LookupParams.LookupKeyFieldNames = 'dict_val_id;dict_val'
             Title.Caption = #26657#39564#35268#21017#65288#27491#21017#34920#36798#24335#65289
             Title.Hint = #27491#21017#34920#36798#24335#26041#24335#30340#26657#39564#35268#21017
             Width = 180
@@ -426,7 +426,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1237
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -956,7 +955,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object fdQrySrcColcol_reg: TStringField
       FieldName = 'col_reg'
       Origin = 'col_reg'
-      Size = 60
+      Size = 32
     end
     object fdQrySrcColcol_reg_str: TStringField
       FieldName = 'col_reg_str'
@@ -1024,8 +1023,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       
-        'select distinct dict_type_name_cn,dict_type_name_en,b.dict_val,b' +
-        '.dict_lable,b.dict_val_memo,b.dict_val_sort from dict_type a'
+        'select distinct dict_val_id,dict_type_name_cn,dict_type_name_en,' +
+        'b.dict_val,b.dict_lable,b.dict_val_memo,b.dict_val_sort from dic' +
+        't_type a'
       'inner join dict_val b on a.dict_type_id=b.dict_type_id'
       'where a.dict_type_id= :dict_type_id order by b.dict_val_sort')
     Left = 1008
@@ -1035,7 +1035,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         Name = 'DICT_TYPE_ID'
         DataType = ftString
         ParamType = ptInput
-        Value = '9DA1A56BB935419182BDAB4C86ABF003'
+        Value = 'C9EA060864084817A56FBA5B9712D00A'
       end>
   end
   object dlgSave1: TSaveDialog

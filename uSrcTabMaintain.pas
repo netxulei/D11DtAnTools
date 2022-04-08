@@ -530,8 +530,9 @@ begin
   // 循环主表 ，内嵌套循环子表
   i := 2;
   // fdQrySrcTab.DisableControls;  此时若disable，从表无法更新
-  // fdQrySrcCol.DisableControls;
-  DBGridEhSrcTab.Enabled := False;
+  fdQrySrcCol.DisableControls;
+  DBGridEhSrcTab.Visible := false;
+  // DBGridEhSrcTab.Enabled := False;
   fdQrySrcTab.First;
   ValueNum := 0;
   ValueStr := '';
@@ -556,7 +557,7 @@ begin
       if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
         isNum := True
       else
-        isNum := False;
+        isNum := false;
       // 字段为空的处理
       if VarIsNull(DBGridEhSrcTab.VisibleColumns[ci + 1].Field.Value) then
       begin
@@ -598,7 +599,7 @@ begin
         if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
           isNum := True
         else
-          isNum := False;
+          isNum := false;
         // 字段为空的处理
         // if VarIsNull(DBGridEhSrcCol.VisibleColumns[ci + 1].Field.Value) then
         if VarIsNull(fdQrySrcCol.FieldByName(aDetailFieldName[ci]).Value) then
@@ -644,8 +645,9 @@ begin
   xlBook.Free;
   fdQrySrcTab.First;
   // fdQrySrcTab.EnableControls;
-  // fdQrySrcCol.EnableControls;
-  DBGridEhSrcTab.Enabled := True;
+  fdQrySrcCol.EnableControls;
+  DBGridEhSrcTab.Visible := True;
+  // DBGridEhSrcTab.Enabled := True;
 
   if (chkOpen.Checked) then
     ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil, SW_SHOWNORMAL)
