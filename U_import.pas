@@ -132,7 +132,7 @@ begin
     end;
     if rg1.ItemIndex = 0 then // 新增导入
     begin
-      if MessageDlg('增量模式导入，可能需要在开放模式中重新分类或移动顺序，确定吗？''', mtWarning, mbOKCancel, 0) = mrCancel then
+      if MessageDlg('增量方式导入将添加于原有模型最后，必要时可用模型维护功能重新分类或移动顺序，确定吗？''', mtWarning, mbOKCancel, 0) = mrCancel then
       begin
         F_DT.FDConSYS.Rollback;
         exit;

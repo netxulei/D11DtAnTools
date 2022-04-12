@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, Mask, U_Common, ExtCtrls, U_DT,JMCode;
+  Dialogs, StdCtrls, Buttons, Mask, U_Common, ExtCtrls, U_DT, JMCode;
 
 type
   TF_mode = class(TForm)
@@ -54,6 +54,7 @@ end;
 
 procedure TF_mode.FormActivate(Sender: TObject);
 begin
+  PassText.Text := t_mod_pass;
   PassText.SetFocus;
 end;
 

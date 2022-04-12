@@ -10,7 +10,6 @@ uses
   U_float in 'U_float.pas' {F_float},
   UF_CHG_PASS in 'UF_CHG_PASS.pas' {F_CHG_PASS},
   U_user in 'U_user.pas' {F_user},
-  U_Export in 'U_Export.pas' {F_Export},
   U_mode in 'U_mode.pas' {F_mode},
   log4me in 'log4me.pas',
   U_Proj in 'U_Proj.pas' {F_Proj},

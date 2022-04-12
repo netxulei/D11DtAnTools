@@ -13,7 +13,6 @@ object F_import: TF_import
   Position = poMainFormCenter
   OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 15
   object pnlFileName: TPanel
     Left = 0

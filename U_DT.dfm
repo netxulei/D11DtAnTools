@@ -2,7 +2,6 @@ object F_DT: TF_DT
   OnCreate = DataModuleCreate
   Height = 752
   Width = 850
-  PixelsPerInch = 96
   object FDConSYS: TFDConnection
     FetchOptions.AssignedValues = [evRecordCountMode]
     FetchOptions.RecordCountMode = cmTotal

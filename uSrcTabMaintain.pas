@@ -16,7 +16,7 @@ uses
   Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions;
+  cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions, System.Zip;
 
 type
   TMyNavgator = class(TDBNavigator);
@@ -86,7 +86,15 @@ type
     dlgSave1: TSaveDialog;
     bitbtnExport: TBitBtn;
     chkOpen: TCheckBox;
+    BitBtnBackUP: TBitBtn;
+    BitBtnRestore: TBitBtn;
     bitbtnExit: TBitBtn;
+    FDQryBKMaster: TFDQuery;
+    FDQryBKDetail: TFDQuery;
+    fdmtblImp: TFDMemTable;
+    FDQryTmp: TFDQuery;
+    dlgSaveExport: TSaveDialog;
+    dlgOpenRestore: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -101,14 +109,14 @@ type
     procedure bitbtnValUpClick(Sender: TObject);
     procedure bitbtnValDownClick(Sender: TObject);
     procedure bitbtnExitClick(Sender: TObject);
-    procedure fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
-      AOptions: TFDUpdateRowOptions);
-    procedure fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
-      AOptions: TFDUpdateRowOptions);
+    procedure fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+    procedure fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
     procedure cxLookupComboBoxDictListPropertiesEditValueChanged(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cxLookupComboBoxRegPropertiesEditValueChanged(Sender: TObject);
     procedure bitbtnExportClick(Sender: TObject);
+    procedure BitBtnBackUPClick(Sender: TObject);
+    procedure BitBtnRestoreClick(Sender: TObject);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -257,14 +265,12 @@ begin
   end;
 end;
 
-procedure TfrmSrcTabMaintain.fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest;
-  var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+procedure TfrmSrcTabMaintain.fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
 end;
 
-procedure TfrmSrcTabMaintain.fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest;
-  var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+procedure TfrmSrcTabMaintain.fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
 end;
@@ -361,6 +367,72 @@ begin
 
 end;
 
+procedure TfrmSrcTabMaintain.BitBtnBackUPClick(Sender: TObject);
+var
+  sFilename, sSrcTabName, sSrcColName, sPath: String;
+  Zip: TZipFile;
+begin
+  if FDSchemaAdapterAll.UpdatesPending then
+  begin
+    MessageDlg('最后修改未保存！请确认信息并保存或撤销修改后再行导出。', mtWarning, [mbOK], 0);
+    Exit;
+  end;
+
+  dlgSaveExport.FileName := DateToStr(Now) + '.Srcs';
+  if dlgSaveExport.Execute then
+  begin
+    sPath := ExtractFilePath(dlgSaveExport.FileName);
+    sSrcTabName := sPath + 'SrcTab.Src';
+    sSrcColName := sPath + 'SrcCol.Src';
+    sFilename := Trim(dlgSaveExport.FileName);
+    if FileExists(sSrcTabName) then
+      DeleteFile(sSrcTabName);
+    if FileExists(sSrcColName) then
+      DeleteFile(sSrcColName);
+    if FileExists(sFilename) then
+    begin
+      if MessageDlg('接口规范备份文件已存在，覆盖吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
+      begin
+        Exit;
+      end;
+    end;
+    try
+      FDQryBKMaster.close;
+      FDQryBKDetail.close;
+
+      FDQryBKMaster.Connection := F_DT.FDconSYS;
+      FDQryBKMaster.Prepared;
+      FDQryBKMaster.open();
+      FDQryBKMaster.FetchAll;
+      FDQryBKMaster.SaveToFile(sSrcTabName, sfBinary);
+
+      FDQryBKDetail.Connection := F_DT.FDconSYS;
+      FDQryBKDetail.Prepared;
+      FDQryBKDetail.open();
+      FDQryBKDetail.FetchAll;
+      FDQryBKDetail.SaveToFile(sSrcColName, sfBinary);
+
+      Zip := TZipFile.Create;
+      Zip.open(sFilename, TZipMode.zmWrite); // 准备要压缩为sFileName
+      Zip.Add(sSrcTabName, 'SrcTab.Src'); // 参1是要压缩的文件; 参2是要使用的文件名; 参数3可指定压缩算法
+      Zip.Add(sSrcColName, 'SrcCol.Src');
+      // zip.Add...
+      // zip.Close; //Close 时才执行实际压缩过程; 不过在销毁前会调用它
+      Zip.Free;
+      if FileExists(sSrcTabName) then
+        DeleteFile(sSrcTabName);
+      if FileExists(sSrcColName) then
+        DeleteFile(sSrcColName);
+
+      MessageDlg('接口规范已导出到' + dlgSaveExport.FileName, mtInformation, [mbOK], 0);
+    finally
+      FDQryBKMaster.close;
+      FDQryBKDetail.close;
+    end;
+  end;
+
+end;
+
 procedure TfrmSrcTabMaintain.bitbtnExitClick(Sender: TObject);
 begin
   close;
@@ -398,7 +470,7 @@ begin
     Exit;
   end;
 
-  dlgSave1.FileName := '接口规范定义' + datetostr(Now());
+  dlgSave1.FileName := '接口规范定义' + DateToStr(Now());
   if not dlgSave1.Execute then
   begin
     // ShowMessage('exit');
@@ -521,7 +593,7 @@ begin
 
   // 主表标题
   xlSheet.setMerge(0, 0, 0, masterGridLen - 1);
-  xlSheet.writeStr(0, 0, PWideChar('接口规范定义导出' + datetostr(Now())), titleFormat);
+  xlSheet.writeStr(0, 0, PWideChar('接口规范定义导出' + DateToStr(Now())), titleFormat);
   // 主表字段
   for i := 0 to masterGridLen - 1 do
   begin
@@ -656,6 +728,132 @@ begin
 
 end;
 
+procedure TfrmSrcTabMaintain.BitBtnRestoreClick(Sender: TObject);
+var
+  sFilename, sSrcTabName, sSrcColName, sPath: String;
+  Zip: TZipFile;
+  i: Integer;
+begin
+  if MessageDlg('字典数据恢复后，当前字典数据将被覆盖，确定吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
+  begin
+    Exit;
+  end;
+
+  if dlgOpenRestore.Execute then
+  begin
+    sFilename := dlgOpenRestore.FileName;
+    if FileExists(sFilename) then
+    begin
+      if not TZipFile.IsValid(sFilename) then
+      begin
+        MessageDlg('选中的文件不是字典数据文件！', mtWarning, [mbOK], 0);
+        Exit;
+      end;
+    end
+    else
+    begin
+      MessageDlg('字典数据备份文件不存在！', mtWarning, [mbOK], 0);
+      Exit;
+    end;
+    sFilename := Trim(dlgOpenRestore.FileName);
+    sPath := ExtractFilePath(sFilename);
+    sSrcTabName := sPath + 'SrcTab.Src';
+    sSrcColName := sPath + 'SrcCol.Src';
+    if FileExists(sSrcTabName) then
+      DeleteFile(sSrcTabName);
+    if FileExists(sSrcColName) then
+      DeleteFile(sSrcColName);
+    // ----解压缩-----
+    Zip := TZipFile.Create;
+    Zip.open(sFilename, TZipMode.zmRead); // 解压缩的文件sFileName
+    Zip.ExtractAll(sPath);
+    // zip.Close; //Close 时才执行实际压缩过程; 不过在销毁前会调用它
+    Zip.Free;
+    // ----------------
+    try
+      fdQrySrcTab.close;
+      fdQrySrcCol.close;
+      F_DT.FDconSYS.StartTransaction;
+      // ------删除原表----------
+      FDQryTmp.close;
+      FDQryTmp.Connection := F_DT.FDconSYS;
+      FDQryTmp.SQL.Clear;
+      FDQryTmp.SQL.Add('TRUNCATE TABLE src_column');
+      FDQryTmp.Prepared;
+      FDQryTmp.ExecSQL;
+      FDQryTmp.close;
+
+      FDQryTmp.Connection := F_DT.FDconSYS;
+      FDQryTmp.SQL.Clear;
+      FDQryTmp.SQL.Add('DELETE From src_table'); // 外键约束，不能truncate
+      FDQryTmp.Prepared;
+      FDQryTmp.ExecSQL;
+      FDQryTmp.close;
+      // ----------------------------------
+      // ---先恢复主表------------------------------------------------
+
+      FDQryBKMaster.Connection := F_DT.FDconSYS;
+      FDQryBKMaster.CachedUpdates := True;
+      FDQryBKMaster.Prepared;
+      FDQryBKMaster.open();
+      FDQryBKMaster.FetchAll;
+      // 调入主表备份文件
+      fdmtblImp.close;
+      fdmtblImp.LoadFromFile(sSrcTabName, sfBinary);
+      fdmtblImp.open;
+      fdmtblImp.DisableControls;
+      // 恢复到主表
+      fdmtblImp.First;
+      while not fdmtblImp.Eof do
+      begin
+        FDQryBKMaster.Append;
+        for i := 0 to fdmtblImp.FieldCount - 1 do
+          FDQryBKMaster.Fields[i].Value := fdmtblImp.Fields[i].Value;
+        fdmtblImp.Next;
+      end;
+      FDQryBKMaster.ApplyUpdates; // 主表存盘
+
+      // ---再恢复子表------------------------------------------------
+
+      FDQryBKDetail.Connection := F_DT.FDconSYS;
+      FDQryBKDetail.CachedUpdates := True;
+      FDQryBKDetail.Prepared;
+      FDQryBKDetail.open();
+      FDQryBKDetail.FetchAll;
+      // 调入子表备份文件
+      fdmtblImp.close;
+      fdmtblImp.LoadFromFile(sSrcColName, sfBinary);
+      fdmtblImp.open;
+      fdmtblImp.DisableControls;
+      // 恢复到子表
+      fdmtblImp.First;
+      while not fdmtblImp.Eof do
+      begin
+        FDQryBKDetail.Append;
+        for i := 0 to fdmtblImp.FieldCount - 1 do
+          FDQryBKDetail.Fields[i].Value := fdmtblImp.Fields[i].Value;
+        fdmtblImp.Next;
+      end;
+      FDQryBKDetail.ApplyUpdates; // 子表存盘
+      // ---------------------------------------------------------------
+      F_DT.FDconSYS.commit;
+      if FileExists(sSrcTabName) then
+        DeleteFile(sSrcTabName);
+      if FileExists(sSrcColName) then
+        DeleteFile(sSrcColName);
+      // MessageDlg('数据字典已恢复。', mtInformation, [mbOK], 0);
+
+    finally
+      FDQryBKMaster.close;
+      FDQryBKDetail.close;
+      fdmtblImp.close;
+      fdQrySrcTab.open();
+      fdQrySrcCol.open();
+    end;
+  end;
+
+end;
+
 procedure TfrmSrcTabMaintain.bitbtnSaveClick(Sender: TObject);
 var
   NumErrors: Integer;
@@ -674,7 +872,7 @@ begin
     NumChanges := -1;
 {$ENDIF}
     NumErrors := FDSchemaAdapterAll.ApplyUpdates(-1);
-    F_DT.FDconSYS.Commit;
+    F_DT.FDconSYS.commit;
     if NumErrors > 0 then
       StatusBar1.SimpleText := '记录可能未全部保存'
     else
@@ -852,8 +1050,8 @@ begin
 {$IF CompilerVersion >= 29.0}
   ToggleButtons(FDSchemaAdapterAll.UpdatesPending);
   if FDSchemaAdapterAll.UpdatesPending then
-    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。字典类型表有' +
-      fdQrySrcTab.ChangeCount.ToString + ' 条，字典值表中有' + fdQrySrcCol.ChangeCount.ToString + '条。'
+    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。字典类型表有' + fdQrySrcTab.ChangeCount.ToString + ' 条，字典值表中有' +
+      fdQrySrcCol.ChangeCount.ToString + '条。'
   else
 {$ENDIF}
     StatusBar1.SimpleText := '存盘前没有记录改变';
@@ -864,6 +1062,8 @@ begin
   bitbtnSave.Enabled := Enable;
   bitbtnUndoOnce.Enabled := Enable;
   bitbtnUndoAll.Enabled := Enable;
+  BitBtnBackUP.Enabled := not Enable;
+  BitBtnRestore.Enabled := not Enable;
 end;
 
 end.

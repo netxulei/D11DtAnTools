@@ -18,7 +18,6 @@ object LoginFrm: TLoginFrm
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
   TextHeight = 20
   object lblTestVer: TLabel
     Left = 320
@@ -3668,7 +3667,7 @@ object LoginFrm: TLoginFrm
     end
     object pnlVer: TPanel
       Left = 64
-      Top = 117
+      Top = 76
       Width = 505
       Height = 182
       ParentBackground = False
@@ -3691,6 +3690,8 @@ object LoginFrm: TLoginFrm
           #20219#24847#25968#25454#29256#26412)
         ParentBiDiMode = False
         TabOrder = 0
+        ExplicitLeft = 0
+        ExplicitTop = 0
       end
       object bitbtnVerOK: TBitBtn
         Left = 127

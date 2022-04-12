@@ -14,7 +14,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 15
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
@@ -731,8 +730,38 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       TabOrder = 4
       WordWrap = True
     end
-    object bitbtnExit: TBitBtn
+    object BitBtnBackUP: TBitBtn
       Left = 567
+      Top = 1
+      Width = 58
+      Height = 30
+      Hint = #22791#20221#25968#25454#23383#20856#20449#24687#65292#24517#35201#26102#21487#29992#20110#20849#20139#25968#25454#23383#20856
+      Caption = #22791#20221
+      ImageIndex = 9
+      ImageName = #23548#20986#27169#22411
+      Images = F_DT.vrtlmglstMenu
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 5
+      OnClick = BitBtnBackUPClick
+    end
+    object BitBtnRestore: TBitBtn
+      Left = 625
+      Top = 1
+      Width = 61
+      Height = 30
+      Hint = #24674#22797#25968#25454#23383#20856#65292#20294#35201#27880#24847#31995#32479#20013#23545#25968#25454#23383#20856#24212#29992#30340#20851#32852#24615
+      Caption = #24674#22797
+      ImageIndex = 10
+      ImageName = #23548#20837#27169#22411
+      Images = F_DT.vrtlmglstMenu
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 6
+      OnClick = BitBtnRestoreClick
+    end
+    object bitbtnExit: TBitBtn
+      Left = 686
       Top = 1
       Width = 112
       Height = 30
@@ -740,7 +769,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1
-      TabOrder = 5
+      TabOrder = 7
       OnClick = bitbtnExitClick
     end
   end
@@ -1044,5 +1073,50 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Title = #23548#20986'Excel'#25991#20214
     Left = 140
     Top = 130
+  end
+  object FDQryBKMaster: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    SQL.Strings = (
+      'select * from src_table')
+    Left = 1184
+    Top = 512
+  end
+  object FDQryBKDetail: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    SQL.Strings = (
+      'SELECT * FROM src_column')
+    Left = 1272
+    Top = 512
+  end
+  object fdmtblImp: TFDMemTable
+    ActiveStoredUsage = [auDesignTime]
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 1352
+    Top = 512
+  end
+  object FDQryTmp: TFDQuery
+    Left = 1426
+    Top = 511
+  end
+  object dlgSaveExport: TSaveDialog
+    FileName = 'file1'
+    Filter = #25509#21475#35268#33539#25991#20214' (*.Srcs)|*.Srcs'
+    Title = #25509#21475#35268#33539#28304#25968#25454#34920#22791#20221
+    Left = 952
+    Top = 520
+  end
+  object dlgOpenRestore: TOpenDialog
+    Filter = #25509#21475#35268#33539#25991#20214' (*.Srcs)|*.Srcs'
+    Title = #25509#21475#35268#33539#28304#25968#25454#34920#24674#22797
+    Left = 1048
+    Top = 520
   end
 end

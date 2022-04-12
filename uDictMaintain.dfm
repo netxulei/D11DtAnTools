@@ -14,7 +14,6 @@ object frmDictMaintain: TfrmDictMaintain
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 20
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
@@ -488,7 +487,7 @@ object frmDictMaintain: TfrmDictMaintain
       AlignWithMargins = True
       Left = 452
       Top = 4
-      Width = 112
+      Width = 103
       Height = 24
       Align = alLeft
       Caption = #23548#20986#21518#25171#24320
@@ -505,8 +504,38 @@ object frmDictMaintain: TfrmDictMaintain
       TabOrder = 4
       WordWrap = True
     end
+    object BitBtnBackUP: TBitBtn
+      Left = 558
+      Top = 1
+      Width = 58
+      Height = 30
+      Hint = #22791#20221#25968#25454#23383#20856#20449#24687#65292#24517#35201#26102#21487#29992#20110#20849#20139#25968#25454#23383#20856
+      Caption = #22791#20221
+      ImageIndex = 9
+      ImageName = #23548#20986#27169#22411
+      Images = F_DT.vrtlmglstMenu
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 5
+      OnClick = BitBtnBackUPClick
+    end
+    object BitBtnRestore: TBitBtn
+      Left = 616
+      Top = 1
+      Width = 61
+      Height = 30
+      Hint = #24674#22797#25968#25454#23383#20856#65292#20294#35201#27880#24847#31995#32479#20013#23545#25968#25454#23383#20856#24212#29992#30340#20851#32852#24615
+      Caption = #24674#22797
+      ImageIndex = 10
+      ImageName = #23548#20837#27169#22411
+      Images = F_DT.vrtlmglstMenu
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 6
+      OnClick = BitBtnRestoreClick
+    end
     object bitbtnExit: TBitBtn
-      Left = 567
+      Left = 677
       Top = 1
       Width = 112
       Height = 30
@@ -514,7 +543,7 @@ object frmDictMaintain: TfrmDictMaintain
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1
-      TabOrder = 5
+      TabOrder = 7
       OnClick = bitbtnExitClick
     end
   end
@@ -673,8 +702,8 @@ object frmDictMaintain: TfrmDictMaintain
     FileName = 'file1'
     Filter = 'Exce2007'#20197#19978#25991#20214' (*.xlsx)|*.XLSX|Exce97-2003'#25991#20214' (*.xls)|*.XLS'
     Title = #23548#20986'Excel'#25991#20214
-    Left = 284
-    Top = 306
+    Left = 268
+    Top = 410
   end
   object fdQryDictValList: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -704,5 +733,50 @@ object frmDictMaintain: TfrmDictMaintain
       'select dict_type_id from dict_type order by dict_type_sort')
     Left = 1184
     Top = 416
+  end
+  object FDQryBKMaster: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    SQL.Strings = (
+      'select * from Dict_type order by dict_type_sort')
+    Left = 1184
+    Top = 512
+  end
+  object FDQryBKDetail: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    SQL.Strings = (
+      'SELECT * FROM Dict_val')
+    Left = 1272
+    Top = 512
+  end
+  object dlgSaveExport: TSaveDialog
+    FileName = 'file1'
+    Filter = #23383#20856#25968#25454#25991#20214' (*.Dict)|*.Dict'
+    Title = #23383#20856#25968#25454#22791#20221
+    Left = 624
+    Top = 408
+  end
+  object dlgOpenRestore: TOpenDialog
+    Filter = #23383#20856#25968#25454#25991#20214' (*.Dict)|*.Dict'
+    Title = #23383#20856#25968#25454#24674#22797
+    Left = 720
+    Top = 400
+  end
+  object fdmtblImp: TFDMemTable
+    ActiveStoredUsage = [auDesignTime]
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 1352
+    Top = 512
+  end
+  object FDQryTmp: TFDQuery
+    Left = 1426
+    Top = 511
   end
 end

@@ -4571,6 +4571,7 @@ object MainFrm: TMainFrm
       Caption = #27169#22411#21644#25968#25454#25509#21475#32500#25252
       ImageIndex = 4
       ImageName = #24320#25918#24179#21488
+      Visible = False
       object MnModel: TMenuItem
         Caption = #20998#26512#27169#22411#32500#25252
         ImageIndex = 5

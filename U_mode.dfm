@@ -12,7 +12,6 @@ object F_mode: TF_mode
   Font.Style = []
   Position = poMainFormCenter
   OnActivate = FormActivate
-  PixelsPerInch = 96
   TextHeight = 15
   object pnl2: TPanel
     Left = 0

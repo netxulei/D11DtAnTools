@@ -136,10 +136,6 @@
             <Form>F_user</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="U_Export.pas">
-            <Form>F_Export</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="U_mode.pas">
             <Form>F_mode</Form>
             <FormType>dfm</FormType>
