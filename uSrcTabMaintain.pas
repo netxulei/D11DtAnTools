@@ -117,10 +117,13 @@ type
     procedure bitbtnExportClick(Sender: TObject);
     procedure BitBtnBackUPClick(Sender: TObject);
     procedure BitBtnRestoreClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
   public { Public declarations }
+    // protected
+    // procedure CreateParams(var Params: TCreateParams); override; // 重载此方法,图标显示再任务栏
   end;
 
 var
@@ -129,6 +132,11 @@ var
 implementation
 
 {$R *.dfm}
+// procedure TfrmSrcTabMaintain.CreateParams(var Params: TCreateParams);
+// begin
+// inherited CreateParams(Params);
+// Params.WndParent := GetDesktopWindow;
+// end;
 
 procedure TfrmSrcTabMaintain.dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
 var
@@ -299,6 +307,7 @@ begin
     fdQryDictList.close;
     fdQryColType.close;
   end;
+  Action := caFree;
 end;
 
 procedure TfrmSrcTabMaintain.FormCreate(Sender: TObject);
@@ -306,6 +315,7 @@ var
   s_filename: string;
   MyIniFile: TIniFile;
 begin
+  // SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_APPWINDOW);  //任务栏显示图标
   // 读取当前目录setting赋值 dict_list_col字段类型在字典中的列表id
   s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
   MyIniFile := TIniFile.Create(s_filename);
@@ -337,6 +347,11 @@ begin
   // 导航条增加文字
   CHNDBNavigator(dbnvgrDictType);
   CHNDBNavigator(dbnvgrDictVal);
+end;
+
+procedure TfrmSrcTabMaintain.FormShow(Sender: TObject);
+begin
+  ShowWindow(mainHandle, SW_SHOW);
 end;
 
 procedure TfrmSrcTabMaintain.bitbtn3Click(Sender: TObject);

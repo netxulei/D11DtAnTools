@@ -588,7 +588,6 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object fdQryDictType: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'dict_type_sort'
     OnUpdateRecord = fdQryDictTypeUpdateRecord
@@ -629,12 +628,11 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictTypedict_type_memo: TStringField
       FieldName = 'dict_type_memo'
       Origin = 'dict_type_memo'
-      Size = 100
+      Size = 300
     end
   end
   object fdQryDictVal: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'dict_type_id;dict_val_sort'
     MasterSource = dsDictTypeMsDt
@@ -695,7 +693,7 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictValdict_val_memo: TStringField
       FieldName = 'dict_val_memo'
       Origin = 'dict_val_memo'
-      Size = 200
+      Size = 300
     end
   end
   object dlgSave1: TSaveDialog

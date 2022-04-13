@@ -18,6 +18,7 @@ type
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn2Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -56,6 +57,11 @@ procedure TF_mode.FormActivate(Sender: TObject);
 begin
   PassText.Text := t_mod_pass;
   PassText.SetFocus;
+end;
+
+procedure TF_mode.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
 end;
 
 end.

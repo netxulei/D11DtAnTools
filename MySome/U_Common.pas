@@ -16,6 +16,7 @@ type
   end;
 
 var
+  mainHandle:HWND;
   R_proc: array of TProcRec; // 参数数组
   t_ProcFunName: string;
   t_isProc: Boolean;

@@ -168,10 +168,8 @@ type
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     cxDBTreeList1isClass: TcxDBTreeListColumn;
     cxstylTraceHot: TcxStyle;
-    function SaveGridIni(ADBGridEhNameStr: string;
-      ADBGridEh: TDBGridEh): Boolean;
-    function RestoreGridIni(ADBGridEhNameStr: string;
-      ADBGridEh: TDBGridEh): Boolean;
+    function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
+    function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     // function cre_V_bank_bm(): Boolean;
     function del_proc(): Boolean;
     // function def_fun(): Boolean;   //函数定义放到逻辑中自动执行定义，不再代码实现
@@ -206,8 +204,7 @@ type
     procedure N_Excel_DwClick(Sender: TObject);
     procedure cxDBTreeList1DblClick(Sender: TObject);
     procedure MnOpenClick(Sender: TObject);
-    procedure dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure dbgrdh1DblClick(Sender: TObject);
     procedure N301Click(Sender: TObject);
     procedure N302Click(Sender: TObject);
@@ -215,8 +212,7 @@ type
     procedure N402Click(Sender: TObject);
     procedure N49Click(Sender: TObject);
     procedure N53Click(Sender: TObject);
-    procedure cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas;
-      AViewInfo: TcxTreeListEditCellViewInfo; var ADone: Boolean);
+    procedure cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas; AViewInfo: TcxTreeListEditCellViewInfo; var ADone: Boolean);
     procedure pm3Popup(Sender: TObject);
     procedure pm4Popup(Sender: TObject);
     procedure N15Click(Sender: TObject);
@@ -227,16 +223,12 @@ type
     procedure M_DR_FXZHClick(Sender: TObject);
     procedure M_DR_FXDWClick(Sender: TObject);
     procedure M_DR_FXGRClick(Sender: TObject);
-    procedure cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList;
-      APrevFocusedNode, AFocusedNode: TcxTreeListNode);
-    procedure cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList;
-      ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType;
-      var AIndex: TImageIndex);
+    procedure cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
+    procedure cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure spbtnFormatClick(Sender: TObject);
     procedure N22Click(Sender: TObject);
     procedure MnModelClick(Sender: TObject);
-    procedure dbgrdh1TitleBtnClick(Sender: TObject; ACol: Integer;
-      Column: TColumnEh);
+    procedure dbgrdh1TitleBtnClick(Sender: TObject; ACol: Integer; Column: TColumnEh);
     procedure MnDictClick(Sender: TObject);
     procedure MnRuleClick(Sender: TObject);
     procedure N2Click(Sender: TObject);
@@ -250,6 +242,9 @@ type
 
   public { Public declarations }
 
+    // protected
+    // procedure CreateParams(var Params: TCreateParams); override; // 重载此方法,图标显示再任务栏
+
   end;
 
 var
@@ -260,6 +255,11 @@ implementation
 uses
   log4me, U_Proj, uDictMaintain, uDataImport1, uSrcTabMaintain, uModMaintain;
 {$R *.dfm}
+// procedure TMainFrm.CreateParams(var Params: TCreateParams);
+// begin
+// inherited CreateParams(Params);
+// Params.WndParent := GetDesktopWindow;
+// end;
 // 处理辅表的可见性函数
 
 function TMainFrm.table_visable(): Boolean;
@@ -299,8 +299,7 @@ begin
 
 end;
 
-function TMainFrm.SaveGridIni(ADBGridEhNameStr: string;
-  ADBGridEh: TDBGridEh): Boolean;
+function TMainFrm.SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
 var
   IniFileNameStr: string;
 begin
@@ -317,15 +316,13 @@ begin
   spbtnFormat.PopupMenu.Popup(Pt.X, Pt.Y);
 end;
 
-function TMainFrm.RestoreGridIni(ADBGridEhNameStr: string;
-  ADBGridEh: TDBGridEh): Boolean;
+function TMainFrm.RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
 var
   IniFileNameStr: string;
   RestoreParams: TDBGridEhRestoreParams;
 begin
   IniFileNameStr := ExtractFileDir(ParamStr(0)) + '\' + 'DBGirdConfig.ini';
-  ADBGridEh.RestoreGridLayoutIni(IniFileNameStr, ADBGridEhNameStr,
-    RestoreParams);
+  ADBGridEh.RestoreGridLayoutIni(IniFileNameStr, ADBGridEhNameStr, RestoreParams);
 end;
 
 function TMainFrm.DispInfo(): Boolean;
@@ -354,8 +351,7 @@ begin
   s_filename := ExtractFilePath(ParamStr(0)) + 'sql_DispInfo';
   sqlname := 'P_DispInfo';
   dbgrdh1.Color := clWindow;
-  sqltext := 'select name from sysobjects where Name =' + '''' + sqlname + ''''
-    + ' and type =' + '''' + 'P' + '''';
+  sqltext := 'select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and type =' + '''' + 'P' + '''';
   fdqryTmp.close;
   fdqryTmp.Connection := F_DT.FDConSYS;
   fdqryTmp.SQL.Clear;
@@ -435,8 +431,7 @@ begin
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'declare cur cursor';
     fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'for select name from sysobjects where type =' + '''' + 'p' +
-      '''' + 'and schema_ver=0';
+    sqltext := 'for select name from sysobjects where type =' + '''' + 'p' + '''' + 'and schema_ver=0';
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'open cur';
     fdqryTmp.SQL.Add(sqltext);
@@ -466,8 +461,7 @@ begin
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'declare cur cursor';
     fdqryTmp.SQL.Add(sqltext);
-    sqltext :=
-      'for select name from sysobjects Where type=''AF'' or type=''FN'' or type=''FS'' or type=''FT'' or  type=''IF'' or type=''TF''';
+    sqltext := 'for select name from sysobjects Where type=''AF'' or type=''FN'' or type=''FS'' or type=''FT'' or  type=''IF'' or type=''TF''';
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'open cur';
     fdqryTmp.SQL.Add(sqltext);
@@ -527,8 +521,7 @@ begin
 
   // 判断项目数据库是否存在--若不存在，则无需删除存储过程------------
   fdqryTmp.SQL.Clear;
-  fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' +
-    '''' + t_Database + '''';
+  fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
   fdqryTmp.Open;
   if fdqryTmp.RecordCount <= 0 then
   begin
@@ -541,10 +534,8 @@ begin
   fdqryAuto.close;
   fdqryAuto.Connection := F_DT.FDConSYS; // 系统数据库
   fdqryAuto.SQL.Clear;
-  sqltext :=
-    'SELECT * FROM "X_menus" where (isClass<>''1'' or isClass is null) and t_auto =''1'''
-    + ' and (len(isnull(t_right,''''))=0 or t_right=''' + t_database_ver + ''')'
-    + ' and t_type = ''' + t_type + ''' order by t_sort';
+  sqltext := 'SELECT * FROM "X_menus" where (isClass<>''1'' or isClass is null) and t_auto =''1''' + ' and (len(isnull(t_right,''''))=0 or t_right=''' + t_database_ver + ''')' +
+    ' and t_type = ''' + t_type + ''' order by t_sort';
   fdqryAuto.SQL.Add(sqltext);
   // FdqryAuto.sql.SaveToFile('d:\x.sql');
   fdqryAuto.Prepared;
@@ -575,8 +566,7 @@ begin
       i := 1;
       while (i <= i_cnt1) do
       begin
-        ClickedOK := InputQuery('输入参数', R_proc[i - 1].s_para_tip +
-          '            ', R_proc[i - 1].s_para_value);
+        ClickedOK := InputQuery('输入参数', R_proc[i - 1].s_para_tip + '            ', R_proc[i - 1].s_para_value);
         if ClickedOK then { NewString contains new input string }
         begin
           // 根据提示参数“日期”“数”等判断数据是否输入正确
@@ -584,13 +574,10 @@ begin
           begin
             // 判断是否日期
             try
-              tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' +
-                Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' +
-                Copy(R_proc[i - 1].s_para_value, 7, 2);
+              tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' + Copy(R_proc[i - 1].s_para_value, 7, 2);
               StrToDate(tmps1);
             except
-              MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation,
-                [mbOK], 0);
+              MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
               Continue;
             end;
           end;
@@ -598,8 +585,7 @@ begin
           if R_proc[i - 1].s_para_lx = 'N' then
           begin
             // 判断是否数字
-            if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or
-              TryStrToFloat(R_proc[i - 1].s_para_value, tmpf)) then
+            if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf)) then
             begin
               MessageDlg('应该输入数字！', mtInformation, [mbOK], 0);
               Continue;
@@ -627,8 +613,7 @@ begin
       tmps2 := '';
       for i := 1 to i_cnt1 do
       begin
-        tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1]
-          .s_para_lx + ':' + R_proc[i - 1].s_para_value;
+        tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' + R_proc[i - 1].s_para_value;
         tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
       end;
       fdqryAuto.Edit;
@@ -655,8 +640,7 @@ begin
       begin
         for i := 1 to i_cnt1 do
         begin
-          fdSPAuto.Params.ParamByName(R_proc[i - 1].s_para_name).Value :=
-            R_proc[i - 1].s_para_value;
+          fdSPAuto.Params.ParamByName(R_proc[i - 1].s_para_name).Value := R_proc[i - 1].s_para_value;
         end;
       end;
       fdSPAuto.Prepared;
@@ -774,6 +758,8 @@ var
   i: Integer;
   MyIniFile: TIniFile;
 begin
+//  SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_APPWINDOW); // 任务栏显示图标
+//   SetWindowLong(Handle,GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW); // 任务栏不显示图标
   i := t_ver_noLS.IndexOf(t_type); // 系统版本的索引号
   MainFrm.Caption := t_ver_nameLS[i] + t_ver + '---' + User_info;
   // 标题显示系统版本和用户信息
@@ -783,8 +769,7 @@ begin
   if Length(Trim(t_proj_no)) = 0 then
     lblInfo.Caption := '---首先设置当前项目，才能实施分析---'
   else
-    lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' +
-      t_Database;
+    lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   // 附属表checkBox名称
   // chk2.Caption := t_table1_name;
   // chk1.Caption := t_table2_name;
@@ -812,10 +797,8 @@ begin
     MnOpen.Enabled := False;
   end;
   // 根据检查模式确定列出的模型功能  未隐藏 无数据库版本或指定版本=t_database_ver    版本之间不在混淆分析模型
-  sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' +
-    ' and (len(isnull(t_right,' + '''' + '''' + '))=0 or t_right=' + '''' +
-    t_database_ver + '''' + ')' + ' and t_type =' + '''' + t_type + '''' +
-    ' order by t_sort';
+  sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' + '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' +
+    ' and t_type =' + '''' + t_type + '''' + ' order by t_sort';
   fdQryTree.close; // fdQryTree=ADOQ2
   fdQryTree.DisableControls;
   fdQryTree.Connection := F_DT.FDConSYS;
@@ -888,8 +871,7 @@ begin
   if fdmtblRun.Fields.FindField(Trim(lbledtKey.Text)) = nil then
   // if fdmtblRun.FieldList.Find((Trim(lbledtKey.Text))) = nil then
   begin
-    MessageDlg('上述结果表中没有关联字段"' + pchar(lbledtKey.Text) + '"，不能显示辅助信息。',
-      mtWarning, [mbOK], 0);
+    MessageDlg('上述结果表中没有关联字段"' + pchar(lbledtKey.Text) + '"，不能显示辅助信息。', mtWarning, [mbOK], 0);
     Exit;
   end;
   key_value := fdmtblRun.Fields.FindField(Trim(lbledtKey.Text)).Value;
@@ -899,9 +881,7 @@ begin
   qryFields := StringReplace(qryFields, #$D, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, ' ', '', [rfReplaceAll]);
 
-  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) +
-    ' Where ' + Trim(lbledtKey.Text) + ' = ''' + key_value + ''' Order by ' +
-    Trim(lbledtTabName.Text);
+  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKey.Text) + ' = ''' + key_value + ''' Order by ' + Trim(lbledtTabName.Text);
 
   try
     fdQryAssis.close;
@@ -915,8 +895,7 @@ begin
     i_pos := pos('对象名', sError);
     if i_pos > 0 then
       sError := Copy(sError, i_pos, Length(sError) - i_pos);
-    MessageDlg('查询辅助信息所需数据表未导入或相关字段不正确。(' + sError + ')。', mtWarning,
-      [mbOK], 0);
+    MessageDlg('查询辅助信息所需数据表未导入或相关字段不正确。(' + sError + ')。', mtWarning, [mbOK], 0);
     fdQryAssis.close;
   end;
 end;
@@ -944,8 +923,7 @@ var
 begin
   if Length(t_proj_no) = 0 then
   begin
-    Application.MessageBox('请设置当前项目后再执行运行模型！', '信息', MB_OK + MB_ICONWARNING +
-      MB_TOPMOST);
+    Application.MessageBox('请设置当前项目后再执行运行模型！', '信息', MB_OK + MB_ICONWARNING + MB_TOPMOST);
     Exit;
   end;
   F_DT.fdconProj.ConnectionString := t_connect + 'Database=' + t_Database + ';';
@@ -962,8 +940,7 @@ begin
     i := 1;
     while (i <= i_cnt1) do
     begin
-      ClickedOK := InputQuery('输入参数', R_proc[i - 1].s_para_tip + '            ',
-        R_proc[i - 1].s_para_value);
+      ClickedOK := InputQuery('输入参数', R_proc[i - 1].s_para_tip + '            ', R_proc[i - 1].s_para_value);
       if ClickedOK then { NewString contains new input string }
       begin
         // 根据提示参数“日期”“数”等判断数据是否输入正确
@@ -971,13 +948,10 @@ begin
         begin
           // 判断是否日期
           try
-            tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' +
-              Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' +
-              Copy(R_proc[i - 1].s_para_value, 7, 2);
+            tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' + Copy(R_proc[i - 1].s_para_value, 7, 2);
             StrToDate(tmps1);
           except
-            MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation,
-              [mbOK], 0);
+            MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
             Continue;
           end;
         end;
@@ -985,8 +959,7 @@ begin
         if R_proc[i - 1].s_para_lx = 'N' then
         begin
           // 判断是否数字
-          if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or
-            TryStrToFloat(R_proc[i - 1].s_para_value, tmpf)) then
+          if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf)) then
           begin
             MessageDlg('应该输入数字！', mtInformation, [mbOK], 0);
             Continue;
@@ -1002,15 +975,13 @@ begin
     tmps2 := '';
     for i := 1 to i_cnt1 do
     begin
-      tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1]
-        .s_para_lx + ':' + R_proc[i - 1].s_para_value;
+      tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' + R_proc[i - 1].s_para_value;
       tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
     end;
     fdQryTree.Edit;
     fdQryTree.FieldByName('t_para').AsString := tmps1;
     // FDQryTree.UpdateBatch(arAll);
-    cxtxtdt1.Text := Trim(fdQryTree.FieldByName('t_name').AsString) +
-      '-' + tmps2;
+    cxtxtdt1.Text := Trim(fdQryTree.FieldByName('t_name').AsString) + '-' + tmps2;
   end
   else
     cxtxtdt1.Text := Trim(fdQryTree.FieldByName('t_name').AsString);
@@ -1033,8 +1004,7 @@ begin
   begin
     for i := 1 to i_cnt1 do
     begin
-      fdSPRun.Params.ParamByName(R_proc[i - 1].s_para_name).Value :=
-        R_proc[i - 1].s_para_value;
+      fdSPRun.Params.ParamByName(R_proc[i - 1].s_para_name).Value := R_proc[i - 1].s_para_value;
     end;
   end;
   // 删除grid字段，为新的查询服务
@@ -1056,8 +1026,7 @@ begin
   begin
     if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftFloat) then
       dbgrdh1.Columns[i].DisplayFormat := '#,####,####,##0.00';
-    if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftInteger) or
-      (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftSmallint) then
+    if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftInteger) or (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftSmallint) then
       dbgrdh1.Columns[i].DisplayFormat := '#,####,####,##0';
   end;
   dbgrdh1.Enabled := True;
@@ -1067,8 +1036,7 @@ begin
   inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
   prpstrgh1.LoadProperties;
   // 显示执行时间
-  cxtxtdt1.Text := cxtxtdt1.Text + '(' +
-    FloatToStr((GetTickCount() - t_time) / 1000) + '秒)';
+  cxtxtdt1.Text := cxtxtdt1.Text + '(' + FloatToStr((GetTickCount() - t_time) / 1000) + '秒)';
   // 记录成功日志
   log4info(cxtxtdt1.Text);
 end;
@@ -1101,8 +1069,7 @@ begin
     Exit;
   end;
 
-  SaveDialog1.FileName := Trim(StringReplace(cxtxtdt1.Text, '|', '',
-    [rfReplaceAll]));
+  SaveDialog1.FileName := Trim(StringReplace(cxtxtdt1.Text, '|', '', [rfReplaceAll]));
   if not SaveDialog1.Execute then
   begin
     // ShowMessage('exit');
@@ -1189,8 +1156,7 @@ begin
   gridLen := dbgrdh1.VisibleColumns.Count; // grid的列数
   for i := 0 to gridLen - 1 do
   begin
-    xlSheet.writeStr(1, i, PWideChar(dbgrdh1.VisibleColumns[i].FieldName),
-      headerFormat);
+    xlSheet.writeStr(1, i, PWideChar(dbgrdh1.VisibleColumns[i].FieldName), headerFormat);
   end;
 
   // xlSheet.writeNum(3, 1, 1000);
@@ -1220,8 +1186,7 @@ begin
       // 判断是否为空、判断数据类型
       // 判断是否数字
       FieldType := dbgrdh1.VisibleColumns[ci].Field.DataType;
-      if (FieldType = ftFloat) or (FieldType = ftInteger) or
-        (FieldType = ftSmallint) then
+      if (FieldType = ftFloat) or (FieldType = ftInteger) or (FieldType = ftSmallint) then
         isNum := True
       else
         isNum := False;
@@ -1264,11 +1229,9 @@ begin
   fdmtblRun.First;
   fdmtblRun.enableControls;
   if (chkAfterOpen.Checked) then
-    ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil,
-      SW_SHOWNORMAL)
+    ShellExecute(Application.Handle, 'Open', pchar(s_filename), nil, nil, SW_SHOWNORMAL)
   else
-    ShellExecute(Application.Handle, 'Open', 'explorer.exe',
-      pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
+    ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
 end;
 
 procedure TMainFrm.N19Click(Sender: TObject);
@@ -1317,7 +1280,9 @@ begin
 end;
 
 procedure TMainFrm.FormShow(Sender: TObject);
+
 begin
+  mainHandle := GetActiveWindow;
   lblInfo.Top := 0;
   lblInfo.Left := 0;
   pnl4.Width := lblInfo.Width;
@@ -1439,8 +1404,12 @@ end;
 
 procedure TMainFrm.MnRuleClick(Sender: TObject);
 begin
+  // MainFrm.Hide;
+  // SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW); // 任务栏不显示图标
+  // MainFrm.Show;
   Application.CreateForm(TfrmSrcTabMaintain, frmSrcTabMaintain);
   frmSrcTabMaintain.ShowModal;
+  // SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_APPWINDOW); // 任务栏显示图标
 end;
 
 procedure TMainFrm.N9Click(Sender: TObject);
@@ -1508,9 +1477,7 @@ begin
     // 判断数据库是否存在
     F_DT.fdqryTmp.Connection := F_DT.FDConGen;
     F_DT.fdqryTmp.SQL.Clear;
-    F_DT.fdqryTmp.SQL.Text :=
-      'select name from master..sysdatabases where name = ' + '''' +
-      t_Database + '''';
+    F_DT.fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
     F_DT.fdqryTmp.Open;
     if F_DT.fdqryTmp.RecordCount > 0 then
     begin
@@ -1599,8 +1566,7 @@ begin
     isClass := '0'
   else
     isClass := fdQryTree['isClass'];
-  if (cxDBTreeList1.FocusedNode.Count > 0) or (i_parent_id = 0) or
-    (isClass = '1') then
+  if (cxDBTreeList1.FocusedNode.Count > 0) or (i_parent_id = 0) or (isClass = '1') then
   begin
     btn1.Enabled := False;
   end
@@ -1611,8 +1577,7 @@ begin
   end;
 end;
 
-procedure TMainFrm.cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList;
-  APrevFocusedNode, AFocusedNode: TcxTreeListNode);
+procedure TMainFrm.cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
 // var
 // i_id, i_parent_id: Integer;
 begin
@@ -1657,9 +1622,7 @@ begin
   // end;
 end;
 
-procedure TMainFrm.cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList;
-  ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType;
-  var AIndex: TImageIndex);
+procedure TMainFrm.cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
 begin
   if AIndexType = tlitStateIndex then
     Exit;
@@ -1715,15 +1678,13 @@ begin
 
 end;
 
-procedure TMainFrm.dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TMainFrm.dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if chkAssis.Checked then
     bitbtnAssis.Click;
 end;
 
-procedure TMainFrm.dbgrdh1TitleBtnClick(Sender: TObject; ACol: Integer;
-  Column: TColumnEh);
+procedure TMainFrm.dbgrdh1TitleBtnClick(Sender: TObject; ACol: Integer; Column: TColumnEh);
 var
   i: Integer;
   sIndex, sFieldName: string;
@@ -1894,9 +1855,7 @@ begin
   end;
 end;
 
-procedure TMainFrm.cxDBTreeList1CustomDrawCell(Sender: TObject;
-  ACanvas: TcxCanvas; AViewInfo: TcxTreeListEditCellViewInfo;
-  var ADone: Boolean);
+procedure TMainFrm.cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas; AViewInfo: TcxTreeListEditCellViewInfo; var ADone: Boolean);
 begin
   // inherited;
   // if   adoq2['t_parent_id']   =   0   then
@@ -1938,16 +1897,13 @@ begin
   if Length(Trim(t_proj_no)) = 0 then
     lblInfo.Caption := '---首先设置当前项目，才能实施数据分析---'
   else
-    lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' +
-      t_Database;
+    lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   if Length(Trim(t_proj_no)) <> 0 then
   begin
     // 判断数据库是否存在
     F_DT.fdqryTmp.Connection := F_DT.FDConGen;
     F_DT.fdqryTmp.SQL.Clear;
-    F_DT.fdqryTmp.SQL.Text :=
-      'select name from master..sysdatabases where name = ' + '''' +
-      t_Database + '''';
+    F_DT.fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
     F_DT.fdqryTmp.Open;
     if F_DT.fdqryTmp.RecordCount > 0 then
     begin
@@ -1964,11 +1920,9 @@ begin
   ShowMessage('等待程序更新');
 end;
 
-procedure TMainFrm.dbgrdh1KeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TMainFrm.dbgrdh1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if ((Key = VK_UP) or (Key = VK_DOWN) or (Key = VK_PRIOR) or (Key = VK_NEXT))
-    and chkAssis.Checked then
+  if ((Key = VK_UP) or (Key = VK_DOWN) or (Key = VK_PRIOR) or (Key = VK_NEXT)) and chkAssis.Checked then
     bitbtnAssis.Click;
 end;
 
@@ -1996,9 +1950,7 @@ begin
     // 判断数据库是否存在
     F_DT.fdqryTmp.Connection := F_DT.FDConGen;
     F_DT.fdqryTmp.SQL.Clear;
-    F_DT.fdqryTmp.SQL.Text :=
-      'select name from master..sysdatabases where name = ' + '''' +
-      t_Database + '''';
+    F_DT.fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
     F_DT.fdqryTmp.Open;
     if F_DT.fdqryTmp.RecordCount > 0 then
     begin

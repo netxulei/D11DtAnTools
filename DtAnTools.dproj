@@ -69,6 +69,10 @@
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <Icon_MainIcon>DtAnTools_Icon.ico</Icon_MainIcon>
+        <UWP_DelphiLogo44>D:\同步空间\IMG\数据分析2.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>D:\同步空间\IMG\数据分析2.png</UWP_DelphiLogo150>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>dxPSdxSpreadSheetLnkRS28;vclwinx;DataSnapServer;fmx;vclie;DbxCommonDriver;bindengine;IndyIPCommon;VCLRESTComponents;DBXMSSQLDriver;FireDACCommonODBC;emsclient;cxExportRS28;dxHttpIndyRequestRS28;appanalytics;IndyProtocols;vclx;dxPSPrVwRibbonRS28;dxTileControlRS28;dbxcds;vcledge;dxPSdxDBOCLnkRS28;cxPivotGridOLAPRS28;FmxTeeUI;dxGDIPlusRS28;DBXFirebirdDriver;cxPivotGridRS28;dxPSCoreRS28;FireDACSqliteDriver;DbxClientDriver;dxSpreadSheetRS28;dxSkinsCoreRS28;soapmidas;dxBarRS28;dxSpreadSheetInplaceRichEditRS28;TeeUI;dxADOServerModeRS28;dxWizardControlRS28;dbexpress;inet;dxServerModeRS28;vcltouch;cxTreeListRS28;dxBarDBNavRS28;FireDACDBXDriver;dxSpreadSheetCoreDialogsRS28;fmxdae;dxPScxCommonRS28;dxNavBarRS28;EhLibIBXDataDrivers280;CustomIPTransport;FireDACMSSQLDriver;dxSpreadSheetReportDesignerRS28;dxFireDACEMFRS28;dxComnRS28;dxFlowChartDesignerRS28;IndySystem;cxVerticalGridRS28;ibxbindings;dxPSDBTeeChartRS28;dxmdsRS28;dxRichEditControlRS28;cxSchedulerGridRS28;dxPsPrVwAdvRS28;dxPScxSchedulerLnkRS28;dxPSdxOCLnkRS28;vclFireDAC;FireDACCommon;DataSnapServerMidas;FireDACODBCDriver;emsserverresource;dxADOEMFRS28;dxRibbonCustomizationFormRS28;dxPSdxDBTVLnkRS28;bindcompdbx;dxGaugeControlRS28;rtl;FireDACMySQLDriver;dxDockingRS28;dxPDFViewerRS28;DBXSqliteDriver;dxBarExtItemsRS28;TMSVCLUIPackPkgExDXE14;dxPSdxFCLnkRS28;dxorgcRS28;DBXSybaseASEDriver;dxSpreadSheetCoreConditionalFormattingDialogsRS28;dxPSRichEditControlLnkRS28;vclimg;DataSnapFireDAC;inetdbxpress;FireDAC;TMSVCLUIPackPkgXlsDXE14;xmlrtl;ibxpress;dsnap;FireDACDb2Driver;cxSchedulerRibbonStyleEventEditorRS28;DBXOracleDriver;dxPScxTLLnkRS28;DBXInformixDriver;EhLibDBXDataDrivers280;vclib;fmxobj;bindcompvclsmp;DataSnapNativeClient;dxFlowChartRS28;dxPScxPCProdRS28;DatasnapConnectorsFreePascal;emshosting;dxRichEditDocumentModelRS28;dxPSdxMapControlLnkRS28;dxPScxVGridLnkRS28;dxPScxPivotGridLnkRS28;FireDACCommonDriver;EhLib280;IndyIPClient;dxCloudServiceLibraryRS28;bindcompvclwinx;emsedge;bindcompfmx;TMSVCLUIPackPkgDXE14;dxPSdxPDFViewerLnkRS28;inetdb;dxSpreadSheetCoreRS28;cxSchedulerTreeBrowserRS28;ibmonitor;FireDACASADriver;dxTabbedMDIRS28;Tee;dxRichEditInplaceRS28;vclactnband;fmxFireDAC;dxFireDACServerModeRS28;FireDACInfxDriver;DBXMySQLDriver;VclSmp;dxPSdxLCLnkRS28;DataSnapCommon;fmxase;dxdbtrRS28;DBXOdbcDriver;dbrtl;FireDACOracleDriver;dxPSLnksRS28;TeeDB;FireDACMSAccDriver;DataSnapIndy10ServerTransport;DataSnapConnectors;vcldsnap;DBXInterBaseDriver;FireDACMongoDBDriver;dxSpreadSheetConditionalFormattingDialogsRS28;FireDACTDataDriver;vcldb;dxDBXServerModeRS28;cxSchedulerRS28;dxRibbonRS28;dxFlowChartLayoutsRS28;dxPScxExtCommonRS28;dxdborRS28;dxRichEditControlCoreRS28;bindcomp;dxPScxGridLnkRS28;IndyCore;RESTBackendComponents;cxPivotGridChartRS28;dxBarExtDBItemsRS28;dxRichEditCoreRS28;cxTreeListdxBarPopupMenuRS28;dxFlowChartAdvancedCustomizeFormRS28;FireDACADSDriver;RESTComponents;dxPSTeeChartRS28;IndyIPServer;vcl;dsnapxml;adortl;dsnapcon;DataSnapClient;DataSnapProviderClient;cxSchedulerWebServiceStorageRS28;dxtrmdRS28;DBXDb2Driver;dxPSdxGaugeControlLnkRS28;cxGridRS28;dxSpellCheckerRS28;emsclientfiredac;FireDACPgDriver;FireDACDSDriver;EhLibADODataDrivers280;tethering;dxMapControlRS28;bindcompvcl;dxEMFRS28;CloudService;DBXSybaseASADriver;FMXTee;soaprtl;soapserver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
@@ -90,8 +94,8 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <UWP_DelphiLogo44>F:\BaiduNetdiskWorkspace\IMG\数据分析2.png</UWP_DelphiLogo44>
-        <UWP_DelphiLogo150>F:\BaiduNetdiskWorkspace\IMG\数据分析2.png</UWP_DelphiLogo150>
+        <UWP_DelphiLogo44>D:\同步空间\IMG\数据分析2.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>D:\同步空间\IMG\数据分析2.png</UWP_DelphiLogo150>
         <Icon_MainIcon>DtAnTools_Icon6.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -104,6 +108,9 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Icon_MainIcon>DtAnTools_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -113,75 +120,58 @@
         <DCCReference Include="LibXL.pas"/>
         <DCCReference Include="login.pas">
             <Form>LoginFrm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="main.pas">
             <Form>MainFrm</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="U_DT.pas">
             <Form>F_DT</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="U_float.pas">
             <Form>F_float</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UF_CHG_PASS.pas">
             <Form>F_CHG_PASS</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="U_user.pas">
             <Form>F_user</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="U_mode.pas">
             <Form>F_mode</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="log4me.pas"/>
         <DCCReference Include="U_Proj.pas">
             <Form>F_Proj</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="FindPublic.pas">
             <Form>frmFindPublic</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="FormColSelect.pas">
             <Form>FrmColSelect</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="U_ShowError.pas">
             <Form>F_showError</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uDictMaintain.pas">
             <Form>frmDictMaintain</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="MySome\D11\Vcl.Consts.pas"/>
         <DCCReference Include="MySome\Vcl.VDBConsts.pas"/>
         <DCCReference Include="uSrcTabMaintain.pas">
             <Form>frmSrcTabMaintain</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uDataImport1.pas">
             <Form>FrmDataImport</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uModMaintain.pas">
             <Form>FModMaintain</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="U_import.pas">
             <Form>F_import</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="uDisAsisTable.pas">
             <Form>fmDisAssiTable</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="JM\JMCode.pas"/>
         <BuildConfiguration Include="Base">
@@ -212,7 +202,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="F:\BaiduNetdiskWorkspace\IMG\数据分析2.png" Configuration="Debug" Class="UWP_DelphiLogo44">
+                <DeployFile LocalName="D:\同步空间\IMG\数据分析2.png" Configuration="Debug" Class="UWP_DelphiLogo44">
                     <Platform Name="Win32">
                         <RemoteDir>Assets\</RemoteDir>
                         <RemoteName>Logo44x44.png</RemoteName>

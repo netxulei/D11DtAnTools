@@ -254,6 +254,7 @@ begin
     fdQryDictVal.close;
   end;
 
+  Action := caFree;
 end;
 
 procedure TfrmDictMaintain.FormCreate(Sender: TObject);
@@ -775,7 +776,8 @@ begin
     F_DT.FDConSYS.Rollback;
   end;
   OnDataChange(nil, nil);
-  btnUpdateSrcCol.Click;
+  // btnUpdateSrcCol.Click();
+  btnUpdateSrcColClick(Sender);
 end;
 
 procedure TfrmDictMaintain.bitbtnTypeDownClick(Sender: TObject);

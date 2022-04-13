@@ -3690,8 +3690,6 @@ object LoginFrm: TLoginFrm
           #20219#24847#25968#25454#29256#26412)
         ParentBiDiMode = False
         TabOrder = 0
-        ExplicitLeft = 0
-        ExplicitTop = 0
       end
       object bitbtnVerOK: TBitBtn
         Left = 127

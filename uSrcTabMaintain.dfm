@@ -14,6 +14,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   TextHeight = 15
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
@@ -326,6 +327,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Footers = <>
             Layout = tlCenter
             LimitTextToListValues = True
+            LookupDisplayFields = 'dict_type_name_cn;dict_type_memo'
             LookupParams.KeyFieldNames = 'col_Dict'
             LookupParams.LookupDataSet = fdQryDictList
             LookupParams.LookupDisplayFieldName = 'dict_type_name_cn'
@@ -814,7 +816,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcTab: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_sort'
     OnUpdateRecord = fdQrySrcTabUpdateRecord
@@ -862,7 +863,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object fdQrySrcTabtab_memo: TStringField
       FieldName = 'tab_memo'
       Origin = 'tab_memo'
-      Size = 255
+      Size = 300
     end
     object fdQrySrcTabtab_id: TStringField
       FieldName = 'tab_id'
@@ -1032,8 +1033,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       
-        'select dict_type_id, dict_type_name_cn,dict_type_name_en from di' +
-        'ct_type order by dict_type_sort')
+        'select dict_type_id, dict_type_name_cn,dict_type_name_en,dict_ty' +
+        'pe_memo from dict_type order by dict_type_sort')
     Left = 864
     Top = 280
   end
