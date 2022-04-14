@@ -16,9 +16,10 @@ type
   end;
 
 var
-  mainHandle:HWND;
+  mainHandle: HWND;
   R_proc: array of TProcRec; // 参数数组
-  t_ProcFunName: string;
+  t_ProcFunName: string; // 存储过程名称
+  t_modName: string; // 模型名称
   t_isProc: Boolean;
   globle_tab, dict_list_col, // 字段类型列表
   dict_list_reg, // 校验规则列表
@@ -102,7 +103,7 @@ implementation
 procedure ModlCodeValid(FDQryTree: TFDQuery; isRun: Boolean; isAuto: Boolean);
 
 var
-  sfilename, sParamField, sParamCode, sLine, sError1, sError2, sError, sqltext: string;
+  sModName, sfilename, sParamField, sParamCode, sLine, sError1, sError2, sError, sqltext: string;
   sTmp, sqlname: String;
   MS: TStringStream;
   MSSize: Integer;
@@ -117,6 +118,7 @@ begin
   SetLength(R_proc, 0); // 初始化参数数组
   // 是否允许用户执行 函数不能设置用户执行
   User_can := FDQryTree.FieldByName('t_hide').AsString;
+  t_modName := Trim(FDQryTree.FieldByName('t_name').AsString); // 模型名称，全局使用
   // 模型参数
   sParamField := Trim(FDQryTree.FieldByName('t_para').AsString); // 模型参数
   sParamField := StringReplace(sParamField, ' ', '', [rfReplaceAll]); // 去空格
@@ -160,6 +162,7 @@ begin
   withFlag := '0';
   encrFlag := '0';
   retuFlag := '0';
+  sParamCode := '';
   for i := 0 to sl.Count - 1 do // sl为所有行列表
   begin
     while (Length(Trim(sl[i])) = 0) or (Copy(Trim(sl[i]), 0, 2) = '--') do // 若本行长度为0或以--开头，则抛弃此行
@@ -309,7 +312,7 @@ begin
         Inc(i_cnt4);
     if (i_cnt2 <> i_cnt3) or (i_cnt3 <> i_cnt4) or (i_cnt2 <> i_cnt4) then
     begin
-      MessageDlg('参数信息中关键字“@”、“！”、“:”不匹配(三个字符分别配上对应内容组成一个参数信息)！', mtInformation, [mbOK], 0);
+      MessageDlg('模型"' + PChar(t_modName) + '"参数信息中关键字“@”、“！”、“:”不匹配(三个字符分别配上对应内容组成一个参数信息)！', mtInformation, [mbOK], 0);
       sl.Free;
       sl_params.Free;
       sl_param.Free;
@@ -317,7 +320,7 @@ begin
     end;
     if i_cnt1 <> i_cnt2 then
     begin
-      MessageDlg('参数信息中参数与代码中参数数量不匹！', mtInformation, [mbOK], 0);
+      MessageDlg('模型"' + PChar(t_modName) + '"参数信息中参数与代码中参数数量不匹！', mtInformation, [mbOK], 0);
       sl.Free;
       sl_params.Free;
       sl_param.Free;
@@ -354,7 +357,7 @@ begin
         R_proc[i].s_para_value := Trim(sTmp);
         if (R_proc[i].s_para_lx <> 'N') and (R_proc[i].s_para_lx <> 'D') and (R_proc[i].s_para_lx <> 'S') then
         begin
-          MessageDlg('参数信息中数据类型不正确！', mtInformation, [mbOK], 0);
+          MessageDlg('模型"' + PChar(t_modName) + '"参数信息中数据类型不正确！', mtInformation, [mbOK], 0);
           sl.Free;
           sl_params.Free;
           sl_param.Free;
@@ -417,7 +420,8 @@ begin
       sl.Free;
       sl_params.Free;
       sl_param.Free;
-      raise Exception.Create('模型代码入库测试错误！利用数据库工具进行调试，成功后在此保存模型代码！');
+      // raise Exception.Create('模型代码入库测试错误！利用数据库工具进行调试，成功后在此保存模型代码！');
+      MessageDlg('模型"' + PChar(t_modName) + '"模型代码入库测试错误:' + PChar(Exception(ExceptObject).Message), mtWarning, [mbOK], 0);
       exit;
     end;
     // 测试完，存在则删除
@@ -485,7 +489,8 @@ begin
       sl.Free;
       sl_params.Free;
       sl_param.Free;
-      raise Exception.Create('项目数据库可能不存在，请删除此项目，重新建立项目!');
+      // raise Exception.Create('项目数据库可能不存在，请删除此项目，重新建立项目!');
+      MessageDlg('项目数据库可能不存在，请删除此项目，重新建立项目!' + PChar(Exception(ExceptObject).Message), mtWarning, [mbOK], 0);
       exit;
     end;
     if F_DT.FDQryTmp.RecordCount = 0 then
@@ -535,7 +540,8 @@ begin
       sl.Free;
       sl_params.Free;
       sl_param.Free;
-      raise Exception.Create('建模错误！请完善模型代码！');
+      // raise Exception.Create('建模错误！请完善模型代码！');
+      MessageDlg('模型"' + PChar(t_modName) + '"建立模型错误：' + PChar(Exception(ExceptObject).Message), mtWarning, [mbOK], 0);
       exit;
     end;
     // 运行状态不再删除函数或存储过程

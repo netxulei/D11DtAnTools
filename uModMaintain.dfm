@@ -15,7 +15,7 @@ object FModMaintain: TFModMaintain
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 96
+  OnShow = FormShow
   TextHeight = 15
   object cxdbtrlst1: TcxDBTreeList
     Left = 0
@@ -568,7 +568,7 @@ object FModMaintain: TFModMaintain
     object cxdbm1: TcxDBMemo
       Left = 1
       Top = 256
-      Align = alClient
+      Align = alTop
       DataBinding.DataField = 't_proc'
       DataBinding.DataSource = ds1
       ParentFont = False
@@ -584,8 +584,58 @@ object FModMaintain: TFModMaintain
       StyleFocused.LookAndFeel.NativeStyle = True
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 2
-      Height = 666
+      Visible = False
+      Height = 17
       Width = 1035
+    end
+    object DBSynEditCode: TDBSynEdit
+      Left = 1
+      Top = 273
+      Width = 1035
+      Height = 649
+      Cursor = crIBeam
+      DataField = 't_proc'
+      DataSource = ds1
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Consolas'
+      Font.Style = []
+      Font.Quality = fqClearTypeNatural
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 3
+      Gutter.Font.Charset = DEFAULT_CHARSET
+      Gutter.Font.Color = clWindowText
+      Gutter.Font.Height = -11
+      Gutter.Font.Name = 'Consolas'
+      Gutter.Font.Style = []
+      Gutter.ShowLineNumbers = True
+      Gutter.Bands = <
+        item
+          Kind = gbkMarks
+          Width = 13
+        end
+        item
+          Kind = gbkLineNumbers
+        end
+        item
+          Kind = gbkFold
+        end
+        item
+          Kind = gbkTrackChanges
+        end
+        item
+          Kind = gbkMargin
+          Width = 3
+        end>
+      Highlighter = SynSQLSyn1
+      Options = [eoAutoIndent, eoDisableScrollArrows, eoDragDropEditing, eoDropFiles, eoEnhanceHomeKey, eoEnhanceEndKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX, eoShowScrollHint, eoSmartTabDelete, eoTabIndent, eoTabsToSpaces, eoTrimTrailingSpaces, eoShowLigatures]
+      RightEdge = 120
+      SelectedColor.Alpha = 0.400000005960464500
+      TabWidth = 4
+      WantTabs = True
     end
   end
   object cxspltr1: TcxSplitter
@@ -644,6 +694,7 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
@@ -868,5 +919,14 @@ object FModMaintain: TFModMaintain
   object fdQryExport: TFDQuery
     Left = 1229
     Top = 105
+  end
+  object SynSQLSyn1: TSynSQLSyn
+    CommentAttri.Foreground = clGreen
+    DelimitedIdentifierAttri.Foreground = clBlue
+    FunctionAttri.Foreground = clFuchsia
+    KeyAttri.Foreground = clBlue
+    StringAttri.Foreground = clRed
+    Left = 1361
+    Top = 504
   end
 end

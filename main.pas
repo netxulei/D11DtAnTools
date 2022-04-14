@@ -555,7 +555,7 @@ begin
     // ShowWaitText(Trim(FdqryAuto.FieldByName('t_name').AsString));
     ModlCodeValid(fdqryAuto, True, True);
 
-    // 验证完毕结果：返回全局R_proc（参数数组）,t_ProcFunName（存储过程或函数名称），执行建立存储过程和函数
+    // 验证完毕结果：返回全局R_proc（参数数组）,t_ModName(模型名称),t_ProcFunName（存储过程或函数名称），执行建立存储过程和函数
     // 是存储过程，要执行；是函数则退出
     // 若存在或建立成功则执行
 {$REGION '输入参数录入、校验和保存'}

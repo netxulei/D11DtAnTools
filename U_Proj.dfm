@@ -11,8 +11,8 @@ object F_Proj: TF_Proj
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
+  OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 15
   object lbl3: TLabel
     Left = 8

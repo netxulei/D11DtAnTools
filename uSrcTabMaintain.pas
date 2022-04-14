@@ -285,6 +285,10 @@ end;
 
 procedure TfrmSrcTabMaintain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  if fdQrySrcTab.State in [dsEdit, dsInsert] then
+    fdQrySrcTab.Post;
+  if fdQrySrcCol.State in [dsEdit, dsInsert] then
+    fdQrySrcCol.Post;
   if FDSchemaAdapterAll.UpdatesPending then
   begin
 

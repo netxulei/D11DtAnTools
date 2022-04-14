@@ -233,6 +233,11 @@ end;
 
 procedure TfrmDictMaintain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  if fdQryDictType.State in [dsEdit, dsInsert] then
+    fdQryDictType.Post;
+  if fdQryDictVal.State in [dsEdit, dsInsert] then
+    fdQryDictVal.Post;
+
   if FDSchemaAdapterAll.UpdatesPending then
   begin
 
