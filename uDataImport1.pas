@@ -79,6 +79,8 @@ type
     fdgxwtcrsr1: TFDGUIxWaitCursor;
     FDGUIxAsyncExecuteDialog1: TFDGUIxAsyncExecuteDialog;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    fdQrySrcTabtxt_split: TStringField;
+    fdQrySrcTabtxt_qualifier: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure btnInfoClick(Sender: TObject);
     procedure spbtnFileNameClick(Sender: TObject);
@@ -348,6 +350,8 @@ begin
     is_chn_col := fdQrySrcTab['chn_col'];
     is_XLS := fdQrySrcTab['tab_xls'];
     is_TXT := fdQrySrcTab['tab_txt'];
+    lblEdtSplt.text:=fdQrySrcTab['txt_split'];
+    lblEdtQalif.Text:= fdQrySrcTab['txt_qualifier'];
     if is_chn_col = '1' then
       chkChnCol.Checked := True
     else

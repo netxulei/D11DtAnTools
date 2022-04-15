@@ -15,7 +15,6 @@ object FrmDataImport: TFrmDataImport
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 96
   TextHeight = 20
   object pnl1: TPanel
     Left = 0
@@ -121,10 +120,13 @@ object FrmDataImport: TFrmDataImport
       Top = 18
       Width = 136
       Height = 31
+      Hint = #25991#26412#25991#20214#23548#20837#38656#35201#23383#27573#20301#32622#19968#19968#23545#24212#65288#21517#31216#26080#20851#65289#65307'Excel'#25991#20214#23548#20837#38656#35201#26631#39064#21517#31216#23545#24212#65288#20301#32622#26080#20851#65289
       Caption = '3.'#25968#25454#23548#20837
       ImageIndex = 2
       ImageName = #25968#25454#23548#20837
       Images = F_DT.vrtlmglstMenu
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 5
       OnClick = btnImpTxtClick
     end
@@ -843,6 +845,9 @@ object FrmDataImport: TFrmDataImport
     end
   end
   object fdQrySrcTab: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Active = True
+    Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       'select * from src_table order by tab_sort')
     Left = 316
@@ -898,6 +903,18 @@ object FrmDataImport: TFrmDataImport
       FieldName = 'tab_sort'
       Origin = 'tab_sort'
       Required = True
+    end
+    object fdQrySrcTabtxt_split: TStringField
+      FieldName = 'txt_split'
+      Origin = 'txt_split'
+      FixedChar = True
+      Size = 1
+    end
+    object fdQrySrcTabtxt_qualifier: TStringField
+      FieldName = 'txt_qualifier'
+      Origin = 'txt_qualifier'
+      FixedChar = True
+      Size = 1
     end
   end
   object dlgOpenDataFile: TOpenDialog

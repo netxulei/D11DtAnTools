@@ -123,7 +123,27 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = #25991#26412#23548#20837
-        Width = 62
+        Width = 60
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'txt_split'
+        Footers = <>
+        Title.Caption = #20998#38548#31526
+        Title.Hint = #20998#38548#25991#26412#21040#23383#27573#65292#25991#26412#25991#20214#26377#25928
+        Width = 48
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'txt_qualifier'
+        Footers = <>
+        Title.Caption = #38480#23450#31526
+        Title.Hint = #38480#23450#23383#27573#30340#20869#23481#65292#25991#26412#25991#20214#26377#25928
+        Width = 47
       end
       item
         CellButtons = <>
@@ -137,7 +157,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '0')
         Title.Caption = #20013#25991#23383#27573
         Title.Hint = #36873#20013#21017#24314#31435#25968#25454#34920#26102#20351#29992#20013#25991#21517#31216#23383#27573#65288#33521#25991#21517#31216#23383#27573#21487#20026#31354#65289#65292#13#10#21542#21017#20351#29992#33521#25991#21517#31216#23383#27573#12290
-        Width = 76
+        Width = 62
       end
       item
         CellButtons = <>
@@ -166,7 +186,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 1419
+        Width = 1500
         Height = 351
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -414,7 +434,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 1419
+        Width = 1500
         Height = 27
         Align = alTop
         AutoSize = True
@@ -427,6 +447,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
+        ExplicitWidth = 1419
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -816,6 +837,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcTab: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_sort'
     OnUpdateRecord = fdQrySrcTabUpdateRecord
@@ -851,6 +873,18 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object fdQrySrcTabtab_TXT: TStringField
       FieldName = 'tab_TXT'
       Origin = 'tab_TXT'
+      FixedChar = True
+      Size = 1
+    end
+    object fdQrySrcTabtxt_split: TStringField
+      FieldName = 'txt_split'
+      Origin = 'txt_split'
+      FixedChar = True
+      Size = 1
+    end
+    object fdQrySrcTabtxt_qualifier: TStringField
+      FieldName = 'txt_qualifier'
+      Origin = 'txt_qualifier'
       FixedChar = True
       Size = 1
     end

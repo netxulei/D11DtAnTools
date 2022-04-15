@@ -95,6 +95,8 @@ type
     FDQryTmp: TFDQuery;
     dlgSaveExport: TSaveDialog;
     dlgOpenRestore: TOpenDialog;
+    fdQrySrcTabtxt_split: TStringField;
+    fdQrySrcTabtxt_qualifier: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -165,6 +167,8 @@ begin
     fdQrySrcTab['tab_txt'] := '1';
     fdQrySrcTab['chn_col'] := '1';
     fdQrySrcTab['GloImp'] := '0';
+    fdQrySrcTab['txt_split']:='|';
+    fdQrySrcTab['txt_qualifier']:='"';
     fdQrySrcTab.Post;
     DBGridEhSrcTab.SetFocus;
     Abort;
