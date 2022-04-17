@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.ComCtrls, Vcl.Menus,
-  system.uitypes;
+  system.uitypes, RTFLabel;
 
 type
   TLoginFrm = class(TForm)
@@ -31,6 +31,7 @@ type
     pmNewDt: TPopupMenu;
     N1: TMenuItem;
     N2: TMenuItem;
+    RTFlblVer: TRTFLabel;
     procedure bitbtnLoginClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure bitbtnExitClick(Sender: TObject);

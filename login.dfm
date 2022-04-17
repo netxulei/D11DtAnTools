@@ -3584,6 +3584,14 @@ object LoginFrm: TLoginFrm
         ShowAccelChar = False
         Transparent = True
       end
+      object RTFlblVer: TRTFLabel
+        Left = 152
+        Top = 352
+        Width = 321
+        Height = 33
+        WordWrap = False
+        Version = '1.3.2.3'
+      end
       object edtUserText: TEdit
         Left = 263
         Top = 138

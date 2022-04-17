@@ -110,6 +110,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = 'Excel'#23548#20837
+        Title.Hint = 'Excel'#23548#20837#35201#27714#26631#39064#34892#21517#31216#19982#35268#33539#20013'XLS'#23545#24212#23383#27573#19968#33268#65292#23383#27573#25968#37327#19982#39034#24207#21487#20197#23481#38169
         Width = 75
       end
       item
@@ -123,6 +124,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = #25991#26412#23548#20837
+        Title.Hint = #25991#26412#23548#20837#35201#27714#25991#26412#25991#20214#23383#27573#25968#37327#12289#23383#27573#20301#32622#19982#35268#33539#19968#33268#65292#23383#27573#21517#31216#21487#20197#23481#38169
         Width = 60
       end
       item
@@ -447,7 +449,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1419
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1

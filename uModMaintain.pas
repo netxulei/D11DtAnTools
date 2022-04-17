@@ -112,6 +112,7 @@ type
     cxstylHotTrace: TcxStyle;
     DBSynEditCode: TDBSynEdit;
     SynSQLSyn1: TSynSQLSyn;
+    SynEditCode: TSynEdit;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure fdQryTreeCalcFields(DataSet: TDataSet);
@@ -139,6 +140,9 @@ type
     procedure MenuItem4Click(Sender: TObject);
     procedure bitbtnImportClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure cxdbtrlst1Click(Sender: TObject);
+    procedure SynEditCodeExit(Sender: TObject);
+    procedure cxdbtrlst1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -447,6 +451,13 @@ begin
   parentIdBefore := fdQryTree['t_parent_id'];
 end;
 
+procedure TFModMaintain.cxdbtrlst1Click(Sender: TObject);
+begin
+  // ShowMessage('onchanged');
+  SynEditCode.Text := VarToStrDef(fdQryTree['t_proc'], '');
+  SynEditCode.modified := False;
+end;
+
 procedure TFModMaintain.cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
 begin
   if AIndexType = tlitStateIndex then
@@ -459,6 +470,16 @@ begin
       AIndex := 15
     else
       AIndex := 14;
+  end;
+
+end;
+
+procedure TFModMaintain.cxdbtrlst1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+
+begin
+  if Key in [VK_DOWN, VK_UP, VK_NEXT, VK_PRIOR] then
+  begin
+    cxdbtrlst1Click(Sender);
   end;
 
 end;
@@ -688,7 +709,7 @@ procedure TFModMaintain.FormCreate(Sender: TObject);
 var
   sqltext: string;
 begin
-DBSynEditCode.UseCodeFolding:=True;
+  DBSynEditCode.UseCodeFolding := True;
   isBatch := False;
   // sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' + '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type =' + '''' + t_type + '''' + ' order by t_sort';
   sqltext := 'SELECT * FROM X_menus where t_type =' + '''' + t_type + '''' + ' order by t_sort';
@@ -727,6 +748,7 @@ end;
 procedure TFModMaintain.FormShow(Sender: TObject);
 begin
   DBSynEditCode.RightEdge := DBSynEditCode.Width; // 右边距与编辑框一样宽
+  SynEditCode.RightEdge := SynEditCode.Width; // 右边距与编辑框一样宽
 end;
 
 procedure TFModMaintain.MoveItem(UpDown: Char);
@@ -942,6 +964,15 @@ begin
   // StatusBar1.SimpleText := '存盘前没有记录改变';
 end;
 
+procedure TFModMaintain.SynEditCodeExit(Sender: TObject);
+begin
+  if SynEditCode.modified then
+  begin
+    fdQryTree.Edit;
+    fdQryTree['t_proc'] := SynEditCode.Text;
+  end;
+end;
+
 procedure TFModMaintain.ToggleButtons(Enable: Boolean);
 begin
   bitbtnSave.Enabled := Enable;
@@ -1071,6 +1102,8 @@ begin
   fdQryTree.FieldByName('isClass').AsString := '0';
   TBlobField(fdQryTree.FieldByName('t_proc')).LoadFromFile('ModTemplate.txt');
   fdQryTree.Post;
+  SynEditCode.Text := fdQryTree['t_proc'];
+  SynEditCode.modified := False;
   fdQryTree.EnableControls;
   // AsString := 'CREATE PROCEDURE ModelName (@,@ )     With Encryption AS' + #13 + 'BEGIN' + #13#13 + 'END' + #13 + 'GO';
   // fdqryTree.UpdateBatch(arAll);

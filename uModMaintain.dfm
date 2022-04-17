@@ -11,6 +11,7 @@ object FModMaintain: TFModMaintain
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
   Position = poScreenCenter
   WindowState = wsMaximized
   OnClose = FormClose
@@ -21,7 +22,7 @@ object FModMaintain: TFModMaintain
     Left = 0
     Top = 0
     Width = 433
-    Height = 915
+    Height = 923
     Align = alLeft
     Bands = <
       item
@@ -55,7 +56,9 @@ object FModMaintain: TFModMaintain
     Styles.ColumnHeader = cxstylHotTrace
     Styles.HotTrack = cxstylHotTrace
     TabOrder = 0
+    OnClick = cxdbtrlst1Click
     OnGetNodeImageIndex = cxdbtrlst1GetNodeImageIndex
+    OnKeyUp = cxdbtrlst1KeyUp
     object cxdbtrlst1modiState: TcxDBTreeListColumn
       PropertiesClassName = 'TcxImageComboBoxProperties'
       Properties.Images = F_DT.vrtlmglstState
@@ -154,14 +157,14 @@ object FModMaintain: TFModMaintain
   object pnl1: TPanel
     Left = 441
     Top = 0
-    Width = 1035
-    Height = 915
+    Width = 1037
+    Height = 923
     Align = alClient
     TabOrder = 1
     object pnl6: TPanel
       Left = 1
       Top = 1
-      Width = 1033
+      Width = 1035
       Height = 32
       Align = alTop
       TabOrder = 0
@@ -339,7 +342,7 @@ object FModMaintain: TFModMaintain
     object pnl3: TPanel
       Left = 1
       Top = 33
-      Width = 1033
+      Width = 1035
       Height = 223
       Align = alTop
       TabOrder = 1
@@ -585,18 +588,16 @@ object FModMaintain: TFModMaintain
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 2
       Visible = False
-      Height = 17
-      Width = 1033
+      Height = 81
+      Width = 1035
     end
     object DBSynEditCode: TDBSynEdit
       Left = 1
-      Top = 273
-      Width = 1033
-      Height = 641
+      Top = 337
+      Width = 1035
+      Height = 40
       Cursor = crIBeam
-      DataField = 't_proc'
-      DataSource = ds1
-      Align = alClient
+      Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -605,7 +606,10 @@ object FModMaintain: TFModMaintain
       Font.Quality = fqClearTypeNatural
       ParentColor = False
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 3
+      Visible = False
       Gutter.Font.Charset = DEFAULT_CHARSET
       Gutter.Font.Color = clWindowText
       Gutter.Font.Height = -11
@@ -638,12 +642,62 @@ object FModMaintain: TFModMaintain
       TabWidth = 4
       WantTabs = True
     end
+    object SynEditCode: TSynEdit
+      Left = 1
+      Top = 377
+      Width = 1035
+      Height = 545
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Consolas'
+      Font.Style = []
+      Font.Quality = fqClearTypeNatural
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 4
+      OnExit = SynEditCodeExit
+      UseCodeFolding = False
+      Gutter.Font.Charset = DEFAULT_CHARSET
+      Gutter.Font.Color = clWindowText
+      Gutter.Font.Height = -11
+      Gutter.Font.Name = 'Consolas'
+      Gutter.Font.Style = []
+      Gutter.ShowLineNumbers = True
+      Gutter.Bands = <
+        item
+          Kind = gbkMarks
+          Width = 13
+        end
+        item
+          Kind = gbkLineNumbers
+        end
+        item
+          Kind = gbkFold
+        end
+        item
+          Kind = gbkTrackChanges
+        end
+        item
+          Kind = gbkMargin
+          Width = 3
+        end>
+      Highlighter = SynSQLSyn1
+      Lines.Strings = (
+        'SynEditCode')
+      SelectedColor.Alpha = 0.400000005960464500
+      TabWidth = 4
+      WantTabs = True
+      ExplicitTop = 633
+      ExplicitHeight = 289
+    end
   end
   object cxspltr1: TcxSplitter
     Left = 433
     Top = 0
     Width = 8
-    Height = 915
+    Height = 923
     Cursor = crHSplit
     Hint = #24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
@@ -655,8 +709,8 @@ object FModMaintain: TFModMaintain
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 915
-    Width = 1476
+    Top = 923
+    Width = 1478
     Height = 19
     Panels = <>
     SimplePanel = True
