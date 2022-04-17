@@ -2,6 +2,7 @@ program DtAnTools;
 
 uses
   windows,
+  System.UITypes,
   Vcl.Forms,
   U_Common in 'MySome\U_Common.pas',
   LibXL in 'LibXL.pas',

@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{39374F1D-EA63-486F-9E8A-45296C51505D}</ProjectGuid>
-        <ProjectVersion>19.3</ProjectVersion>
+        <ProjectVersion>19.4</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
@@ -122,10 +122,8 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="F:\BaiduNetdiskWorkspace\IMG\数据分析2.png" Configuration="Debug" Class="UWP_DelphiLogo44">
-                    <Platform Name="Win32">
-                        <RemoteDir>Assets\</RemoteDir>
-                        <RemoteName>Logo44x44.png</RemoteName>
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -139,8 +137,10 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
+                <DeployFile LocalName="F:\BaiduNetdiskWorkspace\IMG\数据分析2.png" Configuration="Debug" Class="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo44x44.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -943,17 +943,17 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
-                <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
-                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="OSX64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="OSXARM64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
             </Deployment>
             <Platforms>
                 <Platform value="Win32">True</Platform>

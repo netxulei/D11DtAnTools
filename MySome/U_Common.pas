@@ -26,7 +26,7 @@ var
   t_connect, // 连接字
   t_mod_pass, // 开放模式密码
   t_proj_no, t_proj_name, // 项目编号和名称
-  t_Database, t_ZHSys_Date, // 项目数据库和系统数据库
+  t_Database, // 项目数据库和系统数据库
   t_bank_code: string;
   // t_table1_name, t_table2_name, // 附属表名称
   // t_table1_name_other, t_table2_name_other: string;

@@ -688,6 +688,7 @@ procedure TFModMaintain.FormCreate(Sender: TObject);
 var
   sqltext: string;
 begin
+DBSynEditCode.UseCodeFolding:=True;
   isBatch := False;
   // sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' + '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type =' + '''' + t_type + '''' + ' order by t_sort';
   sqltext := 'SELECT * FROM X_menus where t_type =' + '''' + t_type + '''' + ' order by t_sort';

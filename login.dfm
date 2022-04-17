@@ -13,19 +13,13 @@ object LoginFrm: TLoginFrm
   Font.Name = #24494#36719#38597#40657
   Font.Style = []
   KeyPreview = True
+  PopupMenu = pmNewDt
   Position = poScreenCenter
   Scaled = False
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   TextHeight = 20
-  object lblTestVer: TLabel
-    Left = 320
-    Top = 307
-    Width = 45
-    Height = 20
-    Caption = #27979#35797#29256
-  end
   object pnlAll: TPanel
     Left = 0
     Top = 0
@@ -3667,7 +3661,7 @@ object LoginFrm: TLoginFrm
     end
     object pnlVer: TPanel
       Left = 64
-      Top = 76
+      Top = 105
       Width = 505
       Height = 182
       ParentBackground = False
@@ -3718,7 +3712,18 @@ object LoginFrm: TLoginFrm
     end
   end
   object fdQry1: TFDQuery
-    Left = 16
-    Top = 328
+    Left = 140
+    Top = 18
+  end
+  object pmNewDt: TPopupMenu
+    Left = 425
+    Top = 33
+    object N1: TMenuItem
+      Caption = #20998#31163#31995#32479#25968#25454#24211
+      OnClick = N1Click
+    end
+    object N2: TMenuItem
+      Caption = #37325#24314#31995#32479#25968#25454#24211
+    end
   end
 end
