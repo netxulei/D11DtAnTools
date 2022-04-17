@@ -1663,7 +1663,8 @@ begin
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
   end;
-
+  fdqryTmp.Close;
+  fdQryExec.close;
   // ============================
 
   t2 := Now(); // 获取结束计时时间

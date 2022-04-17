@@ -403,7 +403,7 @@ begin
     Exit;
   end;
 
-  dlgSave1.FileName := '数据字典' + DateToStr(Now());
+  dlgSave1.FileName := '数据字典定义' + DateToStr(Now());
   if not dlgSave1.Execute then
   begin
     // ShowMessage('exit');
@@ -497,7 +497,7 @@ begin
 
   // 主表标题
   xlSheet.setMerge(0, 0, 0, masterGridLen - 1);
-  xlSheet.writeStr(0, 0, PWideChar('数据字典导出' + DateToStr(Now())), titleFormat);
+  xlSheet.writeStr(0, 0, PWideChar('数据字典定义导出' + DateToStr(Now())), titleFormat);
   // 主表字段
   for i := 0 to masterGridLen - 1 do
   begin

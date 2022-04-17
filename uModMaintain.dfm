@@ -689,8 +689,6 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
-      ExplicitTop = 633
-      ExplicitHeight = 289
     end
   end
   object cxspltr1: TcxSplitter
