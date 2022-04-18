@@ -346,8 +346,9 @@ object FModMaintain: TFModMaintain
       Height = 223
       Align = alTop
       TabOrder = 1
+      OnResize = pnl3Resize
       object lbl6: TLabel
-        Left = 487
+        Left = 575
         Top = 4
         Width = 52
         Height = 15
@@ -399,7 +400,7 @@ object FModMaintain: TFModMaintain
         StyleFocused.LookAndFeel.NativeStyle = True
         StyleHot.LookAndFeel.NativeStyle = True
         TabOrder = 0
-        Width = 457
+        Width = 545
       end
       object cxdbtxtdt3: TcxDBTextEdit
         Left = 24
@@ -416,7 +417,7 @@ object FModMaintain: TFModMaintain
         StyleHot.LookAndFeel.Kind = lfUltraFlat
         StyleHot.LookAndFeel.NativeStyle = True
         TabOrder = 1
-        Width = 697
+        Width = 937
       end
       object cxdbchckbx4: TcxDBCheckBox
         Left = 227
@@ -456,7 +457,7 @@ object FModMaintain: TFModMaintain
         StyleFocused.LookAndFeel.NativeStyle = True
         StyleHot.LookAndFeel.NativeStyle = True
         TabOrder = 2
-        Width = 697
+        Width = 945
       end
       object pnl4: TPanel
         Left = 1
@@ -501,7 +502,7 @@ object FModMaintain: TFModMaintain
       object btnTest: TButton
         Left = 142
         Top = 195
-        Width = 100
+        Width = 123
         Height = 25
         Caption = #20195#30721#35268#33539#27979#35797
         ImageIndex = 13
@@ -527,7 +528,7 @@ object FModMaintain: TFModMaintain
         OnExit = cxdbchkbxIsClassExit
       end
       object cxDBLkUpComClass: TcxDBLookupComboBox
-        Left = 487
+        Left = 575
         Top = 25
         DataBinding.DataField = 't_parent_id'
         DataBinding.DataSource = ds1
@@ -548,7 +549,7 @@ object FModMaintain: TFModMaintain
         TabOrder = 8
         OnClick = cxDBLkUpComClassClick
         OnEnter = cxDBLkUpComClassEnter
-        Width = 234
+        Width = 330
       end
       object cxdbtxtdtDataVer: TcxDBTextEdit
         Left = 600
@@ -572,8 +573,6 @@ object FModMaintain: TFModMaintain
       Left = 1
       Top = 256
       Align = alTop
-      DataBinding.DataField = 't_proc'
-      DataBinding.DataSource = ds1
       ParentFont = False
       Properties.ScrollBars = ssVertical
       Style.Font.Charset = DEFAULT_CHARSET
@@ -595,7 +594,7 @@ object FModMaintain: TFModMaintain
       Left = 1
       Top = 337
       Width = 1035
-      Height = 40
+      Height = 136
       Cursor = crIBeam
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
@@ -644,9 +643,9 @@ object FModMaintain: TFModMaintain
     end
     object SynEditCode: TSynEdit
       Left = 1
-      Top = 377
+      Top = 473
       Width = 1035
-      Height = 545
+      Height = 449
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -689,6 +688,8 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
+      ExplicitTop = 377
+      ExplicitHeight = 545
     end
   end
   object cxspltr1: TcxSplitter
@@ -852,6 +853,8 @@ object FModMaintain: TFModMaintain
   object fdQryMaxID: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'select max(t_id) as i_max from fdQryTree where t_parent_id=0 ord' +
@@ -862,6 +865,8 @@ object FModMaintain: TFModMaintain
   object fdQryMaxSort: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree wher' +
@@ -899,6 +904,8 @@ object FModMaintain: TFModMaintain
   object fdQryMaxLen: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'select max(length(t_sort)) as max_len from fdQryTree where t_sor' +

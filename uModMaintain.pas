@@ -143,6 +143,7 @@ type
     procedure cxdbtrlst1Click(Sender: TObject);
     procedure SynEditCodeExit(Sender: TObject);
     procedure cxdbtrlst1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure pnl3Resize(Sender: TObject);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -710,8 +711,8 @@ var
   sqltext: string;
 begin
   DBSynEditCode.UseCodeFolding := True;
-  SynEditCode.Lines.LoadFromFile('ModTemplate.txt') ;
-  //LoadFromFile('ModTemplate.txt');
+  SynEditCode.Lines.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'ModTemplate.txt');
+  // LoadFromFile('ModTemplate.txt');
   isBatch := False;
   // sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' + '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type =' + '''' + t_type + '''' + ' order by t_sort';
   sqltext := 'SELECT * FROM X_menus where t_type =' + '''' + t_type + '''' + ' order by t_sort';
@@ -749,8 +750,10 @@ end;
 
 procedure TFModMaintain.FormShow(Sender: TObject);
 begin
-  DBSynEditCode.RightEdge := DBSynEditCode.Width; // 右边距与编辑框一样宽
-  SynEditCode.RightEdge := SynEditCode.Width; // 右边距与编辑框一样宽
+//  DBSynEditCode.RightEdge := DBSynEditCode.Width; // 右边距与编辑框一样宽
+//  SynEditCode.RightEdge := SynEditCode.Width; // 右边距与编辑框一样宽
+//  cxdbtxtdt3.Width:=pnl3.Width-cxdbtxtdt3.left-10;
+//  cxdbtxtdt4.Width:=pnl3.Width-cxdbtxtdt4.left-10;
 end;
 
 procedure TFModMaintain.MoveItem(UpDown: Char);
@@ -966,6 +969,14 @@ begin
   // StatusBar1.SimpleText := '存盘前没有记录改变';
 end;
 
+procedure TFModMaintain.pnl3Resize(Sender: TObject);
+begin
+  DBSynEditCode.RightEdge := DBSynEditCode.Width; // 右边距与编辑框一样宽
+  SynEditCode.RightEdge := SynEditCode.Width; // 右边距与编辑框一样宽
+  cxdbtxtdt3.Width:=pnl3.Width-cxdbtxtdt3.left-10;
+  cxdbtxtdt4.Width:=pnl3.Width-cxdbtxtdt4.left-10;
+end;
+
 procedure TFModMaintain.SynEditCodeExit(Sender: TObject);
 begin
   if SynEditCode.modified then
@@ -1029,6 +1040,10 @@ begin
     end;
 
   // 最大节点号
+  if fdQryTree.State in [dsEdit, dsInsert] then
+    fdQryTree.Post;
+
+  FDLocalSQL1.Active := False;
   FDLocalSQL1.Active := True;
   fdQryMaxID.Close;
   fdQryMaxID.Connection := F_DT.FDConSQLite;
@@ -1102,7 +1117,7 @@ begin
   fdQryTree.FieldByName('t_hide').AsString := '1'; // 1不隐藏用户执行
   fdQryTree.FieldByName('t_type').AsString := t_type;
   fdQryTree.FieldByName('isClass').AsString := '0';
-  TBlobField(fdQryTree.FieldByName('t_proc')).LoadFromFile('ModTemplate.txt');
+  TBlobField(fdQryTree.FieldByName('t_proc')).LoadFromFile(ExtractFilePath(ParamStr(0)) + 'ModTemplate.txt');
   fdQryTree.Post;
   SynEditCode.Text := fdQryTree['t_proc'];
   SynEditCode.modified := False;

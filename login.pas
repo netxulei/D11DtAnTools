@@ -87,8 +87,7 @@ begin
     F_DT.FDConGen.ConnectionString := t_connect; // 不带数据库名称的连接
     fdQry1.Connection := F_DT.FDConGen;
     fdQry1.SQL.Clear;
-    fdQry1.SQL.Text := 'select name from master..sysdatabases where name = ' +
-      '''' + t_sys_dbname + '''';
+    fdQry1.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_sys_dbname + '''';
     fdQry1.Open;
     if fdQry1.RecordCount <= 0 then
     begin
@@ -99,21 +98,16 @@ begin
         // ShowMessage(s_filepath+t_sys_dbname+'_Data.MDF');
         InitializeSecurityDescriptor(@sd, SECURITY_DESCRIPTOR_REVISION);
         SetSecurityDescriptorDacl(@sd, True, nil, False);
-        SetFileSecurity(PChar(s_filepath + t_sys_dbname + '_Data.MDF'),
-          DACL_SECURITY_INFORMATION, @sd);
-        SetFileSecurity(PChar(s_filepath + t_sys_dbname + '_Log.LDF'),
-          DACL_SECURITY_INFORMATION, @sd);
+        SetFileSecurity(PChar(s_filepath + t_sys_dbname + '_Data.MDF'), DACL_SECURITY_INFORMATION, @sd);
+        SetFileSecurity(PChar(s_filepath + t_sys_dbname + '_Log.LDF'), DACL_SECURITY_INFORMATION, @sd);
         // SetFileAttributes(PChar(s_filepath+t_sys_dbname+'_Data.MDF'),FILE_ATTRIBUTE_NORMAL);
         // SetFileAttributes(PChar(s_filepath+t_sys_dbname+'_Log.LDF'),FILE_ATTRIBUTE_NORMAL);
         SQL.Clear;
-        sqltext := 'EXEC sp_attach_db @dbname = N''' + t_sys_dbname +
-          '''' + ',';
+        sqltext := 'EXEC sp_attach_db @dbname = N''' + t_sys_dbname + '''' + ',';
         SQL.Add(sqltext);
-        sqltext := '@filename1 = N''' + s_filepath + t_sys_dbname + '_Data.MDF'
-          + '''' + ',';
+        sqltext := '@filename1 = N''' + s_filepath + t_sys_dbname + '_Data.MDF' + '''' + ',';
         SQL.Add(sqltext);
-        sqltext := ' @filename2 = N''' + s_filepath + t_sys_dbname +
-          '_Log.LDF' + '''';
+        sqltext := ' @filename2 = N''' + s_filepath + t_sys_dbname + '_Log.LDF' + '''';
         SQL.Add(sqltext);
         ExecSQL;
       end;
@@ -122,16 +116,14 @@ begin
 
     F_DT.FDConGen.Connected := False;
     F_DT.FDConSys.Connected := False;
-    F_DT.FDConSys.ConnectionString := t_connect + 'Database=' + t_sys_dbname +
-      ';'; // 带有数据名的连接
+    F_DT.FDConSys.ConnectionString := t_connect + 'Database=' + t_sys_dbname + ';'; // 带有数据名的连接
     fdQry1.Connection := F_DT.FDConSys;
     fdQry1.Close;
     fdQry1.SQL.Clear;
     fdQry1.SQL.Add('SELECT * FROM "X_Users"');
     fdQry1.SQL.Add('WHERE(managername=:username) AND (managerpassword=:pass)');
     fdQry1.ParamByName('username').Value := Trim(edtUserText.Text);
-    fdQry1.ParamByName('pass').Value := encryptstr(Trim(medtPassText.Text),
-      Trim(edtUserText.Text) + 'XLudat');
+    fdQry1.ParamByName('pass').Value := encryptstr(Trim(medtPassText.Text), Trim(edtUserText.Text) + 'XLudat');
     fdQry1.Prepared;
     fdQry1.Open;
     if fdQry1.RecordCount > 0 then
@@ -158,8 +150,7 @@ begin
       end;
       fdQry1.Close;
       fdQry1.active := False;
-      F_DT.fdconProj.ConnectionString := t_connect + 'Database=' +
-        t_database + ';';
+      F_DT.fdconProj.ConnectionString := t_connect + 'Database=' + t_database + ';';
       LoginFrm.Hide;
       Application.CreateForm(TMainFrm, MainFrm);
       MainFrm.ShowModal;
@@ -179,8 +170,7 @@ begin
       end
       else
       begin
-        MessageDlg('用户名或密码不正确，请检查后重新输入。' + #13 + #13 + '你还有 ' +
-          IntToStr(3 - I_logo) + ' 次机会！', mtError, [mbOK], 0);
+        MessageDlg('用户名或密码不正确，请检查后重新输入。' + #13 + #13 + '你还有 ' + IntToStr(3 - I_logo) + ' 次机会！', mtError, [mbOK], 0);
         medtPassText.Text := '';
         medtPassText.SetFocus;
       end;
@@ -192,8 +182,7 @@ begin
     fdQry1.EnableControls;
     fdQry1.SQL.Clear;
     fdQry1.Close;
-    MessageDlg('系统数据库出错：' + PChar(Exception(ExceptObject).Message), mtError,
-      [mbOK], 0);
+    MessageDlg('系统数据库出错：' + PChar(Exception(ExceptObject).Message), mtError, [mbOK], 0);
   end;
 
 end;
@@ -242,8 +231,7 @@ begin
         // t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
         // t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no1', '');
-        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name1',
-          '---没有设置当前项目---');
+        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name1', '---没有设置当前项目---');
         t_database := MyIniFile.ReadString('Base', 'Database1', '');
       end;
     2: // 版本2风险监测
@@ -252,8 +240,7 @@ begin
         // t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
         // t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no2', '');
-        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name2',
-          '---没有设置当前项目---');
+        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name2', '---没有设置当前项目---');
         t_database := MyIniFile.ReadString('Base', 'Database2', '');
       end;
     3: // 版本3其他
@@ -262,8 +249,7 @@ begin
         // t_table2_name := MyIniFile.ReadString('Extend', 'table2_name_other', '对应表2标签');
         // t_key_name := MyIniFile.ReadString('Extend', 'key_name_other', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no3', '');
-        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name3',
-          '---没有设置当前项目---');
+        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name3', '---没有设置当前项目---');
         t_database := MyIniFile.ReadString('Base', 'Database3', '');
       end;
   end;
@@ -297,8 +283,7 @@ begin
   Close;
 end;
 
-procedure TLoginFrm.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TLoginFrm.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   // if key=VK_RETURN	then
   // begin
@@ -325,8 +310,7 @@ procedure TLoginFrm.N1Click(Sender: TObject);
 var
   FDConGen: TFDConnection;
 begin
-  if MessageDlg('将要分离系统中名为' + PChar(t_sys_dbname) +
-    '的系统数据库,以便复制数据库文件备份或被覆盖，确认吗？', mtWarning, mbOKCancel, 0) = mrCancel then
+  if MessageDlg('将要分离系统中名为' + PChar(t_sys_dbname) + '的系统数据库,以便复制数据库文件备份或被覆盖，确认吗？', mtWarning, mbOKCancel, 0) = mrCancel then
   begin
     Exit;
   end;
@@ -342,15 +326,14 @@ begin
     FDConGen.LoginPrompt := False;
     FDConGen.ConnectionString := 'DriverID=MSSQL;Server=.;OSAuthent=Yes;';
     // 不带数据库名称的连接
-    FDConGen.ExecSQL('EXEC sp_detach_db ' + t_sys_dbname);
+    FDConGen.ExecSQL('use Master ; EXEC sp_detach_db ' + t_sys_dbname);
     FDConGen.Close;
     FDConGen.Free;
     MessageDlg('系统数据库分离成功，可将数据库文件另行保存或被同名数据库文件覆盖升级。', mtWarning, [mbOK], 0);
   except
     // FDConGen.Free;
     // MessageDlg('数据库已分离或系统未安装SQL Server ？ ',  mtWarning,[mbOK], 0);
-    MessageDlg('分离数据库"' + PChar(t_sys_dbname) + '"错误:' +
-      PChar(Exception(ExceptObject).Message), mtWarning, [mbOK], 0);
+    MessageDlg(PChar(t_sys_dbname) + '系统数据库分离失败，可能已经分离或未安装SQL Server.', mtWarning, [mbOK], 0);
     Exit;
   end;
 
@@ -412,8 +395,7 @@ begin
         // t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
         // t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no1', '');
-        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name1',
-          '---没有设置当前项目---');
+        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name1', '---没有设置当前项目---');
         t_database := MyIniFile.ReadString('Base', 'Database1', '');
         MyIniFile.Free;
         t_type := '1';
@@ -428,8 +410,7 @@ begin
         // t_table2_name := MyIniFile.ReadString('Extend', 'table2_name', '对应商行交易信息标签');
         // t_key_name := MyIniFile.ReadString('Extend', 'key_name', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no2', '');
-        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name2',
-          '---没有设置当前项目---');
+        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name2', '---没有设置当前项目---');
         t_database := MyIniFile.ReadString('Base', 'Database2', '');
         MyIniFile.Free;
         t_type := '2';
@@ -444,8 +425,7 @@ begin
         // t_table2_name := MyIniFile.ReadString('Extend', 'table2_name_other', '对应表2标签');
         // t_key_name := MyIniFile.ReadString('Extend', 'key_name_other', '账号|账号|账号');
         t_proj_no := MyIniFile.ReadString('Base', 'Proj_no3', '');
-        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name3',
-          '---没有设置当前项目---');
+        t_proj_name := MyIniFile.ReadString('Base', 'Proj_name3', '---没有设置当前项目---');
         t_database := MyIniFile.ReadString('Base', 'Database3', '');
         MyIniFile.Free;
         t_type := '3';
