@@ -382,7 +382,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             FieldName = 'col_xls_loc'
             Footers = <>
             Title.Caption = 'XLS'#23545#24212#23383#27573
-            Title.Hint = 'Excel'#34920#23545#24212#21015#30340#21517#31216#65292#21487#33021#22810#20010#21517#31216#30340#20197#8220'|'#8221#31526#21495#20998#21106
+            Title.Hint = 'Excel'#34920#19981#33021#20026#31354#65281#22810#20010#21517#31216#20197#31446#26464#8220#65372#8221#20998#38548
             Width = 276
           end
           item
@@ -393,13 +393,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             DropDownWidth = 400
             DynProps = <>
             EditButtons = <>
-            FieldName = 'col_reg;col_reg_str'
+            FieldName = 'col_reg;col_reg_str;col_regName'
             Footers = <>
             LookupDisplayFields = 'dict_lable;dict_val;dict_val_memo'
-            LookupParams.KeyFieldNames = 'col_reg;col_reg_str'
+            LookupParams.KeyFieldNames = 'col_reg;col_reg_str;col_regName'
             LookupParams.LookupDataSet = fdQryReg
             LookupParams.LookupDisplayFieldName = 'dict_lable'
-            LookupParams.LookupKeyFieldNames = 'dict_val_id;dict_val'
+            LookupParams.LookupKeyFieldNames = 'dict_val_id;dict_val;dict_lable'
             Title.Caption = #26657#39564#35268#21017#65288#27491#21017#34920#36798#24335#65289
             Title.Hint = #27491#21017#34920#36798#24335#26041#24335#30340#26657#39564#35268#21017
             Width = 180
@@ -1021,6 +1021,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       FieldName = 'col_reg'
       Origin = 'col_reg'
       Size = 32
+    end
+    object fdQrySrcColcol_regName: TStringField
+      FieldName = 'col_regName'
+      Origin = 'col_regName'
+      Size = 60
     end
     object fdQrySrcColcol_reg_str: TStringField
       FieldName = 'col_reg_str'

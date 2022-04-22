@@ -144,6 +144,7 @@ type
     procedure SynEditCodeExit(Sender: TObject);
     procedure cxdbtrlst1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure pnl3Resize(Sender: TObject);
+    procedure cxdbtrlst1KeyPress(Sender: TObject; var Key: Char);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -288,7 +289,7 @@ end;
 procedure TFModMaintain.cxDBLkUpComClassClick(Sender: TObject);
 var
   Movedsort, NewParentsort, sqltext, s_max_sort: string; // 记录被移动项序号和目标父项的序号
-  sortMovedLen, sortNewParentLen, level_old, level_new, i_max_sort: integer;
+  sortMovedLen, sortNewParentLen, level_old, level_new, i_max_sort, i: integer;
   bk: TbookMark;
 begin
   {
@@ -441,7 +442,19 @@ begin
   isBatch := True; // 批量变更标志 存盘和全部取消后变为false
   fdQryTitle.Refresh;
   fdQryTree.EnableControls;
+  cxdbtrlst1.FullRefresh;
   fdQryTree.GotoBookmark(bk);
+  i := cxdbtrlst1.FocusedNode.Level;
+  var
+    curNode: TcxTreeListNode;
+  curNode := cxdbtrlst1.FocusedNode;  //根据模型级别确定展开的父节点
+  for i := 0 to i-1 do
+  begin
+    curNode.Parent.Expand(False);   //True 展开所有下级子节点 ；False展开一级
+    curNode := curNode.Parent;
+  end;
+  cxdbtrlst1.SetFocus;
+  // Expand(True);
   // ---------
 end;
 
@@ -475,6 +488,16 @@ begin
 
 end;
 
+procedure TFModMaintain.cxdbtrlst1KeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #8 then // Ctrl+H
+  begin
+    cxdbtrlst1t_sort.Visible := Not cxdbtrlst1t_sort.Visible;
+    cxdbtrlst1t_id.Visible := Not cxdbtrlst1t_id.Visible;
+    cxdbtrlst1t_parent_id.Visible := Not cxdbtrlst1t_parent_id.Visible;
+  end;
+end;
+
 procedure TFModMaintain.cxdbtrlst1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 
 begin
@@ -482,7 +505,6 @@ begin
   begin
     cxdbtrlst1Click(Sender);
   end;
-
 end;
 
 procedure TFModMaintain.fdQryTreeCalcFields(DataSet: TDataSet);
@@ -750,10 +772,10 @@ end;
 
 procedure TFModMaintain.FormShow(Sender: TObject);
 begin
-//  DBSynEditCode.RightEdge := DBSynEditCode.Width; // 右边距与编辑框一样宽
-//  SynEditCode.RightEdge := SynEditCode.Width; // 右边距与编辑框一样宽
-//  cxdbtxtdt3.Width:=pnl3.Width-cxdbtxtdt3.left-10;
-//  cxdbtxtdt4.Width:=pnl3.Width-cxdbtxtdt4.left-10;
+  // DBSynEditCode.RightEdge := DBSynEditCode.Width; // 右边距与编辑框一样宽
+  // SynEditCode.RightEdge := SynEditCode.Width; // 右边距与编辑框一样宽
+  // cxdbtxtdt3.Width:=pnl3.Width-cxdbtxtdt3.left-10;
+  // cxdbtxtdt4.Width:=pnl3.Width-cxdbtxtdt4.left-10;
 end;
 
 procedure TFModMaintain.MoveItem(UpDown: Char);
@@ -973,8 +995,8 @@ procedure TFModMaintain.pnl3Resize(Sender: TObject);
 begin
   DBSynEditCode.RightEdge := DBSynEditCode.Width; // 右边距与编辑框一样宽
   SynEditCode.RightEdge := SynEditCode.Width; // 右边距与编辑框一样宽
-  cxdbtxtdt3.Width:=pnl3.Width-cxdbtxtdt3.left-10;
-  cxdbtxtdt4.Width:=pnl3.Width-cxdbtxtdt4.left-10;
+  cxdbtxtdt3.Width := pnl3.Width - cxdbtxtdt3.left - 10;
+  cxdbtxtdt4.Width := pnl3.Width - cxdbtxtdt4.left - 10;
 end;
 
 procedure TFModMaintain.SynEditCodeExit(Sender: TObject);

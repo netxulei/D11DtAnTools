@@ -1,7 +1,7 @@
 object FrmDataImport: TFrmDataImport
   Left = 0
   Top = 0
-  Caption = #25968#25454#37319#38598
+  Caption = #25968#25454#23548#20837
   ClientHeight = 876
   ClientWidth = 1416
   Color = clBtnFace
@@ -18,7 +18,7 @@ object FrmDataImport: TFrmDataImport
   TextHeight = 20
   object pnl1: TPanel
     Left = 0
-    Top = 44
+    Top = 69
     Width = 1416
     Height = 62
     Align = alTop
@@ -35,7 +35,7 @@ object FrmDataImport: TFrmDataImport
       Top = 18
       Width = 139
       Height = 31
-      Caption = '4.'#36864#20986
+      Caption = '5.'#36864#20986
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1
@@ -121,7 +121,7 @@ object FrmDataImport: TFrmDataImport
       Width = 136
       Height = 31
       Hint = #25991#26412#25991#20214#23548#20837#38656#35201#23383#27573#20301#32622#19968#19968#23545#24212#65288#21517#31216#26080#20851#65289#65307'Excel'#25991#20214#23548#20837#38656#35201#26631#39064#21517#31216#23545#24212#65288#20301#32622#26080#20851#65289
-      Caption = '3.'#25968#25454#23548#20837
+      Caption = '4.'#25968#25454#23548#20837
       ImageIndex = 2
       ImageName = #25968#25454#23548#20837
       Images = F_DT.vrtlmglstMenu
@@ -182,7 +182,7 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl3: TPanel
     Left = 0
-    Top = 172
+    Top = 197
     Width = 1416
     Height = 62
     Align = alTop
@@ -205,6 +205,7 @@ object FrmDataImport: TFrmDataImport
       Top = 24
       Width = 104
       Height = 19
+      Hint = #20174#25968#25454#34892#31639#36215#65288#21076#38500#26631#39064#34892#65289
       Caption = #39044#35272#25110#26657#39564#36215#22987#34892
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -212,12 +213,15 @@ object FrmDataImport: TFrmDataImport
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
     end
     object Label3: TLabel
       Left = 195
       Top = 24
       Width = 104
       Height = 19
+      Hint = #38656#26657#39564#30340#34892#30340#25968#37327
       Caption = #39044#35272#25110#26657#39564#24635#34892#25968
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -225,6 +229,8 @@ object FrmDataImport: TFrmDataImport
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
     end
     object Label4: TLabel
       Left = 394
@@ -238,6 +244,7 @@ object FrmDataImport: TFrmDataImport
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
+      Visible = False
     end
     object lbl2: TLabel
       Left = 819
@@ -304,12 +311,15 @@ object FrmDataImport: TFrmDataImport
       Top = 21
       Width = 76
       Height = 25
+      Hint = #34892#25968#22826#22810#26131#20110#20869#23384#19981#22815#29992
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
       Text = '10'
     end
@@ -333,7 +343,8 @@ object FrmDataImport: TFrmDataImport
       Top = 21
       Width = 107
       Height = 27
-      Caption = #26657#39564#25968#25454
+      Hint = #25991#26412#25991#20214#26368#22909#20570#19968#27425#20840#37096#30340#25968#25454#26657#39564#20197#26816#26597#25968#25454#20869#23481#19981#31526#21512#26657#39564#35268#21017#30340#24773#20917
+      Caption = '3.'#26657#39564#25968#25454
       ImageIndex = 11
       ImageName = #26657#39564
       Images = F_DT.vrtlmglst1
@@ -353,18 +364,22 @@ object FrmDataImport: TFrmDataImport
       ParentFont = False
       TabOrder = 3
       Text = '0.9'
+      Visible = False
     end
     object edt_start: TEdit
       Left = 116
       Top = 21
       Width = 75
       Height = 25
+      Hint = #20174#25968#25454#34892#31639#36215#65288#21076#38500#26631#39064#34892#65289
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 4
       Text = '1'
     end
@@ -390,7 +405,7 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl2: TPanel
     Left = 0
-    Top = 106
+    Top = 131
     Width = 1416
     Height = 66
     Align = alTop
@@ -618,9 +633,9 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl4: TPanel
     Left = 0
-    Top = 234
+    Top = 259
     Width = 1416
-    Height = 642
+    Height = 617
     Align = alClient
     TabOrder = 3
     object Splitter2: TSplitter
@@ -636,7 +651,7 @@ object FrmDataImport: TFrmDataImport
       Left = 1
       Top = 335
       Width = 1414
-      Height = 306
+      Height = 281
       Align = alClient
       Font.Charset = GB2312_CHARSET
       Font.Color = clWindowText
@@ -807,46 +822,82 @@ object FrmDataImport: TFrmDataImport
     Left = 0
     Top = 0
     Width = 1416
-    Height = 44
+    Height = 69
     Align = alTop
+    Color = clMoneyGreen
+    ParentBackground = False
     TabOrder = 4
-    object lblProj: TLabel
-      Left = 289
-      Top = 1
-      Width = 90
-      Height = 42
-      Margins.Left = 10
-      Align = alLeft
-      Caption = '  '#24403#21069#39033#30446#65306
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = #24494#36719#38597#40657
-      Font.Style = [fsBold]
-      ParentFont = False
-      Layout = tlBottom
-      ExplicitHeight = 22
-    end
     object rgSelSrc: TRadioGroup
       Left = 1
       Top = 1
-      Width = 288
-      Height = 42
+      Width = 491
+      Height = 67
       Align = alLeft
+      Caption = #20445#23384#20301#32622
+      Color = clMoneyGreen
       Columns = 2
       Ctl3D = False
       ItemIndex = 0
       Items.Strings = (
-        #25968#25454#23548#20837#21040#39033#30446
-        #25968#25454#23548#20837#21040#31995#32479)
+        #23548#20837#21040#39033#30446#25968#25454#24211#65288#39033#30446#34920#65289
+        #23548#20837#21040#31995#32479#25968#25454#24211#65288#20840#23616#34920#65289)
+      ParentBackground = False
+      ParentColor = False
       ParentCtl3D = False
       TabOrder = 0
+      StyleName = 'Windows'
+      WordWrap = True
       OnClick = rgSelSrcClick
+    end
+    object pnlProj: TPanel
+      Left = 492
+      Top = 1
+      Width = 923
+      Height = 67
+      Align = alClient
+      TabOrder = 1
+      object lblProj: TLabel
+        Left = 1
+        Top = 1
+        Width = 921
+        Height = 32
+        Margins.Left = 10
+        Align = alTop
+        AutoSize = False
+        Caption = '  '#24403#21069#39033#30446#65306
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        Layout = tlCenter
+        ExplicitWidth = 948
+      end
+      object lblTip: TLabel
+        Left = 1
+        Top = 33
+        Width = 921
+        Height = 30
+        Margins.Left = 10
+        Align = alTop
+        Caption = 
+          #27880#24847#65306#25991#26412#25991#20214#23548#20837#21069#24212#20570#19968#27425#20840#37096#30340#25968#25454#26657#39564#65292#21542#21017#21363#20351#23548#20837#25104#21151#65292#20063#21487#33021#24433#21709#25968#25454#20998#26512#20934#30830#24615#12290#13#10'             '#25991#26412#25991#20214#23548 +
+          #20837#26102#21482#33021#26657#39564#38271#24230#19982#31867#22411#21644#21069'n'#34892#25968#25454#65292#19981#33021#26657#39564#25152#26377#25968#25454#20869#23481#31526#21512#35268#33539#30340#24773#20917#12290
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        Layout = tlCenter
+        WordWrap = True
+        ExplicitWidth = 572
+      end
     end
   end
   object fdQrySrcTab: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       'select * from src_table order by tab_sort')

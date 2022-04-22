@@ -238,9 +238,6 @@ Coordinates=447,305,61,51
 [cxDBTreeList1]
 Coordinates=510,427,86,33
 
-[N48]
-Coordinates=911,365,40,33
-
 [Panel3]
 Coordinates=196,427,47,51
 
@@ -404,5 +401,5 @@ Coordinates=290,10,88,51
 Coordinates=422,421,40,33
 
 []
-Coordinates=381,806,68,33
+Coordinates=911,365,40,33
 

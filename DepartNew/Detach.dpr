@@ -36,7 +36,8 @@ begin
     FDconGen.Connected := False;
     FDconGen.LoginPrompt := False;
     FDconGen.ConnectionString := 'DriverID=MSSQL;Server=.;OSAuthent=Yes;'; // 不带数据库名称的连接
-    FDconGen.ExecSQL('EXEC sp_detach_db ' + Paramstr(1));
+    FDConGen.ExecSQL('Use Master;ALTER DATABASE [' + Paramstr(1) + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; EXEC sp_detach_db ' + Paramstr(1));
+//    FDconGen.ExecSQL('EXEC sp_detach_db ' + Paramstr(1));
     Writeln('数据库' + Paramstr(1) + '已分离成功!');
   except
     on E: Exception do

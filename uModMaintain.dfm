@@ -58,6 +58,7 @@ object FModMaintain: TFModMaintain
     TabOrder = 0
     OnClick = cxdbtrlst1Click
     OnGetNodeImageIndex = cxdbtrlst1GetNodeImageIndex
+    OnKeyPress = cxdbtrlst1KeyPress
     OnKeyUp = cxdbtrlst1KeyUp
     object cxdbtrlst1modiState: TcxDBTreeListColumn
       PropertiesClassName = 'TcxImageComboBoxProperties'
@@ -113,6 +114,7 @@ object FModMaintain: TFModMaintain
     end
     object cxdbtrlst1t_sort: TcxDBTreeListColumn
       Visible = False
+      Caption.Text = #39034#24207
       DataBinding.FieldName = 't_sort'
       Width = 78
       Position.ColIndex = 2
@@ -688,8 +690,6 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
-      ExplicitTop = 377
-      ExplicitHeight = 545
     end
   end
   object cxspltr1: TcxSplitter

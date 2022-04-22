@@ -102,7 +102,6 @@ type
     N49: TMenuItem;
     N53: TMenuItem;
     N15: TMenuItem;
-    N48: TMenuItem;
     N_Proj: TMenuItem;
     pnl7: TPanel;
     mniN38: TMenuItem;
@@ -423,6 +422,7 @@ begin
   dbgrdh1.Enabled := False;
   try
     // 删除数据库中的存储过程 ，出错即为项目等不正确，自然忽略
+    F_DT.fdconProj.ConnectionString := t_connect + 'Database=' + t_Database + ';'; // 新建项目时退出，此连接还未赋值
     fdqryTmp.Connection := F_DT.fdconProj;
     fdqryTmp.close;
     fdqryTmp.DisableControls;
@@ -758,8 +758,8 @@ var
   i: Integer;
   MyIniFile: TIniFile;
 begin
-//  SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_APPWINDOW); // 任务栏显示图标
-//   SetWindowLong(Handle,GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW); // 任务栏不显示图标
+  // SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_APPWINDOW); // 任务栏显示图标
+  // SetWindowLong(Handle,GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_TOOLWINDOW and not WS_EX_APPWINDOW); // 任务栏不显示图标
   i := t_ver_noLS.IndexOf(t_type); // 系统版本的索引号
   MainFrm.Caption := t_ver_nameLS[i] + t_ver + '---' + User_info;
   // 标题显示系统版本和用户信息
@@ -892,9 +892,10 @@ begin
     fdQryAssis.FetchAll;
   except
     sError := Exception(ExceptObject).Message;
-    i_pos := pos('对象名', sError);
-    if i_pos > 0 then
-      sError := Copy(sError, i_pos, Length(sError) - i_pos);
+    sError := TRegex.Replace(sError, '\[[\S|\s]*\]', ''); // 替换之间字符串为空
+    // i_pos := pos('对象名', sError);
+    // if i_pos > 0 then
+    // sError := Copy(sError, i_pos, Length(sError) - i_pos);
     MessageDlg('查询辅助信息所需数据表未导入或相关字段不正确。(' + sError + ')。', mtWarning, [mbOK], 0);
     fdQryAssis.close;
   end;
@@ -930,7 +931,8 @@ begin
   dbgrdh1.Color := clWindow;
   // 校验 获得全局R_proc参数数组，t_ProcFunName名称，用于执行
   ModlCodeValid(fdQryTree, True, False);
-
+  if Not ModvalidOK then
+    Exit;
   // 若存在或建立成功则执行
 {$REGION '输入参数录入、校验和保存'}
   // 循环输入各参数参数，同时校验参数
@@ -1096,10 +1098,10 @@ begin
   // 保存的文件名---------------------------
   s_filename := Trim(SaveDialog1.FileName);
   // 若匹配.XLS,则文件名不变，且不管 SaveDialog1.FilterIndex的选择
-  if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLS$')) then
+  if (TRegex.IsMatch(UpperCase(s_filename), '^[\S]+\.XLS$')) then
     Ext := 'XLS'
   else // 若不匹配.XLS,再看是否匹配XLSX
-    if (TRegEx.IsMatch(UpperCase(s_filename), '^[\S]+\.XLSX$')) then
+    if (TRegex.IsMatch(UpperCase(s_filename), '^[\S]+\.XLSX$')) then
       Ext := 'XLSX'
     else
       s_filename := s_filename + '.' + Ext;
@@ -1884,7 +1886,7 @@ end;
 
 procedure TMainFrm.N48Click(Sender: TObject);
 begin
-  ShowGridColEditor(dbgrdh2);
+//  ShowGridColEditor(dbgrdh2);
 end;
 
 procedure TMainFrm.N_ProjClick(Sender: TObject);

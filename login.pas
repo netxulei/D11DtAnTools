@@ -326,7 +326,7 @@ begin
     FDConGen.LoginPrompt := False;
     FDConGen.ConnectionString := 'DriverID=MSSQL;Server=.;OSAuthent=Yes;';
     // 不带数据库名称的连接
-    FDConGen.ExecSQL('use Master ; EXEC sp_detach_db ' + t_sys_dbname);
+    FDConGen.ExecSQL('Use Master;ALTER DATABASE [' + t_sys_dbname + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; EXEC sp_detach_db ' + t_sys_dbname);
     FDConGen.Close;
     FDConGen.Free;
     MessageDlg('系统数据库分离成功，可将数据库文件另行保存或被同名数据库文件覆盖升级。', mtWarning, [mbOK], 0);

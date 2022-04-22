@@ -347,10 +347,11 @@ object MainFrm: TMainFrm
         Left = 1
         Top = 52
         Width = 1332
-        Height = 748
+        Height = 581
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
         Align = alTop
         AllowedOperations = []
+        AutoFitColWidths = True
         Color = 16776176
         ColumnDefValues.AlwaysShowEditButton = True
         ColumnDefValues.Layout = tlCenter
@@ -469,23 +470,26 @@ object MainFrm: TMainFrm
       end
       object pnl9: TPanel
         Left = 1
-        Top = 808
+        Top = 641
         Width = 1332
-        Height = 130
+        Height = 297
         Align = alClient
         Color = 16776176
         ParentBackground = False
         TabOrder = 3
         Visible = False
         OnResize = pnl2Resize
+        ExplicitTop = 808
+        ExplicitHeight = 130
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 61
           Width = 1330
-          Height = 68
+          Height = 235
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
+          AutoFitColWidths = True
           Color = 16776176
           ColumnDefValues.AlwaysShowEditButton = True
           ColumnDefValues.Layout = tlCenter
@@ -716,7 +720,7 @@ object MainFrm: TMainFrm
       end
       object cxspltr3: TcxSplitter
         Left = 1
-        Top = 800
+        Top = 633
         Width = 1332
         Height = 8
         Hint = #21333#20987#25110#19978#19979#25302#21160
@@ -732,6 +736,7 @@ object MainFrm: TMainFrm
         ShowHint = True
         ParentShowHint = False
         Visible = False
+        ExplicitTop = 800
       end
     end
     object pnl7: TPanel
@@ -1086,7 +1091,7 @@ object MainFrm: TMainFrm
         Caption = '-'
       end
       object N2: TMenuItem
-        Caption = #25968#25454#37319#38598
+        Caption = #25968#25454#23548#20837
         ImageIndex = 2
         ImageName = #25968#25454#23548#20837
         OnClick = N2Click
@@ -2570,11 +2575,11 @@ object MainFrm: TMainFrm
     end
     object N18: TMenuItem
       Caption = #23383#27573#26368#20339#23485#24230
-      Checked = True
       OnClick = N18Click
     end
     object N20: TMenuItem
       Caption = #23383#27573#28385#23631#26174#31034
+      Checked = True
       OnClick = N20Click
     end
     object Excel1: TMenuItem
@@ -2643,32 +2648,28 @@ object MainFrm: TMainFrm
   end
   object pm3: TPopupMenu
     OnPopup = pm3Popup
-    Left = 160
-    Top = 144
+    Left = 144
+    Top = 208
     object MenuItem1: TMenuItem
       Action = edtcpy1
     end
     object MenuItem3: TMenuItem
       Caption = '-'
     end
-    object N48: TMenuItem
-      Caption = #34920#26684#35774#32622
-      OnClick = N48Click
-    end
     object N301: TMenuItem
       Caption = #23383#27573#26368#20339#23485#24230
-      Checked = True
       OnClick = N301Click
     end
     object N302: TMenuItem
       Caption = #23383#27573#28385#23631#26174#31034
+      Checked = True
       OnClick = N302Click
     end
   end
   object pm4: TPopupMenu
     OnPopup = pm4Popup
     Left = 200
-    Top = 176
+    Top = 208
     object N50: TMenuItem
       Action = edtcpy1
     end

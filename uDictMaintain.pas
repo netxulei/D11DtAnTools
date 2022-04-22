@@ -75,6 +75,7 @@ type
     dlgOpenRestore: TOpenDialog;
     fdmtblImp: TFDMemTable;
     FDQryTmp: TFDQuery;
+    fDCmndUpdateSrc: TFDCommand;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -781,8 +782,17 @@ begin
     F_DT.FDConSYS.Rollback;
   end;
   OnDataChange(nil, nil);
+  //更新数据接口表：sql语句卸载控件里
+  try
+    fDCmndUpdateSrc.Connection := F_DT.FDConSYS;
+    fDCmndUpdateSrc.Execute;
+    F_DT.FDConSYS.commit;
+  except
+    F_DT.FDConSYS.Rollback;
+  end;
+
   // btnUpdateSrcCol.Click();
-  btnUpdateSrcColClick(Sender);
+  // btnUpdateSrcColClick(Sender);
 end;
 
 procedure TfrmDictMaintain.bitbtnTypeDownClick(Sender: TObject);
@@ -903,73 +913,78 @@ end;
 
 procedure TfrmDictMaintain.btnUpdateSrcColClick(Sender: TObject);
 var
-  srcColID, srcColReg, dictId, dictVal: string;
+  srcColID, srcColReg, srcColRegName, dictId, dictVal: string;
 begin
-{$REGION '存盘后修改源表相关内容'}
-  // 存盘后，源表字段col_dict编码关联、col_reg、col_reg_str  应同时更新
-  fdQryDictTypeList.Connection := F_DT.FDConSYS; // 字典类型列表
-  fdQryDictValList.Connection := F_DT.FDConSYS; // 字典值列表 （子表所有内容）
-  fdQrySrcCol.Connection := F_DT.FDConSYS; // 源表欲修改字段列表
-  fdQryDictTypeList.IndexFieldNames := 'dict_type_id';
-  fdQryDictValList.IndexFieldNames := 'dict_val_id';
-  fdQryDictTypeList.open;
-  fdQryDictValList.open;
-  // fdQrySrcCol.CachedUpdates:=True;
-  // fdQrySrcCol.UpdateOptions.FastUpdates := True;
-  // fdQrySrcCol.Prepared;
-  fdQrySrcCol.open;
-  fdQrySrcCol.First;
-  while not fdQrySrcCol.Eof do // 源表字段逐条处理
-  begin
-    srcColID := VarToStrDef(fdQrySrcCol['col_dict'], '');
-    srcColReg := VarToStrDef(fdQrySrcCol['col_reg'], '');
-    // fdQrySrcCol.edit;
-    // fdQrySrcCol['col_dict'] := srcColID;
-    // fdQrySrcCol['col_reg'] := srcColReg;
-
-    if Length(srcColID) > 0 then // 编码关联有内容才处理
-    begin
-      // if not fdQryDictList.LocateEX('col_dict', srcColID, [lxoCheckOnly]) then
-      // 只搜索看看要搜索的数据存在不存在,而不改变当前记录位置 ,找不到清空，找到不处理
-      if not fdQryDictTypeList.findkey([srcColID]) then
-      begin
-        fdQrySrcCol.edit;
-        fdQrySrcCol['col_dict'] := '';
-        // fdQrySrcCol.Post;
-      end;
-    end;
-
-    if Length(srcColReg) > 0 then // 正则表达式有内容更新，无内容清空col_reg_str
-    begin
-      if not fdQryDictValList.findkey([srcColReg]) then // 若未找到同时清空col_reg和col_reg_str,找到则更新col_reg_str
-      begin
-        fdQrySrcCol.edit;
-        fdQrySrcCol['col_reg'] := '';
-        fdQrySrcCol['col_reg_str'] := '';
-        fdQrySrcCol['col_reg_ok'] := '0';
-        // fdQrySrcCol.Post;
-      end
-      else
-      begin
-        fdQrySrcCol.edit;
-        fdQrySrcCol['col_reg_str'] := VarToStrDef(fdQryDictValList['dict_val'], '');
-        // fdQrySrcCol.Post;
-      end;
-    end
-    else
-    begin
-      fdQrySrcCol.edit;
-      fdQrySrcCol['col_reg_str'] := '';
-      fdQrySrcCol['col_reg_ok'] := '0';
-      // fdQrySrcCol.Post;
-    end;
-    fdQrySrcCol.Next;
-  end;
-  // fdQrySrcCol.Post;
-  // fdQrySrcCol.ApplyUpdates;
-  fdQryDictTypeList.close;
-  fdQryDictValList.close;
-  fdQrySrcCol.close;
+{$REGION '存盘后修改源表相关内容,更改三个字段到next时出错，但内容也更改过来了，两个字段没问题，后台表连接方式解决吧'}
+  // // 存盘后，源表字段col_dict编码关联、col_reg、col_reg_str  应同时更新
+  // fdQryDictTypeList.Connection := F_DT.FDConSYS; // 字典类型列表
+  // fdQryDictValList.Connection := F_DT.FDConSYS; // 字典值列表 （子表所有内容）
+  // fdQrySrcCol.Connection := F_DT.FDConSYS; // 源表欲修改字段列表
+  // fdQryDictTypeList.IndexFieldNames := 'dict_type_id';
+  // fdQryDictValList.IndexFieldNames := 'dict_val_id';
+  // fdQryDictTypeList.open;
+  // fdQryDictValList.open;
+  // // fdQrySrcCol.CachedUpdates:=True;
+  // // fdQrySrcCol.UpdateOptions.FastUpdates := True;
+  // // fdQrySrcCol.Prepared;
+  // fdQrySrcCol.close;
+  // fdQrySrcCol.open;
+  // fdQrySrcCol.First;
+  // while not fdQrySrcCol.Eof do // 源表字段逐条处理
+  // begin
+  // srcColID := VarToStrDef(fdQrySrcCol['col_dict'], '');
+  // srcColReg := VarToStrDef(fdQrySrcCol['col_reg'], '');
+  // srcColRegName:= VarToStrDef(fdQrySrcCol['col_regName'], '');
+  // // fdQrySrcCol.edit;
+  // // fdQrySrcCol['col_dict'] := srcColID;
+  // // fdQrySrcCol['col_reg'] := srcColReg;
+  //
+  // if Length(srcColID) > 0 then // 编码关联有内容才处理
+  // begin
+  // // if not fdQryDictList.LocateEX('col_dict', srcColID, [lxoCheckOnly]) then
+  // // 只搜索看看要搜索的数据存在不存在,而不改变当前记录位置 ,找不到清空，找到不处理
+  // if not fdQryDictTypeList.findkey([srcColID]) then
+  // begin
+  // fdQrySrcCol.edit;
+  // fdQrySrcCol['col_dict'] := '';
+  // // fdQrySrcCol.Post;
+  // end;
+  // end;
+  //
+  // if Length(srcColReg) > 0 then // 正则表达式有内容更新，无内容清空col_reg_str
+  // begin
+  // if not fdQryDictValList.findkey([srcColReg]) then // 若未找到同时清空col_reg和col_reg_str,找到则更新col_reg_str
+  // begin
+  // fdQrySrcCol.edit;
+  // fdQrySrcCol['col_reg'] := '';
+  // fdQrySrcCol['col_reg_str'] := '';
+  // fdQrySrcCol['col_reg_ok'] := '0';
+  // fdQrySrcCol['col_regName'] := '';
+  // // fdQrySrcCol.Post;
+  // end
+  // else
+  // begin
+  // fdQrySrcCol.edit;
+  // fdQrySrcCol['col_reg_str'] := VarToStrDef(fdQryDictValList['dict_val'], '');
+  // fdQrySrcCol['col_regName'] := VarToStrDef(fdQryDictValList['dict_lable'], '');;
+  // // fdQrySrcCol.Post;
+  // end;
+  // end
+  // else
+  // begin
+  // fdQrySrcCol.edit;
+  // fdQrySrcCol['col_reg_str'] := '';
+  // fdQrySrcCol['col_reg_ok'] := '0';
+  // fdQrySrcCol['col_regName'] := '';
+  // // fdQrySrcCol.Post;
+  // end;
+  // fdQrySrcCol.Next;
+  // end;
+  // // fdQrySrcCol.Post;
+  // // fdQrySrcCol.ApplyUpdates;
+  // fdQryDictTypeList.close;
+  // fdQryDictValList.close;
+  // fdQrySrcCol.close;
 {$ENDREGION}
 end;
 

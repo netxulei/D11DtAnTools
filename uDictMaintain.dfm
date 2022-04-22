@@ -122,7 +122,7 @@ object frmDictMaintain: TfrmDictMaintain
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 1108
+        Width = 1579
         Height = 136
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -211,7 +211,7 @@ object frmDictMaintain: TfrmDictMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 1108
+        Width = 1579
         Height = 27
         Align = alTop
         AutoSize = True
@@ -407,7 +407,6 @@ object frmDictMaintain: TfrmDictMaintain
       Height = 25
       Caption = #26356#26032#28304#34920#23383#27573#20449#24687
       TabOrder = 6
-      Visible = False
       OnClick = btnUpdateSrcColClick
     end
   end
@@ -709,8 +708,8 @@ object frmDictMaintain: TfrmDictMaintain
     UpdateOptions.AssignedValues = [uvCountUpdatedRecords]
     SQL.Strings = (
       
-        'select dict_val_id,dict_val from dict_val order by dict_type_id,' +
-        'dict_val_sort')
+        'select dict_val_id,dict_val,dict_lable from dict_val order by di' +
+        'ct_type_id,dict_val_sort')
     Left = 1184
     Top = 336
   end
@@ -719,7 +718,9 @@ object frmDictMaintain: TfrmDictMaintain
     Connection = F_DT.FDConSysTmp
     UpdateOptions.AssignedValues = [uvCountUpdatedRecords]
     SQL.Strings = (
-      'select col_dict,col_reg,col_reg_str,col_reg_ok from src_Column')
+      
+        'select col_dict,col_reg,col_reg_str,col_reg_ok,col_regName from ' +
+        'src_Column')
     Left = 1272
     Top = 336
   end
@@ -776,5 +777,22 @@ object frmDictMaintain: TfrmDictMaintain
   object FDQryTmp: TFDQuery
     Left = 1426
     Top = 511
+  end
+  object fDCmndUpdateSrc: TFDCommand
+    Connection = F_DT.FDConSysTmp
+    CommandText.Strings = (
+      'UPDATE src_column'
+      'SET    src_column.col_regName = dict_val.dict_lable,'
+      '       src_column.col_reg_str = dict_val.dict_val,'
+      '       src_column.col_reg = dict_val.dict_val_id'
+      'FROM   src_column'
+      '       LEFT JOIN dict_val'
+      '              ON src_column.col_reg = dict_val.dict_val_id'
+      'UPDATE src_column'
+      'SET    col_reg_ok = '#39'0'#39
+      'WHERE  (col_reg IS NULL) or len(col_reg)=0')
+    ActiveStoredUsage = [auDesignTime]
+    Left = 1056
+    Top = 352
   end
 end

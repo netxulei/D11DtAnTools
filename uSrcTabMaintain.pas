@@ -97,6 +97,7 @@ type
     dlgOpenRestore: TOpenDialog;
     fdQrySrcTabtxt_split: TStringField;
     fdQrySrcTabtxt_qualifier: TStringField;
+    fdQrySrcColcol_regName: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);

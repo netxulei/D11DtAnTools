@@ -17,6 +17,7 @@ type
 
 var
   mainHandle: HWND;
+  ModvalidOK: Boolean; // 模型校验是否成功
   R_proc: array of TProcRec; // 参数数组
   t_ProcFunName: string; // 存储过程名称
   t_modName: string; // 模型名称
@@ -98,6 +99,8 @@ function IsUtf8Format(buffer: PAnsiChar; SIZE: Int64): Boolean;
 function IsUtf8File(const fileName: string): Boolean;
 // 全文判断文件是否为UTF-8编码（基于IsUtf8Format）
 
+function IsFileInUse(fName: string): Boolean;
+
 implementation
 
 procedure ModlCodeValid(FDQryTree: TFDQuery; isRun: Boolean; isAuto: Boolean);
@@ -115,6 +118,7 @@ var
   creaFlag, procFlag, funcFlag, asFlag, withFlag, encrFlag, retuFlag, is_exist: Char; // 关键字判断
   User_can: ShortString;
 begin
+  ModvalidOK := True; // 模型校验默认成功
   SetLength(R_proc, 0); // 初始化参数数组
   // 是否允许用户执行 函数不能设置用户执行
   User_can := FDQryTree.FieldByName('t_hide').AsString;
@@ -148,6 +152,7 @@ begin
   begin
     MessageDlg('该模型没有对应实现代码！', mtInformation, [mbOK], 0);
     sl.Free;
+    ModvalidOK := False;
     exit;
   end;
   // sl_count := sl.Count;
@@ -174,6 +179,7 @@ begin
         sl.Free;
         sl_params.Free;
         sl_param.Free;
+        ModvalidOK := False;
         exit;
       end;
     end;
@@ -218,10 +224,11 @@ begin
 
   if Length(sError) > 0 then
   begin
-    MessageDlg(PChar(sError) + '，请退出后完善模型代码！', mtError, [mbOK], 0);
     sl.Free;
     sl_params.Free;
     sl_param.Free;
+    ModvalidOK := False;
+    MessageDlg(PChar(sError) + '，请退出后完善模型代码！', mtError, [mbOK], 0);
     exit;
   end;
   // 校验后返回类型是否存储过程（自动执行时函数不能执行，只执行存储过程）
@@ -316,14 +323,17 @@ begin
       sl.Free;
       sl_params.Free;
       sl_param.Free;
+      ModvalidOK := False;
       exit;
     end;
     if i_cnt1 <> i_cnt2 then
     begin
-      MessageDlg('模型"' + PChar(t_modName) + '"参数信息中参数与代码中参数数量不匹！', mtInformation, [mbOK], 0);
       sl.Free;
       sl_params.Free;
       sl_param.Free;
+      ModvalidOK := False;
+      MessageDlg('模型"' + PChar(t_modName) + '"参数信息中参数与代码中参数数量不匹！', mtInformation, [mbOK], 0);
+
       exit;
     end;
     // 获得信息参数中每个参数信息类型，只能为N、D、S
@@ -361,6 +371,7 @@ begin
           sl.Free;
           sl_params.Free;
           sl_param.Free;
+          ModvalidOK := False;
           exit;
         end;
       end;
@@ -421,7 +432,11 @@ begin
       sl_params.Free;
       sl_param.Free;
       // raise Exception.Create('模型代码入库测试错误！利用数据库工具进行调试，成功后在此保存模型代码！');
-      MessageDlg('模型"' + PChar(t_modName) + '"模型代码入库测试错误:' + PChar(Exception(ExceptObject).Message), mtWarning, [mbOK], 0);
+      var
+      ErrMsg := Exception(ExceptObject).Message;
+      ErrMsg := TRegex.Replace(ErrMsg, '\[[\S|\s]*\]', ''); // 替换之间字符串为空
+      MessageDlg('模型"' + PChar(t_modName) + '"模型代码入库测试错误:' + PChar(ErrMsg), mtWarning, [mbOK], 0);
+      ModvalidOK := False;
       exit;
     end;
     // 测试完，存在则删除
@@ -468,6 +483,7 @@ begin
       sl.Free;
       sl_params.Free;
       sl_param.Free;
+      ModvalidOK := False;
       exit;
     end; // 自动运行模式直接继续
     // -------------------
@@ -491,6 +507,7 @@ begin
       sl_param.Free;
       // raise Exception.Create('项目数据库可能不存在，请删除此项目，重新建立项目!');
       MessageDlg('项目数据库可能不存在，请删除此项目，重新建立项目!' + PChar(Exception(ExceptObject).Message), mtWarning, [mbOK], 0);
+      ModvalidOK := False;
       exit;
     end;
     if F_DT.FDQryTmp.RecordCount = 0 then
@@ -541,7 +558,11 @@ begin
       sl_params.Free;
       sl_param.Free;
       // raise Exception.Create('建模错误！请完善模型代码！');
-      MessageDlg('模型"' + PChar(t_modName) + '"建立模型错误：' + PChar(Exception(ExceptObject).Message), mtWarning, [mbOK], 0);
+      var
+        ErrMsg: string;
+      ErrMsg := TRegex.Replace(ErrMsg, '\[[\S|\s]*\]', ''); // 替换之间字符串为空
+      MessageDlg('模型"' + PChar(t_modName) + '"建立模型错误：' + PChar(ErrMsg), mtWarning, [mbOK], 0);
+      ModvalidOK := False;
       exit;
     end;
     // 运行状态不再删除函数或存储过程
@@ -550,6 +571,22 @@ begin
   sl_params.Free;
   sl_param.Free;
 {$ENDREGION}
+end;
+
+function IsFileInUse(fName: string): Boolean;
+var
+  HFileRes: HFILE;
+begin
+  Result := False; // 返回值为假(即文件不被使用)
+  if not FileExists(fName) then
+  begin
+    Result := True;
+    exit; // 如果文件不存在则退出
+  end;
+  HFileRes := CreateFile(PChar(fName), GENERIC_READ or GENERIC_WRITE, 0 { this is the trick! } , nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+  Result := (HFileRes = INVALID_HANDLE_VALUE); // 如果CreateFile返回失败 那么Result为真(即文件正在被使用)
+  if not Result then // 如果CreateFile函数返回是成功
+    CloseHandle(HFileRes); // 那么关闭句柄
 end;
 
 // uses ComObj
