@@ -1,7 +1,7 @@
 object MainFrm: TMainFrm
   Left = 640
   Top = 206
-  Caption = #24320#25918#24335#29616#22330#26816#26597#25968#25454#20998#26512#24037#20855'__'
+  Caption = #24320#25918#24335#36890#29992#25968#25454#20998#26512#24037#20855'__'
   ClientHeight = 997
   ClientWidth = 1604
   Color = clGradientInactiveCaption
@@ -479,8 +479,6 @@ object MainFrm: TMainFrm
         TabOrder = 3
         Visible = False
         OnResize = pnl2Resize
-        ExplicitTop = 808
-        ExplicitHeight = 130
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 61
@@ -628,64 +626,67 @@ object MainFrm: TMainFrm
           end
           object pnlFields: TPanel
             Left = 1
-            Top = 33
+            Top = 36
             Width = 1328
-            Height = 26
+            Height = 23
             Align = alBottom
             Caption = 'pnlFields'
             TabOrder = 6
             object lblFields: TLabel
               Left = 92
               Top = 1
-              Width = 48
-              Height = 24
+              Width = 69
+              Height = 21
               Margins.Left = 30
               Align = alLeft
               Caption = #26597#35810#23383#27573
               Layout = tlCenter
               WordWrap = True
-              ExplicitHeight = 16
+              ExplicitHeight = 23
             end
             object lblBreak: TLabel
               Left = 70
               Top = 1
               Width = 22
-              Height = 24
+              Height = 21
               Margins.Left = 30
               Align = alLeft
               AutoSize = False
               Layout = tlCenter
               WordWrap = True
               ExplicitLeft = 65
+              ExplicitHeight = 24
             end
             object lblBk2: TLabel
               Left = 1
               Top = 1
               Width = 5
-              Height = 24
+              Height = 21
               Margins.Left = 30
               Align = alLeft
               AutoSize = False
               Layout = tlCenter
               WordWrap = True
+              ExplicitHeight = 24
             end
             object lblbk3: TLabel
-              Left = 140
+              Left = 161
               Top = 1
               Width = 2
-              Height = 24
+              Height = 21
               Margins.Left = 30
               Align = alLeft
               AutoSize = False
               Layout = tlCenter
               WordWrap = True
               ExplicitLeft = 143
+              ExplicitHeight = 24
             end
             object bitbtnAssis: TBitBtn
               Left = 6
               Top = 1
               Width = 64
-              Height = 24
+              Height = 21
               Hint = #28857#20987#26174#31034#36741#21161#34920#20449#24687
               Align = alLeft
               Caption = #26174#31034#36741#21161
@@ -694,12 +695,13 @@ object MainFrm: TMainFrm
               TabOrder = 0
               WordWrap = True
               OnClick = bitbtnAssisClick
+              ExplicitHeight = 23
             end
             object mmoFields: TMemo
-              Left = 142
+              Left = 163
               Top = 1
-              Width = 1185
-              Height = 24
+              Width = 1164
+              Height = 21
               Align = alClient
               Lines.Strings = (
                 
@@ -714,6 +716,7 @@ object MainFrm: TMainFrm
               TabOrder = 1
               OnEnter = mmoFieldsEnter
               OnExit = mmoFieldsExit
+              ExplicitHeight = 23
             end
           end
         end
@@ -726,9 +729,6 @@ object MainFrm: TMainFrm
         Hint = #21333#20987#25110#19978#19979#25302#21160
         HotZoneClassName = 'TcxSimpleStyle'
         HotZone.SizePercent = 40
-        HotZone.ArrowColor = clBlue
-        HotZone.ArrowHighlightColor = clRed
-        HotZone.LightColor = clBlue
         AlignSplitter = salTop
         AutoSnap = True
         ResizeUpdate = True
@@ -736,7 +736,6 @@ object MainFrm: TMainFrm
         ShowHint = True
         ParentShowHint = False
         Visible = False
-        ExplicitTop = 800
       end
     end
     object pnl7: TPanel
