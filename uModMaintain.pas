@@ -246,6 +246,7 @@ begin
   F_import.ShowModal;
   fdQryTree.Close;
   fdQryTree.Open;
+  fdQryTitle.Refresh;
 end;
 
 procedure TFModMaintain.bitbtn3Click(Sender: TObject);

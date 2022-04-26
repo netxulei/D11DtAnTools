@@ -2,8 +2,8 @@ object FrmDataImport: TFrmDataImport
   Left = 0
   Top = 0
   Caption = #25968#25454#23548#20837
-  ClientHeight = 876
-  ClientWidth = 1416
+  ClientHeight = 667
+  ClientWidth = 1163
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object FrmDataImport: TFrmDataImport
   object pnl1: TPanel
     Left = 0
     Top = 69
-    Width = 1416
+    Width = 1163
     Height = 62
     Align = alTop
     TabOrder = 1
@@ -183,7 +183,7 @@ object FrmDataImport: TFrmDataImport
   object pnl3: TPanel
     Left = 0
     Top = 197
-    Width = 1416
+    Width = 1163
     Height = 62
     Align = alTop
     TabOrder = 0
@@ -406,7 +406,7 @@ object FrmDataImport: TFrmDataImport
   object pnl2: TPanel
     Left = 0
     Top = 131
-    Width = 1416
+    Width = 1163
     Height = 66
     Align = alTop
     ParentShowHint = False
@@ -634,24 +634,24 @@ object FrmDataImport: TFrmDataImport
   object pnl4: TPanel
     Left = 0
     Top = 259
-    Width = 1416
-    Height = 617
+    Width = 1163
+    Height = 408
     Align = alClient
     TabOrder = 3
     object Splitter2: TSplitter
       Left = 1
-      Top = 329
-      Width = 1414
+      Top = 257
+      Width = 1161
       Height = 6
       Cursor = crVSplit
       Align = alTop
-      ExplicitTop = 545
+      ExplicitTop = 297
     end
     object mmo2: TRichEdit
       Left = 1
-      Top = 335
-      Width = 1414
-      Height = 281
+      Top = 263
+      Width = 1161
+      Height = 144
       Align = alClient
       Font.Charset = GB2312_CHARSET
       Font.Color = clWindowText
@@ -668,8 +668,8 @@ object FrmDataImport: TFrmDataImport
     object strngrd1: TAdvStringGrid
       Left = 1
       Top = 1
-      Width = 1414
-      Height = 328
+      Width = 1161
+      Height = 256
       Align = alTop
       ColCount = 1
       Ctl3D = False
@@ -788,6 +788,7 @@ object FrmDataImport: TFrmDataImport
       PrintSettings.FooterFont.Style = []
       PrintSettings.PageNumSep = '/'
       ScrollSynch = True
+      ScrollWidth = 21
       SearchFooter.Color = 16250613
       SearchFooter.ColorTo = 16250613
       SearchFooter.FindNextCaption = 'Find &next'
@@ -821,7 +822,7 @@ object FrmDataImport: TFrmDataImport
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 1416
+    Width = 1163
     Height = 69
     Align = alTop
     Color = clMoneyGreen
@@ -852,14 +853,14 @@ object FrmDataImport: TFrmDataImport
     object pnlProj: TPanel
       Left = 492
       Top = 1
-      Width = 923
+      Width = 670
       Height = 67
       Align = alClient
       TabOrder = 1
       object lblProj: TLabel
         Left = 1
         Top = 1
-        Width = 921
+        Width = 668
         Height = 32
         Margins.Left = 10
         Align = alTop
@@ -877,7 +878,7 @@ object FrmDataImport: TFrmDataImport
       object lblTip: TLabel
         Left = 1
         Top = 33
-        Width = 921
+        Width = 668
         Height = 30
         Margins.Left = 10
         Align = alTop

@@ -3,7 +3,8 @@ unit uDataImport1;
 interface
 
 uses
-  u_dt, DateUtils, RegularExpressions, Math, U_Common, Winapi.Windows, Winapi.Messages,
+  u_dt, DateUtils, RegularExpressions, Math, U_Common, Winapi.Windows,
+  Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls,
   Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Grids, Vcl.ValEdit,
   Vcl.CustomizeDlg, Vcl.ActnMan, Vcl.ActnColorMaps, Vcl.Tabs, Vcl.DockTabSet,
@@ -531,7 +532,8 @@ var
   i_row, // 记录数据行
   i_row_real, // 记录度几行数据成为一个数据行
   i_row_real_ini, i_repeat, // 记录数据文件读多行时的总行数
-  i_a_col_len, i_col_len, i, i_len, i_len_no, i_col, grd_col, grd_row, grd_col_count, grd_row_count, sl_col, sl_count: Integer;
+  i_a_col_len, i_col_len, i, i_len, i_len_no, i_col, grd_col, grd_row, grd_col_count, grd_row_count, sl_col,
+    sl_count: Integer;
   dis_col: Integer;
   // 0 false,1 true
   rText: TextFile;
@@ -611,6 +613,40 @@ begin
       a_Col_record[i_col].col_reg_str := Trim(VarToStrDef(FDQrySrcCol['col_reg_str'], ''));
       a_Col_record[i_col].col_reg_ok := Trim(VarToStrDef(FDQrySrcCol['col_reg_ok'], ''));
       // --------------------
+      // 判断名称、类型、长度不能为空，否则返回
+      // ----
+      if (is_chn_col = '1') and (Length(a_Col_record[i_col].col_name_cn) = 0) then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“字段中文名称”未指定，无法导入数据！');
+      end;
+
+      if (is_chn_col <> '1') and (Length(a_Col_record[i_col].col_name_en) = 0) then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“字段英文名称”未指定，无法导入数据！');
+      end;
+
+      if Length(a_Col_record[i_col].col_type) = 0 then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“数据类型”未指定，无法导入数据！');
+      end;
+
+      if Length(a_Col_record[i_col].col_all_len) = 0 then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“字段长度”未指定，无法导入数据！');
+      end;
+
+      if (LowerCase(a_Col_record[i].col_type) = 'decimal') and (Length(a_Col_record[i_col].col_dot_len) = 0) then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“小数点长度”未指定，无法导入数据！');
+      end;
+      if val_falt = '1' then
+        Exit;
+
       if is_chn_col = '1' then // col_name建表语句使用，确定此处中文或英文字段
         a_Col_record[i_col].col_name := a_Col_record[i_col].col_name_cn
       else
@@ -619,7 +655,8 @@ begin
       if Length(a_Col_record[i_col].col_dot_len) = 0 then
         a_Col_record[i_col].col_len := a_Col_record[i_col].col_all_len
       else
-        a_Col_record[i_col].col_len := IntToStr(StrToIntDef(a_Col_record[i_col].col_all_len, 0) + StrToIntDef(a_Col_record[i_col].col_dot_len, 0) + 1);
+        a_Col_record[i_col].col_len := IntToStr(StrToIntDef(a_Col_record[i_col].col_all_len, 0) +
+          StrToIntDef(a_Col_record[i_col].col_dot_len, 0) + 1);
       FDQrySrcCol.Next;
       Inc(i_col);
     end;
@@ -845,7 +882,8 @@ begin
         begin
           dis_ok := '1';
           val_falt := '1';
-          mmo2.Lines.Add(IntToStr(i_row) + '行数据分隔后的列数不正确（' + IntToStr(sl_count) + '列），应为' + IntToStr(col_num) + '列。数据无法导入！');
+          mmo2.Lines.Add(IntToStr(i_row) + '行数据分隔后的列数不正确（' + IntToStr(sl_count) + '列），应为' + IntToStr(col_num) +
+            '列。数据无法导入！');
         end;
 
         // 3 判断每列字段长度是否符合规范，严重影响导入 ;同时每个字段校验正则表达式
@@ -855,24 +893,27 @@ begin
             // 若数据字段的个数大于源表数据字段的个数，不再计算
             Break;
 
-          if (i < col_num - 1) and (Length(ansistring(Trim(slColumName[i]))) > StrToInt(a_Col_record[i].col_len)) and (StrToInt(a_Col_record[i].col_len) > 0) then
+          if (i < col_num - 1) and (Length(ansistring(Trim(slColumName[i]))) > StrToInt(a_Col_record[i].col_len)) and
+            (StrToInt(a_Col_record[i].col_len) > 0) then
           // col_len已转换为有数字。源表数据字段含有长度时才判断长度，无长度信息，依赖正则判断
           begin
             dis_ok := '1';
             val_falt := '1';
-            mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列' + a_Col_record[i].col_name_cn + '数据为“' + Trim(slColumName[i]) + '”，长度' +
-              IntToStr(Length(ansistring(Trim(slColumName[i])))) + '大于数据规范长度，数据无法导入！');
+            mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列' + a_Col_record[i].col_name_cn + '数据为“' +
+              Trim(slColumName[i]) + '”，长度' + IntToStr(Length(ansistring(Trim(slColumName[i])))) + '大于数据规范长度，数据无法导入！');
           end;
 
           // 猜测sql大容量数据导入问题：最后一列数据长度与字段要求长度一致，sql server仍出现字段截断错误（最后一行最后一列反而没问题）
           // 最后一列特殊处理一下
-          if (i = col_num - 1) and (Length(ansistring(Trim(slColumName[i]))) >= StrToInt(a_Col_record[i].col_len)) and (StrToInt(a_Col_record[i].col_len) > 0) then
+          if (i = col_num - 1) and (Length(ansistring(Trim(slColumName[i]))) >= StrToInt(a_Col_record[i].col_len)) and
+            (StrToInt(a_Col_record[i].col_len) > 0) then
           // col_len已转换为有数字。源表数据字段含有长度时才判断长度，无长度信息，依赖正则判断
           begin
             dis_ok := '1';
             val_falt := '1';
-            mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列(最后一列）' + a_Col_record[i].col_name_cn + '数据为“' + Trim(slColumName[i]) + '”，长度' +
-              IntToStr(Length(ansistring(Trim(slColumName[i])))) + '大于等于数据规范长度，数据无法导入！');
+            mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列(最后一列）' + a_Col_record[i].col_name_cn + '数据为“' +
+              Trim(slColumName[i]) + '”，长度' + IntToStr(Length(ansistring(Trim(slColumName[i])))) +
+              '大于等于数据规范长度，数据无法导入！');
           end;
 
           // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）
@@ -883,14 +924,14 @@ begin
               dis_ok := '1';
               if a_Col_record[i].col_reg_ok = '1' then
               begin
-                mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列' + a_Col_record[i].col_name_cn + '数据“' + Trim(slColumName[i]) + '”，不符合“' + a_Col_record[i].col_reg +
-                  '”校验规则，数据无法导入！');
+                mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列' + a_Col_record[i].col_name_cn + '数据“' +
+                  Trim(slColumName[i]) + '”，不符合“' + a_Col_record[i].col_reg + '”校验规则，数据无法导入！');
                 val_falt := '1';
               end
               else
               begin
-                mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列' + a_Col_record[i].col_name_cn + '数据“' + Trim(slColumName[i]) + '”，不符合“' + a_Col_record[i].col_reg +
-                  '”校验规则。可以导入数据，但影响数据分析准确性！');
+                mmo2.Lines.Add(IntToStr(i_row) + '行第' + IntToStr(i + 1) + '列' + a_Col_record[i].col_name_cn + '数据“' +
+                  Trim(slColumName[i]) + '”，不符合“' + a_Col_record[i].col_reg + '”校验规则。可以导入数据，但影响数据分析准确性！');
                 val_warn := '1';
               end;
 
@@ -1031,7 +1072,8 @@ var
   i_row, // 记录数据行
   i_row_real, // 记录度几行数据成为一个数据行
   i_row_real_ini, i_repeat, // 记录数据文件读多行时的总行数
-  i_a_col_len, i_col_len, i_len, i_len_no, i_col, grd_col, grd_row, grd_col_count, grd_row_count, sl_col, sl_count: Integer;
+  i_a_col_len, i_col_len, i_len, i_len_no, i_col, grd_col, grd_row, grd_col_count, grd_row_count, sl_col,
+    sl_count: Integer;
   dis_col: Integer;
   // 0 false,1 true
   rText: TextFile;
@@ -1119,6 +1161,38 @@ begin
       a_Col_record[i_col].col_reg_str := VarToStrDef(FDQrySrcCol['col_reg_str'], '');
       a_Col_record[i_col].col_reg_ok := VarToStrDef(FDQrySrcCol['col_reg_ok'], '');
       // --------------------
+      if (is_chn_col = '1') and (Length(a_Col_record[i_col].col_name_cn) = 0) then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“字段中文名称”未指定，无法导入数据！');
+      end;
+
+      if (is_chn_col <> '1') and (Length(a_Col_record[i_col].col_name_en) = 0) then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“字段英文名称”未指定，无法导入数据！');
+      end;
+
+      if Length(a_Col_record[i_col].col_type) = 0 then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“数据类型”未指定，无法导入数据！');
+      end;
+
+      if Length(a_Col_record[i_col].col_all_len) = 0 then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“字段长度”未指定，无法导入数据！');
+      end;
+
+      if (LowerCase(a_Col_record[i].col_type) = 'decimal') and (Length(a_Col_record[i_col].col_dot_len) = 0) then
+      begin
+        val_falt := '1';
+        mmo2.Lines.Add('“' + cxLCbBSrcTab.Text + '”数据接口定义中“小数点长度”未指定，无法导入数据！');
+      end;
+      if val_falt = '1' then
+        Exit;
+
       if is_chn_col = '1' then // col_name建表语句使用，确定此处中文或英文字段
         a_Col_record[i_col].col_name := a_Col_record[i_col].col_name_cn
       else
@@ -1127,7 +1201,8 @@ begin
       if Length(a_Col_record[i_col].col_dot_len) = 0 then
         a_Col_record[i_col].col_len := a_Col_record[i_col].col_all_len
       else
-        a_Col_record[i_col].col_len := IntToStr(StrToIntDef(a_Col_record[i_col].col_all_len, 0) + StrToIntDef(a_Col_record[i_col].col_dot_len, 0) + 1);
+        a_Col_record[i_col].col_len := IntToStr(StrToIntDef(a_Col_record[i_col].col_all_len, 0) +
+          StrToIntDef(a_Col_record[i_col].col_dot_len, 0) + 1);
       FDQrySrcCol.Next;
       Inc(i_col);
     end;
@@ -1278,9 +1353,9 @@ begin
 
   if val_falt = '1' then // 存在致命性错误
   begin
-    mmo2.Lines.Add('文本文件部分校验不能通过强制检验规则，不能导入！');
+    mmo2.Lines.Add('文本文件部分校验存在致命性错误（具体错误信息见上），不能导入！');
     mmo2.Lines.Add('--X--导入失败--X--');
-    MessageDlg('文本文件部分校验不能通过强制检验规则，请修正后再行导入！', mtError, [mbOK], 0);
+    MessageDlg('文本文件部分校验存在致命性错误，请修正后再行导入！', mtError, [mbOK], 0);
     Exit;
   end;
   if val_warn = '1' then // 存在警告性错误
@@ -1349,7 +1424,8 @@ begin
     if Length(a_Col_record[i].col_Dict) > 0 then // 编码字段处理
     begin
       // col_name_deal := '(Case trim(' + a_Col_record[i].col_name + ')';
-      sqltext := 'select dict_val,dict_lable from dict_val where dict_type_id = ' + a_Col_record[i].col_Dict.QuotedString;
+      sqltext := 'select dict_val,dict_lable from dict_val where dict_type_id = ' + a_Col_record[i]
+        .col_Dict.QuotedString;
       // ShowMessage(sqltext);
       // exit;
       fdqryTmp.close;
@@ -1362,7 +1438,8 @@ begin
         col_tmp_str := '(CASE Trim(' + a_Col_record[i].col_name + ')';
         while not fdqryTmp.eof do // 遍历
         begin
-          col_tmp_str := col_tmp_str + ' WHEN ' + '''' + fdqryTmp['dict_val'] + '''' + ' THEN ' + '''' + fdqryTmp['dict_lable'] + ''' ';
+          col_tmp_str := col_tmp_str + ' WHEN ' + '''' + fdqryTmp['dict_val'] + '''' + ' THEN ' + '''' +
+            fdqryTmp['dict_lable'] + ''' ';
           fdqryTmp.Next;
         end;
         col_tmp_str := col_tmp_str + ' ELSE Trim(' + a_Col_record[i].col_name + ') END) ' + a_Col_record[i].col_name;
@@ -1384,7 +1461,8 @@ begin
     begin
       if a_Col_record[i].col_date_deal = '1' then // 日期字段处理 ，一般非编码字段才能有日期字段
       begin
-        col_tmp_str := 'trim(Replace(' + a_Col_record[i].col_name + ',' + '''' + '-' + '''' + ',' + '''''' + ')) ' + a_Col_record[i].col_name;
+        col_tmp_str := 'trim(Replace(' + a_Col_record[i].col_name + ',' + '''' + '-' + '''' + ',' + '''''' + ')) ' +
+          a_Col_record[i].col_name;
 
         if i = Length(a_Col_record) - 1 then
           col_name_deal := col_name_deal + col_tmp_str
@@ -1426,8 +1504,8 @@ begin
   fdQryExec.DisableControls;
   fdQryExec.close;
   fdQryExec.SQL.Clear;
-  sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' + ') AND type in (N' + '''' + 'U' + '''' + '))' +
-    ' DROP TABLE [dbo].[tb_tmp]';
+  sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' +
+    ') AND type in (N' + '''' + 'U' + '''' + '))' + ' DROP TABLE [dbo].[tb_tmp]';
   fdQryExec.SQL.Add(sqltext);
   fdQryExec.Prepared;
   fdQryExec.ExecSQL;
@@ -1503,14 +1581,17 @@ begin
   try
     Sw := TStreamWriter.Create('impFormat.xml');
     Sw.WriteLine('<?xml version="1.0"?>');
-    Sw.WriteLine('<BCPFORMAT xmlns="http://schemas.microsoft.com/sqlserver/2004/bulkload/format" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">');
+    Sw.WriteLine
+      ('<BCPFORMAT xmlns="http://schemas.microsoft.com/sqlserver/2004/bulkload/format" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">');
     Sw.WriteLine(' <RECORD>');
     for i := 1 to Length(a_Col_record) do
     begin
       if i < Length(a_Col_record) then
-        Sw.WriteLine('  <FIELD ID="' + IntToStr(i) + '" xsi:type="CharTerm" TERMINATOR="' + Trim(lblEdtSplt.Text) + '" MAX_LENGTH="' + a_Col_record[i - 1].col_len + '"/>')
+        Sw.WriteLine('  <FIELD ID="' + IntToStr(i) + '" xsi:type="CharTerm" TERMINATOR="' + Trim(lblEdtSplt.Text) +
+          '" MAX_LENGTH="' + a_Col_record[i - 1].col_len + '"/>')
       else
-        Sw.WriteLine('  <FIELD ID="' + IntToStr(i) + '" xsi:type="CharTerm" TERMINATOR="\n" MAX_LENGTH="' + a_Col_record[i - 1].col_len + '"/>');
+        Sw.WriteLine('  <FIELD ID="' + IntToStr(i) + '" xsi:type="CharTerm" TERMINATOR="\n" MAX_LENGTH="' +
+          a_Col_record[i - 1].col_len + '"/>');
     end;
     Sw.WriteLine(' </RECORD>');
     Sw.WriteLine(' <ROW>');
@@ -1521,10 +1602,12 @@ begin
       else if LowerCase(a_Col_record[i - 1].col_type) = 'bigint' then
         s_type := '"SQLBIGINT"'
       else if LowerCase(a_Col_record[i - 1].col_type) = 'decimal' then
-        s_type := '"SQLDECIMAL" PRECISION="' + a_Col_record[i - 1].col_all_len + '" SCALE="' + a_Col_record[i - 1].col_dot_len + '"'
+        s_type := '"SQLDECIMAL" PRECISION="' + a_Col_record[i - 1].col_all_len + '" SCALE="' + a_Col_record[i - 1]
+          .col_dot_len + '"'
       else
         s_type := '"SQLVARYCHAR"';
-      Sw.WriteLine(' <COLUMN SOURCE="' + IntToStr(i) + '" NAME="' + a_Col_record[i - 1].col_name + '" xsi:type=' + s_type + '/>')
+      Sw.WriteLine(' <COLUMN SOURCE="' + IntToStr(i) + '" NAME="' + a_Col_record[i - 1].col_name + '" xsi:type=' +
+        s_type + '/>')
     end;
     Sw.WriteLine(' </ROW>');
     Sw.WriteLine('</BCPFORMAT>');
@@ -1589,15 +1672,17 @@ begin
     fdQryExec.Connection.StartTransaction;
     // --------insert from bulk---------处理字段，用col_name_deal，否则用col_name_insert-------------------
     fdQryExec.SQL.Clear;
-    sqltext := 'SET ANSI_WARNINGS OFF;';     //截断处理
+    sqltext := 'SET ANSI_WARNINGS OFF;'; // 截断处理
     fdQryExec.SQL.Add(sqltext);
 
     sqltext := 'INSERT INTO ' + impTab + ' (' + col_name_insert + ') ';
     fdQryExec.SQL.Add(sqltext);
     sqltext := 'select ' + col_name_deal;
     fdQryExec.SQL.Add(sqltext);
-    sqltext := ' FROM OPENROWSET( BULK ' + '''' + s_filename + '''' + ',' + ' FORMATFILE = ''' + ExtractFilePath(ParamStr(0)) + 'impFormat.xml' + ''',firstrow=' +
-      IntToStr(first_row) + ',ERRORFILE =' + '''' + s_error + '''' + ',FIELDQUOTE =' + '''' + Trim(lblEdtQalif.Text) + '''' + ',CODEPAGE =' + '''' + s_codepage + '''' + ') AS a';
+    sqltext := ' FROM OPENROWSET( BULK ' + '''' + s_filename + '''' + ',' + ' FORMATFILE = ''' +
+      ExtractFilePath(ParamStr(0)) + 'impFormat.xml' + ''',firstrow=' + IntToStr(first_row) + ',ERRORFILE =' + '''' +
+      s_error + '''' + ',FIELDQUOTE =' + '''' + Trim(lblEdtQalif.Text) + '''' + ',CODEPAGE =' + '''' + s_codepage + ''''
+      + ') AS a';
     fdQryExec.SQL.Add(sqltext);
     // -------hulk insert --------------------
     // ToDo
@@ -1630,23 +1715,26 @@ begin
         begin
           if i < rept_count - 1 then
             if col_rept_type_ls[i] = '0' then
-              rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' + col_rept_name_ls[i] + ','''') AND '
+              rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' +
+                col_rept_name_ls[i] + ','''') AND '
             else
               rept_tmp_where := rept_tmp_where + 'a.' + col_rept_name_ls[i] + ' = b.' + col_rept_name_ls[i] + ' AND '
           else
           begin
             if col_rept_type_ls[i] = '0' then
-              rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' + col_rept_name_ls[i] + ','''')'
+              rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' +
+                col_rept_name_ls[i] + ','''')'
             else
               rept_tmp_where := rept_tmp_where + 'a.' + col_rept_name_ls[i] + ' = b.' + col_rept_name_ls[i]
           end;
         end;
-        sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp a ' + ' Where NOT EXISTS (SELECT ' + col_rept_name_s + ' FROM ' + tab_name_en +
-          ' b WHERE ' + rept_tmp_where + ')';
+        sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp a ' +
+          ' Where NOT EXISTS (SELECT ' + col_rept_name_s + ' FROM ' + tab_name_en + ' b WHERE ' + rept_tmp_where + ')';
       end
       else
         // ===不用查重字段，用except的方法===
-        sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp except Select ' + col_name_insert + ' From ' + tab_name_en;
+        sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp except Select ' +
+          col_name_insert + ' From ' + tab_name_en;
       // ===============
       fdQryExec.SQL.Add(sqltext);
       // fdQryExec.SQL.SaveToFile('importSQLAdd.txt');
@@ -1687,7 +1775,8 @@ begin
       fdQryExec.SQL.Clear;
       for i := 0 to ind_count - 1 do
       begin
-        sqltext := 'create NONCLUSTERED index ' + 'idx' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '([' + col_ind_name_ls[i] + ']);';
+        sqltext := 'create NONCLUSTERED index ' + 'idx' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '([' +
+          col_ind_name_ls[i] + ']);';
         fdQryExec.SQL.Add(sqltext);
       end;
       // fdQryExec.SQL.SaveToFile('CreateIndex.txt');
@@ -1701,7 +1790,7 @@ begin
     import_OK := '0';
     ErrMsg := Exception(ExceptObject).Message;
     ErrMsg := TRegEx.Replace(ErrMsg, '\[[\S|\s]*\]', ''); // 替换之间字符串为空
-    ErrMsg:=  TRegEx.Replace(ErrMsg, '出现[\S|\s]*\(截断\).', '数据长度超出数据规范长度。'); //
+    ErrMsg := TRegEx.Replace(ErrMsg, '出现[\S|\s]*\(截断\).', '数据长度超出数据规范长度。'); //
   end;
   fdqryTmp.close;
   fdQryExec.close;
@@ -1722,7 +1811,8 @@ begin
     r1 := MilliSecondsBetween(t2, t1) / 1000;
     mmo2.Lines.Add('--√--导入成功！--√--');
     mmo2.Lines.Add('本次导入花费时间（' + FormatFloat('0.00', r1) + '秒）。');
-    mmo2.Lines.Add('系统原有数据：' + IntToStr(i_dst_cnt) + '条；数据文件：' + IntToStr(i_tmp_cnt) + '条;导入成功：' + IntToStr(i_dst_cnt_all - i_dst_cnt) + '条！');
+    mmo2.Lines.Add('系统原有数据：' + IntToStr(i_dst_cnt) + '条；数据文件：' + IntToStr(i_tmp_cnt) + '条;导入成功：' +
+      IntToStr(i_dst_cnt_all - i_dst_cnt) + '条！');
   end;
   mmo2.setfocus;
   SendMessage(mmo2.Handle, EM_SCROLLCARET, 0, 0);
@@ -1756,7 +1846,8 @@ var
 
   xlBook: TXLBook;
   xlSheet: TXLSheet;
-  xl_page, xl_row_cnt, xl_col_cnt, in_ok, in_not, batchMod: Integer; // batchMod 为xl_row_cn / BatchSize的余数
+  xl_page, xl_row_cnt, xl_col_cnt, in_ok, in_not, batchMod: Integer;
+  // batchMod 为xl_row_cn / BatchSize的余数
   // strFormat, numFormat: TFormat;
   xlCellType: CellType;
   year, month, day: Integer;
@@ -1814,9 +1905,10 @@ begin
 
   if val_falt = '1' then // 存在致命性错误
   begin
-    MessageDlg('Excel文件部分校验不通过，请修正后再行导入！', mtError, [mbOK], 0);
-    mmo2.Lines.Add('Excel文件部分校验付符合请执行校验规则，不能导入！');
+
+    mmo2.Lines.Add('Excel文件部分校验存在致命性错误（（具体错误信息见上）），请修正后再行导入！');
     mmo2.Lines.Add('--X--导入失败--X--');
+    MessageDlg('Excel文件部分校验存在致命性错误，无法导入！', mtError, [mbOK], 0);
     Exit;
   end;
   if val_warn = '1' then // 存在警告性错误
@@ -1896,7 +1988,8 @@ begin
     if Length(a_Col_record[i].col_Dict) > 0 then // 编码字段处理
     begin
       // col_name_deal := '(Case trim(' + a_Col_record[i].col_name + ')';
-      sqltext := 'select dict_val,dict_lable from dict_val where dict_type_id = ' + a_Col_record[i].col_Dict.QuotedString;
+      sqltext := 'select dict_val,dict_lable from dict_val where dict_type_id = ' + a_Col_record[i]
+        .col_Dict.QuotedString;
       // ShowMessage(sqltext);
       // exit;
       fdqryTmp.close;
@@ -1909,7 +2002,8 @@ begin
         col_tmp_str := '(CASE Trim(' + a_Col_record[i].col_name + ')';
         while not fdqryTmp.eof do // 遍历
         begin
-          col_tmp_str := col_tmp_str + ' WHEN ' + '''' + fdqryTmp['dict_val'] + '''' + ' THEN ' + '''' + fdqryTmp['dict_lable'] + ''' ';
+          col_tmp_str := col_tmp_str + ' WHEN ' + '''' + fdqryTmp['dict_val'] + '''' + ' THEN ' + '''' +
+            fdqryTmp['dict_lable'] + ''' ';
           fdqryTmp.Next;
         end;
         col_tmp_str := col_tmp_str + ' ELSE Trim(' + a_Col_record[i].col_name + ') END) ' + a_Col_record[i].col_name;
@@ -1931,7 +2025,8 @@ begin
     begin
       if a_Col_record[i].col_date_deal = '1' then // 日期字段处理 ，一般费编码字段才能有日期字段
       begin
-        col_tmp_str := 'trim(Replace(' + a_Col_record[i].col_name + ',' + '''' + '-' + '''' + ',' + '''''' + ')) ' + a_Col_record[i].col_name;
+        col_tmp_str := 'trim(Replace(' + a_Col_record[i].col_name + ',' + '''' + '-' + '''' + ',' + '''''' + ')) ' +
+          a_Col_record[i].col_name;
         if i = a_col_rec_len - 1 then
           col_name_deal := col_name_deal + col_tmp_str
         else
@@ -1977,8 +2072,8 @@ begin
   fdQryExec.DisableControls;
   fdQryExec.close;
   fdQryExec.SQL.Clear;
-  sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' + ') AND type in (N' + '''' + 'U' + '''' + '))' +
-    ' DROP TABLE [dbo].[tb_tmp]';
+  sqltext := 'IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N' + '''' + '[dbo].[tb_tmp]' + '''' +
+    ') AND type in (N' + '''' + 'U' + '''' + '))' + ' DROP TABLE [dbo].[tb_tmp]';
   fdQryExec.SQL.Add(sqltext);
   fdQryExec.Prepared;
   fdQryExec.ExecSQL;
@@ -2111,6 +2206,7 @@ begin
     xlBook.Free;
     fdQryExec.close;
     mmo2.Lines.Add(s_filename + '文件状态不正常，不能导入，请用WPS或Excel打开修正后再行导入！！！');
+    mmo2.Lines.Add('--X--导入失败--X--');
     MessageDlg('文件状态不正常，不能导入，请用WPS或Excel打开修正后再行导入！！！', mtError, [mbOK], 0);
     // raise Exception.Create(s_filename + '文件可能处于保护状态，不能导入，请修正后再行导入！！！');
 
@@ -2233,7 +2329,8 @@ begin
     batchMod := (xl_row_cnt - 1) mod BatchSize; // 最后一批的记录数
     fdQryExec.Params.ArraySize := BatchSize; // 分批次DML方式导入，1批暂定1000
     i_param := 0; // 数组参数循环，用于剔除空数据
-    for j := 1 to xl_row_cnt - 1 do // 遍历excel记录从第二行到最后一行   --------------------------------------？行数要-1
+    for j := 1 to xl_row_cnt - 1 do
+    // 遍历excel记录从第二行到最后一行   --------------------------------------？行数要-1
     begin
 
       cell_str_all := ''; // 单纯连接excel每条记录的字段，根据长度判断词条记录是否为空
@@ -2269,7 +2366,8 @@ begin
           if xlSheet.isDate(j, i_tmp) then
           begin
             xlBook.dateUnpack(xlSheet.readNum(j, i_tmp), year, month, day);
-            cell_str := IntToStr(year) + StringOfChar('0', 2 - Length(IntToStr(month))) + IntToStr(month) + StringOfChar('0', 2 - Length(IntToStr(day))) + IntToStr(day);
+            cell_str := IntToStr(year) + StringOfChar('0', 2 - Length(IntToStr(month))) + IntToStr(month) +
+              StringOfChar('0', 2 - Length(IntToStr(day))) + IntToStr(day);
           end
           else
           begin
@@ -2289,12 +2387,14 @@ begin
               sMonth := m.Groups.Item[2].Value;
               sDay := m.Groups.Item[3].Value;
               // 不足的位数补0
-              cell_str := StringOfChar('0', 4 - Length(sYear)) + sYear + StringOfChar('0', 2 - Length(sMonth)) + sMonth + StringOfChar('0', 2 - Length(sDay)) + sDay;
+              cell_str := StringOfChar('0', 4 - Length(sYear)) + sYear + StringOfChar('0', 2 - Length(sMonth)) + sMonth
+                + StringOfChar('0', 2 - Length(sDay)) + sDay;
             end
             else
             begin
               if (Length(cell_str) <> 0) and (UpperCase(cell_str) <> '@N') then
-                mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' + a_Col_record[k].col_name_cn + '数据“' + cell_str +
+                mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列'
+                  + a_Col_record[k].col_name_cn + '数据“' + cell_str +
                   '”，不符合日期表达式规范yyyymmdd或yyyy-mm-dd或yyyy/mm/dd或yyyy.mm.dd或yyyy年mm月dd日！');
             end;
 
@@ -2308,8 +2408,8 @@ begin
         begin
           dis_ok := '1';
           val_falt := '1';
-          mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j) + '行第' + IntToStr(i_tmp) + '列' + a_Col_record[i].col_name_cn + '数据为“' + cell_str + '”，长度' +
-            IntToStr(Length(cell_str)) + '大于数据规范长度，数据无法导入！');
+          mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j) + '行第' + IntToStr(i_tmp) + '列' +
+            a_Col_record[i].col_name_cn + '数据为“' + cell_str + '”，长度' + IntToStr(Length(cell_str)) + '大于数据规范长度，数据无法导入！');
         end;
         // -------------------------------------------------------------------------------------------------
         // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）-----------------------
@@ -2320,14 +2420,16 @@ begin
             dis_ok := '1';
             if a_Col_record[k].col_reg_ok = '1' then // 强制校验
             begin
-              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' + a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' +
-                a_Col_record[k].col_reg + '”强制校验规则，数据无法导入！');
+              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' +
+                a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg +
+                '”强制校验规则，数据无法导入！');
               val_falt := '1';
             end
             else
             begin
-              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' + a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' +
-                a_Col_record[k].col_reg + '”校验规则。可以导入数据，但影响数据分析准确性！');
+              mmo2.Lines.Add('_sheet[' + IntToStr(i + 1) + ']:第' + IntToStr(j + 1) + '行第' + IntToStr(i_tmp + 1) + '列' +
+                a_Col_record[k].col_name_cn + '数据“' + cell_str + '”，不符合“' + a_Col_record[k].col_reg +
+                '”校验规则。可以导入数据，但影响数据分析准确性！');
               val_warn := '1';
             end;
           end
@@ -2387,7 +2489,8 @@ begin
 
       if (i_param = BatchSize - 1) or (j = xl_row_cnt - 1) then
       begin
-        fdQryExec.Execute(fdQryExec.Params.ArraySize); // 此处应分批次执行，否则out of memory
+        fdQryExec.Execute(fdQryExec.Params.ArraySize);
+        // 此处应分批次执行，否则out of memory
         i_param := 0;
       end
       else
@@ -2430,24 +2533,27 @@ begin
       begin
         if i < rept_count - 1 then
           if col_rept_type_ls[i] = '0' then
-            rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' + col_rept_name_ls[i] + ','''') AND '
+            rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' +
+              col_rept_name_ls[i] + ','''') AND '
           else
             rept_tmp_where := rept_tmp_where + 'a.' + col_rept_name_ls[i] + ' = b.' + col_rept_name_ls[i] + ' AND '
         else
         begin
           if col_rept_type_ls[i] = '0' then
-            rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' + col_rept_name_ls[i] + ','''')'
+            rept_tmp_where := rept_tmp_where + 'Isnull(a.' + col_rept_name_ls[i] + ','''') = Isnull(b.' +
+              col_rept_name_ls[i] + ','''')'
           else
             rept_tmp_where := rept_tmp_where + 'a.' + col_rept_name_ls[i] + ' = b.' + col_rept_name_ls[i]
         end;
       end;
 
-      sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp a ' + ' Where NOT EXISTS (SELECT ' + col_rept_name_s + ' FROM ' + tab_name_en +
-        ' b WHERE ' + rept_tmp_where + ')';
+      sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp a ' +
+        ' Where NOT EXISTS (SELECT ' + col_rept_name_s + ' FROM ' + tab_name_en + ' b WHERE ' + rept_tmp_where + ')';
     end
     else
       // ===不用查重字段，用except的方法===
-      sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp except Select ' + col_name_insert + ' From ' + tab_name_en;
+      sqltext := 'INSERT INTO ' + tab_name_en + ' Select ' + col_name_insert + ' From tb_tmp except Select ' +
+        col_name_insert + ' From ' + tab_name_en;
     // ===============
     fdQryExec.SQL.Add(sqltext);
     // fdQryExec.SQL.SaveToFile('importSQLAdd.txt');
@@ -2488,7 +2594,8 @@ begin
     fdQryExec.SQL.Clear;
     for i := 0 to ind_count - 1 do
     begin
-      sqltext := 'create NONCLUSTERED index ' + 'idx' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '([' + col_ind_name_ls[i] + ']);';
+      sqltext := 'create NONCLUSTERED index ' + 'idx' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '([' +
+        col_ind_name_ls[i] + ']);';
       fdQryExec.SQL.Add(sqltext);
     end;
     // fdQryExec.SQL.SaveToFile('CreateIndex.txt');
@@ -2506,7 +2613,8 @@ begin
   mmo2.Lines.Add('--√--导入成功！--√--');
   mmo2.Lines.Add('本次导入花费时间（' + FormatFloat('0.00', r1) + '秒）。');
   // mmo2.Lines.Add('本次导入花费时间（' + IntToStr(StopWatch.ElapsedMilliseconds) + '秒）。');
-  mmo2.Lines.Add('系统原有数据：' + IntToStr(i_dst_cnt) + '条；数据文件：' + IntToStr(i_tmp_cnt) + '条;导入成功：' + IntToStr(i_dst_cnt_all - i_dst_cnt) + '条！');
+  mmo2.Lines.Add('系统原有数据：' + IntToStr(i_dst_cnt) + '条；数据文件：' + IntToStr(i_tmp_cnt) + '条;导入成功：' +
+    IntToStr(i_dst_cnt_all - i_dst_cnt) + '条！');
   mmo2.setfocus;
   SendMessage(mmo2.Handle, EM_SCROLLCARET, 0, 0);
   // ------------------------------------------------------------------------------

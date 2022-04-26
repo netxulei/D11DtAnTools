@@ -22,7 +22,7 @@ object FModMaintain: TFModMaintain
     Left = 0
     Top = 0
     Width = 433
-    Height = 923
+    Height = 915
     Align = alLeft
     Bands = <
       item
@@ -159,14 +159,14 @@ object FModMaintain: TFModMaintain
   object pnl1: TPanel
     Left = 441
     Top = 0
-    Width = 1037
-    Height = 923
+    Width = 1035
+    Height = 915
     Align = alClient
     TabOrder = 1
     object pnl6: TPanel
       Left = 1
       Top = 1
-      Width = 1035
+      Width = 1033
       Height = 32
       Align = alTop
       TabOrder = 0
@@ -344,7 +344,7 @@ object FModMaintain: TFModMaintain
     object pnl3: TPanel
       Left = 1
       Top = 33
-      Width = 1035
+      Width = 1033
       Height = 223
       Align = alTop
       TabOrder = 1
@@ -590,12 +590,12 @@ object FModMaintain: TFModMaintain
       TabOrder = 2
       Visible = False
       Height = 81
-      Width = 1035
+      Width = 1033
     end
     object DBSynEditCode: TDBSynEdit
       Left = 1
       Top = 337
-      Width = 1035
+      Width = 1033
       Height = 136
       Cursor = crIBeam
       Align = alTop
@@ -646,8 +646,8 @@ object FModMaintain: TFModMaintain
     object SynEditCode: TSynEdit
       Left = 1
       Top = 473
-      Width = 1035
-      Height = 449
+      Width = 1033
+      Height = 441
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -665,6 +665,7 @@ object FModMaintain: TFModMaintain
       Gutter.Font.Height = -11
       Gutter.Font.Name = 'Consolas'
       Gutter.Font.Style = []
+      Gutter.Font.Quality = fqClearTypeNatural
       Gutter.ShowLineNumbers = True
       Gutter.Bands = <
         item
@@ -696,7 +697,7 @@ object FModMaintain: TFModMaintain
     Left = 433
     Top = 0
     Width = 8
-    Height = 923
+    Height = 915
     Cursor = crHSplit
     Hint = #24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
@@ -708,8 +709,8 @@ object FModMaintain: TFModMaintain
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 923
-    Width = 1478
+    Top = 915
+    Width = 1476
     Height = 19
     Panels = <>
     SimplePanel = True
