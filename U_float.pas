@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, cxControls, cxContainer, cxEdit, cxTextEdit,
-  cxMemo, ExtCtrls;
+  cxMemo, ExtCtrls, cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore, dxSkinsDefaultPainters;
 
 type
   TF_float = class(TForm)

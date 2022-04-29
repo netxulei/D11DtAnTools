@@ -635,14 +635,14 @@ object MainFrm: TMainFrm
             object lblFields: TLabel
               Left = 92
               Top = 1
-              Width = 69
+              Width = 48
               Height = 21
               Margins.Left = 30
               Align = alLeft
               Caption = #26597#35810#23383#27573
               Layout = tlCenter
               WordWrap = True
-              ExplicitHeight = 23
+              ExplicitHeight = 16
             end
             object lblBreak: TLabel
               Left = 70
@@ -670,7 +670,7 @@ object MainFrm: TMainFrm
               ExplicitHeight = 24
             end
             object lblbk3: TLabel
-              Left = 161
+              Left = 140
               Top = 1
               Width = 2
               Height = 21
@@ -695,12 +695,11 @@ object MainFrm: TMainFrm
               TabOrder = 0
               WordWrap = True
               OnClick = bitbtnAssisClick
-              ExplicitHeight = 23
             end
             object mmoFields: TMemo
-              Left = 163
+              Left = 142
               Top = 1
-              Width = 1164
+              Width = 1185
               Height = 21
               Align = alClient
               Lines.Strings = (
@@ -716,7 +715,6 @@ object MainFrm: TMainFrm
               TabOrder = 1
               OnEnter = mmoFieldsEnter
               OnExit = mmoFieldsExit
-              ExplicitHeight = 23
             end
           end
         end
@@ -2707,15 +2705,21 @@ object MainFrm: TMainFrm
     end
   end
   object fdSPRun: TFDStoredProc
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     Left = 565
     Top = 273
   end
   object fdSPAuto: TFDStoredProc
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     Left = 485
     Top = 273
   end
   object fdQryTree: TFDQuery
     Connection = F_DT.FDConSysTmp
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       'select * from x_Menus order by t_order')
     Left = 16
@@ -2787,6 +2791,8 @@ object MainFrm: TMainFrm
     end
   end
   object fdqryTmp: TFDQuery
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     Left = 952
     Top = 192
   end
@@ -2802,10 +2808,14 @@ object MainFrm: TMainFrm
     Top = 353
   end
   object fdqryAuto: TFDQuery
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     Left = 80
     Top = 288
   end
   object fdQryExport: TFDQuery
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     Left = 389
     Top = 169
   end
@@ -2840,6 +2850,8 @@ object MainFrm: TMainFrm
     Top = 625
   end
   object fdQryAssis: TFDQuery
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     Left = 1230
     Top = 546
   end

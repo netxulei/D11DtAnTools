@@ -1,8 +1,8 @@
 object FModMaintain: TFModMaintain
   Left = 0
   Top = 0
-  Width = 1494
-  Height = 981
+  Width = 1861
+  Height = 1003
   AutoScroll = True
   Caption = #20998#26512#27169#22411#32500#25252#65288'SQL'#65289
   Color = clBtnFace
@@ -12,7 +12,7 @@ object FModMaintain: TFModMaintain
   Font.Name = 'Segoe UI'
   Font.Style = []
   KeyPreview = True
-  Position = poScreenCenter
+  Position = poDesigned
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
@@ -21,8 +21,8 @@ object FModMaintain: TFModMaintain
   object cxdbtrlst1: TcxDBTreeList
     Left = 0
     Top = 0
-    Width = 433
-    Height = 915
+    Width = 337
+    Height = 937
     Align = alLeft
     Bands = <
       item
@@ -157,16 +157,16 @@ object FModMaintain: TFModMaintain
     end
   end
   object pnl1: TPanel
-    Left = 441
+    Left = 345
     Top = 0
-    Width = 1035
-    Height = 915
+    Width = 1498
+    Height = 937
     Align = alClient
     TabOrder = 1
     object pnl6: TPanel
       Left = 1
       Top = 1
-      Width = 1033
+      Width = 1496
       Height = 32
       Align = alTop
       TabOrder = 0
@@ -235,7 +235,7 @@ object FModMaintain: TFModMaintain
         Top = 7
         Width = 75
         Height = 21
-        Caption = #36864#20986
+        Caption = #36820#22238
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -249,8 +249,8 @@ object FModMaintain: TFModMaintain
         OnClick = bitbtnExitClick
       end
       object bitbtnAddBrother: TBitBtn
-        Left = 10
-        Top = 7
+        Left = 7
+        Top = 6
         Width = 75
         Height = 21
         Hint = #26032#22686#24403#21069#39033#30446#24179#32423#39033#30446
@@ -344,7 +344,7 @@ object FModMaintain: TFModMaintain
     object pnl3: TPanel
       Left = 1
       Top = 33
-      Width = 1033
+      Width = 1496
       Height = 223
       Align = alTop
       TabOrder = 1
@@ -448,6 +448,7 @@ object FModMaintain: TFModMaintain
         ShowHint = True
         TabOrder = 4
         Transparent = True
+        OnEditing = cxdbchckbx3Editing
       end
       object cxdbtxtdt4: TcxDBTextEdit
         Left = 24
@@ -570,6 +571,15 @@ object FModMaintain: TFModMaintain
         TabOrder = 9
         Width = 121
       end
+      object btn1: TButton
+        Left = 1128
+        Top = 152
+        Width = 75
+        Height = 25
+        Caption = 'btn1'
+        TabOrder = 10
+        OnClick = btn1Click
+      end
     end
     object cxdbm1: TcxDBMemo
       Left = 1
@@ -590,12 +600,12 @@ object FModMaintain: TFModMaintain
       TabOrder = 2
       Visible = False
       Height = 81
-      Width = 1033
+      Width = 1496
     end
     object DBSynEditCode: TDBSynEdit
       Left = 1
       Top = 337
-      Width = 1033
+      Width = 1496
       Height = 136
       Cursor = crIBeam
       Align = alTop
@@ -646,8 +656,8 @@ object FModMaintain: TFModMaintain
     object SynEditCode: TSynEdit
       Left = 1
       Top = 473
-      Width = 1033
-      Height = 441
+      Width = 1496
+      Height = 463
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -694,10 +704,10 @@ object FModMaintain: TFModMaintain
     end
   end
   object cxspltr1: TcxSplitter
-    Left = 433
+    Left = 337
     Top = 0
     Width = 8
-    Height = 915
+    Height = 937
     Cursor = crHSplit
     Hint = #24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
@@ -709,8 +719,8 @@ object FModMaintain: TFModMaintain
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 915
-    Width = 1476
+    Top = 937
+    Width = 1843
     Height = 19
     Panels = <>
     SimplePanel = True
@@ -718,34 +728,38 @@ object FModMaintain: TFModMaintain
   object ds1: TDataSource
     DataSet = fdQryTree
     OnDataChange = OnDataChange
-    Left = 184
-    Top = 361
+    Left = 134
+    Top = 411
   end
   object ds2: TDataSource
     DataSet = fdQryTitle
-    Left = 1256
-    Top = 349
+    Left = 1087
+    Top = 642
   end
   object fdQryTitle: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'select t_id,t_parent_id,t_sort,repeat('#39'  '#39',length(t_sort))||'#39#8857'--' +
         #39'||t_name as t_name from fdQryTree where t_parent_id=0 or isClas' +
         's='#39'1'#39'  union select 0,0,'#39#39','#39'*=================*'#39' order by t_sort')
-    Left = 1003
-    Top = 272
+    Left = 989
+    Top = 636
   end
   object fdQrySameLev: TFDQuery
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'select t_id,t_parent_id,t_sort from fdqryTree where length(t_sor' +
         't)=length('#39'010202'#39') and substr(t_sort,1,length(t_sort)-2)= subst' +
         'r('#39'010202'#39',1,length('#39'010202'#39')-2) order by t_sort')
-    Left = 719
-    Top = 442
+    Left = 1201
+    Top = 510
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -755,10 +769,12 @@ object FModMaintain: TFModMaintain
     IndexFieldNames = 't_sort'
     OnUpdateRecord = fdQryTreeUpdateRecord
     Connection = F_DT.FDConSysTmp
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       'select * from x_menus order by t_sort')
-    Left = 32
-    Top = 368
+    Left = 40
+    Top = 396
     object fdQryTreemodiState2: TStringField
       FieldKind = fkCalculated
       FieldName = 'modiState'
@@ -829,6 +845,7 @@ object FModMaintain: TFModMaintain
     end
   end
   object FDLocalSQL1: TFDLocalSQL
+    DisableControls = False
     Connection = F_DT.FDConSQLite
     Active = True
     DataSets = <
@@ -836,12 +853,12 @@ object FModMaintain: TFModMaintain
         DataSet = fdQryTree
         Name = 'fdQryTree'
       end>
-    Left = 1087
-    Top = 400
+    Left = 978
+    Top = 490
   end
   object pm1: TPopupMenu
-    Left = 296
-    Top = 373
+    Left = 410
+    Top = 378
     object MnExpand: TMenuItem
       Caption = #20840#37096#23637#24320
       OnClick = MnExpandClick
@@ -853,15 +870,14 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMaxID: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     Connection = F_DT.FDConSQLite
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     SQL.Strings = (
-      
-        'select max(t_id) as i_max from fdQryTree where t_parent_id=0 ord' +
-        'er by t_sort')
-    Left = 1085
-    Top = 324
+      'select max(t_id) as i_max from fdQryTree')
+    Left = 1126
+    Top = 292
   end
   object fdQryMaxSort: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -872,12 +888,12 @@ object FModMaintain: TFModMaintain
       
         'SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree wher' +
         'e t_parent_id=505')
-    Left = 1177
-    Top = 320
+    Left = 1023
+    Top = 293
   end
   object cxstylrpstry1: TcxStyleRepository
-    Left = 240
-    Top = 488
+    Left = 236
+    Top = 554
     PixelsPerInch = 96
     object cxstyl1: TcxStyle
       AssignedValues = [svColor]
@@ -895,12 +911,14 @@ object FModMaintain: TFModMaintain
   object fdQryMov: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'select t_id,t_parent_id,t_sort from fdQryTree where t_sort like ' +
         #39'01%'#39' order by t_sort')
-    Left = 809
-    Top = 544
+    Left = 1414
+    Top = 518
   end
   object fdQryMaxLen: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -911,12 +929,12 @@ object FModMaintain: TFModMaintain
       
         'select max(length(t_sort)) as max_len from fdQryTree where t_sor' +
         't like '#39'01%'#39' order by t_sort')
-    Left = 1105
-    Top = 480
+    Left = 985
+    Top = 550
   end
   object cxGrdVwrpstry1: TcxGridViewRepository
-    Left = 873
-    Top = 432
+    Left = 1083
+    Top = 505
     object cxgrdbtblvwGrdVwrpstry1DBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       DataController.DataSource = ds2
@@ -941,26 +959,30 @@ object FModMaintain: TFModMaintain
   object fdQryCur: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'select t_id,t_parent_id,t_sort from fdQryTree where t_sort like ' +
         #39'01%'#39' order by t_sort')
-    Left = 905
-    Top = 544
+    Left = 1292
+    Top = 516
   end
   object fdQryNext: TFDQuery
     ActiveStoredUsage = [auDesignTime]
     Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     SQL.Strings = (
       
         'select t_id,t_parent_id,t_sort from fdQryTree where t_sort like ' +
         #39'01%'#39' order by t_sort')
-    Left = 985
-    Top = 544
+    Left = 1509
+    Top = 517
   end
   object pmExport: TPopupMenu
-    Left = 1224
-    Top = 53
+    Left = 1327
+    Top = 27
     object MenuItem3: TMenuItem
       Caption = #23548#20986#20840#37096
       OnClick = MenuItem3Click
@@ -974,12 +996,14 @@ object FModMaintain: TFModMaintain
     FileName = 'file1'
     Filter = #27169#22411#25991#20214' (*.Mod)|*.Mod'
     Title = #23548#20986#27169#22411
-    Left = 176
-    Top = 640
+    Left = 156
+    Top = 568
   end
   object fdQryExport: TFDQuery
-    Left = 1229
-    Top = 105
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    Left = 1324
+    Top = 100
   end
   object SynSQLSyn1: TSynSQLSyn
     CommentAttri.Foreground = clGreen
@@ -987,7 +1011,18 @@ object FModMaintain: TFModMaintain
     FunctionAttri.Foreground = clFuchsia
     KeyAttri.Foreground = clBlue
     StringAttri.Foreground = clRed
-    Left = 1361
-    Top = 504
+    Left = 405
+    Top = 521
+  end
+  object FDMtblTree: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 214
+    Top = 403
   end
 end

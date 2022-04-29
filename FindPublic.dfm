@@ -1,18 +1,16 @@
 object frmFindPublic: TfrmFindPublic
   Left = 379
   Top = 190
-  Width = 420
-  Height = 185
   AutoSize = True
   Caption = #19975#33021#26597#25214
+  ClientHeight = 146
+  ClientWidth = 404
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = True
-  PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 5
@@ -44,9 +42,6 @@ object frmFindPublic: TfrmFindPublic
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
-    ParentFont = False
-    TabOrder = 1
-    OnClick = bbFindClick
     Glyph.Data = {
       4A030000424D4A030000000000004A0200002800000010000000100000000100
       08000000000000010000120B0000120B0000850000008500000000000000FFFF
@@ -75,6 +70,9 @@ object frmFindPublic: TfrmFindPublic
       0136382431405A1C19060B0202020235013636372C25212D34030B0202020235
       010101010101010101010B02020202352A2A2A2A2A2A2A2A2A2A2A0202020202
       0202020202020202020202020202}
+    ParentFont = False
+    TabOrder = 1
+    OnClick = bbFindClick
   end
   object bbNo: TBitBtn
     Left = 327
@@ -88,9 +86,6 @@ object frmFindPublic: TfrmFindPublic
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
-    ParentFont = False
-    TabOrder = 4
-    OnClick = bbNoClick
     Glyph.Data = {
       76010000424D7601000000000000760000002800000020000000100000000100
       04000000000000010000130B0000130B00001000000000000000000000000000
@@ -105,6 +100,9 @@ object frmFindPublic: TfrmFindPublic
       99333773FF3333777733339993333339933333773FFFFFF77333333999999999
       3333333777333777333333333999993333333333377777333333}
     NumGlyphs = 2
+    ParentFont = False
+    TabOrder = 4
+    OnClick = bbNoClick
   end
   object bbFindDown: TBitBtn
     Left = 327
@@ -118,9 +116,6 @@ object frmFindPublic: TfrmFindPublic
     Font.Height = -12
     Font.Name = 'Tahoma'
     Font.Style = []
-    ParentFont = False
-    TabOrder = 3
-    OnClick = bbFindDownClick
     Glyph.Data = {
       46020000424D4602000000000000460100002800000010000000100000000100
       08000000000000010000120B0000120B0000440000004400000000000000FFFF
@@ -141,6 +136,9 @@ object frmFindPublic: TfrmFindPublic
       1F202C31332A0A0404040404040404181C19272F302D1204040404040404040D
       211B1D242B260E04040404040404040413221E1A230F04040404040404040404
       04161410160404040404}
+    ParentFont = False
+    TabOrder = 3
+    OnClick = bbFindDownClick
   end
   object Panel1: TPanel
     Left = 0
@@ -177,7 +175,6 @@ object frmFindPublic: TfrmFindPublic
       Width = 211
       Height = 21
       ImeName = #20013#25991'('#31616#20307') - '#25628#29399#25340#38899#36755#20837#27861
-      ItemHeight = 13
       TabOrder = 1
       Visible = False
     end
@@ -187,7 +184,6 @@ object frmFindPublic: TfrmFindPublic
       Width = 223
       Height = 21
       ImeName = #20013#25991'('#31616#20307') - '#25628#29399#25340#38899#36755#20837#27861
-      ItemHeight = 13
       TabOrder = 2
       Items.Strings = (
         #20840#37096#25968#25454
@@ -199,7 +195,6 @@ object frmFindPublic: TfrmFindPublic
       Width = 223
       Height = 21
       ImeName = #20013#25991'('#31616#20307') - '#25628#29399#25340#38899#36755#20837#27861
-      ItemHeight = 13
       TabOrder = 0
     end
     object checkAll: TCheckBox

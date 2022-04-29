@@ -1,9 +1,9 @@
 object F_float: TF_float
   Left = 563
   Top = 372
-  Width = 525
-  Height = 103
   Caption = #20020#26102#35760#24405#26412
+  ClientHeight = 56
+  ClientWidth = 507
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,10 +11,8 @@ object F_float: TF_float
   Font.Name = #23435#20307
   Font.Style = []
   FormStyle = fsStayOnTop
-  OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 15
   object cxm_tmp: TcxMemo
     Left = 0
@@ -32,7 +30,7 @@ object F_float: TF_float
     Style.Shadow = False
     Style.IsFontAssigned = True
     TabOrder = 0
-    Height = 76
-    Width = 517
+    Height = 56
+    Width = 507
   end
 end

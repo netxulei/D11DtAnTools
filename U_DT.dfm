@@ -1,24 +1,34 @@
 object F_DT: TF_DT
   OnCreate = DataModuleCreate
-  Height = 752
-  Width = 850
+  Height = 940
+  Width = 1063
+  PixelsPerInch = 120
   object FDConSYS: TFDConnection
-    FetchOptions.AssignedValues = [evRecordCountMode]
+    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
+    FetchOptions.Mode = fmAll
     FetchOptions.RecordCountMode = cmTotal
-    Left = 200
-    Top = 72
+    ResourceOptions.AssignedValues = [rvAutoReconnect]
+    ResourceOptions.AutoReconnect = True
+    Left = 250
+    Top = 90
   end
   object FDConProj: TFDConnection
-    FetchOptions.AssignedValues = [evRecordCountMode]
+    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
+    FetchOptions.Mode = fmAll
     FetchOptions.RecordCountMode = cmTotal
-    Left = 205
-    Top = 131
+    ResourceOptions.AssignedValues = [rvAutoReconnect]
+    ResourceOptions.AutoReconnect = True
+    Left = 256
+    Top = 164
   end
   object FDconGen: TFDConnection
-    FetchOptions.AssignedValues = [evRecordCountMode]
+    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
+    FetchOptions.Mode = fmAll
     FetchOptions.RecordCountMode = cmTotal
-    Left = 200
-    Top = 16
+    ResourceOptions.AssignedValues = [rvAutoReconnect]
+    ResourceOptions.AutoReconnect = True
+    Left = 250
+    Top = 20
   end
   object FDConSysTmp: TFDConnection
     Params.Strings = (
@@ -26,13 +36,16 @@ object F_DT: TF_DT
       'Server=.'
       'OSAuthent=Yes'
       'DriverID=MSSQL')
-    FetchOptions.AssignedValues = [evRecordCountMode]
+    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
+    FetchOptions.Mode = fmAll
     FetchOptions.RecordCountMode = cmTotal
+    ResourceOptions.AssignedValues = [rvAutoReconnect]
+    ResourceOptions.AutoReconnect = True
     ConnectedStoredUsage = [auDesignTime]
     Connected = True
     LoginPrompt = False
-    Left = 24
-    Top = 208
+    Left = 30
+    Top = 260
   end
   object FDConProjTmp: TFDConnection
     Params.Strings = (
@@ -40,26 +53,33 @@ object F_DT: TF_DT
       'Server=.'
       'OSAuthent=Yes'
       'DriverID=MSSQL')
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
     ConnectedStoredUsage = [auDesignTime]
     LoginPrompt = False
-    Left = 144
-    Top = 208
+    Left = 180
+    Top = 260
   end
   object FDConSQLite: TFDConnection
     Params.Strings = (
       'DriverID=SQLite')
-    FetchOptions.AssignedValues = [evRecordCountMode]
+    FetchOptions.AssignedValues = [evMode, evRecordCountMode]
+    FetchOptions.Mode = fmAll
     FetchOptions.RecordCountMode = cmTotal
+    ResourceOptions.AssignedValues = [rvAutoReconnect]
+    ResourceOptions.AutoReconnect = True
     ConnectedStoredUsage = [auDesignTime]
     Connected = True
     LoginPrompt = False
-    Left = 48
-    Top = 40
+    Left = 60
+    Top = 50
   end
   object FDqryTmp: TFDQuery
     Connection = FDConSYS
-    Left = 331
-    Top = 74
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    Left = 414
+    Top = 93
   end
   object vrtlmglstMenu: TVirtualImageList
     AutoFill = True
@@ -140,8 +160,8 @@ object F_DT: TF_DT
         Name = #20462#25913
       end>
     ImageCollection = imgClectMenu
-    Left = 656
-    Top = 368
+    Left = 820
+    Top = 460
   end
   object imgClectMenu: TImageCollection
     Images = <
@@ -943,8 +963,8 @@ object F_DT: TF_DT
               454E44AE426082}
           end>
       end>
-    Left = 568
-    Top = 368
+    Left = 710
+    Top = 460
   end
   object vrtlmglstState: TVirtualImageList
     Images = <
@@ -969,8 +989,8 @@ object F_DT: TF_DT
         Name = #34013#28857#28857' '
       end>
     ImageCollection = imgClectState
-    Left = 664
-    Top = 448
+    Left = 830
+    Top = 560
   end
   object imgClectState: TImageCollection
     Images = <
@@ -1034,8 +1054,8 @@ object F_DT: TF_DT
               42B9653407100A214C79004E21371105B1ABFD0000000049454E44AE426082}
           end>
       end>
-    Left = 560
-    Top = 440
+    Left = 700
+    Top = 550
   end
   object imgClect1: TImageCollection
     Images = <
@@ -1843,8 +1863,8 @@ object F_DT: TF_DT
               F00BFC666F408A7EA78E0000000049454E44AE426082}
           end>
       end>
-    Left = 560
-    Top = 520
+    Left = 700
+    Top = 650
   end
   object vrtlmglst1: TVirtualImageList
     Images = <
@@ -1934,7 +1954,7 @@ object F_DT: TF_DT
         Name = #27169#22411#36816#34892' '
       end>
     ImageCollection = imgClect1
-    Left = 672
-    Top = 520
+    Left = 840
+    Top = 650
   end
 end

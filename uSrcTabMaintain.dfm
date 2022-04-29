@@ -134,7 +134,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'txt_split'
         Footers = <>
         Title.Caption = #20998#38548#31526
-        Title.Hint = #20998#38548#25991#26412#21040#23383#27573#65292#25991#26412#25991#20214#26377#25928
+        Title.Hint = #25991#26412#25991#20214'.'#20998#38548#19968#34892#25991#26412#21040#22810#20010#23383#27573
         Width = 48
       end
       item
@@ -144,7 +144,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'txt_qualifier'
         Footers = <>
         Title.Caption = #38480#23450#31526
-        Title.Hint = #38480#23450#23383#27573#30340#20869#23481#65292#25991#26412#25991#20214#26377#25928
+        Title.Hint = #25991#26412#25991#20214'.'#34987#20998#38548#31526#20998#38548#30340#23383#27573#25152#20351#29992#30340#38480#23450#31526#12290
         Width = 47
       end
       item
@@ -789,7 +789,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Top = 1
       Width = 112
       Height = 30
-      Caption = #36864#20986
+      Caption = #36820#22238
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1

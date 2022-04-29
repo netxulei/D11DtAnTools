@@ -35,7 +35,7 @@ object FrmDataImport: TFrmDataImport
       Top = 18
       Width = 139
       Height = 31
-      Caption = '5.'#36864#20986
+      Caption = '5.'#36820#22238
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1

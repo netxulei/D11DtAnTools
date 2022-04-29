@@ -538,7 +538,7 @@ object frmDictMaintain: TfrmDictMaintain
       Top = 1
       Width = 112
       Height = 30
-      Caption = #36864#20986
+      Caption = #36820#22238
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1
