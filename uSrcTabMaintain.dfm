@@ -22,23 +22,26 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Width = 1708
     Height = 840
     Align = alClient
-    AllowedOperations = [alopInsertEh, alopUpdateEh, alopDeleteEh]
+    AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
+    ColumnDefValues.AlwaysShowEditButton = True
     ColumnDefValues.EndEllipsis = True
     ColumnDefValues.Title.EndEllipsis = True
     ColumnDefValues.Title.ToolTips = True
     ColumnDefValues.ToolTips = True
     DataSource = dsSrcTab
     DynProps = <>
-    EditActions = [geaCopyEh]
+    EditActions = [geaCutEh, geaCopyEh, geaPasteEh, geaDeleteEh, geaSelectAllEh]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
     HorzScrollBar.ExtraPanel.Visible = True
     HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
     IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
+    IndicatorTitle.ShowDropDownSign = True
+    IndicatorTitle.TitleButton = True
     Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     OptionsEh = [dghFixed3D, dghResizeWholeRightPart, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghTraceColSizing, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
     ParentFont = False
@@ -88,7 +91,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'tab_name_cn'
         Footers = <>
         Title.Caption = #25509#21475#35268#33539#28304#34920#20013#25991#21517#31216
-        Width = 335
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
+        Width = 322
       end
       item
         CellButtons = <>
@@ -97,6 +105,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'tab_name_en'
         Footers = <>
         Title.Caption = #25509#21475#35268#33539#28304#34920#33521#25991#21517#31216
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Width = 190
       end
       item
@@ -110,8 +123,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = 'Excel'#23548#20837
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Title.Hint = 'Excel'#23548#20837#35201#27714#26631#39064#34892#21517#31216#19982#35268#33539#20013'XLS'#23545#24212#23383#27573#19968#33268#65292#23383#27573#25968#37327#19982#39034#24207#21487#20197#23481#38169
         Width = 75
+        WordWrap = False
       end
       item
         CellButtons = <>
@@ -124,8 +143,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = #25991#26412#23548#20837
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Title.Hint = #25991#26412#23548#20837#35201#27714#25991#26412#25991#20214#23383#27573#25968#37327#12289#23383#27573#20301#32622#19982#35268#33539#19968#33268#65292#23383#27573#21517#31216#21487#20197#23481#38169
-        Width = 60
+        Width = 82
+        WordWrap = False
       end
       item
         CellButtons = <>
@@ -134,8 +159,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'txt_split'
         Footers = <>
         Title.Caption = #20998#38548#31526
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Title.Hint = #25991#26412#25991#20214'.'#20998#38548#19968#34892#25991#26412#21040#22810#20010#23383#27573
-        Width = 48
+        Width = 59
       end
       item
         CellButtons = <>
@@ -144,8 +174,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'txt_qualifier'
         Footers = <>
         Title.Caption = #38480#23450#31526
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Title.Hint = #25991#26412#25991#20214'.'#34987#20998#38548#31526#20998#38548#30340#23383#27573#25152#20351#29992#30340#38480#23450#31526#12290
-        Width = 47
+        Width = 58
       end
       item
         CellButtons = <>
@@ -158,8 +193,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = #20013#25991#23383#27573
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Title.Hint = #36873#20013#21017#24314#31435#25968#25454#34920#26102#20351#29992#20013#25991#21517#31216#23383#27573#65288#33521#25991#21517#31216#23383#27573#21487#20026#31354#65289#65292#13#10#21542#21017#20351#29992#33521#25991#21517#31216#23383#27573#12290
-        Width = 62
+        Width = 74
       end
       item
         CellButtons = <>
@@ -172,8 +212,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           '1'
           '0')
         Title.Caption = #20840#23616#34920
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Title.Hint = #36873#20013#21017#25968#25454#34920#19981#20381#36182#20110#39033#30446#65292#21542#21017#35813#34920#23548#20837#39033#30446#20013
-        Width = 47
+        Width = 86
       end
       item
         CellButtons = <>
@@ -182,17 +227,23 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         FieldName = 'tab_memo'
         Footers = <>
         Title.Caption = #35828#26126
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
         Width = 619
       end>
     object RowDetailData: TRowDetailPanelControlEh
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 1500
+        Width = 1582
         Height = 351
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
         AutoFitColWidths = True
+        ColumnDefValues.AlwaysShowEditButton = True
         ColumnDefValues.EndEllipsis = True
         ColumnDefValues.Title.Alignment = taCenter
         ColumnDefValues.Title.EndEllipsis = True
@@ -200,13 +251,27 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ColumnDefValues.ToolTips = True
         DataSource = dsSrcCol
         DynProps = <>
-        EditActions = [geaCopyEh]
+        EditActions = [geaCutEh, geaCopyEh, geaPasteEh, geaDeleteEh, geaSelectAllEh]
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI Light'
+        Font.Style = []
+        FooterParams.Font.Charset = DEFAULT_CHARSET
+        FooterParams.Font.Color = clWindowText
+        FooterParams.Font.Height = -13
+        FooterParams.Font.Name = 'Segoe UI'
+        FooterParams.Font.Style = []
+        FooterParams.ParentFont = False
         HorzScrollBar.ExtraPanel.Visible = True
         HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
         HorzScrollBar.VisibleMode = sbAlwaysShowEh
         IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
+        IndicatorTitle.ShowDropDownSign = True
+        IndicatorTitle.TitleButton = True
         Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
         OptionsEh = [dghFixed3D, dghResizeWholeRightPart, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghTraceColSizing, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
+        ParentFont = False
         ParentShowHint = False
         RowHeight = 4
         RowLines = 1
@@ -216,7 +281,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
         TitleParams.Font.Color = clWindowText
-        TitleParams.Font.Height = -12
+        TitleParams.Font.Height = -13
         TitleParams.Font.Name = 'Segoe UI'
         TitleParams.Font.Style = []
         TitleParams.ParentFont = False
@@ -436,19 +501,20 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 1500
+        Width = 1582
         Height = 27
         Align = alTop
         AutoSize = True
         Ctl3D = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -12
+        Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
+        ExplicitWidth = 1500
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -510,14 +576,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           FlowStyle = fsRightLeftBottomTop
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = #24494#36719#38597#40657' Light'
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
           Font.Style = []
           ParentCtl3D = False
           ParentFont = False
           TabOrder = 3
           object cxLookupComboBoxDictList: TcxLookupComboBox
-            Left = 96
+            Left = 128
             Top = -2
             Hint = #23383#27573#31867#22411#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
             Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
@@ -535,12 +601,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Style.Shadow = True
             Style.ButtonStyle = btsHotFlat
             TabOrder = 0
-            Width = 226
+            Width = 194
           end
           object lblDict: TLabel
-            Left = 8
+            Left = 6
             Top = 0
-            Width = 88
+            Width = 122
             Height = 23
             Align = alClient
             AutoSize = False
@@ -548,8 +614,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Color = clHighlight
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clHotLight
-            Font.Height = -12
-            Font.Name = #24494#36719#38597#40657' Light'
+            Font.Height = -13
+            Font.Name = 'Segoe UI'
             Font.Style = []
             ParentColor = False
             ParentFont = False
@@ -559,23 +625,23 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         object lblReg: TLabel
           Left = 937
           Top = 1
-          Width = 88
+          Width = 120
           Height = 23
           Align = alClient
           AutoSize = False
-          Caption = #26657#39564#35268#21017#26469#28304'  '
+          Caption = '   '#26657#39564#35268#21017#26469#28304
           Color = clHighlight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clHotLight
-          Font.Height = -12
-          Font.Name = #24494#36719#38597#40657' Light'
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
           Font.Style = []
           ParentColor = False
           ParentFont = False
           Layout = tlCenter
         end
         object cxLookupComboBoxReg: TcxLookupComboBox
-          Left = 1025
+          Left = 1057
           Top = 1
           Hint = #26657#39564#35268#21017#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
           Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
@@ -607,7 +673,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     AutoSize = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -676,7 +742,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     FlowStyle = fsTopBottomLeftRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentCtl3D = False
@@ -743,13 +809,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Caption = #23548#20986#21518#25171#24320
       Checked = True
       Ctl3D = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
       ParentCtl3D = False
-      ParentFont = False
       State = cbChecked
       TabOrder = 4
       WordWrap = True

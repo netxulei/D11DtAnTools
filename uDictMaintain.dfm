@@ -7,14 +7,14 @@ object frmDictMaintain: TfrmDictMaintain
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -15
+  Font.Height = -13
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
   WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
-  TextHeight = 20
+  TextHeight = 17
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
     Top = 59
@@ -23,24 +23,23 @@ object frmDictMaintain: TfrmDictMaintain
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
+    ColumnDefValues.AlwaysShowEditButton = True
     ColumnDefValues.EndEllipsis = True
+    ColumnDefValues.Layout = tlCenter
     ColumnDefValues.Title.EndEllipsis = True
     ColumnDefValues.Title.ToolTips = True
     ColumnDefValues.ToolTips = True
     DataSource = dsDictType
+    DrawMemoText = True
     DynProps = <>
-    EditActions = [geaCopyEh]
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Segoe UI'
-    Font.Style = []
+    EditActions = [geaCutEh, geaCopyEh, geaPasteEh, geaDeleteEh, geaSelectAllEh]
     HorzScrollBar.ExtraPanel.Visible = True
     HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
     IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
+    IndicatorTitle.ShowDropDownSign = True
+    IndicatorTitle.TitleButton = True
     Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
     OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
-    ParentFont = False
     ParentShowHint = False
     RowDetailPanel.Active = True
     RowDetailPanel.Height = 173
@@ -51,9 +50,9 @@ object frmDictMaintain: TfrmDictMaintain
     TabOrder = 0
     TitleParams.Font.Charset = DEFAULT_CHARSET
     TitleParams.Font.Color = clWindowText
-    TitleParams.Font.Height = -12
-    TitleParams.Font.Name = #24494#36719#38597#40657
-    TitleParams.Font.Style = [fsBold]
+    TitleParams.Font.Height = -13
+    TitleParams.Font.Name = 'Segoe UI'
+    TitleParams.Font.Style = []
     TitleParams.MultiTitle = True
     TitleParams.ParentFont = False
     Columns = <
@@ -84,12 +83,8 @@ object frmDictMaintain: TfrmDictMaintain
         FieldName = 'dict_type_name_cn'
         Footers = <>
         Title.Caption = #23383#20856#31867#22411#20013#25991#21517#31216
-        Title.Font.Charset = DEFAULT_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -12
-        Title.Font.Name = 'Segoe UI'
-        Title.Font.Style = [fsBold]
         Width = 335
+        WordWrap = True
       end
       item
         CellButtons = <>
@@ -98,12 +93,8 @@ object frmDictMaintain: TfrmDictMaintain
         FieldName = 'dict_type_name_en'
         Footers = <>
         Title.Caption = #23383#20856#31867#22411#33521#25991#21517#31216
-        Title.Font.Charset = DEFAULT_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -12
-        Title.Font.Name = 'Segoe UI'
-        Title.Font.Style = [fsBold]
-        Width = 158
+        Width = 237
+        WordWrap = True
       end
       item
         CellButtons = <>
@@ -112,11 +103,7 @@ object frmDictMaintain: TfrmDictMaintain
         FieldName = 'dict_type_memo'
         Footers = <>
         Title.Caption = #35828#26126
-        Title.Font.Charset = DEFAULT_CHARSET
-        Title.Font.Color = clWindowText
-        Title.Font.Height = -12
-        Title.Font.Name = 'Segoe UI'
-        Title.Font.Style = [fsBold]
+        WordWrap = True
       end>
     object RowDetailData: TRowDetailPanelControlEh
       object DBGridEhSrcCol: TDBGridEh
@@ -127,6 +114,7 @@ object frmDictMaintain: TfrmDictMaintain
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
         AutoFitColWidths = True
+        ColumnDefValues.AlwaysShowEditButton = True
         ColumnDefValues.EndEllipsis = True
         ColumnDefValues.Title.Alignment = taCenter
         ColumnDefValues.Title.EndEllipsis = True
@@ -134,28 +122,38 @@ object frmDictMaintain: TfrmDictMaintain
         ColumnDefValues.ToolTips = True
         DataSource = dsDictVal
         DynProps = <>
-        EditActions = [geaCopyEh]
+        EditActions = [geaCutEh, geaCopyEh, geaPasteEh, geaDeleteEh, geaSelectAllEh]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Segoe UI'
+        Font.Height = -13
+        Font.Name = 'Segoe UI Light'
         Font.Style = []
+        FooterParams.Font.Charset = DEFAULT_CHARSET
+        FooterParams.Font.Color = clWindowText
+        FooterParams.Font.Height = -13
+        FooterParams.Font.Name = 'Segoe UI Light'
+        FooterParams.Font.Style = []
+        FooterParams.ParentFont = False
         HorzScrollBar.ExtraPanel.Visible = True
         HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
         HorzScrollBar.VisibleMode = sbAlwaysShowEh
         IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
+        IndicatorTitle.ShowDropDownSign = True
+        IndicatorTitle.TitleButton = True
         Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
-        OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghEnterAsTab, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
+        OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghFitRowHeightToText, dghEnterAsTab, dghRowHighlight, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
         ParentFont = False
         ParentShowHint = False
+        RowHeight = 4
+        RowLines = 1
         SearchPanel.Enabled = True
         ShowHint = True
         TabOrder = 0
         TitleParams.Font.Charset = DEFAULT_CHARSET
         TitleParams.Font.Color = clWindowText
-        TitleParams.Font.Height = -12
+        TitleParams.Font.Height = -13
         TitleParams.Font.Name = 'Segoe UI'
-        TitleParams.Font.Style = [fsBold]
+        TitleParams.Font.Style = []
         TitleParams.ParentFont = False
         Columns = <
           item
@@ -183,27 +181,47 @@ object frmDictMaintain: TfrmDictMaintain
             DynProps = <>
             EditButtons = <>
             FieldName = 'dict_val'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI Light'
+            Font.Style = []
             Footers = <>
+            Layout = tlCenter
             Title.Caption = #23383#20856#20540
-            Width = 643
+            Width = 429
+            WordWrap = True
           end
           item
             CellButtons = <>
             DynProps = <>
             EditButtons = <>
             FieldName = 'dict_lable'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI Light'
+            Font.Style = []
             Footers = <>
             Title.Caption = #23383#20856#20013#25991#21517#31216
             Width = 261
+            WordWrap = True
           end
           item
             CellButtons = <>
             DynProps = <>
             EditButtons = <>
             FieldName = 'dict_val_memo'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI Light'
+            Font.Style = []
             Footers = <>
+            Layout = tlCenter
             Title.Caption = #35828#26126
-            Width = 303
+            Width = 425
+            WordWrap = True
           end>
         object RowDetailData: TRowDetailPanelControlEh
         end
@@ -282,7 +300,7 @@ object frmDictMaintain: TfrmDictMaintain
           FlowStyle = fsRightLeftBottomTop
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -15
+          Font.Height = -13
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
@@ -300,7 +318,7 @@ object frmDictMaintain: TfrmDictMaintain
     AutoSize = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -373,7 +391,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 692
       Top = 1
       Width = 493
-      Height = 23
+      Height = 25
       Align = alClient
       TabOrder = 3
       TextHint = #27491#21017#34920#36798#24335
@@ -383,7 +401,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 1185
       Top = 1
       Width = 144
-      Height = 23
+      Height = 25
       Align = alRight
       TabOrder = 4
       TextHint = #38656#39564#35777#23383#31526#20018
@@ -407,6 +425,7 @@ object frmDictMaintain: TfrmDictMaintain
       Height = 25
       Caption = #26356#26032#28304#34920#23383#27573#20449#24687
       TabOrder = 6
+      Visible = False
       OnClick = btnUpdateSrcColClick
     end
   end
@@ -421,7 +440,7 @@ object frmDictMaintain: TfrmDictMaintain
     FlowStyle = fsTopBottomLeftRight
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentCtl3D = False
@@ -492,13 +511,7 @@ object frmDictMaintain: TfrmDictMaintain
       Caption = #23548#20986#21518#25171#24320
       Checked = True
       Ctl3D = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Segoe UI'
-      Font.Style = []
       ParentCtl3D = False
-      ParentFont = False
       State = cbChecked
       TabOrder = 4
       WordWrap = True

@@ -167,9 +167,11 @@ type
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     cxDBTreeList1isClass: TcxDBTreeListColumn;
     cxstylTraceHot: TcxStyle;
+    rdbt1: TRadioButton;
+    rdbt2: TRadioButton;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
-    // function cre_V_bank_bm(): Boolean;
+    function cre_V_bank(): Boolean;
     function del_proc(): Boolean;
     // function def_fun(): Boolean;   //函数定义放到逻辑中自动执行定义，不再代码实现
     function DispInfo(): Boolean;
@@ -211,7 +213,8 @@ type
     procedure N402Click(Sender: TObject);
     procedure N49Click(Sender: TObject);
     procedure N53Click(Sender: TObject);
-    procedure cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas; AViewInfo: TcxTreeListEditCellViewInfo; var ADone: Boolean);
+    procedure cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas; AViewInfo: TcxTreeListEditCellViewInfo;
+      var ADone: Boolean);
     procedure pm3Popup(Sender: TObject);
     procedure pm4Popup(Sender: TObject);
     procedure N15Click(Sender: TObject);
@@ -222,8 +225,10 @@ type
     procedure M_DR_FXZHClick(Sender: TObject);
     procedure M_DR_FXDWClick(Sender: TObject);
     procedure M_DR_FXGRClick(Sender: TObject);
-    procedure cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
-    procedure cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
+    procedure cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList;
+      APrevFocusedNode, AFocusedNode: TcxTreeListNode);
+    procedure cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
+      AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure spbtnFormatClick(Sender: TObject);
     procedure N22Click(Sender: TObject);
     procedure MnModelClick(Sender: TObject);
@@ -237,6 +242,8 @@ type
     procedure mmoFieldsExit(Sender: TObject);
     procedure N4Click(Sender: TObject);
     procedure chkAssisDisClick(Sender: TObject);
+    procedure rdbt1Click(Sender: TObject);
+    procedure rdbt2Click(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -260,6 +267,45 @@ uses
 // Params.WndParent := GetDesktopWindow;
 // end;
 // 处理辅表的可见性函数
+
+// 建立银行机构代码视图
+
+function TMainFrm.cre_V_bank: Boolean;
+var
+  view_name, view_sql, sqltext, sqltext_bank: string;
+  i: Integer;
+  i_len: Integer;
+  is_exist_v: Integer; // 0 false,1 true
+begin
+  if rdbtCheck = '1' then
+  begin
+    view_name := rdbt1_name_en;
+    view_sql := rdbt1_code;
+  end
+  else
+  begin
+    view_name := rdbt2_name_en;
+    view_sql := rdbt2_code;
+  end;
+  // 删除视图
+  F_DT.fdconProj.ConnectionString := t_connect + 'Database=' + t_Database + ';';
+  F_DT.fdqryTmp.Connection := F_DT.fdconProj;
+  F_DT.fdqryTmp.close;
+  F_DT.fdqryTmp.DisableControls;
+  F_DT.fdqryTmp.SQL.Clear;
+  sqltext := 'if Exists(select * from sysobjects where name=''' + view_name + ''' AND type = ''V'') drop view ' +
+    view_name + ';';
+  F_DT.fdqryTmp.SQL.Add(sqltext);
+  // F_DT.fdqryTmp.Prepared;
+  F_DT.fdqryTmp.ExecSQL;
+  F_DT.fdqryTmp.SQL.Clear;
+  sqltext := 'CREATE VIEW ' + view_name + ' AS ' + view_sql;
+  F_DT.fdqryTmp.SQL.Add(sqltext);
+  // F_DT.fdqryTmp.Prepared;
+  F_DT.fdqryTmp.ExecSQL;
+  F_DT.fdqryTmp.close;
+  // // 视图建立结束
+end;
 
 function TMainFrm.table_visable(): Boolean;
 begin
@@ -461,7 +507,8 @@ begin
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'declare cur cursor';
     fdqryTmp.SQL.Add(sqltext);
-    sqltext := 'for select name from sysobjects Where type=''AF'' or type=''FN'' or type=''FS'' or type=''FT'' or  type=''IF'' or type=''TF''';
+    sqltext :=
+      'for select name from sysobjects Where type=''AF'' or type=''FN'' or type=''FS'' or type=''FT'' or  type=''IF'' or type=''TF''';
     fdqryTmp.SQL.Add(sqltext);
     sqltext := 'open cur';
     fdqryTmp.SQL.Add(sqltext);
@@ -534,8 +581,9 @@ begin
   fdqryAuto.close;
   fdqryAuto.Connection := F_DT.FDConSYS; // 系统数据库
   fdqryAuto.SQL.Clear;
-  sqltext := 'SELECT * FROM "X_menus" where (isClass<>''1'' or isClass is null) and t_auto =''1''' + ' and (len(isnull(t_right,''''))=0 or t_right=''' + t_database_ver + ''')' +
-    ' and t_type = ''' + t_type + ''' order by t_sort';
+  sqltext := 'SELECT * FROM "X_menus" where (isClass<>''1'' or isClass is null) and t_auto =''1''' +
+    ' and (len(isnull(t_right,''''))=0 or t_right=''' + t_database_ver + ''')' + ' and t_type = ''' + t_type +
+    ''' order by t_sort';
   fdqryAuto.SQL.Add(sqltext);
   // FdqryAuto.sql.SaveToFile('d:\x.sql');
   fdqryAuto.Prepared;
@@ -574,7 +622,8 @@ begin
           begin
             // 判断是否日期
             try
-              tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' + Copy(R_proc[i - 1].s_para_value, 7, 2);
+              tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' +
+                Copy(R_proc[i - 1].s_para_value, 7, 2);
               StrToDate(tmps1);
             except
               MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
@@ -585,7 +634,8 @@ begin
           if R_proc[i - 1].s_para_lx = 'N' then
           begin
             // 判断是否数字
-            if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf)) then
+            if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf))
+            then
             begin
               MessageDlg('应该输入数字！', mtInformation, [mbOK], 0);
               Continue;
@@ -613,7 +663,8 @@ begin
       tmps2 := '';
       for i := 1 to i_cnt1 do
       begin
-        tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' + R_proc[i - 1].s_para_value;
+        tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' +
+          R_proc[i - 1].s_para_value;
         tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
       end;
       fdqryAuto.Edit;
@@ -770,6 +821,12 @@ begin
     lblInfo.Caption := '---首先设置当前项目，才能实施分析---'
   else
     lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
+  rdbt1.Caption := rdbt1_name_cn;
+  rdbt2.Caption := rdbt2_name_cn;
+  if rdbtCheck = '1' then
+    rdbt1.Checked := True
+  else
+    rdbt2.Checked := True;
   // 附属表checkBox名称
   // chk2.Caption := t_table1_name;
   // chk1.Caption := t_table2_name;
@@ -797,8 +854,9 @@ begin
     MnOpen.Enabled := False;
   end;
   // 根据检查模式确定列出的模型功能  未隐藏 无数据库版本或指定版本=t_database_ver    版本之间不在混淆分析模型
-  sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' + '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' +
-    ' and t_type =' + '''' + t_type + '''' + ' order by t_sort';
+  sqltext := 'SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + ' and (len(isnull(t_right,' + '''' + '''' +
+    '))=0 or t_right=' + '''' + t_database_ver + '''' + ')' + ' and t_type =' + '''' + t_type + '''' +
+    ' order by t_sort';
   fdQryTree.close; // fdQryTree=ADOQ2
   fdQryTree.DisableControls;
   fdQryTree.Connection := F_DT.FDConSYS;
@@ -865,7 +923,7 @@ procedure TMainFrm.bitbtnAssisClick(Sender: TObject);
 var
 
   key_value, qryFields, sqltext, sError: string;
-  i_pos: Integer;
+  i_pos, i: Integer;
 begin
   // 查看结果表是否存在字段名称
   if fdmtblRun.Fields.FindField(Trim(lbledtKey.Text)) = nil then
@@ -881,7 +939,8 @@ begin
   qryFields := StringReplace(qryFields, #$D, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, ' ', '', [rfReplaceAll]);
 
-  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKey.Text) + ' = ''' + key_value + ''' Order by ' + Trim(lbledtTabName.Text);
+  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKey.Text) + ' = ''' +
+    key_value + ''' Order by ' + Trim(lbledtTabName.Text);
 
   try
     fdQryAssis.close;
@@ -890,6 +949,10 @@ begin
     fdQryAssis.SQL.Add(sqltext);
     fdQryAssis.Open;
     fdQryAssis.FetchAll;
+    for i := 0 to dbgrdh2.Columns.Count - 1 do
+    begin
+      dbgrdh2.Columns[i].OptimizeWidth;
+    end;
   except
     sError := Exception(ExceptObject).Message;
     sError := TRegex.Replace(sError, '\[[\S|\s]*\]', ''); // 替换之间字符串为空
@@ -928,7 +991,10 @@ begin
     Exit;
   end;
   F_DT.fdconProj.ConnectionString := t_connect + 'Database=' + t_Database + ';';
-  dbgrdh1.Color := clWindow;
+  // 建立银行机构代码视图
+  cre_V_bank();
+
+  // dbgrdh1.Color := clWindow;
   // 校验 获得全局R_proc参数数组，t_ProcFunName名称，用于执行
   ModlCodeValid(fdQryTree, True, False);
   if Not ModvalidOK then
@@ -950,7 +1016,8 @@ begin
         begin
           // 判断是否日期
           try
-            tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' + Copy(R_proc[i - 1].s_para_value, 7, 2);
+            tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' +
+              Copy(R_proc[i - 1].s_para_value, 7, 2);
             StrToDate(tmps1);
           except
             MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
@@ -977,7 +1044,8 @@ begin
     tmps2 := '';
     for i := 1 to i_cnt1 do
     begin
-      tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' + R_proc[i - 1].s_para_value;
+      tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' +
+        R_proc[i - 1].s_para_value;
       tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
     end;
     fdQryTree.Edit;
@@ -1028,15 +1096,21 @@ begin
   begin
     if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftFloat) then
       dbgrdh1.Columns[i].DisplayFormat := '#,####,####,##0.00';
-    if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftInteger) or (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftSmallint) then
+    if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftInteger) or
+      (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftSmallint) then
       dbgrdh1.Columns[i].DisplayFormat := '#,####,####,##0';
   end;
   dbgrdh1.Enabled := True;
+  for i := 0 to dbgrdh1.Columns.Count - 1 do
+  begin
+    dbgrdh1.Columns[i].OptimizeWidth;
+  end;
+
   // 首先处理表可见性
   table_visable();
-  s_filename := ExtractFilePath(ParamStr(0));
-  inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
-  prpstrgh1.LoadProperties;
+  // s_filename := ExtractFilePath(ParamStr(0));
+  // inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
+  // prpstrgh1.LoadProperties;
   // 显示执行时间
   cxtxtdt1.Text := cxtxtdt1.Text + '(' + FloatToStr((GetTickCount() - t_time) / 1000) + '秒)';
   // 记录成功日志
@@ -1265,6 +1339,36 @@ begin
   // lblInfo.Height:=pnl4.Height;
 end;
 
+procedure TMainFrm.rdbt1Click(Sender: TObject);
+var
+  s_filename: string;
+  MyIniFile: TIniFile;
+begin
+  if (rdbt1.Checked) and (rdbtCheck <> '1') then
+  begin
+    rdbtCheck := '1';
+    s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
+    MyIniFile := TIniFile.Create(s_filename);
+    MyIniFile.WriteString('Base', 'rdbtCheck', '1');
+    MyIniFile.Free;
+  end;
+end;
+
+procedure TMainFrm.rdbt2Click(Sender: TObject);
+var
+  s_filename: string;
+  MyIniFile: TIniFile;
+begin
+  if (rdbt2.Checked) and (rdbtCheck = '1') then
+  begin
+    rdbtCheck := '2';
+    s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
+    MyIniFile := TIniFile.Create(s_filename);
+    MyIniFile.WriteString('Base', 'rdbtCheck', '2');
+    MyIniFile.Free;
+  end;
+end;
+
 procedure TMainFrm.N27Click(Sender: TObject);
 begin
   // F_float:=F_float.CreateParented(MainFrm.Handle);
@@ -1383,6 +1487,8 @@ begin
 end;
 
 procedure TMainFrm.N18Click(Sender: TObject);
+var
+  i: Integer;
 begin
   ActiveControl := dbgrdh1;
   if not(ActiveControl is TDBGridEh) then
@@ -1390,6 +1496,12 @@ begin
   dbgrdh1.AutoFitColWidths := False;
   N20.Checked := dbgrdh1.AutoFitColWidths;
   N18.Checked := not N20.Checked;
+
+  for i := 0 to dbgrdh1.Columns.Count - 1 do
+  begin
+    dbgrdh1.Columns[i].OptimizeWidth;
+  end;
+
   // ShowWaitText('正在处理网格栏位宽度最优化...');
   // try
   // OptimizeGrid(TDBGridEh(ActiveControl));
@@ -1485,6 +1597,7 @@ begin
     begin
       F_DT.fdqryTmp.close;
       del_proc(); // 删除存储过程
+      // cre_V_bank();
       Auto_proc() // 自动执行的存储过程
     end; // 自动运行模式直接继续
   end;
@@ -1579,7 +1692,8 @@ begin
   end;
 end;
 
-procedure TMainFrm.cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
+procedure TMainFrm.cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList;
+  APrevFocusedNode, AFocusedNode: TcxTreeListNode);
 // var
 // i_id, i_parent_id: Integer;
 begin
@@ -1624,7 +1738,8 @@ begin
   // end;
 end;
 
-procedure TMainFrm.cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
+procedure TMainFrm.cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
+  AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
 begin
   if AIndexType = tlitStateIndex then
     Exit;
@@ -1744,6 +1859,8 @@ begin
 end;
 
 procedure TMainFrm.N301Click(Sender: TObject);
+var
+  i: Integer;
 begin
   ActiveControl := dbgrdh2;
   if not(ActiveControl is TDBGridEh) then
@@ -1751,9 +1868,15 @@ begin
   dbgrdh2.AutoFitColWidths := False;
   N302.Checked := dbgrdh2.AutoFitColWidths;
   N301.Checked := not N302.Checked;
+
+  for i := 0 to dbgrdh2.Columns.Count - 1 do
+  begin
+    dbgrdh2.Columns[i].OptimizeWidth;
+  end;
 end;
 
 procedure TMainFrm.N302Click(Sender: TObject);
+
 begin
   ActiveControl := dbgrdh2;
   if not(ActiveControl is TDBGridEh) then
@@ -1761,6 +1884,7 @@ begin
   dbgrdh2.AutoFitColWidths := True;
   N302.Checked := dbgrdh2.AutoFitColWidths;
   N301.Checked := not N302.Checked;
+
 end;
 
 procedure TMainFrm.N3Click(Sender: TObject);
@@ -1847,7 +1971,7 @@ begin
     cxspltr3.Visible := True;
     pnl9.Visible := True;
     dbgrdh1.Align := alTop;
-    // dbgrdh1.Height := dbgrdh1.Height div 2;
+    dbgrdh1.Height := dbgrdh1.Height div 3 * 2;
   end
   else
   begin
@@ -1857,7 +1981,8 @@ begin
   end;
 end;
 
-procedure TMainFrm.cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas; AViewInfo: TcxTreeListEditCellViewInfo; var ADone: Boolean);
+procedure TMainFrm.cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas;
+  AViewInfo: TcxTreeListEditCellViewInfo; var ADone: Boolean);
 begin
   // inherited;
   // if   adoq2['t_parent_id']   =   0   then
@@ -1886,7 +2011,7 @@ end;
 
 procedure TMainFrm.N48Click(Sender: TObject);
 begin
-//  ShowGridColEditor(dbgrdh2);
+  // ShowGridColEditor(dbgrdh2);
 end;
 
 procedure TMainFrm.N_ProjClick(Sender: TObject);
@@ -1911,6 +2036,7 @@ begin
     begin
       F_DT.fdqryTmp.close;
       del_proc(); // 删除存储过程
+      // cre_V_bank();
       Auto_proc() // 自动执行的存储过程
     end; // 自动运行模式直接继续
   end;
@@ -1958,6 +2084,7 @@ begin
     begin
       F_DT.fdqryTmp.close;
       del_proc(); // 删除存储过程
+      // cre_V_bank();
       Auto_proc() // 自动执行的存储过程
     end; // 自动运行模式直接继续
   end;

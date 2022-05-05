@@ -213,6 +213,17 @@ begin
   t_ver_noLS := SplitString(t_ver_no, '|'); // 用于分离版本代码
   t_ver_nameLS := SplitString(t_ver_name, '|'); // 对应上述标本代码
 
+  rdbt1_name_cn := MyIniFile.ReadString('Base', 'rdbt1_name_cn', '使用银行机构代码'); // =使用银行机构代码
+  rdbt1_name_en := MyIniFile.ReadString('Base', 'rdbt1_name_en', 'v_bankCode'); // =v_bankCode
+  rdbt1_code := MyIniFile.ReadString('Base', 'rdbt1_code', 'ELECT 银行机构代码,银行机构名称 FROM SysDtAcc.dbo.tb_BkCode');
+  // =SELECT 银行机构代码,银行机构名称 FROM SysDtAcc.dbo.tb_BkCode
+  rdbt2_name_cn := MyIniFile.ReadString('Base', 'rdbt2_name_cn', '使用金融机构编码'); // =使用金融机构编码
+  rdbt2_name_en := MyIniFile.ReadString('Base', 'rdbt2_name_en', 'v_bankCode'); // =v_bankCode
+  rdbt2_code := MyIniFile.ReadString('Base', 'rdbt2_code',
+    'SELECT 金融机构编码 银行机构代码,机构名称 银行机构名称 FROM SysDtAcc.dbo.tb_FnCode');
+  rdbtCheck := MyIniFile.ReadString('Base', 'rdbtCheck', '1'); // 默认第一个选项
+  // =SELECT 金融机构编码 银行机构代码,机构名称 银行机构名称 FROM SysDtAcc.dbo.tb_FnCode
+
   // t_TimeOut := MyIniFile.ReadString('Extend', 'Timeout', '120');
   // t_table1_sql_dw := MyIniFile.ReadString('Extend', 'table1_sql_dw', '单位账户显示');
   // t_table2_sql_dw := MyIniFile.ReadString('Extend', 'table2_sql_dw', '单位交易显示');
@@ -310,7 +321,8 @@ procedure TLoginFrm.N1Click(Sender: TObject);
 var
   FDConGen: TFDConnection;
 begin
-  if MessageDlg('将要分离系统中名为' + PChar(t_sys_dbname) + '的系统数据库,以便复制数据库文件备份或被覆盖，确认吗？', mtWarning, mbOKCancel, 0) = mrCancel then
+  if MessageDlg('将要分离系统中名为' + PChar(t_sys_dbname) + '的系统数据库,以便复制数据库文件备份或被覆盖，确认吗？', mtWarning, mbOKCancel, 0) = mrCancel
+  then
   begin
     Exit;
   end;
@@ -326,7 +338,8 @@ begin
     FDConGen.LoginPrompt := False;
     FDConGen.ConnectionString := 'DriverID=MSSQL;Server=.;OSAuthent=Yes;';
     // 不带数据库名称的连接
-    FDConGen.ExecSQL('Use Master;ALTER DATABASE [' + t_sys_dbname + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; EXEC sp_detach_db ' + t_sys_dbname);
+    FDConGen.ExecSQL('Use Master;ALTER DATABASE [' + t_sys_dbname +
+      '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; EXEC sp_detach_db ' + t_sys_dbname);
     FDConGen.Close;
     FDConGen.Free;
     MessageDlg('系统数据库分离成功，可将数据库文件另行保存或被同名数据库文件覆盖升级。', mtWarning, [mbOK], 0);
