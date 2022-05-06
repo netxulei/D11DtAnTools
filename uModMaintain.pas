@@ -429,9 +429,10 @@ begin
   sqltext := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort +
     '%'' order by t_sort';
   fdQryMaxLen.Close;
+  fdQryMaxLen.Prepared := False;
   fdQryMaxLen.SQL.Clear;
   fdQryMaxLen.SQL.ADD(sqltext);
-  fdQryMaxLen.Prepared;
+  fdQryMaxLen.Prepared := True;
   fdQryMaxLen.Open;
   fdQryMaxLen.First;
   level_old := fdQryMaxLen['max_len'] div 2 - sortMovedLen div 2 + 1; // 没移动记录的级次
@@ -452,6 +453,7 @@ begin
   // ---------------------
   // 新父节点下最大t_sort
   fdQryMaxSort.Close;
+  fdQryMaxSort.Prepared := False;
   fdQryMaxSort.Connection := F_DT.FDConSQLite;
   fdQryMaxSort.SQL.Clear;
   fdQryMaxSort.SQL.ADD('SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree where t_sort like ''' +
@@ -461,6 +463,7 @@ begin
   // 此时把新增节点也放进来了，可能需要在enter阶段就要取值  ，但此阶段并不知道新父项？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
   // 使用新父项的t_sort取值？？？？？？？？？？？？？？？？？？？？？？？？？？
   // fdQryMaxSort.SQL.Add('SELECT count(t_sort) as i_SortMax FROM fdQryTree where t_parent_id=' + IntToStr(parentIdNew));
+  fdQryMaxSort.Prepared := True;
   fdQryMaxSort.Open;
   fdQryMaxSort.First;
   // 出错会乱，故必须先判断最大值是否存在
@@ -497,8 +500,10 @@ begin
 
   sqltext := 'select t_id,t_parent_id,t_name,t_sort from  fdQryTree where t_sort like ' + '''' + Movedsort + '%''';
   fdQryMov.Close;
+  fdQryMov.Prepared := False;
   fdQryMov.SQL.Clear;
   fdQryMov.SQL.ADD(sqltext);
+  fdQryMov.Prepared := True;
   fdQryMov.Open;
   var
     tmpId: integer;
@@ -827,7 +832,7 @@ begin
   fdQryTree.Connection := F_DT.FDConSYS;
   fdQryTree.SQL.Clear;
   fdQryTree.SQL.ADD(sqltext);
-  fdQryTree.Prepared;
+  fdQryTree.Prepared := True;
   fdQryTree.Open;
   fdQryTree.EnableControls;
   fdQryTree.UpdateOptions.AutoCommitUpdates := True;
@@ -850,7 +855,7 @@ begin
     ('SELECT t_id,t_parent_id,repeat('' '',length(t_sort)*2)||''⊙┈┈┈''||t_name as t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass='
     + '''' + '1' + '''' + ' union SELECT 0,0,' + '''' + '⊙┈┈┈数据分析模型' + '''' + ','''' ' +
     'FROM fdQryTree order by t_sort');
-  fdQryTitle.Prepared;
+  fdQryTitle.Prepared := True;
   fdQryTitle.Open;
   fdQryTitle.EnableControls;
   // MainFrm.fdQryTree.CachedUpdates := True;
@@ -880,8 +885,10 @@ begin
     ''') and substr(t_sort,1,length(t_sort)-2)= substr(''' + cur_sort + ''',1,length(''' + cur_sort +
     ''')-2) order by t_sort';
   fdQrySameLev.Close;
+  fdQrySameLev.Prepared := False;
   fdQrySameLev.SQL.Clear;
   fdQrySameLev.SQL.ADD(sqltext);
+  fdQrySameLev.Prepared := True;
   fdQrySameLev.Open;
   cur_sort := fdQryTree['t_sort'];
   fdQrySameLev.Locate('t_sort', cur_sort, []);
@@ -917,15 +924,20 @@ begin
 
   // 两个被移动记录的子集
   sqltext := 'select t_id,t_parent_id,t_name,t_sort from  fdQryTree where t_sort like ' + '''' + cur_sort + '%''';
+
   fdQryCur.Close;
+  fdQryCur.Prepared := False;
   fdQryCur.SQL.Clear;
   fdQryCur.SQL.ADD(sqltext);
+  fdQryCur.Prepared := True;
   fdQryCur.Open;
 
   sqltext := 'select t_id,t_parent_id,t_name,t_sort from  fdQryTree where t_sort like ' + '''' + next_sort + '%''';
   fdQryNext.Close;
+  fdQryCur.Prepared := False;
   fdQryNext.SQL.Clear;
   fdQryNext.SQL.ADD(sqltext);
+  fdQryNext.Prepared := True;
   fdQryNext.Open;
   // 分别循环子集，修改顺序号
 
@@ -997,12 +1009,13 @@ begin
     try
       dlgSaveExport.FileName := dlgSaveExport.FileName;
       fdQryExport.Close;
+      fdQryExport.Prepared := False;
       // fdqryExport.DisableControls;
       fdQryExport.Connection := F_DT.FDConSYS;
       fdQryExport.SQL.Clear;
       sqltext := 'SELECT * FROM "X_menus" order by t_sort';
       fdQryExport.SQL.ADD(sqltext);
-      fdQryExport.Prepared;
+      fdQryExport.Prepared := True;
       fdQryExport.Open;
       fdQryExport.FetchAll;
       fdQryExport.SaveToFile(dlgSaveExport.FileName, sfBinary);
@@ -1041,12 +1054,13 @@ begin
     try
       dlgSaveExport.FileName := dlgSaveExport.FileName;
       fdQryExport.Close;
+      fdQryExport.Prepared := False;
       // fdqryExport.DisableControls;
       fdQryExport.Connection := F_DT.FDConSYS;
       fdQryExport.SQL.Clear;
       sqltext := 'SELECT * FROM "X_menus" where t_sort like ''' + cur_sort + '%'' order by t_sort';
       fdQryExport.SQL.ADD(sqltext);
-      fdQryExport.Prepared;
+      fdQryExport.Prepared := True;
       fdQryExport.Open;
       fdQryExport.FetchAll;
       fdQryExport.SaveToFile(dlgSaveExport.FileName, sfBinary);

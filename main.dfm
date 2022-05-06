@@ -190,7 +190,6 @@ object MainFrm: TMainFrm
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitHeight = 46
           object spbtnFormat: TSpeedButton
             Left = 319
             Top = 4
@@ -361,9 +360,6 @@ object MainFrm: TMainFrm
           ParentFont = False
           TabOrder = 1
           OnResize = pnl4Resize
-          ExplicitLeft = 313
-          ExplicitWidth = 1018
-          ExplicitHeight = 25
           object lblInfo: TLabel
             Left = 1
             Top = 1
@@ -457,7 +453,6 @@ object MainFrm: TMainFrm
         ParentFont = False
         TabOrder = 2
         OnResize = pnl2Resize
-        ExplicitTop = 28
         object lblResult: TLabel
           Left = 85
           Top = 1
@@ -521,8 +516,6 @@ object MainFrm: TMainFrm
         TabOrder = 3
         Visible = False
         OnResize = pnl2Resize
-        ExplicitTop = 641
-        ExplicitHeight = 297
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 61
@@ -797,7 +790,6 @@ object MainFrm: TMainFrm
         ShowHint = True
         ParentShowHint = False
         Visible = False
-        ExplicitTop = 633
       end
     end
     object pnl7: TPanel
@@ -2697,7 +2689,6 @@ object MainFrm: TMainFrm
       'cxDBTreeList1.<P>.Width'
       'Panel1.pnl1.cxspltr3.<P>.Visible'
       'Panel1.pnl1.dbgrdh1.<P>.Align'
-      'Panel1.pnl1.dbgrdh1.<P>.Height'
       'Panel1.pnl1.pnl2.chkAssisDis.<P>.Checked'
       'Panel1.pnl1.pnl9.<P>.Visible')
     Left = 757

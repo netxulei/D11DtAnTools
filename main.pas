@@ -875,7 +875,7 @@ begin
   // cxDBTreeList1.FullExpand;
   Application.HintHidePause := 10000;
   // dbgrdh1.Hint:='在表格上选中后右键可复制'+#13#10+'点按标题可排序';
-  dbgrdh1.Align := alClient;
+  // dbgrdh1.Align := alClient;
   // 调取默认的辅助查询
   s_filename := ExtractFilePath(ParamStr(0));
   s_filename := s_filename + '辅助信息_默认.asi';
@@ -1084,7 +1084,7 @@ begin
     dbgrdh1.Columns.Delete(0);
   end;
 
-  fdSPRun.Prepared;
+  fdSPRun.Prepared:=True;
   fdSPRun.Open;
   // fdSPRun.enableControls;
   fdmtblRun.close;
@@ -1968,6 +1968,9 @@ procedure TMainFrm.chkAssisDisClick(Sender: TObject);
 begin
   if chkAssisDis.Checked then
   begin
+    cxspltr3.Visible := False;
+    pnl9.Visible := False;
+    dbgrdh1.Align := alClient;
     cxspltr3.Visible := True;
     pnl9.Visible := True;
     dbgrdh1.Align := alTop;
@@ -2067,10 +2070,10 @@ begin
   // 在数据库定义函数 def_fun();
   // Application.CreateForm(Tf_item, f_item);
   // f_item.ShowModal;
-
+  fdQryTree.close;
   Application.CreateForm(TFModMaintain, FModMaintain);
   FModMaintain.ShowModal;
-  fdQryTree.close;
+//  fdQryTree.close;
   fdQryTree.Open;
   // cre_zhsys();   //建立账户视图
   if Length(Trim(t_proj_no)) > 0 then

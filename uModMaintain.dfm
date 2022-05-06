@@ -733,8 +733,8 @@ object FModMaintain: TFModMaintain
   end
   object ds2: TDataSource
     DataSet = fdQryTitle
-    Left = 1087
-    Top = 642
+    Left = 1359
+    Top = 747
   end
   object fdQryTitle: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -892,8 +892,8 @@ object FModMaintain: TFModMaintain
     Top = 293
   end
   object cxstylrpstry1: TcxStyleRepository
-    Left = 236
-    Top = 554
+    Left = 279
+    Top = 677
     PixelsPerInch = 96
     object cxstyl1: TcxStyle
       AssignedValues = [svColor]
@@ -996,8 +996,8 @@ object FModMaintain: TFModMaintain
     FileName = 'file1'
     Filter = #27169#22411#25991#20214' (*.Mod)|*.Mod'
     Title = #23548#20986#27169#22411
-    Left = 156
-    Top = 568
+    Left = 147
+    Top = 678
   end
   object fdQryExport: TFDQuery
     FetchOptions.AssignedValues = [evMode]

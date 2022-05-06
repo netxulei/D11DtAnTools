@@ -215,7 +215,7 @@ begin
 
   rdbt1_name_cn := MyIniFile.ReadString('Base', 'rdbt1_name_cn', '使用银行机构代码'); // =使用银行机构代码
   rdbt1_name_en := MyIniFile.ReadString('Base', 'rdbt1_name_en', 'v_bankCode'); // =v_bankCode
-  rdbt1_code := MyIniFile.ReadString('Base', 'rdbt1_code', 'ELECT 银行机构代码,银行机构名称 FROM SysDtAcc.dbo.tb_BkCode');
+  rdbt1_code := MyIniFile.ReadString('Base', 'rdbt1_code', 'SELECT 银行机构代码,银行机构名称 FROM SysDtAcc.dbo.tb_BkCode');
   // =SELECT 银行机构代码,银行机构名称 FROM SysDtAcc.dbo.tb_BkCode
   rdbt2_name_cn := MyIniFile.ReadString('Base', 'rdbt2_name_cn', '使用金融机构编码'); // =使用金融机构编码
   rdbt2_name_en := MyIniFile.ReadString('Base', 'rdbt2_name_en', 'v_bankCode'); // =v_bankCode

@@ -353,7 +353,7 @@ begin
       sl_params.DelimitedText := sParamCode;
       for i := 0 to sl_params.Count - 1 do
       begin
-        sl_param.DelimitedText := sl_params[i];
+        sl_param.DelimitedText := Trim(sl_params[i]);
         R_proc[i].s_para_name := sl_param[0];
         R_proc[i].s_para_lx_code := sl_param[1];
       end;
