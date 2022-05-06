@@ -1094,7 +1094,7 @@ begin
   // mtblh1.Active := True;
   for i := 0 to dbgrdh1.Columns.Count - 1 do
   begin
-    if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftFloat) then
+    if (dbgrdh1.DataSource.DataSet.Fields[i].DataType in [ftFloat,ftFMTBcd]) then
       dbgrdh1.Columns[i].DisplayFormat := '#,####,####,##0.00';
     if (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftInteger) or
       (dbgrdh1.DataSource.DataSet.Fields[i].DataType = ftSmallint) then
