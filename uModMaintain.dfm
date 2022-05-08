@@ -32,6 +32,12 @@ object FModMaintain: TFModMaintain
     DataController.KeyField = 't_id'
     FilterBox.CustomizeDialog = False
     FilterBox.Position = fpTop
+    FindPanel.DisplayMode = fpdmAlways
+    FindPanel.InfoText = #36755#20837#25991#26412#26597#25214#27169#22411#8230#8230
+    FindPanel.ShowClearButton = False
+    FindPanel.ShowCloseButton = False
+    FindPanel.ShowFindButton = False
+    FindPanel.UseDelayedFind = False
     Images = F_DT.vrtlmglst1
     LookAndFeel.Kind = lfFlat
     LookAndFeel.SkinName = ''
@@ -50,6 +56,7 @@ object FModMaintain: TFModMaintain
     RootValue = 0
     Styles.Background = cxstyl1
     Styles.Content = cxstyl1
+    Styles.FindPanel = cxstyl2
     Styles.BandBackground = cxstyl1
     Styles.BandHeader = cxstylHotTrace
     Styles.ColumnFooter = cxstyl1
@@ -167,12 +174,12 @@ object FModMaintain: TFModMaintain
       Left = 1
       Top = 1
       Width = 1496
-      Height = 32
+      Height = 35
       Align = alTop
       TabOrder = 0
       object bitbtnUndoAll: TBitBtn
         Left = 324
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Hint = #25764#38144#19978#27425#20445#23384#21069#25152#26377#22686#21024#25913
@@ -193,7 +200,7 @@ object FModMaintain: TFModMaintain
       end
       object bitbtnSave: TBitBtn
         Left = 403
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Caption = #20445#23384
@@ -211,7 +218,7 @@ object FModMaintain: TFModMaintain
       end
       object bitbtnUndoOnce: TBitBtn
         Left = 245
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Hint = #25764#38144#26368#36817#19968#26465#35760#24405#30340#22686#21024#25913#12290#21464#26356#36807#24102#26377#23376#39033#39033#30446#30340#25152#23646#31867#21035#65292#21482#33021#20840#37096#25764#38144#25110#23384#30424#12290
@@ -232,7 +239,7 @@ object FModMaintain: TFModMaintain
       end
       object bitbtnExit: TBitBtn
         Left = 639
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Caption = #36820#22238
@@ -250,7 +257,7 @@ object FModMaintain: TFModMaintain
       end
       object bitbtnAddBrother: TBitBtn
         Left = 7
-        Top = 6
+        Top = 8
         Width = 75
         Height = 21
         Hint = #26032#22686#24403#21069#39033#30446#24179#32423#39033#30446
@@ -271,7 +278,7 @@ object FModMaintain: TFModMaintain
       end
       object bitbtnAddChild: TBitBtn
         Left = 88
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Hint = #26032#22686#24403#21069#39033#30446#30340#19979#19968#32423#23376#39033#30446#65292#21516#26102#24403#21069#39033#30446#23646#24615#21464#20026#31867#21035
@@ -292,7 +299,7 @@ object FModMaintain: TFModMaintain
       end
       object bitbtnDelete: TBitBtn
         Left = 167
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Caption = #21024#38500
@@ -310,7 +317,7 @@ object FModMaintain: TFModMaintain
       end
       object bitbtnImport: TBitBtn
         Left = 560
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Caption = #23548#20837
@@ -328,7 +335,7 @@ object FModMaintain: TFModMaintain
       end
       object cxbtnExp: TcxButton
         Left = 481
-        Top = 7
+        Top = 9
         Width = 75
         Height = 21
         Caption = #23548#20986
@@ -343,12 +350,13 @@ object FModMaintain: TFModMaintain
     end
     object pnl3: TPanel
       Left = 1
-      Top = 33
+      Top = 36
       Width = 1496
       Height = 223
       Align = alTop
       TabOrder = 1
       OnResize = pnl3Resize
+      ExplicitTop = 33
       object lbl6: TLabel
         Left = 575
         Top = 4
@@ -583,7 +591,7 @@ object FModMaintain: TFModMaintain
     end
     object cxdbm1: TcxDBMemo
       Left = 1
-      Top = 256
+      Top = 259
       Align = alTop
       ParentFont = False
       Properties.ScrollBars = ssVertical
@@ -599,12 +607,13 @@ object FModMaintain: TFModMaintain
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 2
       Visible = False
+      ExplicitTop = 256
       Height = 81
       Width = 1496
     end
     object DBSynEditCode: TDBSynEdit
       Left = 1
-      Top = 337
+      Top = 340
       Width = 1496
       Height = 136
       Cursor = crIBeam
@@ -652,12 +661,13 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
+      ExplicitTop = 337
     end
     object SynEditCode: TSynEdit
       Left = 1
-      Top = 473
+      Top = 476
       Width = 1496
-      Height = 463
+      Height = 460
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -701,6 +711,8 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
+      ExplicitTop = 473
+      ExplicitHeight = 463
     end
   end
   object cxspltr1: TcxSplitter

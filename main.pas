@@ -103,12 +103,10 @@ type
     N53: TMenuItem;
     N15: TMenuItem;
     N_Proj: TMenuItem;
-    pnl7: TPanel;
     mniN38: TMenuItem;
     Panel3: TPanel;
     N38: TMenuItem;
     N39: TMenuItem;
-    lblHlp: TLabel;
     lblResult: TLabel;
     lblInfo: TLabel;
     lblMemo: TLabel;

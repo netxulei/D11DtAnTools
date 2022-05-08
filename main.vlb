@@ -139,9 +139,6 @@ Coordinates=727,10,60,51
 [lblMemo]
 Coordinates=253,427,56,51
 
-[pnl7]
-Coordinates=750,305,41,51
-
 [N50]
 Coordinates=730,729,40,33
 
@@ -271,9 +268,6 @@ Coordinates=318,305,68,51
 [dsAssis]
 Coordinates=289,281,53,33
 
-[lblHlp]
-Coordinates=184,366,42,51
-
 [cxspltr2]
 Coordinates=384,427,53,33
 
@@ -401,5 +395,5 @@ Coordinates=290,10,88,51
 Coordinates=422,421,40,33
 
 []
-Coordinates=911,365,40,33
+Coordinates=750,305,41,51
 

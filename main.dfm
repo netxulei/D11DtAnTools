@@ -29,6 +29,12 @@ object MainFrm: TMainFrm
     DataController.DataSource = dsTree
     DataController.ParentField = 't_parent_id'
     DataController.KeyField = 't_id'
+    FindPanel.DisplayMode = fpdmAlways
+    FindPanel.InfoText = #36755#20837#25991#26412#26597#25214#27169#22411#8230#8230
+    FindPanel.ShowClearButton = False
+    FindPanel.ShowCloseButton = False
+    FindPanel.ShowFindButton = False
+    FindPanel.UseDelayedFind = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -12
@@ -39,6 +45,7 @@ object MainFrm: TMainFrm
     OptionsBehavior.CellHints = True
     OptionsBehavior.ImmediateEditor = False
     OptionsBehavior.HotTrack = True
+    OptionsBehavior.IncSearch = True
     OptionsBehavior.Sorting = False
     OptionsData.Editing = False
     OptionsData.Deleting = False
@@ -46,14 +53,17 @@ object MainFrm: TMainFrm
     OptionsSelection.HideFocusRect = False
     OptionsView.CellAutoHeight = True
     OptionsView.ColumnAutoWidth = True
+    OptionsView.DropNodeIndicator = True
     OptionsView.GridLines = tlglHorz
     OptionsView.IndicatorWidth = 8
     OptionsView.TreeLineColor = clHotLight
     ParentFont = False
     PopupMenu = pm1
+    Preview.AutoHeight = False
     RootValue = -1
     Styles.Background = cxstyl1
     Styles.Content = cxstyl1
+    Styles.FindPanel = cxstyl2
     Styles.BandBackground = cxstyl1
     Styles.BandContent = cxstyl1
     Styles.BandHeader = cxstylTraceHot
@@ -99,9 +109,9 @@ object MainFrm: TMainFrm
     TabOrder = 1
     object Panel2: TPanel
       Left = 1
-      Top = 25
+      Top = 1
       Width = 1334
-      Height = 32
+      Height = 34
       Align = alTop
       Caption = 'Panel2'
       ParentBackground = False
@@ -109,24 +119,25 @@ object MainFrm: TMainFrm
       object lblMemo: TLabel
         Left = 1
         Top = 1
-        Width = 52
-        Height = 30
+        Width = 64
+        Height = 32
         Align = alLeft
-        Caption = #21151#33021#25551#36848
+        Caption = #21151#33021#25551#36848'    '
         Layout = tlCenter
         ExplicitHeight = 15
       end
       object pnl3: TPanel
-        Left = 53
+        Left = 65
         Top = 1
-        Width = 1280
-        Height = 30
+        Width = 1268
+        Height = 32
         Align = alClient
         BevelOuter = bvLowered
         Color = 16776176
         ParentBackground = False
         TabOrder = 0
         OnResize = pnl3Resize
+        ExplicitHeight = 30
         object cxdbtxtdt1: TcxDBTextEdit
           Left = 1
           Top = 1
@@ -151,21 +162,24 @@ object MainFrm: TMainFrm
           StyleDisabled.Color = clWhite
           StyleDisabled.TextColor = clBlack
           TabOrder = 0
-          Height = 28
-          Width = 1278
+          ExplicitHeight = 28
+          Height = 30
+          Width = 1266
         end
       end
     end
     object pnl1: TPanel
       Left = 1
-      Top = 57
+      Top = 35
       Width = 1334
-      Height = 939
+      Height = 961
       Align = alClient
       Caption = 'pnl1'
       Color = 16776176
       ParentBackground = False
       TabOrder = 1
+      ExplicitTop = 57
+      ExplicitHeight = 939
       object pnl5: TPanel
         Left = 1
         Top = 1
@@ -509,18 +523,19 @@ object MainFrm: TMainFrm
         Left = 1
         Top = 657
         Width = 1332
-        Height = 281
+        Height = 303
         Align = alClient
         Color = 16776176
         ParentBackground = False
         TabOrder = 3
         Visible = False
         OnResize = pnl2Resize
+        ExplicitHeight = 281
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 61
           Width = 1330
-          Height = 219
+          Height = 241
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -790,32 +805,6 @@ object MainFrm: TMainFrm
         ShowHint = True
         ParentShowHint = False
         Visible = False
-      end
-    end
-    object pnl7: TPanel
-      Left = 1
-      Top = 1
-      Width = 1334
-      Height = 24
-      Align = alTop
-      ParentBackground = False
-      TabOrder = 2
-      object lblHlp: TLabel
-        Left = 1
-        Top = 1
-        Width = 1332
-        Height = 22
-        Align = alClient
-        Caption = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        ParentFont = False
-        Layout = tlCenter
-        ExplicitWidth = 712
-        ExplicitHeight = 13
       end
     end
   end
@@ -2774,6 +2763,8 @@ object MainFrm: TMainFrm
     Top = 273
   end
   object fdQryTree: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Active = True
     Connection = F_DT.FDConSysTmp
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
