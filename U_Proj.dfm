@@ -65,6 +65,7 @@ object F_Proj: TF_Proj
         Footers = <>
         Title.Alignment = taCenter
         Title.Caption = #39033#30446#32534#21495
+        Width = 57
       end
       item
         CellButtons = <>

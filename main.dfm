@@ -30,8 +30,8 @@ object MainFrm: TMainFrm
     DataController.ParentField = 't_parent_id'
     DataController.KeyField = 't_id'
     FindPanel.DisplayMode = fpdmAlways
+    FindPanel.FocusContentOnApplyFilter = True
     FindPanel.InfoText = #36755#20837#25991#26412#26597#25214#27169#22411#8230#8230
-    FindPanel.ShowClearButton = False
     FindPanel.ShowCloseButton = False
     FindPanel.ShowFindButton = False
     FindPanel.UseDelayedFind = False
@@ -137,7 +137,6 @@ object MainFrm: TMainFrm
         ParentBackground = False
         TabOrder = 0
         OnResize = pnl3Resize
-        ExplicitHeight = 30
         object cxdbtxtdt1: TcxDBTextEdit
           Left = 1
           Top = 1
@@ -162,7 +161,6 @@ object MainFrm: TMainFrm
           StyleDisabled.Color = clWhite
           StyleDisabled.TextColor = clBlack
           TabOrder = 0
-          ExplicitHeight = 28
           Height = 30
           Width = 1266
         end
@@ -178,8 +176,6 @@ object MainFrm: TMainFrm
       Color = 16776176
       ParentBackground = False
       TabOrder = 1
-      ExplicitTop = 57
-      ExplicitHeight = 939
       object pnl5: TPanel
         Left = 1
         Top = 1
@@ -530,7 +526,6 @@ object MainFrm: TMainFrm
         TabOrder = 3
         Visible = False
         OnResize = pnl2Resize
-        ExplicitHeight = 281
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 61
@@ -2764,7 +2759,6 @@ object MainFrm: TMainFrm
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSysTmp
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
@@ -2786,9 +2780,10 @@ object MainFrm: TMainFrm
       Size = 50
     end
     object fdQryTreet_memo: TStringField
+      DisplayWidth = 400
       FieldName = 't_memo'
       Origin = 't_memo'
-      Size = 200
+      Size = 400
     end
     object fdQryTreet_para: TStringField
       FieldName = 't_para'

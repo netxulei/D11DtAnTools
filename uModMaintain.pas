@@ -114,7 +114,6 @@ type
     SynSQLSyn1: TSynSQLSyn;
     SynEditCode: TSynEdit;
     FDMtblTree: TFDMemTable;
-    btn1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
       AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
@@ -150,7 +149,6 @@ type
     procedure pnl3Resize(Sender: TObject);
     procedure cxdbtrlst1KeyPress(Sender: TObject; var Key: Char);
     procedure cxdbchckbx3Editing(Sender: TObject; var CanEdit: Boolean);
-    procedure btn1Click(Sender: TObject);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -276,11 +274,6 @@ begin
   AddNode(False);
   fdQryTitle.Refresh;
 
-end;
-
-procedure TFModMaintain.btn1Click(Sender: TObject);
-begin
-  ShowMessage(inttostr(cxdbtrlst1.FocusedNode.Count));
 end;
 
 procedure TFModMaintain.btnTestClick(Sender: TObject);
@@ -1130,6 +1123,7 @@ var
   cur_id, cur_par_id, cur_level, max_id, i, pare_id_tmp: integer;
   s_cur_sort, s_max_sort, s_sort_num: string;
 begin
+//  cxdbtrlst1.FindPanel.
   fdQryTree.DisableControls;
   // 当前记录节点和父节点号
   if fdQryTree.Eof then

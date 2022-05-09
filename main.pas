@@ -616,7 +616,7 @@ begin
         if ClickedOK then { NewString contains new input string }
         begin
           // 根据提示参数“日期”“数”等判断数据是否输入正确
-          if R_proc[i - 1].s_para_lx = 'D' then
+          if (R_proc[i - 1].s_para_lx = 'D') AND (Length(R_proc[i - 1].s_para_value)>0) then  //日期参数可以为空，但代码中要注意转换
           begin
             // 判断是否日期
             try

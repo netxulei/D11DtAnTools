@@ -22,7 +22,7 @@ object FModMaintain: TFModMaintain
     Left = 0
     Top = 0
     Width = 337
-    Height = 937
+    Height = 945
     Align = alLeft
     Bands = <
       item
@@ -33,10 +33,9 @@ object FModMaintain: TFModMaintain
     FilterBox.CustomizeDialog = False
     FilterBox.Position = fpTop
     FindPanel.DisplayMode = fpdmAlways
+    FindPanel.FocusContentOnApplyFilter = True
     FindPanel.InfoText = #36755#20837#25991#26412#26597#25214#27169#22411#8230#8230
-    FindPanel.ShowClearButton = False
     FindPanel.ShowCloseButton = False
-    FindPanel.ShowFindButton = False
     FindPanel.UseDelayedFind = False
     Images = F_DT.vrtlmglst1
     LookAndFeel.Kind = lfFlat
@@ -166,14 +165,14 @@ object FModMaintain: TFModMaintain
   object pnl1: TPanel
     Left = 345
     Top = 0
-    Width = 1498
-    Height = 937
+    Width = 1500
+    Height = 945
     Align = alClient
     TabOrder = 1
     object pnl6: TPanel
       Left = 1
       Top = 1
-      Width = 1496
+      Width = 1498
       Height = 35
       Align = alTop
       TabOrder = 0
@@ -351,12 +350,11 @@ object FModMaintain: TFModMaintain
     object pnl3: TPanel
       Left = 1
       Top = 36
-      Width = 1496
+      Width = 1498
       Height = 223
       Align = alTop
       TabOrder = 1
       OnResize = pnl3Resize
-      ExplicitTop = 33
       object lbl6: TLabel
         Left = 575
         Top = 4
@@ -579,15 +577,6 @@ object FModMaintain: TFModMaintain
         TabOrder = 9
         Width = 121
       end
-      object btn1: TButton
-        Left = 1128
-        Top = 152
-        Width = 75
-        Height = 25
-        Caption = 'btn1'
-        TabOrder = 10
-        OnClick = btn1Click
-      end
     end
     object cxdbm1: TcxDBMemo
       Left = 1
@@ -607,14 +596,13 @@ object FModMaintain: TFModMaintain
       StyleHot.LookAndFeel.NativeStyle = True
       TabOrder = 2
       Visible = False
-      ExplicitTop = 256
       Height = 81
-      Width = 1496
+      Width = 1498
     end
     object DBSynEditCode: TDBSynEdit
       Left = 1
       Top = 340
-      Width = 1496
+      Width = 1498
       Height = 136
       Cursor = crIBeam
       Align = alTop
@@ -661,13 +649,12 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
-      ExplicitTop = 337
     end
     object SynEditCode: TSynEdit
       Left = 1
       Top = 476
-      Width = 1496
-      Height = 460
+      Width = 1498
+      Height = 468
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -711,15 +698,13 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
-      ExplicitTop = 473
-      ExplicitHeight = 463
     end
   end
   object cxspltr1: TcxSplitter
     Left = 337
     Top = 0
     Width = 8
-    Height = 937
+    Height = 945
     Cursor = crHSplit
     Hint = #24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
@@ -731,8 +716,8 @@ object FModMaintain: TFModMaintain
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 937
-    Width = 1843
+    Top = 945
+    Width = 1845
     Height = 19
     Panels = <>
     SimplePanel = True
@@ -775,7 +760,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
@@ -808,9 +792,10 @@ object FModMaintain: TFModMaintain
       Size = 50
     end
     object fdQryTreet_memo: TStringField
+      DisplayWidth = 400
       FieldName = 't_memo'
       Origin = 't_memo'
-      Size = 200
+      Size = 400
     end
     object fdQryTreet_para: TStringField
       FieldName = 't_para'

@@ -303,7 +303,17 @@ begin
 end;
 
 procedure TF_Proj.FormCreate(Sender: TObject);
+var
+  i: Integer;
 begin
+  dbgrdh1.columns[3].PickList.Clear;
+  dbgrdh1.columns[3].keyList.Clear;
+  for i := 0 to t_ver_nameLS.count - 1 do
+  begin
+    dbgrdh1.columns[3].keyList.Add(t_ver_noLS[i]);
+    dbgrdh1.columns[3].PickList.Add(t_ver_nameLS[i]);
+  end;
+
   pnl3.Width := F_Proj.Width;
   lbl2.Caption := '当前项目：' + t_proj_name;
   // 数据库列表，用于判断项目中的数据库名称是否有效
