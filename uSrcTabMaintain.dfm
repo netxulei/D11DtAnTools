@@ -448,7 +448,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Footers = <>
             Title.Caption = 'XLS'#23545#24212#23383#27573
             Title.Hint = 'Excel'#34920#19981#33021#20026#31354#65281#22810#20010#21517#31216#20197#31446#26464#8220#65372#8221#20998#38548
-            Width = 276
+            Width = 73
           end
           item
             CellButtons = <>
@@ -514,7 +514,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1500
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -898,7 +897,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcTab: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_sort'
     OnUpdateRecord = fdQrySrcTabUpdateRecord
@@ -955,11 +953,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       FixedChar = True
       Size = 1
     end
-    object fdQrySrcTabtab_memo: TStringField
-      FieldName = 'tab_memo'
-      Origin = 'tab_memo'
-      Size = 300
-    end
     object fdQrySrcTabtab_id: TStringField
       FieldName = 'tab_id'
       Origin = 'tab_id'
@@ -973,6 +966,18 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Origin = 'GloImp'
       FixedChar = True
       Size = 1
+    end
+    object fdQrySrcTabtype: TStringField
+      FieldName = 'type'
+      Origin = 'type'
+      FixedChar = True
+      Size = 1
+    end
+    object fdQrySrcTabtab_memo: TStringField
+      DisplayWidth = 400
+      FieldName = 'tab_memo'
+      Origin = 'tab_memo'
+      Size = 400
     end
     object fdQrySrcTabtab_sort: TIntegerField
       FieldName = 'tab_sort'
@@ -1054,6 +1059,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       FixedChar = True
       Size = 1
     end
+    object fdQrySrcColcol_index_m: TStringField
+      FieldName = 'col_index_m'
+      Origin = 'col_index_m'
+      FixedChar = True
+      Size = 1
+    end
     object fdQrySrcColcol_rept: TStringField
       FieldName = 'col_rept'
       Origin = 'col_rept'
@@ -1099,9 +1110,10 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Size = 1
     end
     object fdQrySrcColcol_memo: TStringField
+      DisplayWidth = 400
       FieldName = 'col_memo'
       Origin = 'col_memo'
-      Size = 300
+      Size = 400
     end
     object fdQrySrcColcol_sort: TIntegerField
       FieldName = 'col_sort'

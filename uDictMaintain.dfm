@@ -181,11 +181,6 @@ object frmDictMaintain: TfrmDictMaintain
             DynProps = <>
             EditButtons = <>
             FieldName = 'dict_val'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -13
-            Font.Name = 'Segoe UI Light'
-            Font.Style = []
             Footers = <>
             Layout = tlCenter
             Title.Caption = #23383#20856#20540
@@ -197,11 +192,6 @@ object frmDictMaintain: TfrmDictMaintain
             DynProps = <>
             EditButtons = <>
             FieldName = 'dict_lable'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -13
-            Font.Name = 'Segoe UI Light'
-            Font.Style = []
             Footers = <>
             Title.Caption = #23383#20856#20013#25991#21517#31216
             Width = 261
@@ -212,11 +202,6 @@ object frmDictMaintain: TfrmDictMaintain
             DynProps = <>
             EditButtons = <>
             FieldName = 'dict_val_memo'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -13
-            Font.Name = 'Segoe UI Light'
-            Font.Style = []
             Footers = <>
             Layout = tlCenter
             Title.Caption = #35828#26126
@@ -638,9 +623,10 @@ object frmDictMaintain: TfrmDictMaintain
       Origin = 'dict_type_sort'
     end
     object fdQryDictTypedict_type_memo: TStringField
+      DisplayWidth = 400
       FieldName = 'dict_type_memo'
       Origin = 'dict_type_memo'
-      Size = 300
+      Size = 400
     end
   end
   object fdQryDictVal: TFDQuery
@@ -703,9 +689,10 @@ object frmDictMaintain: TfrmDictMaintain
       Origin = 'dict_val_sort'
     end
     object fdQryDictValdict_val_memo: TStringField
+      DisplayWidth = 400
       FieldName = 'dict_val_memo'
       Origin = 'dict_val_memo'
-      Size = 300
+      Size = 400
     end
   end
   object dlgSave1: TSaveDialog

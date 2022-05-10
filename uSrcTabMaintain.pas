@@ -98,6 +98,8 @@ type
     fdQrySrcTabtxt_split: TStringField;
     fdQrySrcTabtxt_qualifier: TStringField;
     fdQrySrcColcol_regName: TStringField;
+    fdQrySrcTabtype: TStringField;
+    fdQrySrcColcol_index_m: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
