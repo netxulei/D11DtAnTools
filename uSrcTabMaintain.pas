@@ -16,7 +16,7 @@ uses
   Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions, System.Zip;
+  cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions, System.Zip, SynEdit, SynDBEdit, Vcl.Mask, DBCtrlsEh;
 
 type
   TMyNavgator = class(TDBNavigator);
@@ -55,16 +55,12 @@ type
     dsDictList: TDataSource;
     dsColType: TDataSource;
     FlowPanel1: TFlowPanel;
-    cxLookupComboBoxDictList: TcxLookupComboBox;
-    lblDict: TLabel;
     fdQrySrcTabtab_XLS: TStringField;
     fdQrySrcTabtab_TXT: TStringField;
     fdQrySrcTabtab_id: TStringField;
     fdQrySrcTabtab_sort: TIntegerField;
     fdQrySrcTabchn_col: TStringField;
     fdQrySrcTabGloImp: TStringField;
-    lblReg: TLabel;
-    cxLookupComboBoxReg: TcxLookupComboBox;
     fdQryReg: TFDQuery;
     fdQrySrcColcol_Id: TStringField;
     fdQrySrcColtab_id: TStringField;
@@ -99,7 +95,17 @@ type
     fdQrySrcTabtxt_qualifier: TStringField;
     fdQrySrcColcol_regName: TStringField;
     fdQrySrcTabtype: TStringField;
-    fdQrySrcColcol_index_m: TStringField;
+    fdQrySrcTabcombIndex: TMemoField;
+    lblDict: TLabel;
+    cxLookupComboBoxDictList: TcxLookupComboBox;
+    lblReg: TLabel;
+    cxLookupComboBoxReg: TcxLookupComboBox;
+    lblTabType: TLabel;
+    cxLookupComboBoxType: TcxLookupComboBox;
+    DBSynEditComInd: TDBSynEdit;
+    lblComIndex: TLabel;
+    dsTabType: TDataSource;
+    FDQryTabType: TFDQuery;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -123,6 +129,9 @@ type
     procedure BitBtnBackUPClick(Sender: TObject);
     procedure BitBtnRestoreClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure DBSynEditComIndEnter(Sender: TObject);
+    procedure DBSynEditComIndExit(Sender: TObject);
+    procedure cxLookupComboBoxTypePropertiesEditValueChanged(Sender: TObject);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -170,8 +179,8 @@ begin
     fdQrySrcTab['tab_txt'] := '1';
     fdQrySrcTab['chn_col'] := '1';
     fdQrySrcTab['GloImp'] := '0';
-    fdQrySrcTab['txt_split']:='|';
-    fdQrySrcTab['txt_qualifier']:='"';
+    fdQrySrcTab['txt_split'] := '|';
+    fdQrySrcTab['txt_qualifier'] := '"';
     fdQrySrcTab.Post;
     DBGridEhSrcTab.SetFocus;
     Abort;
@@ -258,6 +267,18 @@ begin
 
 end;
 
+procedure TfrmSrcTabMaintain.DBSynEditComIndEnter(Sender: TObject);
+begin
+  DBSynEditComInd.Height := DBSynEditComInd.Height * 3;
+end;
+
+procedure TfrmSrcTabMaintain.DBSynEditComIndExit(Sender: TObject);
+begin
+  DBSynEditComInd.Height := DBSynEditComInd.Height div 3;
+  //校验作为索引的字段是否存在
+
+end;
+
 procedure TfrmSrcTabMaintain.StatusCalcFields(DataSet: TDataSet);
 begin
   case DataSet.UpdateStatus of
@@ -332,6 +353,7 @@ begin
   MyIniFile := TIniFile.Create(s_filename);
   dict_list_col := MyIniFile.ReadString('Other', 'dict_list_col', '');
   dict_list_reg := MyIniFile.ReadString('Other', 'dict_list_reg', '');
+  dict_list_type := MyIniFile.ReadString('Other', 'dict_list_type', '');
   MyIniFile.Free;
   // dict_list_col := '9DA1A56BB935419182BDAB4C86ABF003'; // 此为暂时，集成时要读取ini文件
 {$IF CompilerVersion >= 30.0}
@@ -341,16 +363,22 @@ begin
   fdQrySrcCol.CachedUpdates := True;
   fdQrySrcTab.Connection := F_DT.FDconSYS;
   fdQrySrcCol.Connection := F_DT.FDconSYS;
+
   fdQryDictList.Connection := F_DT.FDconSYS;
   fdQryReg.Connection := F_DT.FDconSYS;
   fdQryColType.Connection := F_DT.FDconSYS;
+  FDQryTabType.Connection := F_DT.FDconSYS;
+
   fdQrySrcTab.open();
   fdQrySrcCol.open();
   // 字典列表
   fdQryDictList.open();
+  fdQryColType.Open();
   cxLookupComboBoxDictList.EditValue := dict_list_col;
   fdQryReg.open();
   cxLookupComboBoxReg.EditValue := dict_list_reg;
+  FDQryTabType.open();
+  cxLookupComboBoxType.EditValue := dict_list_type;
   // 初始化列表 ，会产生onvalid事件  以下fdqrcoltype在事件中写入
   // //赋值参数,打开字段类型列表
   // fdQryColType.ParamByName('Dict_type_id').AsString := dict_list_col;
@@ -1069,6 +1097,28 @@ begin
   fdQryReg.close;
   fdQryReg.ParamByName('Dict_type_id').AsString := dict_list_reg;
   fdQryReg.open();
+end;
+
+procedure TfrmSrcTabMaintain.cxLookupComboBoxTypePropertiesEditValueChanged(Sender: TObject);
+var
+  iniFilename: string;
+  MyIniFile: TIniFile;
+begin
+  // ShowMessage(cxLookupComboBoxDictList.EditValue);
+  if dict_list_type <> cxLookupComboBoxType.EditValue then
+  begin
+    dict_list_type := cxLookupComboBoxType.EditValue;
+    // 写入ini文件
+    iniFilename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
+    MyIniFile := TIniFile.Create(iniFilename);
+    MyIniFile.WriteString('Other', 'dict_list_type', dict_list_type);
+    MyIniFile.Free; // ……
+    // ShowMessage('write to ini file');
+  end;
+  // 赋值参数,打开字段类型列表
+  FDQryTabType.close;
+  FDQryTabType.ParamByName('Dict_type_id').AsString := dict_list_type;
+  FDQryTabType.open();
 end;
 
 procedure TfrmSrcTabMaintain.OnDataChange(Sender: TObject; Field: TField);

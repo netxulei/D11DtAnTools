@@ -24,6 +24,7 @@ var
   t_isProc: Boolean;
   globle_tab, dict_list_col, // 字段类型列表
   dict_list_reg, // 校验规则列表
+  dict_list_type, // 表所云行业类型列表
   t_connect, // 连接字
   t_mod_pass, // 开放模式密码
   t_proj_no, t_proj_name, // 项目编号和名称

@@ -3,7 +3,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   Top = 0
   Caption = #25509#21475#35268#33539#23450#20041#32500#25252
   ClientHeight = 918
-  ClientWidth = 1708
+  ClientWidth = 1741
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
     Top = 59
-    Width = 1708
+    Width = 1741
     Height = 840
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
@@ -85,6 +85,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         Width = 28
       end
       item
+        Alignment = taLeftJustify
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
@@ -122,14 +123,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         KeyList.Strings = (
           '1'
           '0')
-        Title.Caption = 'Excel'#23548#20837
+        Title.Caption = 'Excel'
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
         Title.Font.Height = -13
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Hint = 'Excel'#23548#20837#35201#27714#26631#39064#34892#21517#31216#19982#35268#33539#20013'XLS'#23545#24212#23383#27573#19968#33268#65292#23383#27573#25968#37327#19982#39034#24207#21487#20197#23481#38169
-        Width = 75
+        Width = 44
         WordWrap = False
       end
       item
@@ -142,14 +143,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         KeyList.Strings = (
           '1'
           '0')
-        Title.Caption = #25991#26412#23548#20837
+        Title.Caption = #25991#26412
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
         Title.Font.Height = -13
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Hint = #25991#26412#23548#20837#35201#27714#25991#26412#25991#20214#23383#27573#25968#37327#12289#23383#27573#20301#32622#19982#35268#33539#19968#33268#65292#23383#27573#21517#31216#21487#20197#23481#38169
-        Width = 82
+        Width = 51
         WordWrap = False
       end
       item
@@ -158,14 +159,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         EditButtons = <>
         FieldName = 'txt_split'
         Footers = <>
-        Title.Caption = #20998#38548#31526
+        Title.Caption = #20998#38548
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
         Title.Font.Height = -13
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Hint = #25991#26412#25991#20214'.'#20998#38548#19968#34892#25991#26412#21040#22810#20010#23383#27573
-        Width = 59
+        Width = 45
       end
       item
         CellButtons = <>
@@ -173,14 +174,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         EditButtons = <>
         FieldName = 'txt_qualifier'
         Footers = <>
-        Title.Caption = #38480#23450#31526
+        Title.Caption = #38480#23450
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
         Title.Font.Height = -13
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Hint = #25991#26412#25991#20214'.'#34987#20998#38548#31526#20998#38548#30340#23383#27573#25152#20351#29992#30340#38480#23450#31526#12290
-        Width = 58
+        Width = 37
       end
       item
         CellButtons = <>
@@ -192,14 +193,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         KeyList.Strings = (
           '1'
           '0')
-        Title.Caption = #20013#25991#23383#27573
+        Title.Caption = #20013#25991
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
         Title.Font.Height = -13
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
-        Title.Hint = #36873#20013#21017#24314#31435#25968#25454#34920#26102#20351#29992#20013#25991#21517#31216#23383#27573#65288#33521#25991#21517#31216#23383#27573#21487#20026#31354#65289#65292#13#10#21542#21017#20351#29992#33521#25991#21517#31216#23383#27573#12290
-        Width = 74
+        Title.Hint = #36873#20013#21017#20351#29992#20013#25991#21517#31216#23383#27573#65288#33521#25991#21517#31216#23383#27573#21487#20026#31354#65289#65292#21542#21017#20351#29992#33521#25991#21517#31216#23383#27573#12290
+        Width = 42
       end
       item
         CellButtons = <>
@@ -211,14 +212,32 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         KeyList.Strings = (
           '1'
           '0')
-        Title.Caption = #20840#23616#34920
+        Title.Caption = #20840#23616
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
         Title.Font.Height = -13
         Title.Font.Name = 'Segoe UI'
         Title.Font.Style = []
         Title.Hint = #36873#20013#21017#25968#25454#34920#19981#20381#36182#20110#39033#30446#65292#21542#21017#35813#34920#23548#20837#39033#30446#20013
-        Width = 86
+        Width = 38
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'type'
+        Footers = <>
+        LookupParams.KeyFieldNames = 'type'
+        LookupParams.LookupDataSet = FDQryTabType
+        LookupParams.LookupDisplayFieldName = 'dict_lable'
+        LookupParams.LookupKeyFieldNames = 'dict_val'
+        Title.Caption = #34892#19994#31867#21035
+        Title.Font.Charset = DEFAULT_CHARSET
+        Title.Font.Color = clWindowText
+        Title.Font.Height = -13
+        Title.Font.Name = 'Segoe UI'
+        Title.Font.Style = []
+        Width = 168
       end
       item
         CellButtons = <>
@@ -238,14 +257,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object DBGridEhSrcCol: TDBGridEh
         Left = 0
         Top = 27
-        Width = 1582
+        Width = 1574
         Height = 351
         Align = alClient
         AllowedOperations = [alopUpdateEh, alopDeleteEh]
         AutoFitColWidths = True
         ColumnDefValues.AlwaysShowEditButton = True
         ColumnDefValues.EndEllipsis = True
-        ColumnDefValues.Title.Alignment = taCenter
         ColumnDefValues.Title.EndEllipsis = True
         ColumnDefValues.Title.ToolTips = True
         ColumnDefValues.ToolTips = True
@@ -284,6 +302,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         TitleParams.Font.Height = -13
         TitleParams.Font.Name = 'Segoe UI'
         TitleParams.Font.Style = []
+        TitleParams.MultiTitle = True
         TitleParams.ParentFont = False
         VertScrollBar.SmoothStep = True
         Columns = <
@@ -378,9 +397,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             PickList.Strings = (
               '0'
               '1')
-            Title.Caption = #32034#24341
-            Title.Hint = #36873#25321#30830#23450#23548#20837#25968#25454#26102#65292#27492#23383#27573#26159#21542#24314#31435#32034#24341
-            Width = 37
+            Title.Caption = #29420#31435#32034#24341
+            Title.Hint = #23548#20837#25968#25454#26102#65292#27492#23383#27573#24314#31435#29420#31435#32034#24341
+            Width = 48
           end
           item
             CellButtons = <>
@@ -448,7 +467,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Footers = <>
             Title.Caption = 'XLS'#23545#24212#23383#27573
             Title.Hint = 'Excel'#34920#19981#33021#20026#31354#65281#22810#20010#21517#31216#20197#31446#26464#8220#65372#8221#20998#38548
-            Width = 73
+            Width = 62
           end
           item
             CellButtons = <>
@@ -467,7 +486,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             LookupParams.LookupKeyFieldNames = 'dict_val_id;dict_val;dict_lable'
             Title.Caption = #26657#39564#35268#21017#65288#27491#21017#34920#36798#24335#65289
             Title.Hint = #27491#21017#34920#36798#24335#26041#24335#30340#26657#39564#35268#21017
-            Width = 180
+            Width = 215
           end
           item
             CellButtons = <>
@@ -493,7 +512,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             FieldName = 'col_memo'
             Footers = <>
             Title.Caption = #35828#26126
-            Width = 200
+            Width = 333
           end>
         object RowDetailData: TRowDetailPanelControlEh
         end
@@ -501,7 +520,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       object flwpnlDt: TFlowPanel
         Left = 0
         Top = 0
-        Width = 1582
+        Width = 1574
         Height = 27
         Align = alTop
         AutoSize = True
@@ -514,6 +533,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
+        ExplicitWidth = 1571
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -568,7 +588,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         object FlowPanel1: TFlowPanel
           Left = 614
           Top = 1
-          Width = 323
+          Width = 107
           Height = 24
           Align = alRight
           Ctl3D = False
@@ -581,35 +601,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           ParentCtl3D = False
           ParentFont = False
           TabOrder = 3
-          object cxLookupComboBoxDictList: TcxLookupComboBox
-            Left = 128
-            Top = -2
-            Hint = #23383#27573#31867#22411#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
-            Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
-            Properties.KeyFieldNames = 'dict_type_id'
-            Properties.ListColumns = <
-              item
-                FieldName = 'dict_type_name_cn'
-              end>
-            Properties.ListOptions.ShowHeader = False
-            Properties.ListSource = dsDictList
-            Properties.OnEditValueChanged = cxLookupComboBoxDictListPropertiesEditValueChanged
-            Style.BorderColor = clMenuHighlight
-            Style.BorderStyle = ebsNone
-            Style.Edges = [bLeft, bTop, bRight, bBottom]
-            Style.Shadow = True
-            Style.ButtonStyle = btsHotFlat
-            TabOrder = 0
-            Width = 194
-          end
-          object lblDict: TLabel
-            Left = 6
+          object lblComIndex: TLabel
+            Left = 34
             Top = 0
-            Width = 122
+            Width = 72
             Height = 23
             Align = alClient
             AutoSize = False
-            Caption = '  '#23383#27573#31867#22411#26469#28304'  '
+            Caption = #32452#21512#32034#24341
             Color = clHighlight
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clHotLight
@@ -621,44 +620,55 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Layout = tlCenter
           end
         end
-        object lblReg: TLabel
-          Left = 937
+        object DBSynEditComInd: TDBSynEdit
+          Left = 721
           Top = 1
-          Width = 120
-          Height = 23
-          Align = alClient
-          AutoSize = False
-          Caption = '   '#26657#39564#35268#21017#26469#28304
-          Color = clHighlight
+          Width = 496
+          Height = 24
+          Cursor = crIBeam
+          Hint = 
+            '1.'#19968#34892#20026#19968#20010#32452#21512#32034#24341#65288#21253#21547#22810#20010#23383#27573#30340#32034#24341#65289#65307#13#10'2.'#27599#20010#32452#21512#32034#24341#33267#23569#21253#21547'2'#20010#23383#27573#65288#20197#31446#26464#20998#38548#65289#65307#13#10'3.'#29420#31435#32034#24341#22312#19979#34920#21333#29420#26631#35782 +
+            #12290'|1.'#19968#34892#20026#19968#20010#32452#21512#32034#24341#65288#21253#21547#22810#20010#23383#27573#30340#32034#24341#65289#65307#13#10'2.'#27599#20010#32452#21512#32034#24341#33267#23569#21253#21547'2'#20010#23383#27573#65288#20197#8220
+          DataField = 'combIndex'
+          DataSource = dsSrcTab
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clHotLight
-          Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Consolas'
           Font.Style = []
+          Font.Quality = fqClearTypeNatural
           ParentColor = False
           ParentFont = False
-          Layout = tlCenter
-        end
-        object cxLookupComboBoxReg: TcxLookupComboBox
-          Left = 1057
-          Top = 1
-          Hint = #26657#39564#35268#21017#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
-          Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
-          Properties.KeyFieldNames = 'dict_type_id'
-          Properties.ListColumns = <
-            item
-              FieldName = 'dict_type_name_cn'
-            end>
-          Properties.ListOptions.ShowHeader = False
-          Properties.ListSource = dsDictList
-          Properties.OnEditValueChanged = cxLookupComboBoxRegPropertiesEditValueChanged
-          Style.BorderColor = clMenuHighlight
-          Style.BorderStyle = ebsNone
-          Style.Edges = [bLeft, bTop, bRight, bBottom]
-          Style.Shadow = True
-          Style.ButtonStyle = btsHotFlat
           TabOrder = 4
-          Width = 280
+          OnEnter = DBSynEditComIndEnter
+          OnExit = DBSynEditComIndExit
+          Gutter.DigitCount = 2
+          Gutter.Font.Charset = DEFAULT_CHARSET
+          Gutter.Font.Color = clWindowText
+          Gutter.Font.Height = -9
+          Gutter.Font.Name = 'Consolas'
+          Gutter.Font.Style = []
+          Gutter.Font.Quality = fqClearTypeNatural
+          Gutter.ShowLineNumbers = True
+          Gutter.Bands = <
+            item
+              Kind = gbkMarks
+              Width = 13
+            end
+            item
+              Kind = gbkLineNumbers
+            end
+            item
+              Kind = gbkFold
+            end
+            item
+              Kind = gbkTrackChanges
+            end
+            item
+              Kind = gbkMargin
+              Width = 3
+            end>
+          SelectedColor.Alpha = 0.400000005960464500
         end
       end
     end
@@ -666,7 +676,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   object flwpnlDictType: TFlowPanel
     Left = 0
     Top = 32
-    Width = 1708
+    Width = 1741
     Height = 27
     Align = alTop
     AutoSize = True
@@ -677,6 +687,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Font.Style = []
     ParentFont = False
     TabOrder = 1
+    ExplicitWidth = 1733
     object dbnvgrDictType: TDBNavigator
       Left = 1
       Top = 1
@@ -729,11 +740,128 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       TabOrder = 2
       OnClick = bitbtnTypeDownClick
     end
+    object lblDict: TLabel
+      Left = 692
+      Top = 1
+      Width = 106
+      Height = 23
+      Align = alClient
+      AutoSize = False
+      Caption = '  '#23383#27573#31867#22411#26469#28304'  '
+      Color = clHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clHotLight
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object cxLookupComboBoxDictList: TcxLookupComboBox
+      Left = 798
+      Top = 1
+      Hint = #23383#27573#31867#22411#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
+      Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
+      Properties.KeyFieldNames = 'dict_type_id'
+      Properties.ListColumns = <
+        item
+          FieldName = 'dict_type_name_cn'
+        end>
+      Properties.ListOptions.ShowHeader = False
+      Properties.ListSource = dsDictList
+      Properties.OnEditValueChanged = cxLookupComboBoxDictListPropertiesEditValueChanged
+      Style.BorderColor = clMenuHighlight
+      Style.BorderStyle = ebsNone
+      Style.Edges = [bLeft, bTop, bRight, bBottom]
+      Style.Shadow = True
+      Style.ButtonStyle = btsHotFlat
+      TabOrder = 3
+      Width = 219
+    end
+    object lblReg: TLabel
+      Left = 1017
+      Top = 1
+      Width = 114
+      Height = 23
+      Align = alClient
+      AutoSize = False
+      Caption = '   '#26657#39564#35268#21017#26469#28304
+      Color = clHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clHotLight
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object cxLookupComboBoxReg: TcxLookupComboBox
+      Left = 1131
+      Top = 1
+      Hint = #26657#39564#35268#21017#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
+      Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
+      Properties.KeyFieldNames = 'dict_type_id'
+      Properties.ListColumns = <
+        item
+          FieldName = 'dict_type_name_cn'
+        end>
+      Properties.ListOptions.ShowHeader = False
+      Properties.ListSource = dsDictList
+      Properties.OnEditValueChanged = cxLookupComboBoxRegPropertiesEditValueChanged
+      Style.BorderColor = clMenuHighlight
+      Style.BorderStyle = ebsNone
+      Style.Edges = [bLeft, bTop, bRight, bBottom]
+      Style.Shadow = True
+      Style.ButtonStyle = btsHotFlat
+      TabOrder = 4
+      Width = 262
+    end
+    object lblTabType: TLabel
+      Left = 1393
+      Top = 1
+      Width = 104
+      Height = 23
+      Align = alClient
+      AutoSize = False
+      Caption = #34892#19994#31867#21035#26469#28304
+      Color = clHighlight
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clHotLight
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
+      Layout = tlCenter
+    end
+    object cxLookupComboBoxType: TcxLookupComboBox
+      Left = 1497
+      Top = 1
+      Hint = #34892#19994#31867#21035#21487#22312#25968#25454#23383#20856#20013#32500#25252#65292#19968#33324#19981#29992#25913#21464
+      Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
+      Properties.KeyFieldNames = 'dict_type_id'
+      Properties.ListColumns = <
+        item
+          FieldName = 'dict_type_name_cn'
+        end>
+      Properties.ListOptions.ShowHeader = False
+      Properties.ListSource = dsDictList
+      Properties.OnEditValueChanged = cxLookupComboBoxTypePropertiesEditValueChanged
+      Style.BorderColor = clMenuHighlight
+      Style.BorderStyle = ebsNone
+      Style.Edges = [bLeft, bTop, bRight, bBottom]
+      Style.Shadow = True
+      Style.ButtonStyle = btsHotFlat
+      TabOrder = 5
+      Width = 212
+    end
   end
   object flwpnlTop: TFlowPanel
     Left = 0
     Top = 0
-    Width = 1708
+    Width = 1741
     Height = 32
     Align = alTop
     AutoSize = True
@@ -747,6 +875,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     ParentCtl3D = False
     ParentFont = False
     TabOrder = 2
+    ExplicitWidth = 1708
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
@@ -859,10 +988,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   object StatusBar1: TStatusBar
     Left = 0
     Top = 899
-    Width = 1708
+    Width = 1741
     Height = 19
     Panels = <>
     SimplePanel = True
+    ExplicitWidth = 1708
   end
   object dsSrcTabMsDt: TDataSource
     DataSet = fdQrySrcTab
@@ -984,6 +1114,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Origin = 'tab_sort'
       Required = True
     end
+    object fdQrySrcTabcombIndex: TMemoField
+      FieldName = 'combIndex'
+      Origin = 'combIndex'
+      BlobType = ftMemo
+    end
   end
   object fdQrySrcCol: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -1059,12 +1194,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       FixedChar = True
       Size = 1
     end
-    object fdQrySrcColcol_index_m: TStringField
-      FieldName = 'col_index_m'
-      Origin = 'col_index_m'
-      FixedChar = True
-      Size = 1
-    end
     object fdQrySrcColcol_rept: TStringField
       FieldName = 'col_rept'
       Origin = 'col_rept'
@@ -1130,8 +1259,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         '.dict_lable,b.dict_val_sort from dict_type a'
       'inner join dict_val b on a.dict_type_id=b.dict_type_id'
       'where a.dict_type_id= :dict_type_id order by b.dict_val_sort')
-    Left = 864
-    Top = 224
+    Left = 856
+    Top = 240
     ParamData = <
       item
         Name = 'DICT_TYPE_ID'
@@ -1147,18 +1276,18 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       
         'select dict_type_id, dict_type_name_cn,dict_type_name_en,dict_ty' +
         'pe_memo from dict_type order by dict_type_sort')
-    Left = 864
-    Top = 280
+    Left = 768
+    Top = 384
   end
   object dsDictList: TDataSource
     DataSet = fdQryDictList
-    Left = 800
-    Top = 280
+    Left = 776
+    Top = 304
   end
   object dsColType: TDataSource
     DataSet = fdQryColType
-    Left = 792
-    Top = 224
+    Left = 784
+    Top = 240
   end
   object fdQryReg: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -1170,8 +1299,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         't_type a'
       'inner join dict_val b on a.dict_type_id=b.dict_type_id'
       'where a.dict_type_id= :dict_type_id order by b.dict_val_sort')
-    Left = 1008
-    Top = 320
+    Left = 864
+    Top = 304
     ParamData = <
       item
         Name = 'DICT_TYPE_ID'
@@ -1231,5 +1360,31 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Title = #25509#21475#35268#33539#28304#25968#25454#34920#24674#22797
     Left = 1048
     Top = 520
+  end
+  object dsTabType: TDataSource
+    DataSet = FDQryTabType
+    Left = 960
+    Top = 248
+  end
+  object FDQryTabType: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    SQL.Strings = (
+      
+        'select distinct dict_val_id,dict_type_name_cn,dict_type_name_en,' +
+        'b.dict_val,b.dict_lable,b.dict_val_memo,b.dict_val_sort from dic' +
+        't_type a'
+      'inner join dict_val b on a.dict_type_id=b.dict_type_id'
+      'where a.dict_type_id= :dict_type_id order by b.dict_val_sort'
+      '')
+    Left = 1032
+    Top = 248
+    ParamData = <
+      item
+        Name = 'DICT_TYPE_ID'
+        DataType = ftString
+        ParamType = ptInput
+        Value = '4A7F146696F2412AA5F2DD5AE7772775'
+      end>
   end
 end
