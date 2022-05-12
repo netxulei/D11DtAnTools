@@ -18,9 +18,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   TextHeight = 15
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
-    Top = 59
+    Top = 55
     Width = 1741
-    Height = 840
+    Height = 844
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
@@ -533,7 +533,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParentCtl3D = False
         ParentFont = False
         TabOrder = 1
-        ExplicitWidth = 1571
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
@@ -675,7 +674,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object flwpnlDictType: TFlowPanel
     Left = 0
-    Top = 32
+    Top = 28
     Width = 1741
     Height = 27
     Align = alTop
@@ -687,12 +686,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    ExplicitWidth = 1733
     object dbnvgrDictType: TDBNavigator
       Left = 1
       Top = 1
       Width = 560
-      Height = 25
+      Height = 22
       DataSource = dsSrcTab
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbPost, nbCancel, nbRefresh]
       Align = alCustom
@@ -720,7 +718,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 561
       Top = 1
       Width = 59
-      Height = 25
+      Height = 23
       Caption = #19978#31227
       ImageIndex = 6
       ImageName = #19978#32447
@@ -732,7 +730,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 620
       Top = 1
       Width = 72
-      Height = 25
+      Height = 23
       Caption = #19979#31227
       ImageIndex = 7
       ImageName = #19979#32447
@@ -744,7 +742,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 692
       Top = 1
       Width = 106
-      Height = 23
+      Height = 24
       Align = alClient
       AutoSize = False
       Caption = '  '#23383#27573#31867#22411#26469#28304'  '
@@ -783,7 +781,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 1017
       Top = 1
       Width = 114
-      Height = 23
+      Height = 24
       Align = alClient
       AutoSize = False
       Caption = '   '#26657#39564#35268#21017#26469#28304
@@ -822,7 +820,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 1393
       Top = 1
       Width = 104
-      Height = 23
+      Height = 24
       Align = alClient
       AutoSize = False
       Caption = #34892#19994#31867#21035#26469#28304
@@ -862,11 +860,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Left = 0
     Top = 0
     Width = 1741
-    Height = 32
+    Height = 28
     Align = alTop
     AutoSize = True
     Ctl3D = True
-    FlowStyle = fsTopBottomLeftRight
+    FlowStyle = fsLeftRightBottomTop
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -875,12 +873,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     ParentCtl3D = False
     ParentFont = False
     TabOrder = 2
-    ExplicitWidth = 1708
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Caption = #25764#38144#19968#27425
       ImageIndex = 4
       ImageName = #25764#38144
@@ -892,7 +889,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 113
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Caption = #25764#38144#25152#26377
       ImageIndex = 5
       ImageName = #25764#38144#20840#37096
@@ -904,7 +901,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 225
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Caption = #20445#23384
       ImageIndex = 8
       ImageName = #20445#23384
@@ -916,7 +913,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Left = 337
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Hint = #23548#20986'Excel'#26041#20415#32534#20889#27169#22411#20195#30721#26597#38405
       Caption = #23548#20986'Excel'
       ImageIndex = 0
@@ -930,9 +927,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     object chkOpen: TCheckBox
       AlignWithMargins = True
       Left = 452
-      Top = 4
-      Width = 112
-      Height = 24
+      Top = 5
+      Width = 103
+      Height = 19
       Align = alLeft
       Caption = #23548#20986#21518#25171#24320
       Checked = True
@@ -943,10 +940,10 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       WordWrap = True
     end
     object BitBtnBackUP: TBitBtn
-      Left = 567
+      Left = 558
       Top = 1
       Width = 58
-      Height = 30
+      Height = 26
       Hint = #22791#20221#25968#25454#23383#20856#20449#24687#65292#24517#35201#26102#21487#29992#20110#20849#20139#25968#25454#23383#20856
       Caption = #22791#20221
       ImageIndex = 9
@@ -958,10 +955,10 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       OnClick = BitBtnBackUPClick
     end
     object BitBtnRestore: TBitBtn
-      Left = 625
+      Left = 616
       Top = 1
       Width = 61
-      Height = 30
+      Height = 26
       Hint = #24674#22797#25968#25454#23383#20856#65292#20294#35201#27880#24847#31995#32479#20013#23545#25968#25454#23383#20856#24212#29992#30340#20851#32852#24615
       Caption = #24674#22797
       ImageIndex = 10
@@ -973,10 +970,10 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       OnClick = BitBtnRestoreClick
     end
     object bitbtnExit: TBitBtn
-      Left = 686
+      Left = 677
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Caption = #36820#22238
       ImageIndex = 9
       ImageName = #23567#36864#20986
@@ -992,7 +989,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Height = 19
     Panels = <>
     SimplePanel = True
-    ExplicitWidth = 1708
   end
   object dsSrcTabMsDt: TDataSource
     DataSet = fdQrySrcTab

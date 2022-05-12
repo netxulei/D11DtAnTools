@@ -2,8 +2,8 @@ object FrmDataImport: TFrmDataImport
   Left = 0
   Top = 0
   Caption = #25968#25454#23548#20837
-  ClientHeight = 667
-  ClientWidth = 1163
+  ClientHeight = 688
+  ClientWidth = 1246
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,11 +18,13 @@ object FrmDataImport: TFrmDataImport
   TextHeight = 20
   object pnl1: TPanel
     Left = 0
-    Top = 69
-    Width = 1163
+    Top = 58
+    Width = 1246
     Height = 62
     Align = alTop
     TabOrder = 1
+    ExplicitTop = 69
+    ExplicitWidth = 1163
     object lblSrcTab: TLabel
       Left = 10
       Top = 1
@@ -182,11 +184,13 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl3: TPanel
     Left = 0
-    Top = 197
-    Width = 1163
+    Top = 186
+    Width = 1246
     Height = 62
     Align = alTop
     TabOrder = 0
+    ExplicitTop = 197
+    ExplicitWidth = 1163
     object LblCheck: TLabel
       Left = 9
       Top = 0
@@ -405,13 +409,15 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl2: TPanel
     Left = 0
-    Top = 131
-    Width = 1163
+    Top = 120
+    Width = 1246
     Height = 66
     Align = alTop
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
+    ExplicitTop = 131
+    ExplicitWidth = 1163
     object spbtnFileName: TSpeedButton
       Left = 550
       Top = 29
@@ -633,25 +639,29 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl4: TPanel
     Left = 0
-    Top = 259
-    Width = 1163
-    Height = 408
+    Top = 248
+    Width = 1246
+    Height = 440
     Align = alClient
     TabOrder = 3
+    ExplicitTop = 259
+    ExplicitWidth = 1163
+    ExplicitHeight = 408
     object Splitter2: TSplitter
       Left = 1
       Top = 257
-      Width = 1161
+      Width = 1244
       Height = 6
       Cursor = crVSplit
       Align = alTop
       ExplicitTop = 297
+      ExplicitWidth = 1161
     end
     object mmo2: TRichEdit
       Left = 1
       Top = 263
-      Width = 1161
-      Height = 144
+      Width = 1244
+      Height = 176
       Align = alClient
       Font.Charset = GB2312_CHARSET
       Font.Color = clWindowText
@@ -664,11 +674,13 @@ object FrmDataImport: TFrmDataImport
       ReadOnly = True
       ScrollBars = ssBoth
       TabOrder = 0
+      ExplicitWidth = 1161
+      ExplicitHeight = 144
     end
     object strngrd1: TAdvStringGrid
       Left = 1
       Top = 1
-      Width = 1161
+      Width = 1244
       Height = 256
       Align = alTop
       ColCount = 1
@@ -813,6 +825,7 @@ object FrmDataImport: TFrmDataImport
       SortSettings.HeaderMirrorColorTo = 16250613
       UIStyle = tsWindows10
       Version = '8.6.11.2'
+      ExplicitWidth = 1161
       ColWidths = (
         12)
       RowHeights = (
@@ -822,63 +835,80 @@ object FrmDataImport: TFrmDataImport
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 1163
-    Height = 69
+    Width = 1246
+    Height = 58
     Align = alTop
-    Color = clMoneyGreen
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     ParentBackground = False
+    ParentFont = False
     TabOrder = 4
     object rgSelSrc: TRadioGroup
       Left = 1
       Top = 1
-      Width = 491
-      Height = 67
+      Width = 160
+      Height = 56
+      Hint = #39033#30446#34920#24517#39035#23384#22312#24403#21069#39033#30446#25165#33021#23548#20837#12290#13#10#20840#23616#34920#20445#23384#20110#31995#32479#25968#25454#24211#20013#65292#25152#26377#39033#30446#22343#21487#20351#29992#12290
       Align = alLeft
-      Caption = #20445#23384#20301#32622
-      Color = clMoneyGreen
+      Color = clBtnFace
       Columns = 2
       Ctl3D = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       ItemIndex = 0
       Items.Strings = (
-        #23548#20837#21040#39033#30446#25968#25454#24211#65288#39033#30446#34920#65289
-        #23548#20837#21040#31995#32479#25968#25454#24211#65288#20840#23616#34920#65289)
+        #39033#30446#34920
+        #20840#23616#34920)
       ParentBackground = False
       ParentColor = False
       ParentCtl3D = False
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
       TabOrder = 0
-      StyleName = 'Windows'
       WordWrap = True
       OnClick = rgSelSrcClick
+      ExplicitLeft = 10
+      ExplicitHeight = 63
     end
     object pnlProj: TPanel
-      Left = 492
+      Left = 441
       Top = 1
-      Width = 670
-      Height = 67
+      Width = 804
+      Height = 56
       Align = alClient
       TabOrder = 1
+      ExplicitLeft = 492
+      ExplicitWidth = 670
+      ExplicitHeight = 67
       object lblProj: TLabel
         Left = 1
         Top = 1
-        Width = 668
-        Height = 32
+        Width = 802
+        Height = 22
         Margins.Left = 10
         Align = alTop
         AutoSize = False
-        Caption = '  '#24403#21069#39033#30446#65306
+        Caption = #24403#21069#39033#30446#65306
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
         Layout = tlCenter
-        ExplicitWidth = 948
+        ExplicitWidth = 668
       end
       object lblTip: TLabel
         Left = 1
-        Top = 33
-        Width = 668
+        Top = 23
+        Width = 802
         Height = 30
         Margins.Left = 10
         Align = alTop
@@ -893,7 +923,56 @@ object FrmDataImport: TFrmDataImport
         ParentFont = False
         Layout = tlCenter
         WordWrap = True
+        ExplicitTop = 33
         ExplicitWidth = 572
+      end
+    end
+    object pnl5: TPanel
+      Left = 161
+      Top = 1
+      Width = 280
+      Height = 56
+      Align = alLeft
+      TabOrder = 2
+      ExplicitHeight = 67
+      object lblTabType: TLabel
+        Left = 6
+        Top = 6
+        Width = 64
+        Height = 17
+        Caption = #25968#25454#31867#21035
+        Color = clHighlight
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+        Layout = tlCenter
+      end
+      object cxLookupComboBoxType: TcxLookupComboBox
+        Left = 5
+        Top = 26
+        Hint = #36873#25321#25968#25454#25509#21475#34920#25152#23646#34892#19994#31867#21035
+        ParentShowHint = False
+        Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
+        Properties.KeyFieldNames = 'dict_val'
+        Properties.ListColumns = <
+          item
+            FieldName = 'dict_lable'
+          end>
+        Properties.ListOptions.ShowHeader = False
+        Properties.ListSource = dsTabType
+        Properties.OnEditValueChanged = cxLookupComboBoxTypePropertiesEditValueChanged
+        ShowHint = True
+        Style.BorderColor = clMenuHighlight
+        Style.BorderStyle = ebsNone
+        Style.Edges = [bLeft, bTop, bRight, bBottom]
+        Style.Shadow = True
+        Style.ButtonStyle = btsHotFlat
+        TabOrder = 0
+        Width = 263
       end
     end
   end
@@ -1026,5 +1105,31 @@ object FrmDataImport: TFrmDataImport
     ScreenCursor = gcrHourGlass
     Left = 1041
     Top = 387
+  end
+  object FDQryTabType: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSysTmp
+    SQL.Strings = (
+      
+        'select distinct dict_val_id,dict_type_name_cn,dict_type_name_en,' +
+        'b.dict_val,b.dict_lable,b.dict_val_memo,b.dict_val_sort from dic' +
+        't_type a'
+      'inner join dict_val b on a.dict_type_id=b.dict_type_id'
+      'where a.dict_type_id= :dict_type_id order by b.dict_val_sort'
+      '')
+    Left = 1088
+    Top = 88
+    ParamData = <
+      item
+        Name = 'DICT_TYPE_ID'
+        DataType = ftString
+        ParamType = ptInput
+        Value = '33799EE3E5814B8180739737AE771CCF'
+      end>
+  end
+  object dsTabType: TDataSource
+    DataSet = FDQryTabType
+    Left = 1096
+    Top = 152
   end
 end

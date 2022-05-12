@@ -275,7 +275,7 @@ end;
 procedure TfrmSrcTabMaintain.DBSynEditComIndExit(Sender: TObject);
 begin
   DBSynEditComInd.Height := DBSynEditComInd.Height div 3;
-  //校验作为索引的字段是否存在
+  // 校验作为索引的字段是否存在
 
 end;
 
@@ -363,23 +363,26 @@ begin
   fdQrySrcCol.CachedUpdates := True;
   fdQrySrcTab.Connection := F_DT.FDconSYS;
   fdQrySrcCol.Connection := F_DT.FDconSYS;
+  fdQrySrcTab.open();
+  fdQrySrcCol.open();
 
   fdQryDictList.Connection := F_DT.FDconSYS;
   fdQryReg.Connection := F_DT.FDconSYS;
   fdQryColType.Connection := F_DT.FDconSYS;
   FDQryTabType.Connection := F_DT.FDconSYS;
 
-  fdQrySrcTab.open();
-  fdQrySrcCol.open();
   // 字典列表
   fdQryDictList.open();
-  fdQryColType.Open();
+  //字段类型id
+  fdQryColType.open();
   cxLookupComboBoxDictList.EditValue := dict_list_col;
+  //正则ID
   fdQryReg.open();
   cxLookupComboBoxReg.EditValue := dict_list_reg;
+  //行业类别ID
   FDQryTabType.open();
   cxLookupComboBoxType.EditValue := dict_list_type;
-  // 初始化列表 ，会产生onvalid事件  以下fdqrcoltype在事件中写入
+  // 修改lookUp值时，会产生onvalid事件 ，每个事件应写入参数，（类似fdqrcoltype在事件中写入 ）
   // //赋值参数,打开字段类型列表
   // fdQryColType.ParamByName('Dict_type_id').AsString := dict_list_col;
   // fdQryColType.open();
