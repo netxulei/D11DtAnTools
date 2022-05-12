@@ -373,6 +373,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Title.Hint = 
               #33509#26377#8220#32534#30721#20851#32852#8221#65292#21462#25968#25454#23383#20856#20013#32534#30721#23545#24212#20449#24687#26368#22823#38271#24230#65307#13#10#33509#26080#8220#32534#30721#20851#32852#8221#65292#21462#32534#30721#26368#22823#38271#24230#65307#13#10#25968#20540#22411#26681#25454#21487#33021#26368#22823#20540#21462#25968#23567#25968#28857#21069#20960 +
               #20301#38271#24230#12290
+            Width = 47
           end
           item
             CellButtons = <>
@@ -380,9 +381,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             EditButtons = <>
             FieldName = 'col_dot_len'
             Footers = <>
-            Title.Caption = #23567#25968#28857#38271#24230
+            Title.Caption = #23567#25968#38271#24230
             Title.Hint = #28014#28857#25968#23567#25968#28857#21518#20960#20301#65288#20854#20182#31867#22411#19981#29992#20851#27880#65289
-            Width = 94
+            Width = 37
           end
           item
             CellButtons = <>
@@ -424,7 +425,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             DropDownBox.ColumnDefValues.Layout = tlCenter
             DropDownRows = 10
             DropDownSizing = True
-            DropDownSpecRow.CellsText = '<Null>'
+            DropDownSpecRow.ShowIfNotInKeyList = False
             DropDownSpecRow.Visible = True
             DropDownWidth = 260
             DynProps = <>
@@ -472,14 +473,14 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           item
             CellButtons = <>
             DropDownSizing = True
-            DropDownSpecRow.CellsText = '<null>'
+            DropDownSpecRow.ShowIfNotInKeyList = False
             DropDownSpecRow.Visible = True
             DropDownWidth = 400
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_reg;col_reg_str;col_regName'
             Footers = <>
-            LookupDisplayFields = 'dict_lable;dict_val;dict_val_memo'
+            LookupDisplayFields = 'dict_lable;dict_val'
             LookupParams.KeyFieldNames = 'col_reg;col_reg_str;col_regName'
             LookupParams.LookupDataSet = fdQryReg
             LookupParams.LookupDisplayFieldName = 'dict_lable'
@@ -487,6 +488,31 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Title.Caption = #26657#39564#35268#21017#65288#27491#21017#34920#36798#24335#65289
             Title.Hint = #27491#21017#34920#36798#24335#26041#24335#30340#26657#39564#35268#21017
             Width = 215
+          end
+          item
+            CellButtons = <>
+            DropDownBox.ListFieldNames = 'col_name'
+            DropDownBox.ListSource = dsCurColLst
+            DropDownSpecRow.ShowIfNotInKeyList = False
+            DropDownSpecRow.Visible = True
+            DynProps = <>
+            EditButtons = <>
+            FieldName = 'col_reg_depcol'
+            Footers = <>
+            Title.Caption = #20381#36182#23383#27573
+            Title.Hint = #21363#26412#23383#27573#30340#20869#23481#20381#36182#20110#26576#23383#27573#38271#24230#25110#20869#23481#12290#22914#20511#36151#35760#21345#26631#35782#20381#36182#20110#21345#21495#23383#27573#19981#20026#31354#26102#25165#38656#26657#39564
+            Width = 129
+            OnOpenDropDownForm = DBGridEhSrcColColumns12OpenDropDownForm
+          end
+          item
+            CellButtons = <>
+            DynProps = <>
+            EditButtons = <>
+            FieldName = 'col_reg_depval'
+            Footers = <>
+            Title.Caption = #20381#36182#20540
+            Title.Hint = #20026#31354#21017#34987#20381#36182#23383#27573#26377#20869#23481#23601#26657#39564#65292#21542#21017#20854#20869#23481#20026#20381#36182#20540#25165#26657#39564
+            Width = 73
           end
           item
             CellButtons = <>
@@ -668,6 +694,16 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
               Width = 3
             end>
           SelectedColor.Alpha = 0.400000005960464500
+        end
+        object btnDepend: TButton
+          Left = 1217
+          Top = 1
+          Width = 153
+          Height = 25
+          Caption = #21047#26032#20381#36182#23383#27573#21015#34920
+          TabOrder = 5
+          Visible = False
+          OnClick = btnDependClick
         end
       end
     end
@@ -1018,11 +1054,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Top = 320
   end
   object FDSchemaAdapterAll: TFDSchemaAdapter
-    Left = 545
-    Top = 489
+    Left = 489
+    Top = 537
   end
   object fdQrySrcTab: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_sort'
     OnUpdateRecord = fdQrySrcTabUpdateRecord
@@ -1118,6 +1155,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcCol: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
+    AfterScroll = fdQrySrcColAfterScroll
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_id;col_sort'
     MasterSource = dsSrcTabMsDt
@@ -1234,6 +1273,15 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       FixedChar = True
       Size = 1
     end
+    object fdQrySrcColcol_reg_depcol: TStringField
+      FieldName = 'col_reg_depcol'
+      Origin = 'col_reg_depcol'
+      Size = 80
+    end
+    object fdQrySrcColcol_reg_depval: TStringField
+      FieldName = 'col_reg_depval'
+      Origin = 'col_reg_depval'
+    end
     object fdQrySrcColcol_memo: TStringField
       DisplayWidth = 400
       FieldName = 'col_memo'
@@ -1267,6 +1315,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQryDictList: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       
@@ -1382,5 +1431,46 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         ParamType = ptInput
         Value = '4A7F146696F2412AA5F2DD5AE7772775'
       end>
+  end
+  object FDLocalSQL1: TFDLocalSQL
+    DisableControls = False
+    Connection = F_DT.FDConSQLite
+    Active = True
+    DataSets = <
+      item
+        DataSet = fdQrySrcCol
+        Name = 'fdQrySrcCol'
+      end>
+    Left = 490
+    Top = 618
+  end
+  object FDQryCurColLst: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    Connection = F_DT.FDConSQLite
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    SQL.Strings = (
+      
+        'select col_name_cn as col_name from fdQrySrcCol where tab_id = :' +
+        'cur_tab_id order by col_sort')
+    Left = 589
+    Top = 620
+    ParamData = <
+      item
+        Name = 'CUR_TAB_ID'
+        DataType = ftString
+        ParamType = ptInput
+        Value = '6AD26ACD3C53485DB7D27469C1A1D916'
+      end>
+  end
+  object ds1: TDataSource
+    DataSet = FDQryCurColLst
+    Left = 432
+    Top = 720
+  end
+  object dsCurColLst: TDataSource
+    DataSet = FDQryCurColLst
+    Left = 688
+    Top = 632
   end
 end

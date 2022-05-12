@@ -16,7 +16,8 @@ uses
   Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
-  cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions, System.Zip, SynEdit, SynDBEdit, Vcl.Mask, DBCtrlsEh;
+  cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions, System.Zip, SynEdit, SynDBEdit, Vcl.Mask, DBCtrlsEh,
+  FireDAC.Phys.SQLiteVDataSet, Vcl.Grids, Vcl.DBGrids;
 
 type
   TMyNavgator = class(TDBNavigator);
@@ -106,6 +107,13 @@ type
     lblComIndex: TLabel;
     dsTabType: TDataSource;
     FDQryTabType: TFDQuery;
+    fdQrySrcColcol_reg_depcol: TStringField;
+    fdQrySrcColcol_reg_depval: TStringField;
+    FDLocalSQL1: TFDLocalSQL;
+    FDQryCurColLst: TFDQuery;
+    ds1: TDataSource;
+    btnDepend: TButton;
+    dsCurColLst: TDataSource;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -132,6 +140,9 @@ type
     procedure DBSynEditComIndEnter(Sender: TObject);
     procedure DBSynEditComIndExit(Sender: TObject);
     procedure cxLookupComboBoxTypePropertiesEditValueChanged(Sender: TObject);
+    procedure fdQrySrcColAfterScroll(DataSet: TDataSet);
+    procedure btnDependClick(Sender: TObject);
+    procedure DBGridEhSrcColColumns12OpenDropDownForm(Grid: TCustomDBGridEh; Column: TColumnEh; Button: TEditButtonEh; var DropDownForm: TCustomForm; DynParams: TDynVarsEh);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -261,10 +272,11 @@ begin
     fdQrySrcCol['col_date_deal'] := '0';
     fdQrySrcCol['col_reg_ok'] := '0';
     fdQrySrcCol.Post;
+    // DBGridEhSrcCol.Fields[0].FocusControl;
     DBGridEhSrcCol.SetFocus;
     Abort;
   end;
-
+  // DBGridEhSrcCol.Fields[0].FocusControl;
 end;
 
 procedure TfrmSrcTabMaintain.DBSynEditComIndEnter(Sender: TObject);
@@ -304,6 +316,12 @@ end;
 procedure TfrmSrcTabMaintain.fdQrySrcTabUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
+end;
+
+procedure TfrmSrcTabMaintain.fdQrySrcColAfterScroll(DataSet: TDataSet);
+begin
+  // if FDQryCurColLst.active = True then
+  // FDQryCurColLst.Refresh;
 end;
 
 procedure TfrmSrcTabMaintain.fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
@@ -363,8 +381,8 @@ begin
   fdQrySrcCol.CachedUpdates := True;
   fdQrySrcTab.Connection := F_DT.FDconSYS;
   fdQrySrcCol.Connection := F_DT.FDconSYS;
-  fdQrySrcTab.open();
-  fdQrySrcCol.open();
+  fdQrySrcTab.Open();
+  fdQrySrcCol.Open();
 
   fdQryDictList.Connection := F_DT.FDconSYS;
   fdQryReg.Connection := F_DT.FDconSYS;
@@ -372,23 +390,26 @@ begin
   FDQryTabType.Connection := F_DT.FDconSYS;
 
   // 字典列表
-  fdQryDictList.open();
-  //字段类型id
-  fdQryColType.open();
+  fdQryDictList.Open();
+  // 字段类型id
+  fdQryColType.Open();
   cxLookupComboBoxDictList.EditValue := dict_list_col;
-  //正则ID
-  fdQryReg.open();
+  // 正则ID
+  fdQryReg.Open();
   cxLookupComboBoxReg.EditValue := dict_list_reg;
-  //行业类别ID
-  FDQryTabType.open();
+  // 行业类别ID
+  FDQryTabType.Open();
   cxLookupComboBoxType.EditValue := dict_list_type;
+
+  FDQryCurColLst.Open();
+
   // 修改lookUp值时，会产生onvalid事件 ，每个事件应写入参数，（类似fdqrcoltype在事件中写入 ）
   // //赋值参数,打开字段类型列表
   // fdQryColType.ParamByName('Dict_type_id').AsString := dict_list_col;
   // fdQryColType.open();
   // 导航条增加文字
-  CHNDBNavigator(dbnvgrDictType);
-  CHNDBNavigator(dbnvgrDictVal);
+  // CHNDBNavigator(dbnvgrDictType);
+  // CHNDBNavigator(dbnvgrDictVal);
 end;
 
 procedure TfrmSrcTabMaintain.FormShow(Sender: TObject);
@@ -459,18 +480,18 @@ begin
 
       FDQryBKMaster.Connection := F_DT.FDconSYS;
       FDQryBKMaster.Prepared;
-      FDQryBKMaster.open();
+      FDQryBKMaster.Open();
       FDQryBKMaster.FetchAll;
       FDQryBKMaster.SaveToFile(sSrcTabName, sfBinary);
 
       FDQryBKDetail.Connection := F_DT.FDconSYS;
       FDQryBKDetail.Prepared;
-      FDQryBKDetail.open();
+      FDQryBKDetail.Open();
       FDQryBKDetail.FetchAll;
       FDQryBKDetail.SaveToFile(sSrcColName, sfBinary);
 
       Zip := TZipFile.Create;
-      Zip.open(sFilename, TZipMode.zmWrite); // 准备要压缩为sFileName
+      Zip.Open(sFilename, TZipMode.zmWrite); // 准备要压缩为sFileName
       Zip.Add(sSrcTabName, 'SrcTab.Src'); // 参1是要压缩的文件; 参2是要使用的文件名; 参数3可指定压缩算法
       Zip.Add(sSrcColName, 'SrcCol.Src');
       // zip.Add...
@@ -822,7 +843,7 @@ begin
       DeleteFile(sSrcColName);
     // ----解压缩-----
     Zip := TZipFile.Create;
-    Zip.open(sFilename, TZipMode.zmRead); // 解压缩的文件sFileName
+    Zip.Open(sFilename, TZipMode.zmRead); // 解压缩的文件sFileName
     Zip.ExtractAll(sPath);
     // zip.Close; //Close 时才执行实际压缩过程; 不过在销毁前会调用它
     Zip.Free;
@@ -852,12 +873,12 @@ begin
       FDQryBKMaster.Connection := F_DT.FDconSYS;
       FDQryBKMaster.CachedUpdates := True;
       FDQryBKMaster.Prepared;
-      FDQryBKMaster.open();
+      FDQryBKMaster.Open();
       FDQryBKMaster.FetchAll;
       // 调入主表备份文件
       fdmtblImp.close;
       fdmtblImp.LoadFromFile(sSrcTabName, sfBinary);
-      fdmtblImp.open;
+      fdmtblImp.Open;
       fdmtblImp.DisableControls;
       // 恢复到主表
       fdmtblImp.First;
@@ -875,12 +896,12 @@ begin
       FDQryBKDetail.Connection := F_DT.FDconSYS;
       FDQryBKDetail.CachedUpdates := True;
       FDQryBKDetail.Prepared;
-      FDQryBKDetail.open();
+      FDQryBKDetail.Open();
       FDQryBKDetail.FetchAll;
       // 调入子表备份文件
       fdmtblImp.close;
       fdmtblImp.LoadFromFile(sSrcColName, sfBinary);
-      fdmtblImp.open;
+      fdmtblImp.Open;
       fdmtblImp.DisableControls;
       // 恢复到子表
       fdmtblImp.First;
@@ -904,8 +925,8 @@ begin
       FDQryBKMaster.close;
       FDQryBKDetail.close;
       fdmtblImp.close;
-      fdQrySrcTab.open();
-      fdQrySrcCol.open();
+      fdQrySrcTab.Open();
+      fdQrySrcCol.Open();
     end;
   end;
 
@@ -1041,6 +1062,24 @@ begin
 
 end;
 
+procedure TfrmSrcTabMaintain.btnDependClick(Sender: TObject);
+var
+  cur_tab_id, cur_chn_col, sqlText: string; // 当前表id和使用中英文字段
+begin
+  cur_chn_col := fdQrySrcTab['chn_col'];
+  cur_tab_id := fdQrySrcTab['tab_id'];
+  if cur_chn_col = '1' then
+    sqlText := 'select col_name_cn as col_name from fdQrySrcCol where tab_id = :cur_tab_id order by col_sort'
+  else
+    sqlText := 'select col_name_en as col_name from fdQrySrcCol where tab_id = :cur_tab_id order by col_sort';
+  FDQryCurColLst.close;
+  FDQryCurColLst.SQL.Clear;
+  FDQryCurColLst.SQL.Add(sqlText);
+  // FDQryCurColLst.Prepared := True;
+  FDQryCurColLst.ParamByName('cur_tab_id').AsString := cur_tab_id;
+  FDQryCurColLst.Open();
+end;
+
 // 增加数据库导航条caption显示
 procedure TfrmSrcTabMaintain.CHNDBNavigator(ADBNavigator: TDBNavigator);
 begin
@@ -1076,7 +1115,7 @@ begin
   // 赋值参数,打开字段类型列表
   fdQryColType.close;
   fdQryColType.ParamByName('Dict_type_id').AsString := dict_list_col;
-  fdQryColType.open();
+  fdQryColType.Open();
 
 end;
 
@@ -1099,7 +1138,7 @@ begin
   // 赋值参数,打开字段类型列表
   fdQryReg.close;
   fdQryReg.ParamByName('Dict_type_id').AsString := dict_list_reg;
-  fdQryReg.open();
+  fdQryReg.Open();
 end;
 
 procedure TfrmSrcTabMaintain.cxLookupComboBoxTypePropertiesEditValueChanged(Sender: TObject);
@@ -1121,7 +1160,13 @@ begin
   // 赋值参数,打开字段类型列表
   FDQryTabType.close;
   FDQryTabType.ParamByName('Dict_type_id').AsString := dict_list_type;
-  FDQryTabType.open();
+  FDQryTabType.Open();
+end;
+
+procedure TfrmSrcTabMaintain.DBGridEhSrcColColumns12OpenDropDownForm(Grid: TCustomDBGridEh; Column: TColumnEh; Button: TEditButtonEh; var DropDownForm: TCustomForm;
+  DynParams: TDynVarsEh);
+begin
+  frmSrcTabMaintain.btnDependClick(self);
 end;
 
 procedure TfrmSrcTabMaintain.OnDataChange(Sender: TObject; Field: TField);

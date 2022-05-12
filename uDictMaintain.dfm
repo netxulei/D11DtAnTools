@@ -17,9 +17,9 @@ object frmDictMaintain: TfrmDictMaintain
   TextHeight = 17
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
-    Top = 59
+    Top = 55
     Width = 1627
-    Height = 677
+    Height = 681
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
@@ -228,7 +228,7 @@ object frmDictMaintain: TfrmDictMaintain
         object dbnvgrDictVal: TDBNavigator
           Left = 1
           Top = 1
-          Width = 496
+          Width = 180
           Height = 25
           DataSource = dsDictVal
           VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbPost, nbCancel, nbRefresh]
@@ -253,7 +253,7 @@ object frmDictMaintain: TfrmDictMaintain
           BeforeAction = dbnvgrDictValBeforeAction
         end
         object bitbtnValUp: TBitBtn
-          Left = 497
+          Left = 181
           Top = 1
           Width = 56
           Height = 25
@@ -265,7 +265,7 @@ object frmDictMaintain: TfrmDictMaintain
           OnClick = bitbtnValUpClick
         end
         object bitbtnValDown: TBitBtn
-          Left = 553
+          Left = 237
           Top = 1
           Width = 61
           Height = 25
@@ -277,7 +277,7 @@ object frmDictMaintain: TfrmDictMaintain
           OnClick = bitbtnValDownClick
         end
         object FlowPanel1: TFlowPanel
-          Left = 614
+          Left = 298
           Top = 1
           Width = 307
           Height = 24
@@ -296,7 +296,7 @@ object frmDictMaintain: TfrmDictMaintain
   end
   object flwpnlDictType: TFlowPanel
     Left = 0
-    Top = 32
+    Top = 28
     Width = 1627
     Height = 27
     Align = alTop
@@ -308,10 +308,11 @@ object frmDictMaintain: TfrmDictMaintain
     Font.Style = []
     ParentFont = False
     TabOrder = 1
+    ExplicitTop = 32
     object dbnvgrDictType: TDBNavigator
       Left = 1
       Top = 1
-      Width = 560
+      Width = 224
       Height = 25
       DataSource = dsDictType
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbPost, nbCancel, nbRefresh]
@@ -337,7 +338,7 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = dbnvgrDictTypeClick
     end
     object bitbtnTypeUp: TBitBtn
-      Left = 561
+      Left = 225
       Top = 1
       Width = 59
       Height = 25
@@ -355,7 +356,7 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = bitbtnTypeUpClick
     end
     object bitbtnTypeDown: TBitBtn
-      Left = 620
+      Left = 284
       Top = 1
       Width = 72
       Height = 25
@@ -373,7 +374,7 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = bitbtnTypeDownClick
     end
     object edt1: TEdit
-      Left = 692
+      Left = 356
       Top = 1
       Width = 493
       Height = 25
@@ -383,7 +384,7 @@ object frmDictMaintain: TfrmDictMaintain
       Visible = False
     end
     object edt2: TEdit
-      Left = 1185
+      Left = 849
       Top = 1
       Width = 144
       Height = 25
@@ -393,7 +394,7 @@ object frmDictMaintain: TfrmDictMaintain
       Visible = False
     end
     object btn1: TButton
-      Left = 1329
+      Left = 993
       Top = 1
       Width = 105
       Height = 25
@@ -404,7 +405,7 @@ object frmDictMaintain: TfrmDictMaintain
       OnClick = btn1Click
     end
     object btnUpdateSrcCol: TButton
-      Left = 1434
+      Left = 1098
       Top = 1
       Width = 135
       Height = 25
@@ -418,7 +419,7 @@ object frmDictMaintain: TfrmDictMaintain
     Left = 0
     Top = 0
     Width = 1627
-    Height = 32
+    Height = 28
     Align = alTop
     AutoSize = True
     Ctl3D = True
@@ -435,7 +436,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 1
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Align = alLeft
       Caption = #25764#38144#19968#27425
       ImageIndex = 4
@@ -448,7 +449,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 113
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Caption = #25764#38144#25152#26377
       ImageIndex = 5
       ImageName = #25764#38144#20840#37096
@@ -460,7 +461,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 225
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Hint = #20445#23384#26102#23558#21516#26102#26356#26032#25968#25454#35268#33539#28304#25968#25454#34920#20351#29992#30340#23383#20856#31867#22411#21644#23383#20856#20540
       Caption = #20445#23384
       ImageIndex = 8
@@ -475,7 +476,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 337
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Hint = #23548#20986'Excel'#26041#20415#32534#20889#27169#22411#20195#30721#26597#38405
       Caption = #23548#20986'Excel'
       ImageIndex = 0
@@ -491,7 +492,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 452
       Top = 4
       Width = 103
-      Height = 24
+      Height = 20
       Align = alLeft
       Caption = #23548#20986#21518#25171#24320
       Checked = True
@@ -505,7 +506,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 558
       Top = 1
       Width = 58
-      Height = 30
+      Height = 26
       Hint = #22791#20221#25968#25454#23383#20856#20449#24687#65292#24517#35201#26102#21487#29992#20110#20849#20139#25968#25454#23383#20856
       Caption = #22791#20221
       ImageIndex = 9
@@ -520,7 +521,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 616
       Top = 1
       Width = 61
-      Height = 30
+      Height = 26
       Hint = #24674#22797#25968#25454#23383#20856#65292#20294#35201#27880#24847#31995#32479#20013#23545#25968#25454#23383#20856#24212#29992#30340#20851#32852#24615
       Caption = #24674#22797
       ImageIndex = 10
@@ -535,7 +536,7 @@ object frmDictMaintain: TfrmDictMaintain
       Left = 677
       Top = 1
       Width = 112
-      Height = 30
+      Height = 26
       Caption = #36820#22238
       ImageIndex = 9
       ImageName = #23567#36864#20986

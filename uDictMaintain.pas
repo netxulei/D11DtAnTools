@@ -275,8 +275,8 @@ begin
   fdQryDictVal.Connection := F_DT.FDConSYS;
   fdQryDictType.open();
   fdQryDictVal.open();
-  CHNDBNavigator(dbnvgrDictType);
-  CHNDBNavigator(dbnvgrDictVal);
+//  CHNDBNavigator(dbnvgrDictType);
+//  CHNDBNavigator(dbnvgrDictVal);
   // DBGridEhSrcTab.Columns[0].width:=40;
   // DBGridEhSrcCol.Columns[0].width:=20;
 end;
