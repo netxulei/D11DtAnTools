@@ -143,12 +143,13 @@ begin
   TBlobField(FDQryTree.FieldByName('t_proc')).SaveToStream(MS); // 数据库字段保存到流
   sLine := MS.DataString; // string转字符串
   MS.Free; // 流转换为字符串列表，完成任务
-  sLine := StringReplace(sLine, #$D#$A, '|', [rfReplaceAll]); // 替换回车换行为|号
-  sLine := StringReplace(sLine, #$A, '|', [rfReplaceAll]);
-  sLine := StringReplace(sLine, #$D, '|', [rfReplaceAll]);
+   sLine := StringReplace(sLine, #$D#$A, #$A, [rfReplaceAll]); // 替换回车换行为|号.这样会有问题，都转换为#$A？
+  // sLine := StringReplace(sLine, #$A, '|', [rfReplaceAll]);
+   sLine := StringReplace(sLine, #$D, #$A, [rfReplaceAll]);
   sl := TStringList.Create;
   sl.StrictDelimiter := True;
-  sl.Delimiter := '|';
+  // sl.Delimiter := '|';
+  sl.Delimiter := #$A;
   sl_params := TStringList.Create; // 读取的参数行以空格分割到列表，判断某些关键词是否存在  ，同时获得某些参数
   sl_params.StrictDelimiter := True;
   sl_params.Delimiter := ','; // 都好分割每个参数

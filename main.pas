@@ -681,7 +681,8 @@ begin
       fdSPAuto.Filter := '';
       t_new_filter := True;
       fdSPAuto.Connection := F_DT.fdconProj;
-      fdSPAuto.StoredProcName := t_ProcFunName;
+//      fdSPAuto.StoredProcName := t_ProcFunName;
+      fdSPAuto.StoredProcName :=t_ProcFunName + ';1';
       // fdSPAuto.Params.Refresh; //参数起作用，这个语句很重要
       fdSPAuto.Prepare;
       // 先判断是否需要参数
@@ -1010,7 +1011,7 @@ begin
       if ClickedOK then { NewString contains new input string }
       begin
         // 根据提示参数“日期”“数”等判断数据是否输入正确
-        if R_proc[i - 1].s_para_lx = 'D' then
+        if (R_proc[i - 1].s_para_lx = 'D') AND (Length(R_proc[i - 1].s_para_value)>0) then
         begin
           // 判断是否日期
           try

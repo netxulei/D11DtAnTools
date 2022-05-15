@@ -441,6 +441,7 @@ object MainFrm: TMainFrm
         SortLocal = True
         TabOrder = 1
         TitleParams.RowLines = 2
+        VertScrollBar.SmoothStep = True
         OnDblClick = dbgrdh1DblClick
         OnKeyUp = dbgrdh1KeyUp
         OnMouseDown = dbgrdh1MouseDown
@@ -562,7 +563,7 @@ object MainFrm: TMainFrm
           IndicatorTitle.ShowDropDownSign = True
           IndicatorTitle.TitleButton = True
           Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect]
-          OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghFitRowHeightToText, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
+          OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghFitRowHeightToText, dghMultiSortMarking, dghDblClickOptimizeColWidth, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghHotTrack, dghExtendVertLines]
           ParentCtl3D = False
           ParentFont = False
           ParentShowHint = False
