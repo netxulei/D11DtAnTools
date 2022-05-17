@@ -143,9 +143,9 @@ begin
   TBlobField(FDQryTree.FieldByName('t_proc')).SaveToStream(MS); // 数据库字段保存到流
   sLine := MS.DataString; // string转字符串
   MS.Free; // 流转换为字符串列表，完成任务
-   sLine := StringReplace(sLine, #$D#$A, #$A, [rfReplaceAll]); // 替换回车换行为|号.这样会有问题，都转换为#$A？
+  sLine := StringReplace(sLine, #$D#$A, #$A, [rfReplaceAll]); // 替换回车换行为|号.这样会有问题，都转换为#$A？
   // sLine := StringReplace(sLine, #$A, '|', [rfReplaceAll]);
-   sLine := StringReplace(sLine, #$D, #$A, [rfReplaceAll]);
+  sLine := StringReplace(sLine, #$D, #$A, [rfReplaceAll]);
   sl := TStringList.Create;
   sl.StrictDelimiter := True;
   // sl.Delimiter := '|';
@@ -183,6 +183,8 @@ begin
     while (Length(Trim(sl[i])) = 0) or (Copy(Trim(sl[i]), 0, 2) = '--') do // 若本行长度为0或以--开头，则抛弃此行
     begin
       sl.Delete(i); // 抛弃前几行的空行和注释行
+      // 还应抛弃--之后的注释内容
+
       if sl.Count = 0 then
       begin
         MessageDlg('该模型没有对应实现代码！', mtInformation, [mbOK], 0); // 无代码
@@ -193,6 +195,12 @@ begin
         exit;
       end;
     end;
+    var
+      PosMemo: Integer;
+    PosMemo := pos('--', sl[i]); // 参数后面可以有--注释
+    if PosMemo > 0 then
+      sl[i] := Trim(Copy(sl[i], 1, PosMemo - 1));
+
     sParamCode := sParamCode + ' ' + UpperCase(sl[i]) + ' ';
     if pos(' CREATE ', sParamCode) > 0 then
       creaFlag := '1';
@@ -353,10 +361,10 @@ begin
     begin
       SetLength(R_proc, i_cnt1);
       // 代码中参数名和类型
-      sl_params.DelimitedText := sParamCode;
+      sl_params.DelimitedText := sParamCode; // sl_params以,分隔
       for i := 0 to sl_params.Count - 1 do
       begin
-        sl_param.DelimitedText := Trim(sl_params[i]);
+        sl_param.DelimitedText := Trim(sl_params[i]); // sl_params[i]每个参数，包括了参数后面的注释，应删除注释后面的内容
         R_proc[i].s_para_name := sl_param[0];
         R_proc[i].s_para_lx_code := sl_param[1];
       end;

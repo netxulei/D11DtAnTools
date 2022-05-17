@@ -111,7 +111,7 @@ object MainFrm: TMainFrm
       Left = 1
       Top = 1
       Width = 1334
-      Height = 34
+      Height = 49
       Align = alTop
       Caption = 'Panel2'
       ParentBackground = False
@@ -120,7 +120,7 @@ object MainFrm: TMainFrm
         Left = 1
         Top = 1
         Width = 64
-        Height = 32
+        Height = 47
         Align = alLeft
         Caption = #21151#33021#25551#36848'    '
         Layout = tlCenter
@@ -130,7 +130,7 @@ object MainFrm: TMainFrm
         Left = 65
         Top = 1
         Width = 1268
-        Height = 32
+        Height = 47
         Align = alClient
         BevelOuter = bvLowered
         Color = 16776176
@@ -140,11 +140,10 @@ object MainFrm: TMainFrm
         object cxdbtxtdt1: TcxDBTextEdit
           Left = 1
           Top = 1
-          Align = alClient
+          Align = alLeft
           AutoSize = False
           DataBinding.DataField = 't_memo'
           DataBinding.DataSource = dsTree
-          Enabled = False
           ParentFont = False
           Properties.ReadOnly = True
           Style.BorderStyle = ebsNone
@@ -161,16 +160,28 @@ object MainFrm: TMainFrm
           StyleDisabled.Color = clWhite
           StyleDisabled.TextColor = clBlack
           TabOrder = 0
-          Height = 30
-          Width = 1266
+          Visible = False
+          Height = 45
+          Width = 29
+        end
+        object DBMemo1: TDBMemo
+          Left = 30
+          Top = 1
+          Width = 1237
+          Height = 45
+          Align = alClient
+          DataField = 't_memo'
+          DataSource = dsTree
+          ReadOnly = True
+          TabOrder = 1
         end
       end
     end
     object pnl1: TPanel
       Left = 1
-      Top = 35
+      Top = 50
       Width = 1334
-      Height = 961
+      Height = 946
       Align = alClient
       Caption = 'pnl1'
       Color = 16776176
@@ -520,7 +531,7 @@ object MainFrm: TMainFrm
         Left = 1
         Top = 657
         Width = 1332
-        Height = 303
+        Height = 288
         Align = alClient
         Color = 16776176
         ParentBackground = False
@@ -531,7 +542,7 @@ object MainFrm: TMainFrm
           Left = 1
           Top = 61
           Width = 1330
-          Height = 241
+          Height = 226
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -1907,44 +1918,7 @@ object MainFrm: TMainFrm
         OnClick = MnUserClick
       end
       object MnOpen: TMenuItem
-        Bitmap.Data = {
-          36040000424D3604000000000000360000002800000010000000100000000100
-          2000000000000004000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          00000000000000000000000000000E090110DB9612FFDB9612FFDB9612FFDB96
-          12FF0E0901100000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000DB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FF0000000000000000000000000000000000000000000000000000
-          0000DB9612FFDB9612FFDB9612FFDB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FFDB9612FFDB9612FFDB9612FF0000000000000000000000000E09
-          0110DB9612FFDB9612FFDB9612FFDB9612FF0000000000000000000000000000
-          0000DB9612FFDB9612FFDB9612FFDB9612FF0E0901100000000000000000DB96
-          12FFDB9612FF00000000000000000000000000000000DB9612FFDB9612FF0000
-          0000000000000000000000000000DB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FF000000000000000000000000DB9612FFDB9612FFDB9612FFDB96
-          12FF000000000000000000000000DB9612FFDB9612FF00000000000000000000
-          0000DB9612FFDB9612FF00000000DB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FF00000000DB9612FFDB9612FF0000000000000000000000000000
-          0000DB9612FFDB9612FF00000000DB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FF00000000DB9612FFDB9612FF000000000000000000000000DB96
-          12FFDB9612FF000000000000000000000000DB9612FFDB9612FFDB9612FFDB96
-          12FF000000000000000000000000DB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FF00000000000000000000000000000000DB9612FFDB9612FF0000
-          0000000000000000000000000000DB9612FFDB9612FF00000000000000000E09
-          0110DB9612FFDB9612FFDB9612FFDB9612FF0000000000000000000000000000
-          0000DB9612FFDB9612FFDB9612FFDB9612FF0E09011000000000000000000000
-          0000DB9612FFDB9612FFDB9612FFDB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FFDB9612FFDB9612FFDB9612FF0000000000000000000000000000
-          0000000000000000000000000000DB9612FFDB9612FF0000000000000000DB96
-          12FFDB9612FF0000000000000000000000000000000000000000000000000000
-          00000000000000000000000000000E090110DB9612FFDB9612FFDB9612FFDB96
-          12FF0E0901100000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000000000000000
-          0000000000000000000000000000000000000000000000000000}
-        Caption = #25171#24320#24320#25918#27169#24335
-        ImageIndex = 4
-        ImageName = #24320#25918#24179#21488
+        Caption = #9733#27169#22411#19982#25509#21475#32500#25252
         OnClick = MnOpenClick
       end
     end
@@ -2781,15 +2755,16 @@ object MainFrm: TMainFrm
       Size = 50
     end
     object fdQryTreet_memo: TStringField
-      DisplayWidth = 400
+      DisplayWidth = 600
       FieldName = 't_memo'
       Origin = 't_memo'
-      Size = 400
+      Size = 600
     end
     object fdQryTreet_para: TStringField
+      DisplayWidth = 400
       FieldName = 't_para'
       Origin = 't_para'
-      Size = 300
+      Size = 400
     end
     object fdQryTreet_proc: TMemoField
       FieldName = 't_proc'

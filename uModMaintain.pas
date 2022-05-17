@@ -48,7 +48,6 @@ type
     lbl4: TLabel;
     lbl5: TLabel;
     cxdbtxtdt2: TcxDBTextEdit;
-    cxdbtxtdt3: TcxDBTextEdit;
     cxdbchckbx4: TcxDBCheckBox;
     cxdbchckbx3: TcxDBCheckBox;
     cxdbtxtdt4: TcxDBTextEdit;
@@ -114,6 +113,7 @@ type
     SynSQLSyn1: TSynSQLSyn;
     SynEditCode: TSynEdit;
     FDMtblTree: TFDMemTable;
+    dbmmot_memo: TDBMemo;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
       AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
@@ -546,8 +546,8 @@ end;
 procedure TFModMaintain.cxdbtrlst1Click(Sender: TObject);
 begin
   // ShowMessage('onchanged');
-  SynEditCode.Text := VarToStrDef(fdQryTree['t_proc'], '');
-  SynEditCode.modified := False;
+//  SynEditCode.Text := VarToStrDef(fdQryTree['t_proc'], '');
+//  SynEditCode.modified := False;
 end;
 
 procedure TFModMaintain.cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
@@ -805,6 +805,7 @@ begin
         end;
     end;
     fdQryTree.Close;
+    fdQryTree.Free;
     Action := caFree;
   end;
 end;
@@ -1091,17 +1092,17 @@ procedure TFModMaintain.pnl3Resize(Sender: TObject);
 begin
   DBSynEditCode.RightEdge := DBSynEditCode.Width; // ÓÒ±ß¾àÓë±à¼­¿òÒ»Ñù¿í
   SynEditCode.RightEdge := SynEditCode.Width; // ÓÒ±ß¾àÓë±à¼­¿òÒ»Ñù¿í
-  cxdbtxtdt3.Width := pnl3.Width - cxdbtxtdt3.left - 10;
+  dbmmot_memo.Width := pnl3.Width - dbmmot_memo.left - 10;
   cxdbtxtdt4.Width := pnl3.Width - cxdbtxtdt4.left - 10;
 end;
 
 procedure TFModMaintain.SynEditCodeExit(Sender: TObject);
 begin
-  if SynEditCode.modified then
-  begin
-    fdQryTree.Edit;
-    fdQryTree['t_proc'] := SynEditCode.Text;
-  end;
+//  if SynEditCode.modified then
+//  begin
+//    fdQryTree.Edit;
+//    fdQryTree['t_proc'] := SynEditCode.Text;
+//  end;
 end;
 
 procedure TFModMaintain.ToggleButtons(Enable: Boolean);
@@ -1288,8 +1289,8 @@ begin
   fdQryTree.FieldByName('isClass').AsString := '0';
   TBlobField(fdQryTree.FieldByName('t_proc')).LoadFromFile(ExtractFilePath(ParamStr(0)) + 'ModTemplate.txt');
   fdQryTree.Post;
-  SynEditCode.Text := fdQryTree['t_proc'];
-  SynEditCode.modified := False;
+//  SynEditCode.Text := fdQryTree['t_proc'];
+//  SynEditCode.modified := False;
   fdQryTree.EnableControls;
   // AsString := 'CREATE PROCEDURE ModelName (@,@ )     With Encryption AS' + #13 + 'BEGIN' + #13#13 + 'END' + #13 + 'GO';
   // fdqryTree.UpdateBatch(arAll);

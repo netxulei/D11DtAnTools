@@ -371,7 +371,7 @@ object FModMaintain: TFModMaintain
       end
       object lbl3: TLabel
         Left = 24
-        Top = 55
+        Top = 52
         Width = 65
         Height = 15
         Caption = #21151#33021#25551#36848#65306
@@ -400,7 +400,7 @@ object FModMaintain: TFModMaintain
       end
       object cxdbtxtdt2: TcxDBTextEdit
         Left = 24
-        Top = 25
+        Top = 23
         DataBinding.DataField = 't_name'
         DataBinding.DataSource = ds1
         Style.LookAndFeel.NativeStyle = True
@@ -409,23 +409,6 @@ object FModMaintain: TFModMaintain
         StyleHot.LookAndFeel.NativeStyle = True
         TabOrder = 0
         Width = 545
-      end
-      object cxdbtxtdt3: TcxDBTextEdit
-        Left = 24
-        Top = 73
-        DataBinding.DataField = 't_memo'
-        DataBinding.DataSource = ds1
-        Style.LookAndFeel.Kind = lfUltraFlat
-        Style.LookAndFeel.NativeStyle = True
-        Style.Shadow = False
-        StyleDisabled.LookAndFeel.Kind = lfUltraFlat
-        StyleDisabled.LookAndFeel.NativeStyle = True
-        StyleFocused.LookAndFeel.Kind = lfUltraFlat
-        StyleFocused.LookAndFeel.NativeStyle = True
-        StyleHot.LookAndFeel.Kind = lfUltraFlat
-        StyleHot.LookAndFeel.NativeStyle = True
-        TabOrder = 1
-        Width = 937
       end
       object cxdbchckbx4: TcxDBCheckBox
         Left = 227
@@ -438,7 +421,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 3
+        TabOrder = 2
         Transparent = True
       end
       object cxdbchckbx3: TcxDBCheckBox
@@ -452,7 +435,7 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 4
+        TabOrder = 3
         Transparent = True
         OnEditing = cxdbchckbx3Editing
       end
@@ -465,7 +448,7 @@ object FModMaintain: TFModMaintain
         StyleDisabled.LookAndFeel.NativeStyle = True
         StyleFocused.LookAndFeel.NativeStyle = True
         StyleHot.LookAndFeel.NativeStyle = True
-        TabOrder = 2
+        TabOrder = 1
         Width = 945
       end
       object pnl4: TPanel
@@ -478,7 +461,7 @@ object FModMaintain: TFModMaintain
         BevelOuter = bvNone
         Ctl3D = False
         ParentCtl3D = False
-        TabOrder = 5
+        TabOrder = 4
         object bitbtn3: TBitBtn
           Left = 0
           Top = 24
@@ -517,7 +500,7 @@ object FModMaintain: TFModMaintain
         ImageIndex = 13
         ImageName = #27979#35797
         Images = F_DT.vrtlmglst1
-        TabOrder = 6
+        TabOrder = 5
         OnClick = btnTestClick
       end
       object cxdbchkbxIsClass: TcxDBCheckBox
@@ -531,14 +514,14 @@ object FModMaintain: TFModMaintain
         Properties.ValueChecked = 1
         Properties.ValueUnchecked = 0
         ShowHint = True
-        TabOrder = 7
+        TabOrder = 6
         Transparent = True
         OnEditing = cxdbchkbxIsClassEditing
         OnExit = cxdbchkbxIsClassExit
       end
       object cxDBLkUpComClass: TcxDBLookupComboBox
         Left = 575
-        Top = 25
+        Top = 23
         DataBinding.DataField = 't_parent_id'
         DataBinding.DataSource = ds1
         Properties.DropDownListStyle = lsFixedList
@@ -555,7 +538,7 @@ object FModMaintain: TFModMaintain
         Properties.ListSource = ds2
         Properties.MaxLength = 400
         Style.Shadow = False
-        TabOrder = 8
+        TabOrder = 7
         OnClick = cxDBLkUpComClassClick
         OnEnter = cxDBLkUpComClassEnter
         Width = 330
@@ -574,8 +557,17 @@ object FModMaintain: TFModMaintain
         StyleFocused.LookAndFeel.NativeStyle = True
         StyleHot.LookAndFeel.Kind = lfUltraFlat
         StyleHot.LookAndFeel.NativeStyle = True
-        TabOrder = 9
+        TabOrder = 8
         Width = 121
+      end
+      object dbmmot_memo: TDBMemo
+        Left = 24
+        Top = 68
+        Width = 917
+        Height = 40
+        DataField = 't_memo'
+        DataSource = ds1
+        TabOrder = 9
       end
     end
     object cxdbm1: TcxDBMemo
@@ -601,11 +593,13 @@ object FModMaintain: TFModMaintain
     end
     object DBSynEditCode: TDBSynEdit
       Left = 1
-      Top = 340
+      Top = 416
       Width = 1498
-      Height = 136
+      Height = 528
       Cursor = crIBeam
-      Align = alTop
+      DataField = 't_proc'
+      DataSource = ds1
+      Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -617,7 +611,6 @@ object FModMaintain: TFModMaintain
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
-      Visible = False
       Gutter.Font.Charset = DEFAULT_CHARSET
       Gutter.Font.Color = clWindowText
       Gutter.Font.Height = -11
@@ -645,17 +638,17 @@ object FModMaintain: TFModMaintain
         end>
       Highlighter = SynSQLSyn1
       Options = [eoAutoIndent, eoDisableScrollArrows, eoDragDropEditing, eoDropFiles, eoEnhanceHomeKey, eoEnhanceEndKey, eoGroupUndo, eoHideShowScrollbars, eoKeepCaretX, eoShowScrollHint, eoSmartTabDelete, eoTabIndent, eoTabsToSpaces, eoTrimTrailingSpaces, eoShowLigatures]
-      RightEdge = 120
+      RightEdge = 160
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
     end
     object SynEditCode: TSynEdit
       Left = 1
-      Top = 476
+      Top = 340
       Width = 1498
-      Height = 468
-      Align = alClient
+      Height = 76
+      Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -665,6 +658,7 @@ object FModMaintain: TFModMaintain
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
+      Visible = False
       OnExit = SynEditCodeExit
       UseCodeFolding = False
       Gutter.Font.Charset = DEFAULT_CHARSET
@@ -698,6 +692,7 @@ object FModMaintain: TFModMaintain
       SelectedColor.Alpha = 0.400000005960464500
       TabWidth = 4
       WantTabs = True
+      WordWrapGlyph.Visible = False
     end
   end
   object cxspltr1: TcxSplitter
@@ -792,15 +787,16 @@ object FModMaintain: TFModMaintain
       Size = 50
     end
     object fdQryTreet_memo: TStringField
-      DisplayWidth = 400
+      DisplayWidth = 600
       FieldName = 't_memo'
       Origin = 't_memo'
-      Size = 400
+      Size = 600
     end
     object fdQryTreet_para: TStringField
+      DisplayWidth = 400
       FieldName = 't_para'
       Origin = 't_para'
-      Size = 300
+      Size = 400
     end
     object fdQryTreet_proc: TMemoField
       FieldName = 't_proc'
