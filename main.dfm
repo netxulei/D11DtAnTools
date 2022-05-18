@@ -33,7 +33,6 @@ object MainFrm: TMainFrm
     FindPanel.FocusContentOnApplyFilter = True
     FindPanel.InfoText = #36755#20837#25991#26412#26597#25214#27169#22411#8230#8230
     FindPanel.ShowCloseButton = False
-    FindPanel.ShowFindButton = False
     FindPanel.UseDelayedFind = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

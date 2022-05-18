@@ -146,7 +146,7 @@ resourcestring
   SMsgDlgRetry = '重试';
   SMsgDlgIgnore = '忽略';
   SMsgDlgAll = '所有';
-  SMsgDlgNoToAll = '不是所有No to All';
+  SMsgDlgNoToAll = '不是所有';
   SMsgDlgYesToAll = '是的所有';
   SMsgDlgClose = '&关闭';
 

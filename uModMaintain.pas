@@ -115,8 +115,7 @@ type
     FDMtblTree: TFDMemTable;
     dbmmot_memo: TDBMemo;
     procedure FormCreate(Sender: TObject);
-    procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
-      AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
+    procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure fdQryTreeCalcFields(DataSet: TDataSet);
     procedure MnExpandClick(Sender: TObject);
     procedure MnCollapseClick(Sender: TObject);
@@ -126,8 +125,7 @@ type
     procedure bitbtnDeleteClick(Sender: TObject);
     procedure OnDataChange(Sender: TObject; Field: TField);
     procedure bitbtnSaveClick(Sender: TObject);
-    procedure fdQryTreeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction;
-      AOptions: TFDUpdateRowOptions);
+    procedure fdQryTreeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
     procedure bitbtnExitClick(Sender: TObject);
     procedure bitbtnUndoOnceClick(Sender: TObject);
     procedure bitbtnUndoAllClick(Sender: TObject);
@@ -419,8 +417,7 @@ begin
   end;
 
   // 子集t_sort最大长度，用于计算级次
-  sqltext := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort +
-    '%'' order by t_sort';
+  sqltext := 'select max(length(t_sort)) max_len from fdQryTree where t_sort like ' + '''' + Movedsort + '%'' order by t_sort';
   fdQryMaxLen.Close;
   fdQryMaxLen.Prepared := False;
   fdQryMaxLen.SQL.Clear;
@@ -449,8 +446,8 @@ begin
   fdQryMaxSort.Prepared := False;
   fdQryMaxSort.Connection := F_DT.FDConSQLite;
   fdQryMaxSort.SQL.Clear;
-  fdQryMaxSort.SQL.ADD('SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree where t_sort like ''' +
-    NewParentsort + '%'' and length(t_sort)=' + inttostr(sortNewParentLen + 2));
+  fdQryMaxSort.SQL.ADD('SELECT max(cast(t_sort as int)) as i_SortMax FROM fdQryTree where t_sort like ''' + NewParentsort + '%'' and length(t_sort)=' +
+    inttostr(sortNewParentLen + 2));
   // fdQryMaxSort.SQL.Add('SELECT count(t_sort) as i_SortMax FROM fdQryTree where t_sort like '''
   // + sortNewParent+'%'' and length(t_sort)='+inttostr(sortNewParentLen+2));
   // 此时把新增节点也放进来了，可能需要在enter阶段就要取值  ，但此阶段并不知道新父项？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
@@ -546,12 +543,11 @@ end;
 procedure TFModMaintain.cxdbtrlst1Click(Sender: TObject);
 begin
   // ShowMessage('onchanged');
-//  SynEditCode.Text := VarToStrDef(fdQryTree['t_proc'], '');
-//  SynEditCode.modified := False;
+  // SynEditCode.Text := VarToStrDef(fdQryTree['t_proc'], '');
+  // SynEditCode.modified := False;
 end;
 
-procedure TFModMaintain.cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode;
-  AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
+procedure TFModMaintain.cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
 begin
   if AIndexType = tlitStateIndex then
     exit;
@@ -777,8 +773,7 @@ begin
 
 end;
 
-procedure TFModMaintain.fdQryTreeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest;
-  var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
+procedure TFModMaintain.fdQryTreeUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
 end;
@@ -806,8 +801,8 @@ begin
     end;
     fdQryTree.Close;
     fdQryTree.Free;
-    Action := caFree;
   end;
+  Action := caFree;
 end;
 
 procedure TFModMaintain.FormCreate(Sender: TObject);
@@ -845,10 +840,8 @@ begin
   // fdQryTitle.SQL.Add('SELECT t_id,t_parent_id,t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass=' + '''' +
   // '1' + '''' + ' union SELECT 0,0,' + '''' + '*==============*' + '''' + ','''' ' + 'FROM fdQryTree order by t_sort');
   //
-  fdQryTitle.SQL.ADD
-    ('SELECT t_id,t_parent_id,repeat('' '',length(t_sort)*2)||''⊙┈┈┈''||t_name as t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass='
-    + '''' + '1' + '''' + ' union SELECT 0,0,' + '''' + '⊙┈┈┈数据分析模型' + '''' + ','''' ' +
-    'FROM fdQryTree order by t_sort');
+  fdQryTitle.SQL.ADD('SELECT t_id,t_parent_id,repeat('' '',length(t_sort)*2)||''⊙┈┈┈''||t_name as t_name,t_sort FROM  fdQryTree where t_parent_id=0 or isClass=' + '''' + '1' + ''''
+    + ' union SELECT 0,0,' + '''' + '⊙┈┈┈数据分析模型' + '''' + ','''' ' + 'FROM fdQryTree order by t_sort');
   fdQryTitle.Prepared := True;
   fdQryTitle.Open;
   fdQryTitle.EnableControls;
@@ -875,9 +868,8 @@ begin
   bk := fdQryTree.Bookmark;
   // select t_id,t_parent_id,t_sort from fdqryTree where length(t_sort)=length('010202') and substr(t_sort,1,length(t_sort)-2)= substr('010202',1,length('010202')-2) order by t_sort
   cur_sort := fdQryTree['t_sort'];
-  sqltext := 'select t_id,t_parent_id,t_sort from fdqryTree where length(t_sort)=length(''' + cur_sort +
-    ''') and substr(t_sort,1,length(t_sort)-2)= substr(''' + cur_sort + ''',1,length(''' + cur_sort +
-    ''')-2) order by t_sort';
+  sqltext := 'select t_id,t_parent_id,t_sort from fdqryTree where length(t_sort)=length(''' + cur_sort + ''') and substr(t_sort,1,length(t_sort)-2)= substr(''' + cur_sort +
+    ''',1,length(''' + cur_sort + ''')-2) order by t_sort';
   fdQrySameLev.Close;
   fdQrySameLev.Prepared := False;
   fdQrySameLev.SQL.Clear;
@@ -1074,8 +1066,8 @@ procedure TFModMaintain.OnDataChange(Sender: TObject; Field: TField);
 begin
 
   if (fdQryTree.UpdateStatus = usModified) then
-    StatusBar1.SimpleText := 'Old t_parent_id: ' + inttostr(fdQryTree.FieldByName('t_parent_id').OldValue) +
-      ', New t_parent_id: ' + inttostr(fdQryTree.FieldByName('t_parent_id').CurValue)
+    StatusBar1.SimpleText := 'Old t_parent_id: ' + inttostr(fdQryTree.FieldByName('t_parent_id').OldValue) + ', New t_parent_id: ' +
+      inttostr(fdQryTree.FieldByName('t_parent_id').CurValue)
   else
     StatusBar1.SimpleText := '';
 
@@ -1098,11 +1090,11 @@ end;
 
 procedure TFModMaintain.SynEditCodeExit(Sender: TObject);
 begin
-//  if SynEditCode.modified then
-//  begin
-//    fdQryTree.Edit;
-//    fdQryTree['t_proc'] := SynEditCode.Text;
-//  end;
+  // if SynEditCode.modified then
+  // begin
+  // fdQryTree.Edit;
+  // fdQryTree['t_proc'] := SynEditCode.Text;
+  // end;
 end;
 
 procedure TFModMaintain.ToggleButtons(Enable: Boolean);
@@ -1124,7 +1116,7 @@ var
   cur_id, cur_par_id, cur_level, max_id, i, pare_id_tmp: integer;
   s_cur_sort, s_max_sort, s_sort_num: string;
 begin
-//  cxdbtrlst1.FindPanel.
+  // cxdbtrlst1.FindPanel.
   fdQryTree.DisableControls;
   // 当前记录节点和父节点号
   if fdQryTree.Eof then
@@ -1289,8 +1281,8 @@ begin
   fdQryTree.FieldByName('isClass').AsString := '0';
   TBlobField(fdQryTree.FieldByName('t_proc')).LoadFromFile(ExtractFilePath(ParamStr(0)) + 'ModTemplate.txt');
   fdQryTree.Post;
-//  SynEditCode.Text := fdQryTree['t_proc'];
-//  SynEditCode.modified := False;
+  // SynEditCode.Text := fdQryTree['t_proc'];
+  // SynEditCode.modified := False;
   fdQryTree.EnableControls;
   // AsString := 'CREATE PROCEDURE ModelName (@,@ )     With Encryption AS' + #13 + 'BEGIN' + #13#13 + 'END' + #13 + 'GO';
   // fdqryTree.UpdateBatch(arAll);

@@ -158,6 +158,7 @@
         </DCCReference>
         <DCCReference Include="MySome\D11\Vcl.Consts.pas"/>
         <DCCReference Include="MySome\Vcl.VDBConsts.pas"/>
+        <DCCReference Include="MySome\cxTLStrs.pas"/>
         <DCCReference Include="uSrcTabMaintain.pas">
             <Form>frmSrcTabMaintain</Form>
         </DCCReference>
@@ -174,6 +175,7 @@
             <Form>fmDisAssiTable</Form>
         </DCCReference>
         <DCCReference Include="JM\JMCode.pas"/>
+        <DCCReference Include="MySome\EhLibLangConsts.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -210,6 +212,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="Win32\Debug\DtAnTools.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>DtAnTools.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win32\Release\DtAnTools.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>DtAnTools.exe</RemoteName>
                         <Overwrite>true</Overwrite>
