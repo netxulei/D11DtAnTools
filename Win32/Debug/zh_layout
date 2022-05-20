@@ -1,7 +1,7 @@
 [datGrid]
 Line0='object MainFrm: TMainFrm'
 Line1='  object cxDBTreeList1: TcxDBTreeList'
-Line2='    Width = 359'
+Line2='    Width = 583'
 Line3='  end'
 Line4='  object Panel1: TPanel'
 Line5='    object pnl1: TPanel'

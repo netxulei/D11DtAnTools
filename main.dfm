@@ -19,9 +19,9 @@ object MainFrm: TMainFrm
   TextHeight = 15
   object cxDBTreeList1: TcxDBTreeList
     Left = 0
-    Top = 0
+    Top = 38
     Width = 260
-    Height = 997
+    Height = 959
     Align = alLeft
     Bands = <
       item
@@ -99,9 +99,9 @@ object MainFrm: TMainFrm
   end
   object Panel1: TPanel
     Left = 268
-    Top = 0
+    Top = 38
     Width = 1336
-    Height = 997
+    Height = 959
     Align = alClient
     Caption = 'Panel1'
     ParentBackground = False
@@ -136,43 +136,16 @@ object MainFrm: TMainFrm
         ParentBackground = False
         TabOrder = 0
         OnResize = pnl3Resize
-        object cxdbtxtdt1: TcxDBTextEdit
+        object DBMemo1: TDBMemo
           Left = 1
           Top = 1
-          Align = alLeft
-          AutoSize = False
-          DataBinding.DataField = 't_memo'
-          DataBinding.DataSource = dsTree
-          ParentFont = False
-          Properties.ReadOnly = True
-          Style.BorderStyle = ebsNone
-          Style.Color = clBtnHighlight
-          Style.Font.Charset = DEFAULT_CHARSET
-          Style.Font.Color = clWindowText
-          Style.Font.Height = -12
-          Style.Font.Name = #23435#20307
-          Style.Font.Style = []
-          Style.HotTrack = False
-          Style.Shadow = False
-          Style.TransparentBorder = True
-          Style.IsFontAssigned = True
-          StyleDisabled.Color = clWhite
-          StyleDisabled.TextColor = clBlack
-          TabOrder = 0
-          Visible = False
-          Height = 45
-          Width = 29
-        end
-        object DBMemo1: TDBMemo
-          Left = 30
-          Top = 1
-          Width = 1237
+          Width = 1266
           Height = 45
           Align = alClient
           DataField = 't_memo'
           DataSource = dsTree
           ReadOnly = True
-          TabOrder = 1
+          TabOrder = 0
         end
       end
     end
@@ -180,7 +153,7 @@ object MainFrm: TMainFrm
       Left = 1
       Top = 50
       Width = 1334
-      Height = 946
+      Height = 908
       Align = alClient
       Caption = 'pnl1'
       Color = 16776176
@@ -190,7 +163,7 @@ object MainFrm: TMainFrm
         Left = 1
         Top = 1
         Width = 1332
-        Height = 43
+        Height = 32
         Align = alTop
         Alignment = taLeftJustify
         Caption = 'Panel2'
@@ -199,9 +172,9 @@ object MainFrm: TMainFrm
         object pnl6: TPanel
           Left = 1
           Top = 1
-          Width = 336
-          Height = 41
-          Align = alLeft
+          Width = 1330
+          Height = 30
+          Align = alClient
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -211,7 +184,7 @@ object MainFrm: TMainFrm
           ParentFont = False
           TabOrder = 0
           object spbtnFormat: TSpeedButton
-            Left = 319
+            Left = 503
             Top = 4
             Width = 19
             Height = 23
@@ -262,10 +235,10 @@ object MainFrm: TMainFrm
             OnClick = spbtnFormatClick
           end
           object btn2: TBitBtn
-            Left = 133
-            Top = 3
-            Width = 84
-            Height = 33
+            Left = 261
+            Top = 2
+            Width = 94
+            Height = 23
             Caption = #23548#20986#32467#26524
             Font.Charset = GB2312_CHARSET
             Font.Color = clWindowText
@@ -281,8 +254,8 @@ object MainFrm: TMainFrm
             OnClick = btn2Click
           end
           object btn1: TBitBtn
-            Left = 319
-            Top = 19
+            Left = 480
+            Top = 4
             Width = 17
             Height = 23
             Caption = #25191#34892#21151#33021
@@ -311,8 +284,8 @@ object MainFrm: TMainFrm
             OnClick = btn1Click
           end
           object chkAfterOpen: TCheckBox
-            Left = 224
-            Top = 13
+            Left = 361
+            Top = 5
             Width = 97
             Height = 17
             Caption = #23548#20986#21518#25171#24320
@@ -327,8 +300,8 @@ object MainFrm: TMainFrm
             TabOrder = 2
           end
           object rdbt1: TRadioButton
-            Left = 3
-            Top = 4
+            Left = 1
+            Top = 7
             Width = 126
             Height = 17
             Hint = #23637#31034#20998#26512#32467#26524#26102#20351#29992'12'#20301#38134#34892#26426#26500#20195#30721#33719#21462#21517#31216
@@ -347,8 +320,8 @@ object MainFrm: TMainFrm
             OnClick = rdbt1Click
           end
           object rdbt2: TRadioButton
-            Left = 3
-            Top = 21
+            Left = 129
+            Top = 7
             Width = 134
             Height = 17
             Hint = #23637#31034#20998#26512#32467#26524#26102#20351#29992'14'#20301#37329#34701#26426#26500#32534#30721#33719#21462#21517#31216
@@ -365,45 +338,10 @@ object MainFrm: TMainFrm
             OnClick = rdbt2Click
           end
         end
-        object pnl4: TPanel
-          Left = 337
-          Top = 1
-          Width = 994
-          Height = 41
-          Align = alClient
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -8
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          ParentBackground = False
-          ParentFont = False
-          TabOrder = 1
-          OnResize = pnl4Resize
-          object lblInfo: TLabel
-            Left = 1
-            Top = 1
-            Width = 992
-            Height = 39
-            Align = alClient
-            Caption = #24403#21069#39033#30446
-            Color = clBtnFace
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -12
-            Font.Name = 'Segoe UI'
-            Font.Style = []
-            ParentColor = False
-            ParentFont = False
-            Layout = tlCenter
-            ExplicitWidth = 52
-            ExplicitHeight = 15
-          end
-        end
       end
       object dbgrdh1: TDBGridEh
         Left = 1
-        Top = 68
+        Top = 61
         Width = 1332
         Height = 581
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
@@ -461,9 +399,9 @@ object MainFrm: TMainFrm
       end
       object pnl2: TPanel
         Left = 1
-        Top = 44
+        Top = 33
         Width = 1332
-        Height = 24
+        Height = 28
         Align = alTop
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -475,10 +413,10 @@ object MainFrm: TMainFrm
         TabOrder = 2
         OnResize = pnl2Resize
         object lblResult: TLabel
-          Left = 85
+          Left = 84
           Top = 1
           Width = 65
-          Height = 22
+          Height = 26
           Align = alLeft
           Caption = #31579#36873#32467#26524#65306
           Font.Charset = ANSI_CHARSET
@@ -491,7 +429,7 @@ object MainFrm: TMainFrm
           ExplicitHeight = 15
         end
         object cxtxtdt1: TcxTextEdit
-          Left = 150
+          Left = 149
           Top = 1
           Align = alLeft
           ParentFont = False
@@ -518,19 +456,25 @@ object MainFrm: TMainFrm
         object chkAssisDis: TCheckBox
           Left = 1
           Top = 1
-          Width = 84
-          Height = 22
+          Width = 83
+          Height = 26
           Align = alLeft
           Caption = #36741#21161#26597#35810
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
           TabOrder = 1
           OnClick = chkAssisDisClick
         end
       end
       object pnl9: TPanel
         Left = 1
-        Top = 657
+        Top = 650
         Width = 1332
-        Height = 288
+        Height = 257
         Align = alClient
         Color = 16776176
         ParentBackground = False
@@ -541,7 +485,7 @@ object MainFrm: TMainFrm
           Left = 1
           Top = 61
           Width = 1330
-          Height = 226
+          Height = 195
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -798,7 +742,7 @@ object MainFrm: TMainFrm
       end
       object cxspltr3: TcxSplitter
         Left = 1
-        Top = 649
+        Top = 642
         Width = 1332
         Height = 8
         Hint = #21333#20987#25110#19978#19979#25302#21160
@@ -816,9 +760,9 @@ object MainFrm: TMainFrm
   end
   object cxspltr2: TcxSplitter
     Left = 260
-    Top = 0
+    Top = 38
     Width = 8
-    Height = 997
+    Height = 959
     Hint = #21333#20987#25110#24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
     HotZone.SizePercent = 40
@@ -830,10 +774,136 @@ object MainFrm: TMainFrm
     ShowHint = True
     ParentShowHint = False
   end
+  object tlbTop: TToolBar
+    Left = 0
+    Top = 0
+    Width = 1604
+    Height = 38
+    AutoSize = True
+    ButtonHeight = 38
+    ButtonWidth = 68
+    DrawingStyle = dsGradient
+    Images = F_DT.vrtlmglstMenu
+    Indent = 6
+    ParentShowHint = False
+    ShowCaptions = True
+    ShowHint = True
+    TabOrder = 3
+    object btnProj: TToolButton
+      Left = 6
+      Top = 0
+      Hint = #31383#21475#26631#39064#26174#31034#24403#21069#39033#30446#20449#24687#65281#24517#39035#24314#31435#39033#30446#65292#25968#25454#23548#20837#21644#20998#26512#25165#33021#32487#32493#12290
+      Caption = '1.'#39033#30446#31649#29702
+      ImageIndex = 1
+      ImageName = #39033#30446#31649#29702
+      OnClick = btnProjClick
+    end
+    object btnImport: TToolButton
+      Left = 74
+      Top = 0
+      Hint = #23548#20837#30456#20851#25968#25454#34920
+      Caption = '2.'#25968#25454#23548#20837
+      ImageIndex = 2
+      ImageName = #25968#25454#23548#20837
+      OnClick = btnImportClick
+    end
+    object btnRun: TToolButton
+      Left = 142
+      Top = 0
+      Hint = #27169#22411#21015#34920#20026#38750#31867#21035#39033#30446#25165#33021#25191#34892#12290#27169#22411#21015#34920#21452#20987#39033#30446#36816#34892#26356#26377#25928#29575#12290
+      Caption = '3.'#36816#34892#27169#22411
+      ImageIndex = 16
+      ImageName = #36816#34892' (1)'
+      OnClick = btnRunClick
+    end
+    object btnExport: TToolButton
+      Left = 210
+      Top = 0
+      Hint = #36816#34892#27169#22411#26377#32467#26524#25165#33021#23548#20986'Excel'
+      Caption = '4.'#23548#20986#32467#26524
+      ImageIndex = 15
+      ImageName = #23548#20986#32467#26524
+      OnClick = btnExportClick
+    end
+    object btnsplit: TToolButton
+      Left = 278
+      Top = 0
+      Width = 8
+      Enabled = False
+      Style = tbsSeparator
+    end
+    object btnOpen: TToolButton
+      Left = 286
+      Top = 0
+      Hint = #25171#24320#25110#20851#38381#27169#22411#32500#25252#12289#25509#21475#32500#25252#12289#23383#20856#32500#25252#26435#38480
+      Caption = #24320#25918#27169#24335
+      ImageIndex = 4
+      ImageName = #24320#25918#24179#21488
+      Style = tbsCheck
+      OnClick = btnOpenClick
+    end
+    object btnMod: TToolButton
+      Left = 354
+      Top = 0
+      Hint = #27169#22411#32500#25252
+      Caption = #27169#22411#32500#25252
+      Enabled = False
+      ImageIndex = 5
+      ImageName = #27169#22411#32500#25252' '
+      OnClick = btnModClick
+    end
+    object btnSrc: TToolButton
+      Left = 422
+      Top = 0
+      Hint = #25968#25454#25509#21475#32500#25252
+      Caption = #25509#21475#32500#25252
+      Enabled = False
+      ImageIndex = 6
+      ImageName = #25968#25454#32500#25252
+      OnClick = btnSrcClick
+    end
+    object btnDict: TToolButton
+      Left = 490
+      Top = 0
+      Hint = #25968#25454#23383#20856#32500#25252
+      Caption = #23383#20856#32500#25252
+      Enabled = False
+      ImageIndex = 7
+      ImageName = #23383#20856#32500#25252
+      OnClick = btnDictClick
+    end
+    object btnNote: TToolButton
+      Left = 558
+      Top = 0
+      Hint = #25171#24320#19968#20010#35760#24405#26412#65292#29992#20110#35760#24405#20998#26512#36807#31243#38656#26242#35760#30340#26377#20851#20869#23481#12290
+      Caption = #20020#26102#35760#24405
+      ImageIndex = 3
+      ImageName = #35760#24405#26412
+      OnClick = btnNoteClick
+    end
+    object btnModIn: TToolButton
+      Left = 626
+      Top = 0
+      Hint = #23548#20837#20849#20139#27169#22411
+      Caption = #27169#22411#23548#20837
+      ImageIndex = 4
+      ImageName = #24320#25918#24179#21488
+      OnClick = btnModInClick
+    end
+    object btnModOut: TToolButton
+      Left = 694
+      Top = 0
+      Hint = #23548#20986#27169#22411#19982#20182#20154#20849#20139
+      Caption = #27169#22411#23548#20986
+      ImageIndex = 5
+      ImageName = #27169#22411#32500#25252' '
+      OnClick = btnModOutClick
+    end
+  end
   object MainMenu1: TMainMenu
     Images = F_DT.vrtlmglstMenu
-    Left = 128
-    Top = 32
+    Left = 184
+    Top = 48
     object MnProjData: TMenuItem
       Bitmap.Data = {
         36240000424D3624000000000000360000002800000030000000300000000100
@@ -1822,6 +1892,47 @@ object MainFrm: TMainFrm
       Caption = #31995#32479#31649#29702
       ImageIndex = 8
       ImageName = #31995#32479#31649#29702
+      object MnModRest: TMenuItem
+        Bitmap.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          200000000000000400000000000000000000000000000000000000000000DB96
+          11FFDB9611FFDB9611FFDB9611FFDB9611FFDB9611FFDB9611FFDB9611FFDB96
+          11FFD49110F7D49110F7D49110F7DB9611FFDA9511FE00000000DA9511FEDA95
+          11FED89411FBD49110F7D49110F7D49110F7D49110F7DB9611FFDB9611FFDB96
+          11FFDB9611FFDB9611FFDB9611FFD89411FCDB9611FFDB9611FFD89411FCDB96
+          11FF000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000DA9511FEDA9511FED99511FDDB96
+          11FF000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000DA9511FEDA9511FED49110F7DB96
+          11FF000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000DA9511FEDA9511FEDB9611FFDB96
+          11FF000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000DA9511FEDA9511FEDB9611FFDB96
+          11FF000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000DA9511FEDB9611FFDB9611FFDB96
+          11FF00000000000000000000F7F70001FDFE0001FBFC00000000000000000000
+          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
+          0000000000000000000000000000000000000001FCFD0001FCFD000000000000
+          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
+          000000000000000000000000FAFB0001FCFD0001FEFF0001FDFE0000FAFB0000
+          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
+          0000000000000001FEFF0001FBFC000000000000FAFB0001FDFE000000000000
+          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
+          00000001FDFE0000F9F900000000000000000001FEFF00000000000000000000
+          000000000000000000000000000000000000DA9511FEDB9611FF000000000001
+          FCFD0000FAFA00000000000000000000F9F90000FAFB00000000000000000000
+          000000000000000000000000000000000000DA9511FEDA9511FE0000F7F70001
+          FDFE000000000000000000000000000000000000000000000000000000000000
+          000000000000000000000000000000000000DA9511FEDA9511FE0000FFFF0001
+          FBFC000000000000000000000000000000000000000000000000D59211F8D894
+          11FBD89411FBD89411FBD89411FBD99511FDDB9611FFD99511FD0000FFFF0000
+          0000000000000000000000000000000000000000000000000000D59211F8DB96
+          11FFDB9611FFDB9611FFDB9611FFD69211F9D49110F700000000}
+        Caption = #23548#20837#27169#22411
+        ImageIndex = 10
+        ImageName = #23548#20837#27169#22411
+        OnClick = MnModRestClick
+      end
       object MnModBack: TMenuItem
         Bitmap.Data = {
           36040000424D3604000000000000360000002800000010000000100000000100
@@ -1863,47 +1974,6 @@ object MainFrm: TMainFrm
         ImageIndex = 9
         ImageName = #23548#20986#27169#22411
         OnClick = MnModBackClick
-      end
-      object MnModRest: TMenuItem
-        Bitmap.Data = {
-          36040000424D3604000000000000360000002800000010000000100000000100
-          200000000000000400000000000000000000000000000000000000000000DB96
-          11FFDB9611FFDB9611FFDB9611FFDB9611FFDB9611FFDB9611FFDB9611FFDB96
-          11FFD49110F7D49110F7D49110F7DB9611FFDA9511FE00000000DA9511FEDA95
-          11FED89411FBD49110F7D49110F7D49110F7D49110F7DB9611FFDB9611FFDB96
-          11FFDB9611FFDB9611FFDB9611FFD89411FCDB9611FFDB9611FFD89411FCDB96
-          11FF000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000DA9511FEDA9511FED99511FDDB96
-          11FF000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000DA9511FEDA9511FED49110F7DB96
-          11FF000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000DA9511FEDA9511FEDB9611FFDB96
-          11FF000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000DA9511FEDA9511FEDB9611FFDB96
-          11FF000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000DA9511FEDB9611FFDB9611FFDB96
-          11FF00000000000000000000F7F70001FDFE0001FBFC00000000000000000000
-          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
-          0000000000000000000000000000000000000001FCFD0001FCFD000000000000
-          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
-          000000000000000000000000FAFB0001FCFD0001FEFF0001FDFE0000FAFB0000
-          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
-          0000000000000001FEFF0001FBFC000000000000FAFB0001FDFE000000000000
-          000000000000000000000000000000000000DA9511FEDB9611FF000000000000
-          00000001FDFE0000F9F900000000000000000001FEFF00000000000000000000
-          000000000000000000000000000000000000DA9511FEDB9611FF000000000001
-          FCFD0000FAFA00000000000000000000F9F90000FAFB00000000000000000000
-          000000000000000000000000000000000000DA9511FEDA9511FE0000F7F70001
-          FDFE000000000000000000000000000000000000000000000000000000000000
-          000000000000000000000000000000000000DA9511FEDA9511FE0000FFFF0001
-          FBFC000000000000000000000000000000000000000000000000D59211F8D894
-          11FBD89411FBD89411FBD89411FBD99511FDDB9611FFD99511FD0000FFFF0000
-          0000000000000000000000000000000000000000000000000000D59211F8DB96
-          11FFDB9611FFDB9611FFDB9611FFD69211F9D49110F700000000}
-        Caption = #23548#20837#27169#22411
-        ImageIndex = 10
-        ImageName = #23548#20837#27169#22411
-        OnClick = MnModRestClick
       end
       object N39: TMenuItem
         Caption = '-'
@@ -2564,8 +2634,8 @@ object MainFrm: TMainFrm
     Top = 357
   end
   object actlst1: TActionList
-    Left = 16
-    Top = 16
+    Left = 72
+    Top = 176
     object edtcpy1: TEditCopy
       Category = 'Edit'
       Caption = '&Copy'

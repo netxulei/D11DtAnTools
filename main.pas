@@ -51,7 +51,6 @@ type
     N25: TMenuItem;
     ds1: TDataSource;
     pnl3: TPanel;
-    cxdbtxtdt1: TcxDBTextEdit;
     actlst1: TActionList;
     edtcpy1: TEditCopy;
     pm2: TPopupMenu;
@@ -61,7 +60,6 @@ type
     pnl5: TPanel;
     pnl6: TPanel;
     btn2: TBitBtn;
-    pnl4: TPanel;
     dbgrdh1: TDBGridEh;
     SaveDialog1: TSaveDialog;
     N18: TMenuItem;
@@ -108,7 +106,6 @@ type
     N38: TMenuItem;
     N39: TMenuItem;
     lblResult: TLabel;
-    lblInfo: TLabel;
     lblMemo: TLabel;
     spbtnFormat: TSpeedButton;
     cxspltr3: TcxSplitter;
@@ -168,6 +165,19 @@ type
     rdbt1: TRadioButton;
     rdbt2: TRadioButton;
     DBMemo1: TDBMemo;
+    tlbTop: TToolBar;
+    btnProj: TToolButton;
+    btnImport: TToolButton;
+    btnRun: TToolButton;
+    btnExport: TToolButton;
+    btnsplit: TToolButton;
+    btnOpen: TToolButton;
+    btnMod: TToolButton;
+    btnSrc: TToolButton;
+    btnDict: TToolButton;
+    btnNote: TToolButton;
+    btnModIn: TToolButton;
+    btnModOut: TToolButton;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function cre_V_bank(): Boolean;
@@ -240,6 +250,17 @@ type
     procedure chkAssisDisClick(Sender: TObject);
     procedure rdbt1Click(Sender: TObject);
     procedure rdbt2Click(Sender: TObject);
+    procedure btnProjClick(Sender: TObject);
+    procedure btnOpenClick(Sender: TObject);
+    procedure btnModClick(Sender: TObject);
+    procedure btnSrcClick(Sender: TObject);
+    procedure btnDictClick(Sender: TObject);
+    procedure btnImportClick(Sender: TObject);
+    procedure btnNoteClick(Sender: TObject);
+    procedure btnModInClick(Sender: TObject);
+    procedure btnModOutClick(Sender: TObject);
+    procedure btnRunClick(Sender: TObject);
+    procedure btnExportClick(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -808,10 +829,14 @@ begin
   cxDBTreeList1t_name.Caption.Text := '数据分析（双击执行）' + '→' + '版本：' + t_Jclj_Ver;
   // 模型列表标题显示模型（检查逻辑）版本号
   // 显示当前项目名称
-  if Length(Trim(t_proj_no)) = 0 then
-    lblInfo.Caption := '---首先设置当前项目，才能实施分析---'
+  // if Length(Trim(t_proj_no)) = 0 then
+  // lblInfo.Caption := '---首先设置当前项目，才能实施分析---'
+  // else
+  // lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
+   if Length(Trim(t_proj_no)) = 0 then
+    MainFrm.Caption := MainFrm.Caption + '---注意：首先设置当前项目，才能实施数据分析！'
   else
-    lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
+    MainFrm.Caption := MainFrm.Caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   rdbt1.Caption := rdbt1_name_cn;
   rdbt2.Caption := rdbt2_name_cn;
   if rdbtCheck = '1' then
@@ -1296,6 +1321,61 @@ begin
     ShellExecute(Application.Handle, 'Open', 'explorer.exe', pchar('/select,"' + s_filename + '"'), nil, SW_SHOWNORMAL);
 end;
 
+procedure TMainFrm.btnDictClick(Sender: TObject);
+begin
+  MainFrm.MnDictClick(Sender);
+end;
+
+procedure TMainFrm.btnExportClick(Sender: TObject);
+begin
+  MainFrm.btn2Click(Sender);
+end;
+
+procedure TMainFrm.btnImportClick(Sender: TObject);
+begin
+  MainFrm.N2Click(Sender);
+end;
+
+procedure TMainFrm.btnModClick(Sender: TObject);
+begin
+  MainFrm.MnModelClick(Sender);
+end;
+
+procedure TMainFrm.btnModInClick(Sender: TObject);
+begin
+  MainFrm.MnModRestClick(Sender);
+end;
+
+procedure TMainFrm.btnModOutClick(Sender: TObject);
+begin
+  MainFrm.MnModBackClick(Sender);
+end;
+
+procedure TMainFrm.btnNoteClick(Sender: TObject);
+begin
+  MainFrm.N27Click(Sender);
+end;
+
+procedure TMainFrm.btnOpenClick(Sender: TObject);
+begin
+  MainFrm.MnOpenClick(Sender);
+end;
+
+procedure TMainFrm.btnProjClick(Sender: TObject);
+begin
+  MainFrm.N_ProjClick(Sender);
+end;
+
+procedure TMainFrm.btnRunClick(Sender: TObject);
+begin
+  MainFrm.cxDBTreeList1DblClick(Sender);
+end;
+
+procedure TMainFrm.btnSrcClick(Sender: TObject);
+begin
+  MainFrm.MnRuleClick(Sender);
+end;
+
 procedure TMainFrm.N19Click(Sender: TObject);
 begin
   btn1.Click;
@@ -1375,9 +1455,9 @@ procedure TMainFrm.FormShow(Sender: TObject);
 
 begin
   mainHandle := GetActiveWindow;
-  lblInfo.Top := 0;
-  lblInfo.Left := 0;
-  pnl4.Width := lblInfo.Width;
+  // lblInfo.Top := 0;
+  // lblInfo.Left := 0;
+  // pnl4.Width := lblInfo.Width;
   // if not Assigned(F_float) then
   // F_float:=F_float.CreateParented(GetDesktopWindow);
   F_float.Hide;
@@ -1758,10 +1838,11 @@ begin
   begin
     t_mode := '0';
     MnOpen.Checked := False;
-//    MnOpen.Caption := '打开开放模式';
-    // N13.Visible := False;
     MnOpenMode.Visible := False;
-    // N_DrOther.Visible := False;
+    btnOpen.Down := False;
+    btnMod.Enabled := False;
+    btnSrc.Enabled := False;
+    btnDict.Enabled := False;
   end
   else
   begin
@@ -1770,10 +1851,11 @@ begin
     if t_mode = '1' then
     begin
       MnOpen.Checked := True;
-//      MnOpen.Caption := '关闭开放模式';
       MnOpenMode.Visible := True;
-      // N13.Visible := true;
-      // N_DrOther.Visible := True;
+      btnOpen.Down := True;
+      btnMod.Enabled := True;
+      btnSrc.Enabled := True;
+      btnDict.Enabled := True;
     end;
   end;
 
@@ -2008,9 +2090,9 @@ begin
   Application.CreateForm(TF_Proj, F_Proj);
   F_Proj.ShowModal;
   if Length(Trim(t_proj_no)) = 0 then
-    lblInfo.Caption := '---首先设置当前项目，才能实施数据分析---'
+    MainFrm.Caption := MainFrm.Caption + '---注意：首先设置当前项目，才能实施数据分析！'
   else
-    lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
+    MainFrm.Caption := MainFrm.Caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   if Length(Trim(t_proj_no)) <> 0 then
   begin
     // 判断数据库是否存在
@@ -2053,10 +2135,10 @@ begin
   // 在数据库定义函数 def_fun();
   // Application.CreateForm(Tf_item, f_item);
   // f_item.ShowModal;
-  fdQryTree.close;
+  // fdQryTree.close;
   Application.CreateForm(TFModMaintain, FModMaintain);
   FModMaintain.ShowModal;
-  // fdQryTree.close;
+  fdQryTree.close;
   fdQryTree.Open;
   // cre_zhsys();   //建立账户视图
   if Length(Trim(t_proj_no)) > 0 then

@@ -147,6 +147,8 @@ type
     procedure pnl3Resize(Sender: TObject);
     procedure cxdbtrlst1KeyPress(Sender: TObject; var Key: Char);
     procedure cxdbchckbx3Editing(Sender: TObject; var CanEdit: Boolean);
+    procedure cxdbtxtdt2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure cxdbtxtdt4KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -543,8 +545,8 @@ end;
 procedure TFModMaintain.cxdbtrlst1Click(Sender: TObject);
 begin
   // ShowMessage('onchanged');
-  // SynEditCode.Text := VarToStrDef(fdQryTree['t_proc'], '');
-  // SynEditCode.modified := False;
+  SynEditCode.Text := VarToStrDef(fdQryTree['t_proc'], '');
+  SynEditCode.modified := False;
 end;
 
 procedure TFModMaintain.cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
@@ -580,6 +582,31 @@ begin
   begin
     cxdbtrlst1Click(Sender);
   end;
+end;
+
+procedure TFModMaintain.cxdbtxtdt2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+
+  if Key = VK_RETURN then
+    dbmmot_memo.SetFocus
+  else
+  begin
+    if Key in [VK_UP, VK_PRIOR] then
+      fdQryTree.Prior;
+    if Key in [VK_DOWN, VK_NEXT] then
+      fdQryTree.Next;
+    cxdbtrlst1Click(Sender);
+  end;
+end;
+
+procedure TFModMaintain.cxdbtxtdt4KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key in [VK_UP, VK_PRIOR] then
+    fdQryTree.Prior;
+  if Key in [VK_DOWN, VK_NEXT] then
+    fdQryTree.Next;
+  if Key = VK_RETURN then
+    DBSynEditCode.SetFocus;
 end;
 
 procedure TFModMaintain.fdQryTreeCalcFields(DataSet: TDataSet);
@@ -1090,11 +1117,11 @@ end;
 
 procedure TFModMaintain.SynEditCodeExit(Sender: TObject);
 begin
-  // if SynEditCode.modified then
-  // begin
-  // fdQryTree.Edit;
-  // fdQryTree['t_proc'] := SynEditCode.Text;
-  // end;
+  if SynEditCode.modified then
+  begin
+    fdQryTree.Edit;
+    fdQryTree['t_proc'] := SynEditCode.Text;
+  end;
 end;
 
 procedure TFModMaintain.ToggleButtons(Enable: Boolean);
@@ -1281,8 +1308,8 @@ begin
   fdQryTree.FieldByName('isClass').AsString := '0';
   TBlobField(fdQryTree.FieldByName('t_proc')).LoadFromFile(ExtractFilePath(ParamStr(0)) + 'ModTemplate.txt');
   fdQryTree.Post;
-  // SynEditCode.Text := fdQryTree['t_proc'];
-  // SynEditCode.modified := False;
+  SynEditCode.Text := fdQryTree['t_proc'];
+  SynEditCode.modified := False;
   fdQryTree.EnableControls;
   // AsString := 'CREATE PROCEDURE ModelName (@,@ )     With Encryption AS' + #13 + 'BEGIN' + #13#13 + 'END' + #13 + 'GO';
   // fdqryTree.UpdateBatch(arAll);

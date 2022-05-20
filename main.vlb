@@ -70,9 +70,6 @@ Coordinates=23,660,40,33
 [MnDict]
 Coordinates=730,105,48,33
 
-[lblInfo]
-Coordinates=590,305,45,51
-
 [fdQryTree]
 Coordinates=10,10,63,285
 
@@ -81,9 +78,6 @@ Coordinates=264,305,44,51
 
 [MnModRest]
 Coordinates=730,157,72,33
-
-[cxdbtxtdt1]
-Coordinates=734,427,66,33
 
 [bitbtnAssis]
 Coordinates=184,305,70,51
@@ -147,9 +141,6 @@ Coordinates=681,731,40,33
 
 [MainMenu1]
 Coordinates=602,731,70,33
-
-[pnl4]
-Coordinates=10,305,41,51
 
 [N301]
 Coordinates=553,731,40,33
@@ -395,5 +386,5 @@ Coordinates=290,10,88,51
 Coordinates=422,421,40,33
 
 []
-Coordinates=750,305,41,51
+Coordinates=734,427,66,33
 
