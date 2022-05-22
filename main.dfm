@@ -560,7 +560,7 @@ object MainFrm: TMainFrm
           object cxbtnExp: TcxButton
             Left = 81
             Top = 4
-            Width = 100
+            Width = 112
             Height = 27
             Hint = #21517#31216#20026#8221#36741#21161#20449#24687'_'#40664#35748'.asi'#8220#30340#27169#26495#20026#31995#32479#27599#27425#25171#24320#26102#33258#21160#35843#29992#30340#27169#26495
             Caption = #36741#21161#34920#27169#26495
@@ -571,7 +571,7 @@ object MainFrm: TMainFrm
             TabOrder = 1
           end
           object lbledtKey: TLabeledEdit
-            Left = 709
+            Left = 713
             Top = 6
             Width = 132
             Height = 23
@@ -590,7 +590,7 @@ object MainFrm: TMainFrm
             Text = #36134#21495
           end
           object lbledtTabName: TLabeledEdit
-            Left = 525
+            Left = 529
             Top = 6
             Width = 105
             Height = 23
@@ -628,7 +628,7 @@ object MainFrm: TMainFrm
             Text = #36134#21495','#20132#26131#26085#26399
           end
           object lbledtName: TLabeledEdit
-            Left = 259
+            Left = 266
             Top = 6
             Width = 163
             Height = 23
@@ -898,6 +898,23 @@ object MainFrm: TMainFrm
       ImageIndex = 5
       ImageName = #27169#22411#32500#25252' '
       OnClick = btnModOutClick
+    end
+    object btn3: TToolButton
+      Left = 762
+      Top = 0
+      Width = 15
+      Caption = 'btn3'
+      ImageIndex = 6
+      ImageName = #25968#25454#32500#25252
+      Style = tbsSeparator
+    end
+    object btnExit: TToolButton
+      Left = 777
+      Top = 0
+      Caption = #36864#20986#31995#32479
+      ImageIndex = 12
+      ImageName = #36864#20986
+      OnClick = btnExitClick
     end
   end
   object MainMenu1: TMainMenu

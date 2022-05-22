@@ -178,6 +178,8 @@ type
     btnNote: TToolButton;
     btnModIn: TToolButton;
     btnModOut: TToolButton;
+    btn3: TToolButton;
+    btnExit: TToolButton;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function cre_V_bank(): Boolean;
@@ -261,6 +263,7 @@ type
     procedure btnModOutClick(Sender: TObject);
     procedure btnRunClick(Sender: TObject);
     procedure btnExportClick(Sender: TObject);
+    procedure btnExitClick(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -833,7 +836,7 @@ begin
   // lblInfo.Caption := '---首先设置当前项目，才能实施分析---'
   // else
   // lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
-   if Length(Trim(t_proj_no)) = 0 then
+  if Length(Trim(t_proj_no)) = 0 then
     MainFrm.Caption := MainFrm.Caption + '---注意：首先设置当前项目，才能实施数据分析！'
   else
     MainFrm.Caption := MainFrm.Caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
@@ -954,7 +957,7 @@ begin
   qryFields := StringReplace(qryFields, #$D, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, ' ', '', [rfReplaceAll]);
 
-  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKey.Text) + ' = ''' + key_value + ''' Order by ' + Trim(lbledtTabName.Text);
+  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKey.Text) + ' = ''' + key_value + ''' Order by ' + Trim(lbledtSort.Text);
 
   try
     fdQryAssis.close;
@@ -967,6 +970,7 @@ begin
     begin
       dbgrdh2.Columns[i].OptimizeWidth;
     end;
+    dbgrdh2.Enabled := True;
   except
     sError := Exception(ExceptObject).Message;
     sError := TRegex.Replace(sError, '\[[\S|\s]*\]', ''); // 替换之间字符串为空
@@ -1324,6 +1328,11 @@ end;
 procedure TMainFrm.btnDictClick(Sender: TObject);
 begin
   MainFrm.MnDictClick(Sender);
+end;
+
+procedure TMainFrm.btnExitClick(Sender: TObject);
+begin
+  close;
 end;
 
 procedure TMainFrm.btnExportClick(Sender: TObject);

@@ -491,14 +491,19 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           end
           item
             CellButtons = <>
-            DropDownBox.ListFieldNames = 'col_name'
-            DropDownBox.ListSource = dsCurColLst
+            DropDownRows = 10
+            DropDownSizing = True
             DropDownSpecRow.ShowIfNotInKeyList = False
             DropDownSpecRow.Visible = True
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_reg_depcol'
             Footers = <>
+            Layout = tlCenter
+            LookupParams.KeyFieldNames = 'col_reg_depcol'
+            LookupParams.LookupDataSet = FDQryCurColLst
+            LookupParams.LookupDisplayFieldName = 'col_name'
+            LookupParams.LookupKeyFieldNames = 'col_name'
             Title.Caption = #20381#36182#23383#27573
             Title.Hint = #21363#26412#23383#27573#30340#20869#23481#20381#36182#20110#26576#23383#27573#38271#24230#25110#20869#23481#12290#22914#20511#36151#35760#21345#26631#35782#20381#36182#20110#21345#21495#23383#27573#19981#20026#31354#26102#25165#38656#26657#39564
             Width = 129
@@ -1446,6 +1451,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object FDQryCurColLst: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     Connection = F_DT.FDConSQLite
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
