@@ -348,8 +348,25 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           end
           item
             CellButtons = <>
+            DropDownBox.Columns = <
+              item
+                EndEllipsis = True
+                FieldName = 'dict_lable'
+                Title.Caption = #23383#27573#31867#22411#21517#31216
+                Title.EndEllipsis = True
+                Width = 200
+              end
+              item
+                EndEllipsis = True
+                FieldName = 'dict_val'
+                Title.Caption = #23383#27573#31867#22411#23450#20041
+                Title.EndEllipsis = True
+                Width = 100
+              end>
+            DropDownBox.Options = [dlgColumnResizeEh, dlgColLinesEh, dlgRowLinesEh]
+            DropDownShowTitles = True
             DropDownSizing = True
-            DropDownWidth = 200
+            DropDownWidth = 300
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_type'
@@ -361,7 +378,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             LookupParams.LookupKeyFieldNames = 'dict_val'
             Title.Caption = #23383#27573#31867#22411
             Title.Hint = #26085#26399#36873#25321'10'#20301#23383#31526#20018
-            Width = 84
+            Width = 120
           end
           item
             CellButtons = <>
@@ -423,11 +440,27 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             CellButtons = <>
             DropDownBox.ColumnDefValues.EndEllipsis = True
             DropDownBox.ColumnDefValues.Layout = tlCenter
+            DropDownBox.Columns = <
+              item
+                FieldName = 'dict_type_name_cn'
+                Title.Alignment = taCenter
+                Title.Caption = #32534#30721#20851#32852#25968#25454#23383#20856
+                Title.EndEllipsis = True
+                Width = 200
+              end
+              item
+                FieldName = 'dict_type_memo'
+                Title.Alignment = taCenter
+                Title.Caption = #35828#26126
+                Width = 400
+              end>
+            DropDownBox.Options = [dlgColumnResizeEh, dlgColLinesEh, dlgRowLinesEh]
             DropDownRows = 10
+            DropDownShowTitles = True
             DropDownSizing = True
             DropDownSpecRow.ShowIfNotInKeyList = False
             DropDownSpecRow.Visible = True
-            DropDownWidth = 260
+            DropDownWidth = 600
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_Dict'
@@ -472,10 +505,29 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           end
           item
             CellButtons = <>
+            DropDownBox.Columns = <
+              item
+                EndEllipsis = True
+                FieldName = 'dict_lable'
+                Title.Alignment = taCenter
+                Title.Caption = #26657#39564#36923#36753#21517#31216
+                Title.EndEllipsis = True
+                Width = 300
+              end
+              item
+                EndEllipsis = True
+                FieldName = 'dict_val'
+                Title.Alignment = taCenter
+                Title.Caption = #26657#39564#27491#21017#34920#36798#24335
+                Title.EndEllipsis = True
+                Width = 300
+              end>
+            DropDownBox.Options = [dlgColumnResizeEh, dlgColLinesEh, dlgRowLinesEh]
+            DropDownShowTitles = True
             DropDownSizing = True
             DropDownSpecRow.ShowIfNotInKeyList = False
             DropDownSpecRow.Visible = True
-            DropDownWidth = 400
+            DropDownWidth = 500
             DynProps = <>
             EditButtons = <>
             FieldName = 'col_reg;col_reg_str;col_regName'
@@ -657,8 +709,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           Height = 24
           Cursor = crIBeam
           Hint = 
-            '1.'#19968#34892#20026#19968#20010#32452#21512#32034#24341#65288#21253#21547#22810#20010#23383#27573#30340#32034#24341#65289#65307#13#10'2.'#27599#20010#32452#21512#32034#24341#33267#23569#21253#21547'2'#20010#23383#27573#65288#20197#31446#26464#20998#38548#65289#65307#13#10'3.'#29420#31435#32034#24341#22312#19979#34920#21333#29420#26631#35782 +
-            #12290'|1.'#19968#34892#20026#19968#20010#32452#21512#32034#24341#65288#21253#21547#22810#20010#23383#27573#30340#32034#24341#65289#65307#13#10'2.'#27599#20010#32452#21512#32034#24341#33267#23569#21253#21547'2'#20010#23383#27573#65288#20197#8220
+            #25163#24037#36755#20837#23383#27573#21517#65288#24517#39035#26412#34920#23384#22312#30340#23383#27573#65292#21542#21017#23548#20837#25968#25454#26102#20250#20986#38169#65289#65306#13#10'1.'#19968#34892#20026#19968#20010#32452#21512#32034#24341#65288#21253#21547#22810#20010#23383#27573#30340#32034#24341#65289#65307#13#10'2.'#27599#20010#32452#21512#32034 +
+            #24341#33267#23569#21253#21547'2'#20010#23383#27573#65288#20197'","'#20998#38548#65289#65307#13#10'3.'#29420#31435#32034#24341#22312#19979#34920#21333#29420#26631#35782#12290'|1.'#19968#34892#20026#19968#20010#32452#21512#32034#24341#65288#21253#21547#22810#20010#23383#27573#30340#32034#24341#65289#65307#13#10'2.'#27599#20010 +
+            #32452#21512#32034#24341#33267#23569#21253#21547'2'#20010#23383#27573#65288#20197#8220
           DataField = 'combIndex'
           DataSource = dsSrcTab
           Font.Charset = DEFAULT_CHARSET

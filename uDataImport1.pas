@@ -89,6 +89,8 @@ type
     lblTabType: TLabel;
     FDQryTabType: TFDQuery;
     dsTabType: TDataSource;
+    fdQrySrcTabtype: TStringField;
+    fdQrySrcTabcombIndex: TMemoField;
     procedure FormCreate(Sender: TObject);
     procedure btnInfoClick(Sender: TObject);
     procedure spbtnFileNameClick(Sender: TObject);
@@ -105,6 +107,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure bitbtnErrClick(Sender: TObject);
     procedure cxLookupComboBoxTypePropertiesEditValueChanged(Sender: TObject);
+    procedure lbledtFileNameDblClick(Sender: TObject);
   private { Private declarations }
     type
 
@@ -114,7 +117,7 @@ type
       col_type: string; // 字段长度数组
       col_all_len: string; // 字段精度数组
       col_dot_len: string; // 字段类型数组
-      col_index: string; // 索引字段
+      col_index: string; // 索引字段 （独立）
       col_rept: string; // 查重字段
       col_Dict: string; // 编码处理
       col_date_deal: string; // 日期处理
@@ -122,13 +125,15 @@ type
       col_reg: string; // 正则表达式的规则处理
       col_reg_str: string; // 正则表达式的规则处理
       col_reg_ok: string; // 正则表达式校验必须通过
+      col_reg_depcol: string; // 校验依赖字段
+      col_reg_depval: string; // 依赖字段值
       col_name: string; // 根据是否中文字段赋值col_name_cn或col_name_en值，方便生成建表语句
       col_len: string; // 字段长度，相加两个字段，数值型要加上小数点
       xls_col_no: Integer; // 记录Excel每个标题栏对应列号
     end;
 
   var
-    tab_id, tab_name_en, is_chn_col, is_XLS, is_TXT: string;
+    tab_id, tab_name_en, tab_comIndex, is_chn_col, is_XLS, is_TXT: string;
     val_warn: Char; // 指示数据校验警告性错误，0无，1有不影响导入，可选择，校验过程返回
     val_falt: Char; // 指示数据校验知名性错误，0无，1有，影响导入，退出导入过程 。校验过程返回
     a_Col_record: array of TCol_record; // 字段数组      ，校验过程返回
@@ -316,7 +321,7 @@ begin
         Abort;
       end;
 
-      // 导入文本
+      // 导入文本-------------------------------
       ImportTxt;
     end
     else
@@ -329,7 +334,7 @@ begin
   begin
     if (FileExt = '.XLS') or (FileExt = '.XLSX') then
       if chkXLS.Checked then
-        // ImportExcel
+        // ImportExcel --------------------------------
         ImportExcelDML
       else
       begin
@@ -387,12 +392,14 @@ begin
   tab_id := cxLCbBSrcTab.EditValue;
   if fdQrySrcTab.Locate('tab_id', tab_id, []) then
   begin
-    tab_name_en := fdQrySrcTab['tab_name_en'];
-    is_chn_col := fdQrySrcTab['chn_col'];
-    is_XLS := fdQrySrcTab['tab_xls'];
-    is_TXT := fdQrySrcTab['tab_txt'];
-    lblEdtSplt.Text := fdQrySrcTab['txt_split'];
-    lblEdtQalif.Text := fdQrySrcTab['txt_qualifier'];
+    tab_name_en := Trim(VarToStrDef(fdQrySrcTab['tab_name_en'], ''));
+    tab_comIndex := Trim(VarToStrDef(fdQrySrcTab['combIndex'], '')); // 组合索引  多行；每行|，；分隔
+    is_chn_col := Trim(VarToStrDef(fdQrySrcTab['chn_col'], ''));
+    is_XLS := Trim(VarToStrDef(fdQrySrcTab['tab_xls'], ''));
+    is_TXT := Trim(VarToStrDef(fdQrySrcTab['tab_txt'], ''));
+    lblEdtSplt.Text := Trim(VarToStrDef(fdQrySrcTab['txt_split'], ''));
+    lblEdtQalif.Text := Trim(VarToStrDef(fdQrySrcTab['txt_qualifier'], ''));
+
     if is_chn_col = '1' then
       chkChnCol.Checked := True
     else
@@ -429,7 +436,7 @@ begin
     MyIniFile.WriteString('Other', 'table_type', table_type);
     MyIniFile.Free; // ……
     // ShowMessage('write to ini file');
-    FrmDataImport.rgSelSrcClick(Self);       //更新导入表
+    FrmDataImport.rgSelSrcClick(Self); // 更新导入表
   end;
   // 更新导入表列表
   // todo
@@ -454,7 +461,7 @@ var
 begin
   // SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_APPWINDOW);  //任务栏显示图标
   // 读取当前目录setting赋值 dict_list_col字段类型在字典中的列表id
-  globle_tab := '0';//默认项目表
+  globle_tab := '0'; // 默认项目表
   s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
   MyIniFile := TIniFile.Create(s_filename);
   dict_list_type := MyIniFile.ReadString('Other', 'dict_list_type', '');
@@ -475,8 +482,8 @@ begin
 
   fdQrySrcTab.Connection := F_DT.FDconSYS;
   FDQrySrcCol.Connection := F_DT.FDconSYS;
-//  fdQrySrcTab.Open();
-//  FDQrySrcCol.Open();
+  // fdQrySrcTab.Open();
+  // FDQrySrcCol.Open();
   // 项目表
   // t_Database := 'ZH_20210813102357';
   F_DT.FDConProj.Connected := False;
@@ -596,6 +603,7 @@ var
   MaxColLen_no //
     : array of Integer;
   sqltext: string;
+  i_reg: Integer; // 循环依赖字段
 begin
   val_falt := '0';
   // 判断校验时是否在致命性错误，列数和字段长度，存在则退出导入过程
@@ -664,6 +672,9 @@ begin
       a_Col_record[i_col].col_reg := Trim(VarToStrDef(FDQrySrcCol['col_regName'], ''));
       a_Col_record[i_col].col_reg_str := Trim(VarToStrDef(FDQrySrcCol['col_reg_str'], ''));
       a_Col_record[i_col].col_reg_ok := Trim(VarToStrDef(FDQrySrcCol['col_reg_ok'], ''));
+      a_Col_record[i_col].col_reg_depcol := Trim(VarToStrDef(FDQrySrcCol['col_reg_depcol'], ''));
+      a_Col_record[i_col].col_reg_depval := Trim(VarToStrDef(FDQrySrcCol['col_reg_depval'], ''));
+
       // --------------------
       // 判断名称、类型、长度不能为空，否则返回
       // ----
@@ -994,7 +1005,39 @@ begin
           end;
 
           // 正则表达式校验（数字类型的正则表达式不符合校验规则也无法导入）
-          if Length(a_Col_record[i].col_reg_str) <> 0 then
+          // a_Col_record[i].col_reg_str不空且a_Col_record[i].col_reg_depcol为空，直接校验
+          // a_Col_record[i].col_reg_str不空且a_Col_record[i].col_reg_depcol不空 →  col_reg_depcol表示的字段内容为空则不校验，不为空且col_reg_depval为空则直接校验；
+          // → 不为空且col_reg_depval不为空，则判断col_reg_depcol表示的字段内容字段值为col_reg_depval则校验；
+          var
+            regValid: string;
+          regValid := '0';
+          // a_Col_record[i].col_reg_str不空、a_Col_record[i].col_reg_depcol空，校验
+          if (Length(a_Col_record[i].col_reg_str) <> 0) and (Length(a_Col_record[i].col_reg_depcol) = 0) then
+            regValid := '1';
+          // a_Col_record[i].col_reg_str不空、a_Col_record[i].col_reg_depcol不空 、col_reg_depval空，相关字段值不空 则校验
+          if (Length(a_Col_record[i].col_reg_str) <> 0) and (Length(a_Col_record[i].col_reg_depcol) <> 0) and (Length(a_Col_record[i].col_reg_depval) = 0) then
+          begin
+            // 循环找到相关字段
+            for i_reg := 0 to col_num - 1 do
+              if a_Col_record[i_reg].col_name = Trim(a_Col_record[i].col_reg_depcol) then
+                Break;
+            if (i_reg < col_num) and (Length(Trim(slColumName[i_reg])) > 0) then
+              regValid := '1';
+          end;
+
+          // a_Col_record[i].col_reg_str不空、a_Col_record[i].col_reg_depcol不空 、col_reg_depval不空、相关字段值= col_reg_depval，则校验
+          if (Length(a_Col_record[i].col_reg_str) <> 0) and (Length(a_Col_record[i].col_reg_depcol) <> 0) and (Length(a_Col_record[i].col_reg_depval) <> 0) then
+          // 循环找到相关字段
+          begin
+            // 循环找到相关字段
+            for i_reg := 0 to col_num - 1 do
+              if a_Col_record[i_reg].col_name = Trim(a_Col_record[i].col_reg_depcol) then
+                Break;
+            if (i_reg < col_num) and (Trim(slColumName[i_reg]) = a_Col_record[i].col_reg_depval) then
+              regValid := '1';
+          end;
+
+          if regValid = '1' then
           begin
             if not TRegEx.IsMatch(Trim(slColumName[i]), a_Col_record[i].col_reg_str, [roIgnorePatternSpace]) then
             begin
@@ -1011,7 +1054,6 @@ begin
                   '”校验规则。可以导入数据，但影响数据分析准确性！');
                 val_warn := '1';
               end;
-
             end
           end;
         end;
@@ -1423,7 +1465,7 @@ begin
   i_max_count := Min(StrToInt(lbledtValNo.Text), 1000); // 导入时最多校验1000行
   s_filename := Trim(lbledtFileName.Text);
   FileExt := UpperCase(ExtractFileExt(s_filename)); // 文件扩展名
-  ValidData(s_filename, i_start, i_max_count, dis_or_Val);
+  ValidData(s_filename, i_start, i_max_count, dis_or_Val); // ------------------校验文本数据
 
   if val_falt = '1' then // 存在致命性错误
   begin
@@ -1831,11 +1873,13 @@ begin
     if i_dst_cnt = 0 then // 目标表原始记录数若为0，
       i_tmp_cnt := i_dst_cnt_all;
     fdQryExec.close;
-    mmo2.Lines.Add('建立索引……');
+    // -------------------------------------------------
+
     // ===建立目标表的非聚集索引===
     if Length(col_ind_name_s) > 0 then // 若存在索引
     // 若存在查重字段并且要求用此字段，就用查重字段的增量方法，否则用方法一
     begin
+      mmo2.Lines.Add('建立独立索引……');
       col_ind_name_ls := TStringList.Create;
       col_ind_name_ls.StrictDelimiter := True;
       col_ind_name_ls.Delimiter := ',';
@@ -1846,13 +1890,46 @@ begin
       fdQryExec.SQL.Clear;
       for i := 0 to ind_count - 1 do
       begin
-        sqltext := 'create NONCLUSTERED index ' + 'idx' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '(' + col_ind_name_ls[i] + ');';
+        sqltext := 'create NONCLUSTERED index ' + 'idxIndp' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '(' + col_ind_name_ls[i] + ');';
         fdQryExec.SQL.Add(sqltext);
       end;
       // fdQryExec.SQL.SaveToFile('CreateIndex.txt');
       fdQryExec.Prepared;
       fdQryExec.ExecSQL;
     end;
+    // ===建立组合索引===
+    if Length(tab_comIndex) > 0 then // 若存在组合索引
+    begin
+
+      tab_comIndex := StringReplace(tab_comIndex, #$D#$A, #$A, [rfReplaceAll]); // 替换回车换行为#$A,一个组合索引
+      tab_comIndex := StringReplace(tab_comIndex, #$D, #$A, [rfReplaceAll]);
+      tab_comIndex := StringReplace(tab_comIndex, ' ', '', [rfReplaceAll]); // 删除空格
+      tab_comIndex := StringReplace(tab_comIndex, '｜', ',', [rfReplaceAll]); // 组合索引字段之间,号相连
+      tab_comIndex := StringReplace(tab_comIndex, '，', ',', [rfReplaceAll]);
+      tab_comIndex := StringReplace(tab_comIndex, '；', ',', [rfReplaceAll]);
+      tab_comIndex := StringReplace(tab_comIndex, '|', ',', [rfReplaceAll]);
+      tab_comIndex := StringReplace(tab_comIndex, ';', ',', [rfReplaceAll]);
+      var
+        tab_combIndLst: TStringList;
+      tab_combIndLst := TStringList.Create;
+      tab_combIndLst.StrictDelimiter := True;
+      tab_combIndLst.Delimiter := #$A;
+      tab_combIndLst.DelimitedText := tab_comIndex;
+      mmo2.Lines.Add('建立组合索引……');
+      var
+        ind_count: Integer;
+      ind_count := tab_combIndLst.Count;
+      fdQryExec.SQL.Clear;
+      for i := 0 to ind_count - 1 do
+      begin
+        sqltext := 'create NONCLUSTERED index ' + 'idxComb' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '(' + tab_combIndLst[i] + ');';
+        fdQryExec.SQL.Add(sqltext);
+      end;
+      // fdQryExec.SQL.SaveToFile('CreateIndex.txt');
+      fdQryExec.Prepared;
+      fdQryExec.ExecSQL;
+    end;
+    // =================
     fdQryExec.Connection.commit;
     import_OK := '1';
   except
@@ -1889,6 +1966,11 @@ begin
   pnl1.Enabled := True;
   pnl2.Enabled := True;
   pnl3.Enabled := True;
+end;
+
+procedure TFrmDataImport.lbledtFileNameDblClick(Sender: TObject);
+begin
+  FrmDataImport.spbtnFileNameClick(Sender);
 end;
 
 procedure TFrmDataImport.ImportExcelDML;
@@ -2636,11 +2718,12 @@ begin
   if i_dst_cnt = 0 then // 目标表原始记录数若为0，
     i_tmp_cnt := i_dst_cnt_all;
   fdQryExec.close;
-  mmo2.Lines.Add('建立索引……');
+
   // ===建立目标表的非聚集索引===
   if Length(col_ind_name_s) > 0 then // 若存在索引
   // 若存在查重字段并且要求用此字段，就用查重字段的增量方法，否则用方法一
   begin
+    mmo2.Lines.Add('建立索引……');
     col_ind_name_ls := TStringList.Create;
     col_ind_name_ls.StrictDelimiter := True;
     col_ind_name_ls.Delimiter := ',';
@@ -2658,8 +2741,40 @@ begin
     fdQryExec.Prepared;
     fdQryExec.ExecSQL;
   end;
-
   // ============================
+  // ===建立组合索引===
+  if Length(tab_comIndex) > 0 then // 若存在组合索引
+  begin
+
+    tab_comIndex := StringReplace(tab_comIndex, #$D#$A, #$A, [rfReplaceAll]); // 替换回车换行为#$A,一个组合索引
+    tab_comIndex := StringReplace(tab_comIndex, #$D, #$A, [rfReplaceAll]);
+    tab_comIndex := StringReplace(tab_comIndex, ' ', '', [rfReplaceAll]); // 删除空格
+    tab_comIndex := StringReplace(tab_comIndex, '｜', ',', [rfReplaceAll]); // 组合索引字段之间,号相连
+    tab_comIndex := StringReplace(tab_comIndex, '，', ',', [rfReplaceAll]);
+    tab_comIndex := StringReplace(tab_comIndex, '；', ',', [rfReplaceAll]);
+    tab_comIndex := StringReplace(tab_comIndex, '|', ',', [rfReplaceAll]);
+    tab_comIndex := StringReplace(tab_comIndex, ';', ',', [rfReplaceAll]);
+    var
+      tab_combIndLst: TStringList;
+    tab_combIndLst := TStringList.Create;
+    tab_combIndLst.StrictDelimiter := True;
+    tab_combIndLst.Delimiter := #$A;
+    tab_combIndLst.DelimitedText := tab_comIndex;
+    mmo2.Lines.Add('建立组合索引……');
+    var
+      ind_count: Integer;
+    ind_count := tab_combIndLst.Count;
+    fdQryExec.SQL.Clear;
+    for i := 0 to ind_count - 1 do
+    begin
+      sqltext := 'create NONCLUSTERED index ' + 'idxComb' + IntToStr(i) + tab_name_en + ' on ' + tab_name_en + '(' + tab_combIndLst[i] + ');';
+      fdQryExec.SQL.Add(sqltext);
+    end;
+    // fdQryExec.SQL.SaveToFile('CreateIndex.txt');
+    fdQryExec.Prepared;
+    fdQryExec.ExecSQL;
+  end;
+  // =================
   fdQryExec.Connection.commit;
   t2 := Now(); // 获取结束计时时间
   fdQryExec.close;

@@ -149,6 +149,7 @@ type
     procedure cxdbchckbx3Editing(Sender: TObject; var CanEdit: Boolean);
     procedure cxdbtxtdt2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure cxdbtxtdt4KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure dbmmot_memoKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -592,21 +593,50 @@ begin
   else
   begin
     if Key in [VK_UP, VK_PRIOR] then
+    begin
       fdQryTree.Prior;
+      cxdbtrlst1Click(Sender);
+    end;
+
     if Key in [VK_DOWN, VK_NEXT] then
+    begin
       fdQryTree.Next;
-    cxdbtrlst1Click(Sender);
+      cxdbtrlst1Click(Sender);
+    end;
   end;
 end;
 
 procedure TFModMaintain.cxdbtxtdt4KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key in [VK_UP, VK_PRIOR] then
+  begin
     fdQryTree.Prior;
+    cxdbtrlst1Click(Sender);
+  end;
+
   if Key in [VK_DOWN, VK_NEXT] then
+  begin
     fdQryTree.Next;
+    cxdbtrlst1Click(Sender);
+  end;
+
   if Key = VK_RETURN then
     DBSynEditCode.SetFocus;
+end;
+
+procedure TFModMaintain.dbmmot_memoKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key in [VK_UP, VK_PRIOR] then
+  begin
+    fdQryTree.Prior;
+    cxdbtrlst1Click(Sender);
+  end;
+
+  if Key in [VK_DOWN, VK_NEXT] then
+  begin
+    fdQryTree.Next;
+    cxdbtrlst1Click(Sender);
+  end;
 end;
 
 procedure TFModMaintain.fdQryTreeCalcFields(DataSet: TDataSet);

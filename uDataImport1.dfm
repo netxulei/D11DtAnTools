@@ -23,14 +23,20 @@ object FrmDataImport: TFrmDataImport
     Height = 62
     Align = alTop
     TabOrder = 1
-    ExplicitTop = 69
-    ExplicitWidth = 1163
     object lblSrcTab: TLabel
-      Left = 10
-      Top = 1
-      Width = 208
-      Height = 20
+      Left = 14
+      Top = 5
+      Width = 218
+      Height = 17
       Caption = '1.'#36873#25321#23548#20837#25968#25454#22522#20110#30340#28304#25968#25454#34920
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
     end
     object btnExit: TBitBtn
       Left = 862
@@ -38,15 +44,21 @@ object FrmDataImport: TFrmDataImport
       Width = 139
       Height = 31
       Caption = '5.'#36820#22238
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -15
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1
+      ParentFont = False
       TabOrder = 0
       OnClick = btnExitClick
     end
     object cxLCbBSrcTab: TcxLookupComboBox
-      Left = 10
-      Top = 24
+      Left = 12
+      Top = 26
       Margins.Bottom = 0
       ParentFont = False
       Properties.DropDownSizeable = True
@@ -70,11 +82,11 @@ object FrmDataImport: TFrmDataImport
       Style.Font.Style = []
       Style.IsFontAssigned = True
       TabOrder = 1
-      Width = 373
+      Width = 486
     end
     object chkChnCol: TCheckBox
-      Left = 395
-      Top = 4
+      Left = 505
+      Top = 5
       Width = 97
       Height = 17
       Caption = #20013#25991#23383#27573
@@ -88,8 +100,8 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 2
     end
     object chkXLS: TCheckBox
-      Left = 395
-      Top = 22
+      Left = 504
+      Top = 23
       Width = 97
       Height = 17
       Caption = #21487#23548#20837'XLS'
@@ -103,8 +115,8 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 3
     end
     object chkTXT: TCheckBox
-      Left = 395
-      Top = 41
+      Left = 505
+      Top = 42
       Width = 97
       Height = 17
       Caption = #21487#23548#20837'TXT'
@@ -118,23 +130,29 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 4
     end
     object btnImpTxt: TBitBtn
-      Left = 653
+      Left = 720
       Top = 18
       Width = 136
       Height = 31
       Hint = #25991#26412#25991#20214#23548#20837#38656#35201#23383#27573#20301#32622#19968#19968#23545#24212#65288#21517#31216#26080#20851#65289#65307'Excel'#25991#20214#23548#20837#38656#35201#26631#39064#21517#31216#23545#24212#65288#20301#32622#26080#20851#65289
       Caption = '4.'#25968#25454#23548#20837
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -15
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
       ImageIndex = 2
       ImageName = #25968#25454#23548#20837
       Images = F_DT.vrtlmglstMenu
+      ParentFont = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 5
       OnClick = btnImpTxtClick
     end
     object rb1: TRadioButton
-      Left = 490
-      Top = 5
+      Left = 600
+      Top = 6
       Width = 90
       Height = 18
       Caption = #28165#31354#23548#20837
@@ -150,8 +168,8 @@ object FrmDataImport: TFrmDataImport
       OnClick = rb1Click
     end
     object rb2: TRadioButton
-      Left = 490
-      Top = 22
+      Left = 600
+      Top = 23
       Width = 91
       Height = 19
       Caption = #36861#21152#23548#20837
@@ -165,8 +183,8 @@ object FrmDataImport: TFrmDataImport
       OnClick = rb2Click
     end
     object chkReptCol: TCheckBox
-      Left = 490
-      Top = 41
+      Left = 600
+      Top = 42
       Width = 80
       Height = 17
       Caption = #26597#37325#23383#27573
@@ -189,8 +207,6 @@ object FrmDataImport: TFrmDataImport
     Height = 62
     Align = alTop
     TabOrder = 0
-    ExplicitTop = 197
-    ExplicitWidth = 1163
     object LblCheck: TLabel
       Left = 9
       Top = 0
@@ -349,9 +365,15 @@ object FrmDataImport: TFrmDataImport
       Height = 27
       Hint = #25991#26412#25991#20214#26368#22909#20570#19968#27425#20840#37096#30340#25968#25454#26657#39564#20197#26816#26597#25968#25454#20869#23481#19981#31526#21512#26657#39564#35268#21017#30340#24773#20917
       Caption = '3.'#26657#39564#25968#25454
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -15
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
       ImageIndex = 11
       ImageName = #26657#39564
       Images = F_DT.vrtlmglst1
+      ParentFont = False
       TabOrder = 2
       OnClick = btnValidClick
     end
@@ -416,13 +438,16 @@ object FrmDataImport: TFrmDataImport
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
-    ExplicitTop = 131
-    ExplicitWidth = 1163
     object spbtnFileName: TSpeedButton
-      Left = 550
-      Top = 29
+      Left = 498
+      Top = 37
       Width = 28
       Height = 27
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
       Glyph.Data = {
         D6020000424DD60200000000000036000000280000000E0000000C0000000100
         200000000000A002000000000000000000000000000000000000FF00FF000000
@@ -447,18 +472,25 @@ object FrmDataImport: TFrmDataImport
         FF0000000000FF00FF00FF00FF00FF00FF0000000000FF00FF0000000000FF00
         FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000000
         00000000000000000000FF00FF00FF00FF00FF00FF00FF00FF00}
-      Layout = blGlyphTop
+      Layout = blGlyphRight
+      ParentFont = False
       OnClick = spbtnFileNameClick
     end
     object lbledtFileName: TLabeledEdit
-      Left = 10
-      Top = 30
-      Width = 541
+      Left = 11
+      Top = 37
+      Width = 488
       Height = 25
       AutoSize = False
-      EditLabel.Width = 163
-      EditLabel.Height = 20
-      EditLabel.Caption = '2.'#36873#25321#20934#22791#23548#20837#30340#25991#20214#21517
+      EditLabel.Width = 186
+      EditLabel.Height = 17
+      EditLabel.Caption = '2.'#36873#25321#20934#22791#23548#20837#30340#25968#25454#25991#20214
+      EditLabel.Font.Charset = DEFAULT_CHARSET
+      EditLabel.Font.Color = clNavy
+      EditLabel.Font.Height = -13
+      EditLabel.Font.Name = 'Segoe UI'
+      EditLabel.Font.Style = []
+      EditLabel.ParentFont = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -468,11 +500,12 @@ object FrmDataImport: TFrmDataImport
       ReadOnly = True
       TabOrder = 0
       Text = ''
-      TextHint = #36873#25321#19982#23548#20837#30340#25991#20214#21517
+      TextHint = #36873#25321#20934#22791#23548#20837#25968#25454#25991#20214
+      OnDblClick = lbledtFileNameDblClick
     end
     object cbbCode: TComboBox
-      Left = 582
-      Top = 30
+      Left = 598
+      Top = 33
       Width = 92
       Height = 25
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
@@ -494,8 +527,8 @@ object FrmDataImport: TFrmDataImport
         'UTF8')
     end
     object chkForceCode: TCheckBox
-      Left = 582
-      Top = 8
+      Left = 598
+      Top = 12
       Width = 97
       Height = 17
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
@@ -511,8 +544,8 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 2
     end
     object chkTitle: TCheckBox
-      Left = 303
-      Top = 6
+      Left = 246
+      Top = 14
       Width = 115
       Height = 17
       Hint = #27492#36873#39033#20165#23545#25991#26412#25991#20214#26377#25928#65288'Excel'#25991#20214#31532#19968#34892#24517#39035#26159#26631#39064#34892#65289
@@ -530,8 +563,8 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 3
     end
     object lblEdtSplt: TLabeledEdit
-      Left = 460
-      Top = 5
+      Left = 406
+      Top = 11
       Width = 17
       Height = 24
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
@@ -561,8 +594,8 @@ object FrmDataImport: TFrmDataImport
       Text = '|'
     end
     object lblEdtQalif: TLabeledEdit
-      Left = 555
-      Top = 5
+      Left = 501
+      Top = 11
       Width = 17
       Height = 24
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
@@ -592,8 +625,8 @@ object FrmDataImport: TFrmDataImport
       Text = '"'
     end
     object lbledtValNo: TLabeledEdit
-      Left = 727
-      Top = 29
+      Left = 726
+      Top = 30
       Width = 84
       Height = 25
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
@@ -619,7 +652,7 @@ object FrmDataImport: TFrmDataImport
     end
     object bitbtnErr: TBitBtn
       Left = 900
-      Top = 10
+      Top = 11
       Width = 101
       Height = 50
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
@@ -644,9 +677,6 @@ object FrmDataImport: TFrmDataImport
     Height = 440
     Align = alClient
     TabOrder = 3
-    ExplicitTop = 259
-    ExplicitWidth = 1163
-    ExplicitHeight = 408
     object Splitter2: TSplitter
       Left = 1
       Top = 257
@@ -674,8 +704,6 @@ object FrmDataImport: TFrmDataImport
       ReadOnly = True
       ScrollBars = ssBoth
       TabOrder = 0
-      ExplicitWidth = 1161
-      ExplicitHeight = 144
     end
     object strngrd1: TAdvStringGrid
       Left = 1
@@ -825,7 +853,6 @@ object FrmDataImport: TFrmDataImport
       SortSettings.HeaderMirrorColorTo = 16250613
       UIStyle = tsWindows10
       Version = '8.6.11.2'
-      ExplicitWidth = 1161
       ColWidths = (
         12)
       RowHeights = (
@@ -874,8 +901,6 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 0
       WordWrap = True
       OnClick = rgSelSrcClick
-      ExplicitLeft = 10
-      ExplicitHeight = 63
     end
     object pnlProj: TPanel
       Left = 441
@@ -884,9 +909,6 @@ object FrmDataImport: TFrmDataImport
       Height = 56
       Align = alClient
       TabOrder = 1
-      ExplicitLeft = 492
-      ExplicitWidth = 670
-      ExplicitHeight = 67
       object lblProj: TLabel
         Left = 1
         Top = 1
@@ -923,7 +945,6 @@ object FrmDataImport: TFrmDataImport
         ParentFont = False
         Layout = tlCenter
         WordWrap = True
-        ExplicitTop = 33
         ExplicitWidth = 572
       end
     end
@@ -934,7 +955,6 @@ object FrmDataImport: TFrmDataImport
       Height = 56
       Align = alLeft
       TabOrder = 2
-      ExplicitHeight = 67
       object lblTabType: TLabel
         Left = 6
         Top = 6
@@ -1046,6 +1066,17 @@ object FrmDataImport: TFrmDataImport
       Origin = 'txt_qualifier'
       FixedChar = True
       Size = 1
+    end
+    object fdQrySrcTabtype: TStringField
+      FieldName = 'type'
+      Origin = 'type'
+      FixedChar = True
+      Size = 1
+    end
+    object fdQrySrcTabcombIndex: TMemoField
+      FieldName = 'combIndex'
+      Origin = 'combIndex'
+      BlobType = ftMemo
     end
   end
   object dlgOpenDataFile: TOpenDialog

@@ -570,6 +570,7 @@ object FModMaintain: TFModMaintain
         DataField = 't_memo'
         DataSource = ds1
         TabOrder = 1
+        OnKeyUp = dbmmot_memoKeyUp
       end
     end
     object cxdbm1: TcxDBMemo
@@ -694,8 +695,6 @@ object FModMaintain: TFModMaintain
       TabWidth = 4
       WantTabs = True
       WordWrapGlyph.Visible = False
-      ExplicitTop = 340
-      ExplicitHeight = 357
     end
   end
   object cxspltr1: TcxSplitter
@@ -758,7 +757,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
@@ -786,9 +784,10 @@ object FModMaintain: TFModMaintain
       OnChange = fdQryTreet_parent_idChange
     end
     object fdQryTreet_name: TStringField
+      DisplayWidth = 80
       FieldName = 't_name'
       Origin = 't_name'
-      Size = 50
+      Size = 80
     end
     object fdQryTreet_memo: TStringField
       DisplayWidth = 600

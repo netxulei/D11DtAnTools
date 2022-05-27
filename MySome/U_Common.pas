@@ -577,7 +577,7 @@ begin
       sl_param.Free;
       // raise Exception.Create('建模错误！请完善模型代码！');
       var
-        ErrMsg: string;
+      ErrMsg := Exception(ExceptObject).Message;
       ErrMsg := TRegex.Replace(ErrMsg, '\[[\S|\s]*\]', ''); // 替换之间字符串为空
       MessageDlg('模型"' + PChar(t_modName) + '"建立模型错误：' + PChar(ErrMsg), mtWarning, [mbOK], 0);
       ModvalidOK := False;

@@ -2836,9 +2836,10 @@ object MainFrm: TMainFrm
       Origin = 't_parent_id'
     end
     object fdQryTreet_name: TStringField
+      DisplayWidth = 80
       FieldName = 't_name'
       Origin = 't_name'
-      Size = 50
+      Size = 80
     end
     object fdQryTreet_memo: TStringField
       DisplayWidth = 600
