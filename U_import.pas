@@ -213,12 +213,17 @@ begin
     end;
     F_DT.FDConSYS.Commit;
     // 检查逻辑版本号记录
-    s_filename_set := ExtractFilePath(ParamStr(0)) + 'setting.ini';
-    MyIniFile := TIniFile.Create(s_filename_set);
-    MyIniFile.WriteString('Base', 'Jclj_Ver', Trim(s_Jclj_Ver));
-    t_Jclj_Ver := s_Jclj_Ver;
-    // MyIniFile.WriteString('other','AreaCode',Trim(cxtxtdt2.Text));
-    MyIniFile.Free;
+
+    if rg1.ItemIndex = 1 then       //替换导入才更新版本号
+    begin
+      s_filename_set := ExtractFilePath(ParamStr(0)) + 'setting.ini';
+      MyIniFile := TIniFile.Create(s_filename_set);
+      MyIniFile.WriteString('Base', 'Jclj_Ver', Trim(s_Jclj_Ver));
+      t_Jclj_Ver := s_Jclj_Ver;
+      // MyIniFile.WriteString('other','AreaCode',Trim(cxtxtdt2.Text));
+      MyIniFile.Free;
+    end;
+
     fdmtblImp.Close;
     MessageDlg('模型导入成功!', mtInformation, [mbOK], 0);
     Close;

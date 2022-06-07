@@ -757,6 +757,7 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
+    Active = True
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
@@ -853,6 +854,7 @@ object FModMaintain: TFModMaintain
     Top = 490
   end
   object pm1: TPopupMenu
+    Images = F_DT.vrtlmglst1
     Left = 410
     Top = 378
     object MnExpand: TMenuItem
@@ -862,6 +864,42 @@ object FModMaintain: TFModMaintain
     object MnCollapse: TMenuItem
       Caption = #20840#37096#25910#32553
       OnClick = MnCollapseClick
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object N2: TMenuItem
+      Caption = #26032#22686#21516#32423
+      ImageIndex = 2
+      ImageName = #26032#22686
+      OnClick = N2Click
+    end
+    object N3: TMenuItem
+      Caption = #26032#22686#23376#39033
+      ImageIndex = 2
+      ImageName = #26032#22686
+      OnClick = N3Click
+    end
+    object N4: TMenuItem
+      Caption = #21024#38500#39033#30446
+      ImageIndex = 3
+      ImageName = #21024#38500' '
+      OnClick = N4Click
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object N6: TMenuItem
+      Caption = #23548#20986#20840#37096#27169#22411
+      OnClick = N6Click
+    end
+    object N7: TMenuItem
+      Caption = #23548#20986#24403#21069#21450#23376#39033#27169#22411
+      OnClick = N7Click
+    end
+    object N8: TMenuItem
+      Caption = #23548#20837#27169#22411
+      OnClick = N8Click
     end
   end
   object fdQryMaxID: TFDQuery
@@ -989,6 +1027,7 @@ object FModMaintain: TFModMaintain
     end
   end
   object dlgSaveExport: TSaveDialog
+    DefaultExt = 'Mod'
     FileName = 'file1'
     Filter = #27169#22411#25991#20214' (*.Mod)|*.Mod'
     Title = #23548#20986#27169#22411

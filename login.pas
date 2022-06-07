@@ -30,7 +30,6 @@ type
     bitbtnVerRtn: TBitBtn;
     pmNewDt: TPopupMenu;
     N1: TMenuItem;
-    N2: TMenuItem;
     RTFlblVer: TRTFLabel;
     procedure bitbtnLoginClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);

@@ -26,9 +26,9 @@ object FrmDataImport: TFrmDataImport
     object lblSrcTab: TLabel
       Left = 14
       Top = 5
-      Width = 218
+      Width = 122
       Height = 17
-      Caption = '1.'#36873#25321#23548#20837#25968#25454#22522#20110#30340#28304#25968#25454#34920
+      Caption = '1.'#36873#25321#25968#25454#34920#21517#31216
       Color = clBtnFace
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
@@ -482,9 +482,9 @@ object FrmDataImport: TFrmDataImport
       Width = 488
       Height = 25
       AutoSize = False
-      EditLabel.Width = 186
+      EditLabel.Width = 215
       EditLabel.Height = 17
-      EditLabel.Caption = '2.'#36873#25321#20934#22791#23548#20837#30340#25968#25454#25991#20214
+      EditLabel.Caption = '2.'#36873#25321#25968#25454#25991#20214#65288#25991#26412#25110'Excel'#65289
       EditLabel.Font.Charset = DEFAULT_CHARSET
       EditLabel.Font.Color = clNavy
       EditLabel.Font.Height = -13

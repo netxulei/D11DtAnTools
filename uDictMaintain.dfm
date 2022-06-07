@@ -308,7 +308,6 @@ object frmDictMaintain: TfrmDictMaintain
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    ExplicitTop = 32
     object dbnvgrDictType: TDBNavigator
       Left = 1
       Top = 1
@@ -683,7 +682,7 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictValdict_lable: TStringField
       FieldName = 'dict_lable'
       Origin = 'dict_lable'
-      Size = 40
+      Size = 120
     end
     object fdQryDictValdict_val_sort: TIntegerField
       FieldName = 'dict_val_sort'

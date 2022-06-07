@@ -2938,8 +2938,5 @@ object LoginFrm: TLoginFrm
       Caption = #20998#31163#31995#32479#25968#25454#24211
       OnClick = N1Click
     end
-    object N2: TMenuItem
-      Caption = #37325#24314#31995#32479#25968#25454#24211
-    end
   end
 end

@@ -137,12 +137,12 @@ type
     procedure BitBtnBackUPClick(Sender: TObject);
     procedure BitBtnRestoreClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure DBSynEditComIndEnter(Sender: TObject);
     procedure DBSynEditComIndExit(Sender: TObject);
     procedure cxLookupComboBoxTypePropertiesEditValueChanged(Sender: TObject);
     procedure fdQrySrcColAfterScroll(DataSet: TDataSet);
     procedure btnDependClick(Sender: TObject);
     procedure DBGridEhSrcColColumns12OpenDropDownForm(Grid: TCustomDBGridEh; Column: TColumnEh; Button: TEditButtonEh; var DropDownForm: TCustomForm; DynParams: TDynVarsEh);
+    procedure DBSynEditComIndKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -279,15 +279,25 @@ begin
   // DBGridEhSrcCol.Fields[0].FocusControl;
 end;
 
-procedure TfrmSrcTabMaintain.DBSynEditComIndEnter(Sender: TObject);
-begin
-  DBSynEditComInd.Height := DBSynEditComInd.Height * 3;
-end;
-
 procedure TfrmSrcTabMaintain.DBSynEditComIndExit(Sender: TObject);
 begin
-  DBSynEditComInd.Height := DBSynEditComInd.Height div 3;
+  DBSynEditComInd.Height := lblComIndex.Height;
   // 校验作为索引的字段是否存在
+
+end;
+
+procedure TfrmSrcTabMaintain.DBSynEditComIndKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if (Key = VK_UP) and (ssCtrl in Shift) then
+  begin
+    if DBSynEditComInd.Height > lblComIndex.Height then
+      DBSynEditComInd.Height := DBSynEditComInd.Height - lblComIndex.Height;
+  end;
+  if (Key = VK_DOWN) and (ssCtrl in Shift) then
+  begin
+    if DBSynEditComInd.Height < lblComIndex.Height * 4 then
+      DBSynEditComInd.Height := DBSynEditComInd.Height + lblComIndex.Height;
+  end;
 
 end;
 
@@ -402,6 +412,8 @@ begin
   cxLookupComboBoxType.EditValue := dict_list_type;
 
   FDQryCurColLst.Open();
+
+  DBSynEditComInd.Height := lblComIndex.Height;
 
   // 修改lookUp值时，会产生onvalid事件 ，每个事件应写入参数，（类似fdqrcoltype在事件中写入 ）
   // //赋值参数,打开字段类型列表

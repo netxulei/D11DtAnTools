@@ -246,7 +246,6 @@ type
     procedure N2Click(Sender: TObject);
     procedure bitbtnAssisClick(Sender: TObject);
     procedure N3Click(Sender: TObject);
-    procedure mmoFieldsEnter(Sender: TObject);
     procedure mmoFieldsExit(Sender: TObject);
     procedure N4Click(Sender: TObject);
     procedure chkAssisDisClick(Sender: TObject);
@@ -264,6 +263,7 @@ type
     procedure btnRunClick(Sender: TObject);
     procedure btnExportClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
+    procedure mmoFieldsKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private { Private declarations }
 
   public { Public declarations }
@@ -836,10 +836,11 @@ begin
   // lblInfo.Caption := '---首先设置当前项目，才能实施分析---'
   // else
   // lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
+  t_caption := MainFrm.Caption;
   if Length(Trim(t_proj_no)) = 0 then
-    MainFrm.Caption := MainFrm.Caption + '---注意：首先设置当前项目，才能实施数据分析！'
+    MainFrm.Caption := t_caption + '---注意：首先设置当前项目，才能实施数据分析！'
   else
-    MainFrm.Caption := MainFrm.Caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
+    MainFrm.Caption := t_caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   rdbt1.Caption := rdbt1_name_cn;
   rdbt2.Caption := rdbt2_name_cn;
   if rdbtCheck = '1' then
@@ -908,6 +909,8 @@ begin
     lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
     MyIniFile.Free;
   end;
+  panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
+  pnlFields.Height := lbledtName.Height;
 
 end;
 
@@ -1472,16 +1475,34 @@ begin
   F_float.Hide;
 end;
 
-procedure TMainFrm.mmoFieldsEnter(Sender: TObject);
-begin
-  Panel3.Height := Panel3.Height + mmoFields.Height * 2;
-  pnlFields.Height := pnlFields.Height * 3;
-end;
-
 procedure TMainFrm.mmoFieldsExit(Sender: TObject);
 begin
-  pnlFields.Height := pnlFields.Height div 3;
-  Panel3.Height := Panel3.Height - mmoFields.Height * 2;
+  panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
+  pnlFields.Height := lbledtName.Height;
+end;
+
+procedure TMainFrm.mmoFieldsKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+
+  if (Key = VK_UP) and (ssCtrl in Shift) then
+  begin
+    if mmoFields.Height > lbledtName.Height then
+    begin
+      panel3.Height := panel3.Height - lbledtName.Height;
+      pnlFields.Height := pnlFields.Height - lbledtName.Height
+    end;
+
+  end;
+  if (Key = VK_DOWN) and (ssCtrl in Shift) then
+  begin
+    if mmoFields.Height < lbledtName.Height * 3 then
+    begin
+      panel3.Height := panel3.Height + lbledtName.Height;
+      pnlFields.Height := pnlFields.Height + lbledtName.Height
+    end;
+
+  end;
+
 end;
 
 procedure TMainFrm.excel1Click(Sender: TObject);
@@ -1968,12 +1989,19 @@ var
   MyIniFile: TIniFile;
   AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
 begin
+  dlgOpenAssis.InitialDir := ExtractFilePath(ParamStr(0));
+  dlgOpenAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.Text + '.Asi';
   if dlgOpenAssis.Execute then
   begin
     s_filename := dlgOpenAssis.FileName;
+    if not FileExists(s_filename) then
+    begin
+      MessageDlg('该辅助查询模板文件不存在！', mtError, [mbOK], 0);
+      Exit;
+    end;
     MyIniFile := TIniFile.Create(s_filename);
-    lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
-    lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
+    lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助查询名称');
+    lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助查询表名');
     lbledtKey.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '关联字段');
     mmoFields.Text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
     lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
@@ -2016,9 +2044,18 @@ var
   MyIniFile: TIniFile;
   AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
 begin
+  dlgSaveAssis.InitialDir := ExtractFilePath(ParamStr(0));
+  dlgSaveAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.Text + '.Asi';
   if dlgSaveAssis.Execute then
   begin
     s_filename := dlgSaveAssis.FileName;
+    if FileExists(s_filename) then
+    begin
+      if MessageDlg('该辅助查询模板文件已存在，是否覆盖？', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+      begin
+        Exit;
+      end;
+    end;
     MyIniFile := TIniFile.Create(s_filename);
     MyIniFile.WriteString('Base', 'AssisName', Trim(lbledtName.Text));
     MyIniFile.WriteString('Base', 'AssisTabName', Trim(lbledtTabName.Text));
@@ -2099,9 +2136,9 @@ begin
   Application.CreateForm(TF_Proj, F_Proj);
   F_Proj.ShowModal;
   if Length(Trim(t_proj_no)) = 0 then
-    MainFrm.Caption := MainFrm.Caption + '---注意：首先设置当前项目，才能实施数据分析！'
+    MainFrm.Caption := t_caption + '---注意：首先设置当前项目，才能实施数据分析！'
   else
-    MainFrm.Caption := MainFrm.Caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
+    MainFrm.Caption := t_caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   if Length(Trim(t_proj_no)) <> 0 then
   begin
     // 判断数据库是否存在

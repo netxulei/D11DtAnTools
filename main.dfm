@@ -483,9 +483,9 @@ object MainFrm: TMainFrm
         OnResize = pnl2Resize
         object dbgrdh2: TDBGridEh
           Left = 1
-          Top = 61
+          Top = 55
           Width = 1330
-          Height = 195
+          Height = 201
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -538,7 +538,7 @@ object MainFrm: TMainFrm
           Left = 1
           Top = 1
           Width = 1330
-          Height = 60
+          Height = 54
           Align = alTop
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -550,20 +550,23 @@ object MainFrm: TMainFrm
           ShowCaption = False
           TabOrder = 1
           object chkAssis: TCheckBox
-            Left = 9
-            Top = 9
+            Left = 8
+            Top = 7
             Width = 68
-            Height = 17
+            Height = 21
+            Hint = #36741#21161#26597#35810#32467#26524#33258#21160#38543#19978#34920#31227#21160#26174#31034
             Caption = #23454#26102#26174#31034
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 0
           end
           object cxbtnExp: TcxButton
             Left = 81
-            Top = 4
-            Width = 112
-            Height = 27
+            Top = 5
+            Width = 120
+            Height = 21
             Hint = #21517#31216#20026#8221#36741#21161#20449#24687'_'#40664#35748'.asi'#8220#30340#27169#26495#20026#31995#32479#27599#27425#25171#24320#26102#33258#21160#35843#29992#30340#27169#26495
-            Caption = #36741#21161#34920#27169#26495
+            Caption = #36741#21161#26597#35810#27169#26495
             DropDownMenu = pmAssis
             Kind = cxbkOfficeDropDown
             ParentShowHint = False
@@ -571,10 +574,11 @@ object MainFrm: TMainFrm
             TabOrder = 1
           end
           object lbledtKey: TLabeledEdit
-            Left = 713
+            Left = 722
             Top = 6
             Width = 132
-            Height = 23
+            Height = 21
+            Hint = #27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
             EditLabel.Width = 52
             EditLabel.Height = 15
             EditLabel.Caption = #20851#32852#23383#27573
@@ -586,14 +590,17 @@ object MainFrm: TMainFrm
             Font.Style = []
             LabelPosition = lpLeft
             ParentFont = False
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 2
             Text = #36134#21495
           end
           object lbledtTabName: TLabeledEdit
-            Left = 529
+            Left = 550
             Top = 6
             Width = 105
-            Height = 23
+            Height = 21
+            Hint = #36741#21161#26597#35810#26469#28304#25968#25454#34920
             EditLabel.Width = 78
             EditLabel.Height = 15
             EditLabel.Caption = #26469#28304#25968#25454#34920#21517
@@ -605,14 +612,17 @@ object MainFrm: TMainFrm
             Font.Style = []
             LabelPosition = lpLeft
             ParentFont = False
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 3
             Text = ' tb_rhzh_dw'
           end
           object lbledtSort: TLabeledEdit
-            Left = 926
-            Top = 7
+            Left = 917
+            Top = 6
             Width = 209
-            Height = 23
+            Height = 21
+            Hint = #36741#21161#26597#35810#32467#26524#25490#24207
             EditLabel.Width = 52
             EditLabel.Height = 15
             EditLabel.Caption = #25490#24207#23383#27573
@@ -624,17 +634,19 @@ object MainFrm: TMainFrm
             Font.Style = []
             LabelPosition = lpLeft
             ParentFont = False
+            ParentShowHint = False
+            ShowHint = True
             TabOrder = 4
             Text = #36134#21495','#20132#26131#26085#26399
           end
           object lbledtName: TLabeledEdit
-            Left = 266
+            Left = 295
             Top = 6
             Width = 163
-            Height = 23
-            EditLabel.Width = 65
+            Height = 21
+            EditLabel.Width = 78
             EditLabel.Height = 15
-            EditLabel.Caption = #36741#21161#34920#21517#31216
+            EditLabel.Caption = #36741#21161#26597#35810#21517#31216
             EditLabel.Layout = tlCenter
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
@@ -648,12 +660,13 @@ object MainFrm: TMainFrm
           end
           object pnlFields: TPanel
             Left = 1
-            Top = 36
+            Top = 30
             Width = 1328
             Height = 23
             Align = alBottom
             Caption = 'pnlFields'
             TabOrder = 6
+            ExplicitTop = 36
             object lblFields: TLabel
               Left = 92
               Top = 1
@@ -708,7 +721,7 @@ object MainFrm: TMainFrm
               Top = 1
               Width = 64
               Height = 21
-              Hint = #28857#20987#26174#31034#36741#21161#34920#20449#24687
+              Hint = #28857#20987#26174#31034#36741#21161#34920#32467#26524
               Align = alLeft
               Caption = #26174#31034#36741#21161
               ParentShowHint = False
@@ -722,6 +735,7 @@ object MainFrm: TMainFrm
               Top = 1
               Width = 1181
               Height = 21
+              Hint = 'Ctrl+'#8593' '#25110'Ctrl+'#8595' '#35843#25972#32534#36753#26694#22823#23567
               Align = alClient
               Lines.Strings = (
                 
@@ -732,10 +746,11 @@ object MainFrm: TMainFrm
                   #30721','#22522#26412#23384#27454#36134#25143#24320#25143#22320#22320#21306#20195#30721','#36134#25143#25152#22312#20154#27665#38134#34892#26426#26500#20195#30721','#36164#37329#24615#36136
                 #20195#30721','#37096#38376#25110#36164#37329#31649#29702#20154#21517#31216','#20020#26102#23384#27454#36134#25143#26377#25928#26399','#20020#26102#23384#27454#36134#25143#24320#25143#21407#22240','#22791#27880','#22320#22336','#32463#33829#33539#22260)
               ParentShowHint = False
-              ShowHint = False
+              ShowHint = True
               TabOrder = 1
-              OnEnter = mmoFieldsEnter
               OnExit = mmoFieldsExit
+              OnKeyDown = mmoFieldsKeyDown
+              ExplicitHeight = 24
             end
           end
         end
@@ -2746,8 +2761,8 @@ object MainFrm: TMainFrm
   end
   object pm3: TPopupMenu
     OnPopup = pm3Popup
-    Left = 380
-    Top = 780
+    Left = 388
+    Top = 644
     object MenuItem1: TMenuItem
       Action = edtcpy1
       Caption = '&'#22797#21046#25152#36873
@@ -2938,20 +2953,21 @@ object MainFrm: TMainFrm
     Top = 177
   end
   object pmAssis: TPopupMenu
-    Left = 336
-    Top = 728
+    Left = 632
+    Top = 624
     object N3: TMenuItem
-      Caption = #35843#21462#35843#21462#36741#21161#34920#26597#35810#27169#26495
+      Caption = #35843#21462#35843#21462#36741#21161#26597#35810#27169#26495
       OnClick = N3Click
     end
     object N4: TMenuItem
-      Caption = #20445#23384#21040#36741#21161#34920#26597#35810#27169#26495
+      Caption = #20445#23384#21040#36741#21161#26597#35810#27169#26495
       OnClick = N4Click
     end
   end
   object dlgOpenAssis: TOpenDialog
-    Filter = #36741#21161#34920#26597#35810#27169#26495'(*.asi)|*.asi'
-    Title = #36741#21161#34920#26597#35810#27169#26495#25991#20214
+    DefaultExt = 'Asi'
+    Filter = #36741#21161#26597#35810#27169#26495'(*.Asi)|*.Asi'
+    Title = #36741#21161#26597#35810#27169#26495#25991#20214
     Left = 421
     Top = 625
   end
@@ -2962,10 +2978,11 @@ object MainFrm: TMainFrm
     Top = 546
   end
   object dlgSaveAssis: TSaveDialog
-    Filter = #36741#21161#34920#26597#35810#27169#26495'(*.asi)|*.asi'
-    Title = #36741#21161#34920#26597#35810#27169#26495#25991#20214
-    Left = 680
-    Top = 801
+    DefaultExt = 'Asi'
+    Filter = #36741#21161#26597#35810#27169#26495'(*.Asi)|*.Asi'
+    Title = #36741#21161#26597#35810#27169#26495#25991#20214
+    Left = 528
+    Top = 633
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'

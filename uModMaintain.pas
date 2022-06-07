@@ -114,6 +114,14 @@ type
     SynEditCode: TSynEdit;
     FDMtblTree: TFDMemTable;
     dbmmot_memo: TDBMemo;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure cxdbtrlst1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure fdQryTreeCalcFields(DataSet: TDataSet);
@@ -150,6 +158,12 @@ type
     procedure cxdbtxtdt2KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure cxdbtxtdt4KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure dbmmot_memoKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure N2Click(Sender: TObject);
+    procedure N3Click(Sender: TObject);
+    procedure N4Click(Sender: TObject);
+    procedure N6Click(Sender: TObject);
+    procedure N7Click(Sender: TObject);
+    procedure N8Click(Sender: TObject);
   private { Private declarations }
   var
     parentIdBefore, parentIdAfter: integer;
@@ -1022,6 +1036,36 @@ begin
   fdQryTree.GotoBookmark(bk);
 end;
 
+procedure TFModMaintain.N2Click(Sender: TObject);
+begin
+  FModMaintain.bitbtnAddBrotherClick(Sender);
+end;
+
+procedure TFModMaintain.N3Click(Sender: TObject);
+begin
+  FModMaintain.bitbtnAddChildClick(Sender);
+end;
+
+procedure TFModMaintain.N4Click(Sender: TObject);
+begin
+  FModMaintain.bitbtnDeleteClick(Sender);
+end;
+
+procedure TFModMaintain.N6Click(Sender: TObject);
+begin
+  FModMaintain.MenuItem3Click(Sender);
+end;
+
+procedure TFModMaintain.N7Click(Sender: TObject);
+begin
+  FModMaintain.MenuItem4Click(Sender);
+end;
+
+procedure TFModMaintain.N8Click(Sender: TObject);
+begin
+  FModMaintain.bitbtnImportClick(Sender);
+end;
+
 procedure TFModMaintain.MnExpandClick(Sender: TObject);
 begin
   cxdbtrlst1.FullExpand;
@@ -1038,7 +1082,7 @@ begin
     MessageDlg('最后修改未保存！请确认信息并保存或撤销修改后再行导出。', mtWarning, [mbOK], 0);
     exit;
   end;
-  dlgSaveExport.FileName := DateToStr(Now) + 'All.mod';
+  dlgSaveExport.FileName := DateToStr(Now) + 'All.Mod';
   if dlgSaveExport.Execute then
   begin
     s_filename := Trim(dlgSaveExport.FileName);
@@ -1083,7 +1127,7 @@ begin
   end;
 
   cur_sort := fdQryTree['t_sort'];
-  dlgSaveExport.FileName := DateToStr(Now) + 'Part.mod';
+  dlgSaveExport.FileName := DateToStr(Now) + 'Part.Mod';
   if dlgSaveExport.Execute then
   begin
     s_filename := Trim(dlgSaveExport.FileName);
