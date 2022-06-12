@@ -14,7 +14,6 @@ object F_showError: TF_showError
   WindowState = wsMaximized
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 15
   object spl1: TSplitter
     Left = 0
@@ -42,8 +41,6 @@ object F_showError: TF_showError
     Style.Shadow = False
     Style.IsFontAssigned = True
     TabOrder = 0
-    ExplicitTop = 109
-    ExplicitWidth = 120
     Height = 158
     Width = 911
   end
@@ -62,8 +59,6 @@ object F_showError: TF_showError
     Style.Font.Style = []
     Style.IsFontAssigned = True
     Properties.WordWrap = True
-    ExplicitWidth = 120
-    ExplicitHeight = 109
     Width = 911
   end
   object cxm2: TcxMemo
@@ -82,9 +77,6 @@ object F_showError: TF_showError
     Style.Shadow = False
     Style.IsFontAssigned = True
     TabOrder = 2
-    ExplicitTop = 439
-    ExplicitWidth = 120
-    ExplicitHeight = 327
     Height = 282
     Width = 911
   end
@@ -103,9 +95,6 @@ object F_showError: TF_showError
     Style.Font.Style = []
     Style.IsFontAssigned = True
     Properties.WordWrap = True
-    ExplicitTop = 270
-    ExplicitWidth = 120
-    ExplicitHeight = 169
     Width = 911
   end
 end

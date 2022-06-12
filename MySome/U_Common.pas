@@ -43,6 +43,7 @@ var
   // t_Getdata_Mod, t_Getdata_Mod_yh: string;
   // t_table1_sql_dw, t_table2_sql_dw, t_table1_sql_gr, t_table2_sql_gr, t_table1_sql_other, t_table2_sql_other: string;
   // t_table2_sql_order, t_table2_other_order: string;
+  t_cbbCode,//导入时调取出错文件的编码格式
   t_caption,t_key_name, t_ver_no, t_ver_name, t_TimeOut, t_Jclj_Ver, t_Jrjgbm: string;
   t_key_nameLS, t_ver_noLS, t_ver_nameLS: TStrings;
   t_Last_RHZH_EX, t_Last_RHJX_EX, t_Last_RHZH_DW, t_Last_RHZH_GR, t_Last_SHZH_DW, t_Last_SHZH_GR, t_Last_SHJY_DW, t_Last_SHJY_GR: string;

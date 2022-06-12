@@ -3,7 +3,7 @@ object MainFrm: TMainFrm
   Top = 206
   Caption = #24320#25918#24335#36890#29992#25968#25454#20998#26512#24037#20855'__'
   ClientHeight = 997
-  ClientWidth = 1604
+  ClientWidth = 1755
   Color = clGradientInactiveCaption
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -100,21 +100,23 @@ object MainFrm: TMainFrm
   object Panel1: TPanel
     Left = 268
     Top = 38
-    Width = 1336
+    Width = 1487
     Height = 959
     Align = alClient
     Caption = 'Panel1'
     ParentBackground = False
     TabOrder = 1
+    ExplicitWidth = 1336
     object Panel2: TPanel
       Left = 1
       Top = 1
-      Width = 1334
+      Width = 1485
       Height = 49
       Align = alTop
       Caption = 'Panel2'
       ParentBackground = False
       TabOrder = 0
+      ExplicitWidth = 1334
       object lblMemo: TLabel
         Left = 1
         Top = 1
@@ -128,7 +130,7 @@ object MainFrm: TMainFrm
       object pnl3: TPanel
         Left = 65
         Top = 1
-        Width = 1268
+        Width = 1419
         Height = 47
         Align = alClient
         BevelOuter = bvLowered
@@ -136,43 +138,47 @@ object MainFrm: TMainFrm
         ParentBackground = False
         TabOrder = 0
         OnResize = pnl3Resize
+        ExplicitWidth = 1268
         object DBMemo1: TDBMemo
           Left = 1
           Top = 1
-          Width = 1266
+          Width = 1417
           Height = 45
           Align = alClient
           DataField = 't_memo'
           DataSource = dsTree
           ReadOnly = True
           TabOrder = 0
+          ExplicitWidth = 1266
         end
       end
     end
     object pnl1: TPanel
       Left = 1
       Top = 50
-      Width = 1334
+      Width = 1485
       Height = 908
       Align = alClient
       Caption = 'pnl1'
       Color = 16776176
       ParentBackground = False
       TabOrder = 1
+      ExplicitWidth = 1334
       object pnl5: TPanel
         Left = 1
         Top = 1
-        Width = 1332
+        Width = 1483
         Height = 32
         Align = alTop
         Alignment = taLeftJustify
         Caption = 'Panel2'
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 1332
         object pnl6: TPanel
           Left = 1
           Top = 1
-          Width = 1330
+          Width = 1481
           Height = 30
           Align = alClient
           Font.Charset = ANSI_CHARSET
@@ -183,6 +189,7 @@ object MainFrm: TMainFrm
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
+          ExplicitWidth = 1330
           object spbtnFormat: TSpeedButton
             Left = 503
             Top = 4
@@ -342,7 +349,7 @@ object MainFrm: TMainFrm
       object dbgrdh1: TDBGridEh
         Left = 1
         Top = 61
-        Width = 1332
+        Width = 1483
         Height = 581
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
         Align = alTop
@@ -400,7 +407,7 @@ object MainFrm: TMainFrm
       object pnl2: TPanel
         Left = 1
         Top = 33
-        Width = 1332
+        Width = 1483
         Height = 28
         Align = alTop
         Font.Charset = ANSI_CHARSET
@@ -412,6 +419,7 @@ object MainFrm: TMainFrm
         ParentFont = False
         TabOrder = 2
         OnResize = pnl2Resize
+        ExplicitWidth = 1332
         object lblResult: TLabel
           Left = 84
           Top = 1
@@ -473,7 +481,7 @@ object MainFrm: TMainFrm
       object pnl9: TPanel
         Left = 1
         Top = 650
-        Width = 1332
+        Width = 1483
         Height = 257
         Align = alClient
         Color = 16776176
@@ -481,10 +489,11 @@ object MainFrm: TMainFrm
         TabOrder = 3
         Visible = False
         OnResize = pnl2Resize
+        ExplicitWidth = 1332
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 55
-          Width = 1330
+          Width = 1481
           Height = 201
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
@@ -537,7 +546,7 @@ object MainFrm: TMainFrm
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 1330
+          Width = 1481
           Height = 54
           Align = alTop
           Font.Charset = ANSI_CHARSET
@@ -549,6 +558,7 @@ object MainFrm: TMainFrm
           ParentFont = False
           ShowCaption = False
           TabOrder = 1
+          ExplicitWidth = 1330
           object chkAssis: TCheckBox
             Left = 8
             Top = 7
@@ -574,14 +584,14 @@ object MainFrm: TMainFrm
             TabOrder = 1
           end
           object lbledtKey: TLabeledEdit
-            Left = 722
-            Top = 6
+            Left = 716
+            Top = 5
             Width = 132
-            Height = 21
+            Height = 23
             Hint = #27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
-            EditLabel.Width = 52
+            EditLabel.Width = 58
             EditLabel.Height = 15
-            EditLabel.Caption = #20851#32852#23383#27573
+            EditLabel.Caption = #8593#20851#32852#23383#27573
             EditLabel.Layout = tlCenter
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
@@ -596,10 +606,10 @@ object MainFrm: TMainFrm
             Text = #36134#21495
           end
           object lbledtTabName: TLabeledEdit
-            Left = 550
+            Left = 545
             Top = 6
             Width = 105
-            Height = 21
+            Height = 23
             Hint = #36741#21161#26597#35810#26469#28304#25968#25454#34920
             EditLabel.Width = 78
             EditLabel.Height = 15
@@ -618,10 +628,10 @@ object MainFrm: TMainFrm
             Text = ' tb_rhzh_dw'
           end
           object lbledtSort: TLabeledEdit
-            Left = 917
-            Top = 6
+            Left = 1125
+            Top = 5
             Width = 209
-            Height = 21
+            Height = 23
             Hint = #36741#21161#26597#35810#32467#26524#25490#24207
             EditLabel.Width = 52
             EditLabel.Height = 15
@@ -640,10 +650,10 @@ object MainFrm: TMainFrm
             Text = #36134#21495','#20132#26131#26085#26399
           end
           object lbledtName: TLabeledEdit
-            Left = 295
+            Left = 293
             Top = 6
             Width = 163
-            Height = 21
+            Height = 23
             EditLabel.Width = 78
             EditLabel.Height = 15
             EditLabel.Caption = #36741#21161#26597#35810#21517#31216
@@ -661,12 +671,12 @@ object MainFrm: TMainFrm
           object pnlFields: TPanel
             Left = 1
             Top = 30
-            Width = 1328
+            Width = 1479
             Height = 23
             Align = alBottom
             Caption = 'pnlFields'
             TabOrder = 6
-            ExplicitTop = 36
+            ExplicitWidth = 1328
             object lblFields: TLabel
               Left = 92
               Top = 1
@@ -733,7 +743,7 @@ object MainFrm: TMainFrm
             object mmoFields: TMemo
               Left = 146
               Top = 1
-              Width = 1181
+              Width = 1309
               Height = 21
               Hint = 'Ctrl+'#8593' '#25110'Ctrl+'#8595' '#35843#25972#32534#36753#26694#22823#23567
               Align = alClient
@@ -750,15 +760,69 @@ object MainFrm: TMainFrm
               TabOrder = 1
               OnExit = mmoFieldsExit
               OnKeyDown = mmoFieldsKeyDown
-              ExplicitHeight = 24
+              ExplicitWidth = 1158
             end
+            object spnBtn1: TSpinButton
+              Left = 1455
+              Top = 1
+              Width = 23
+              Height = 21
+              Hint = #35843#25972#32534#36753#26694#22823#23567
+              Align = alRight
+              DownGlyph.Data = {
+                0E010000424D0E01000000000000360000002800000009000000060000000100
+                200000000000D800000000000000000000000000000000000000008080000080
+                8000008080000080800000808000008080000080800000808000008080000080
+                8000008080000080800000808000000000000080800000808000008080000080
+                8000008080000080800000808000000000000000000000000000008080000080
+                8000008080000080800000808000000000000000000000000000000000000000
+                0000008080000080800000808000000000000000000000000000000000000000
+                0000000000000000000000808000008080000080800000808000008080000080
+                800000808000008080000080800000808000}
+              TabOrder = 2
+              UpGlyph.Data = {
+                0E010000424D0E01000000000000360000002800000009000000060000000100
+                200000000000D800000000000000000000000000000000000000008080000080
+                8000008080000080800000808000008080000080800000808000008080000080
+                8000000000000000000000000000000000000000000000000000000000000080
+                8000008080000080800000000000000000000000000000000000000000000080
+                8000008080000080800000808000008080000000000000000000000000000080
+                8000008080000080800000808000008080000080800000808000000000000080
+                8000008080000080800000808000008080000080800000808000008080000080
+                800000808000008080000080800000808000}
+              OnDownClick = spnBtn1DownClick
+              OnUpClick = spnBtn1UpClick
+              ExplicitLeft = 1304
+            end
+          end
+          object lbledtKeyAssis: TLabeledEdit
+            Left = 918
+            Top = 5
+            Width = 132
+            Height = 23
+            Hint = #27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
+            EditLabel.Width = 58
+            EditLabel.Height = 15
+            EditLabel.Caption = #8595#20851#32852#23383#27573
+            EditLabel.Layout = tlCenter
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            LabelPosition = lpLeft
+            ParentFont = False
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 7
+            Text = #36134#21495
           end
         end
       end
       object cxspltr3: TcxSplitter
         Left = 1
         Top = 642
-        Width = 1332
+        Width = 1483
         Height = 8
         Hint = #21333#20987#25110#19978#19979#25302#21160
         HotZoneClassName = 'TcxSimpleStyle'
@@ -770,6 +834,7 @@ object MainFrm: TMainFrm
         ShowHint = True
         ParentShowHint = False
         Visible = False
+        ExplicitWidth = 1332
       end
     end
   end
@@ -792,7 +857,7 @@ object MainFrm: TMainFrm
   object tlbTop: TToolBar
     Left = 0
     Top = 0
-    Width = 1604
+    Width = 1755
     Height = 38
     AutoSize = True
     ButtonHeight = 38
@@ -804,6 +869,7 @@ object MainFrm: TMainFrm
     ShowCaptions = True
     ShowHint = True
     TabOrder = 3
+    ExplicitWidth = 1604
     object btnProj: TToolButton
       Left = 6
       Top = 0

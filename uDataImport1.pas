@@ -262,6 +262,10 @@ end;
 
 procedure TFrmDataImport.bitbtnErrClick(Sender: TObject);
 begin
+  if cbbCode.ItemIndex = 1 then
+    t_cbbCode := '1'
+  else
+    t_cbbCode := '0';
   Application.CreateForm(TF_showError, F_showError);
   F_showError.ShowModal;
 end;
@@ -1583,15 +1587,49 @@ begin
           col_name_deal := col_name_deal + col_tmp_str
         else
           col_name_deal := col_name_deal + col_tmp_str + ',';
+
       end
       else
       begin // 非日期字段，直接取字段
-        if i = Length(a_Col_record) - 1 then
-          col_name_deal := col_name_deal + '[' + a_Col_record[i].col_name + ']'
+        // 数字字段含有@N的处理
+        if LowerCase(a_Col_record[i].col_type) = 'decimal' then
+        begin
+          // col_tmp_str := 'trim(Replace([' + a_Col_record[i].col_name + '],' + '''' + '-' + '''' + ',' + '''''' + ')) [' + a_Col_record[i].col_name + ']';
+          col_tmp_str := '(CASE ISNUMERIC([' + a_Col_record[i].col_name + ']) WHEN 0 THEN 0 ELSE  cast([' + a_Col_record[i].col_name + '] AS numeric) END) [' +
+            a_Col_record[i].col_name + ']';
+          if i = Length(a_Col_record) - 1 then
+            col_name_deal := col_name_deal + col_tmp_str
+          else
+            col_name_deal := col_name_deal + col_tmp_str + ',';
+        end
         else
-          col_name_deal := col_name_deal + '[' + a_Col_record[i].col_name + '],';
-      end;
+        begin
+          if LowerCase(a_Col_record[i].col_type) = 'int' then
+          begin
+            // col_tmp_str := 'trim(Replace([' + a_Col_record[i].col_name + '],' + '''' + '-' + '''' + ',' + '''''' + ')) [' + a_Col_record[i].col_name + ']';
+            col_tmp_str := '(CASE ISNUMERIC([' + a_Col_record[i].col_name + ']) WHEN 0 THEN 0 ELSE  cast([' + a_Col_record[i].col_name + '] AS int) END) [' +
+              a_Col_record[i].col_name + ']';
+            if i = Length(a_Col_record) - 1 then
+              col_name_deal := col_name_deal + col_tmp_str
+            else
+              col_name_deal := col_name_deal + col_tmp_str + ',';
+          end
+          else
+          begin // 以上都不是，为正常字段
+            col_tmp_str := 'trim([' + a_Col_record[i].col_name + ']) [' + a_Col_record[i].col_name + ']';
+            if i = Length(a_Col_record) - 1 then
+              col_name_deal := col_name_deal + col_tmp_str
+            else
+              col_name_deal := col_name_deal + col_tmp_str + ',';
 
+            // if i = Length(a_Col_record) - 1 then
+            // col_name_deal := col_name_deal + '[' + a_Col_record[i].col_name + ']'
+            // else
+            // col_name_deal := col_name_deal + '[' + a_Col_record[i].col_name + '],';
+          end;
+
+        end;
+      end;
     end;
 
   end;
@@ -1709,14 +1747,14 @@ begin
     Sw.WriteLine(' <ROW>');
     for i := 1 to Length(a_Col_record) do
     begin
-      if LowerCase(a_Col_record[i - 1].col_type) = 'int' then
-        s_type := '"SQLINT"'
-      else if LowerCase(a_Col_record[i - 1].col_type) = 'bigint' then
-        s_type := '"SQLBIGINT"'
-      else if LowerCase(a_Col_record[i - 1].col_type) = 'decimal' then
-        s_type := '"SQLDECIMAL" PRECISION="' + a_Col_record[i - 1].col_all_len + '" SCALE="' + a_Col_record[i - 1].col_dot_len + '"'
-      else
-        s_type := '"SQLVARYCHAR"';
+      // if LowerCase(a_Col_record[i - 1].col_type) = 'int' then
+      // s_type := '"SQLINT"'
+      // else if LowerCase(a_Col_record[i - 1].col_type) = 'bigint' then
+      // s_type := '"SQLBIGINT"'
+      // else if LowerCase(a_Col_record[i - 1].col_type) = 'decimal' then
+      // s_type := '"SQLDECIMAL" PRECISION="' + a_Col_record[i - 1].col_all_len + '" SCALE="' + a_Col_record[i - 1].col_dot_len + '"'
+      // else
+      s_type := '"SQLVARYCHAR"';
       Sw.WriteLine(' <COLUMN SOURCE="' + IntToStr(i) + '" NAME="' + a_Col_record[i - 1].col_name + '" xsi:type=' + s_type + '/>')
     end;
     Sw.WriteLine(' </ROW>');

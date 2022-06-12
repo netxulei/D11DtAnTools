@@ -27,7 +27,7 @@ uses
   FireDAC.Stan.StorageJSON, cxButtons, LibXL, math,
   Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls,
   Vcl.ActnMenus, FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Comp.UI,
-  FireDAC.ConsoleUI.Wait;
+  FireDAC.ConsoleUI.Wait, Vcl.Samples.Spin;
 
 type
   TMainFrm = class(TForm)
@@ -180,6 +180,8 @@ type
     btnModOut: TToolButton;
     btn3: TToolButton;
     btnExit: TToolButton;
+    spnBtn1: TSpinButton;
+    lbledtKeyAssis: TLabeledEdit;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function cre_V_bank(): Boolean;
@@ -264,6 +266,8 @@ type
     procedure btnExportClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure mmoFieldsKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure spnBtn1DownClick(Sender: TObject);
+    procedure spnBtn1UpClick(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -378,6 +382,26 @@ begin
   GetCursorPos(Pt); { 这是获取的相对于屏幕的坐标 }
   Pt := ScreenToClient(Pt); { 转换成本地坐标 }
   spbtnFormat.PopupMenu.Popup(Pt.X, Pt.Y);
+end;
+
+procedure TMainFrm.spnBtn1DownClick(Sender: TObject);
+begin
+  if mmoFields.Height < lbledtName.Height * 3 then
+  begin
+    Panel3.Height := Panel3.Height + lbledtName.Height;
+    pnlFields.Height := pnlFields.Height + lbledtName.Height
+  end;
+end;
+
+procedure TMainFrm.spnBtn1UpClick(Sender: TObject);
+begin
+  // Panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
+  // pnlFields.Height := lbledtName.Height;
+  if mmoFields.Height > lbledtName.Height then
+  begin
+    Panel3.Height := Panel3.Height - lbledtName.Height;
+    pnlFields.Height := pnlFields.Height - lbledtName.Height
+  end;
 end;
 
 function TMainFrm.RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
@@ -904,12 +928,13 @@ begin
     MyIniFile := TIniFile.Create(s_filename);
     lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
     lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
-    lbledtKey.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '关联字段');
+    lbledtKey.Text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
+    lbledtKeyAssis.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
     mmoFields.Text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
     lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
     MyIniFile.Free;
   end;
-  panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
+  Panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
   pnlFields.Height := lbledtName.Height;
 
 end;
@@ -960,7 +985,7 @@ begin
   qryFields := StringReplace(qryFields, #$D, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, ' ', '', [rfReplaceAll]);
 
-  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKey.Text) + ' = ''' + key_value + ''' Order by ' + Trim(lbledtSort.Text);
+  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKeyAssis.Text) + ' = ''' + key_value + ''' Order by ' + Trim(lbledtSort.Text);
 
   try
     fdQryAssis.close;
@@ -1477,8 +1502,8 @@ end;
 
 procedure TMainFrm.mmoFieldsExit(Sender: TObject);
 begin
-  panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
-  pnlFields.Height := lbledtName.Height;
+  // panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
+  // pnlFields.Height := lbledtName.Height;
 end;
 
 procedure TMainFrm.mmoFieldsKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -1486,21 +1511,12 @@ begin
 
   if (Key = VK_UP) and (ssCtrl in Shift) then
   begin
-    if mmoFields.Height > lbledtName.Height then
-    begin
-      panel3.Height := panel3.Height - lbledtName.Height;
-      pnlFields.Height := pnlFields.Height - lbledtName.Height
-    end;
+    MainFrm.spnBtn1UpClick(Sender);
 
   end;
   if (Key = VK_DOWN) and (ssCtrl in Shift) then
   begin
-    if mmoFields.Height < lbledtName.Height * 3 then
-    begin
-      panel3.Height := panel3.Height + lbledtName.Height;
-      pnlFields.Height := pnlFields.Height + lbledtName.Height
-    end;
-
+    MainFrm.spnBtn1DownClick(Sender);
   end;
 
 end;
@@ -2002,7 +2018,8 @@ begin
     MyIniFile := TIniFile.Create(s_filename);
     lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助查询名称');
     lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助查询表名');
-    lbledtKey.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '关联字段');
+    lbledtKey.Text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
+    lbledtKeyAssis.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
     mmoFields.Text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
     lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
     MyIniFile.Free;
@@ -2059,7 +2076,8 @@ begin
     MyIniFile := TIniFile.Create(s_filename);
     MyIniFile.WriteString('Base', 'AssisName', Trim(lbledtName.Text));
     MyIniFile.WriteString('Base', 'AssisTabName', Trim(lbledtTabName.Text));
-    MyIniFile.WriteString('Base', 'AssisKeyField', Trim(lbledtKey.Text));
+    MyIniFile.WriteString('Base', 'ResultKeyField', Trim(lbledtKey.Text));
+    MyIniFile.WriteString('Base', 'AssisKeyField', Trim(lbledtKeyAssis.Text));
     MyIniFile.WriteString('Base', 'AssisFields', Trim(mmoFields.Text));
     MyIniFile.WriteString('Base', 'AssisSort', Trim(lbledtSort.Text));
     MyIniFile.Free;

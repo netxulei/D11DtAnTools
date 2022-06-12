@@ -146,6 +146,7 @@ object frmDictMaintain: TfrmDictMaintain
         ParentShowHint = False
         RowHeight = 4
         RowLines = 1
+        RowSizingAllowed = True
         SearchPanel.Enabled = True
         ShowHint = True
         TabOrder = 0
@@ -677,12 +678,12 @@ object frmDictMaintain: TfrmDictMaintain
     object fdQryDictValdict_val: TStringField
       FieldName = 'dict_val'
       Origin = 'dict_val'
-      Size = 120
+      Size = 140
     end
     object fdQryDictValdict_lable: TStringField
       FieldName = 'dict_lable'
       Origin = 'dict_lable'
-      Size = 120
+      Size = 140
     end
     object fdQryDictValdict_val_sort: TIntegerField
       FieldName = 'dict_val_sort'

@@ -17,7 +17,7 @@ uses
   cxLookAndFeels, cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore,
   dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
   cxDBLookupEdit, cxDBLookupComboBox, LibXL, Winapi.ShellAPI, System.RegularExpressions, System.Zip, SynEdit, SynDBEdit, Vcl.Mask, DBCtrlsEh,
-  FireDAC.Phys.SQLiteVDataSet, Vcl.Grids, Vcl.DBGrids;
+  FireDAC.Phys.SQLiteVDataSet, Vcl.Grids, Vcl.DBGrids, Vcl.Samples.Spin;
 
 type
   TMyNavgator = class(TDBNavigator);
@@ -112,8 +112,9 @@ type
     FDLocalSQL1: TFDLocalSQL;
     FDQryCurColLst: TFDQuery;
     ds1: TDataSource;
-    btnDepend: TButton;
     dsCurColLst: TDataSource;
+    btnDepend: TButton;
+    spnBtn1: TSpinButton;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -137,12 +138,15 @@ type
     procedure BitBtnBackUPClick(Sender: TObject);
     procedure BitBtnRestoreClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure DBSynEditComIndExit(Sender: TObject);
     procedure cxLookupComboBoxTypePropertiesEditValueChanged(Sender: TObject);
     procedure fdQrySrcColAfterScroll(DataSet: TDataSet);
     procedure btnDependClick(Sender: TObject);
     procedure DBGridEhSrcColColumns12OpenDropDownForm(Grid: TCustomDBGridEh; Column: TColumnEh; Button: TEditButtonEh; var DropDownForm: TCustomForm; DynParams: TDynVarsEh);
-    procedure DBSynEditComIndKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure spnBtn1DownClick(Sender: TObject);
+    procedure spnBtn1UpClick(Sender: TObject);
+    procedure DBGridEhSrcTabSelectionChanged(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure dsSrcTabMsDtDataChange(Sender: TObject; Field: TField);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -153,6 +157,7 @@ type
 
 var
   frmSrcTabMaintain: TfrmSrcTabMaintain;
+  frmCrtOK: string = '0';
 
 implementation
 
@@ -181,7 +186,7 @@ begin
         max_sort := Max(max_sort, fdQrySrcTab['tab_sort']);
         Next;
       end;
-      EnableControls;
+//      EnableControls;          // append引发错误could not convert variant of type into type (OleStr),放到后面
     end;
     fdQrySrcTab.Append;
     fdQrySrcTab['tab_id'] := getGUID; // 自增量字段不能修改   ，但主表未存盘之前，从表无法增加记录
@@ -193,13 +198,15 @@ begin
     fdQrySrcTab['txt_split'] := '|';
     fdQrySrcTab['txt_qualifier'] := '"';
     fdQrySrcTab.Post;
+    fdQrySrcTab.EnableControls;
     DBGridEhSrcTab.SetFocus;
+
     Abort;
   end;
 
   if Button = nbDelete then
   begin
-    if MessageBox(Handle, '删除该字典，将同时删除该字典所有值，确实要删除么？', '系统提示', MB_YESNO or MB_ICONQUESTION) = ID_NO then
+    if MessageBox(Handle, '删除该接口规范数据表，将同时删除该表字段定义，确实要删除么？', '系统提示', MB_YESNO or MB_ICONQUESTION) = ID_NO then
       Abort
     else
     begin
@@ -279,26 +286,11 @@ begin
   // DBGridEhSrcCol.Fields[0].FocusControl;
 end;
 
-procedure TfrmSrcTabMaintain.DBSynEditComIndExit(Sender: TObject);
+procedure TfrmSrcTabMaintain.dsSrcTabMsDtDataChange(Sender: TObject; Field: TField);
 begin
-  DBSynEditComInd.Height := lblComIndex.Height;
-  // 校验作为索引的字段是否存在
-
-end;
-
-procedure TfrmSrcTabMaintain.DBSynEditComIndKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  if (Key = VK_UP) and (ssCtrl in Shift) then
-  begin
-    if DBSynEditComInd.Height > lblComIndex.Height then
-      DBSynEditComInd.Height := DBSynEditComInd.Height - lblComIndex.Height;
-  end;
-  if (Key = VK_DOWN) and (ssCtrl in Shift) then
-  begin
-    if DBSynEditComInd.Height < lblComIndex.Height * 4 then
-      DBSynEditComInd.Height := DBSynEditComInd.Height + lblComIndex.Height;
-  end;
-
+  // if frmCrtOK = '1' then
+  // ShowMessage(fdQrySrcTab['tab_name_cn']);
+  frmSrcTabMaintain.btnDependClick(Sender);
 end;
 
 procedure TfrmSrcTabMaintain.StatusCalcFields(DataSet: TDataSet);
@@ -337,6 +329,11 @@ end;
 procedure TfrmSrcTabMaintain.fdQrySrcColUpdateRecord(ASender: TDataSet; ARequest: TFDUpdateRequest; var AAction: TFDErrorAction; AOptions: TFDUpdateRowOptions);
 begin
   AAction := eaDefault;
+end;
+
+procedure TfrmSrcTabMaintain.FormActivate(Sender: TObject);
+begin
+  frmCrtOK := '1';
 end;
 
 procedure TfrmSrcTabMaintain.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -824,7 +821,7 @@ var
   Zip: TZipFile;
   i: Integer;
 begin
-  if MessageDlg('字典数据恢复后，当前字典数据将被覆盖，确定吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
+  if MessageDlg('恢复后，当前数据接口规范将被覆盖，确定吗？', mtWarning, [mbYes, mbNo], 0) = mrNo then
   begin
     Exit;
   end;
@@ -836,13 +833,13 @@ begin
     begin
       if not TZipFile.IsValid(sFilename) then
       begin
-        MessageDlg('选中的文件不是字典数据文件！', mtWarning, [mbOK], 0);
+        MessageDlg('选中的文件不是数据接口规范备份文件！', mtWarning, [mbOK], 0);
         Exit;
       end;
     end
     else
     begin
-      MessageDlg('字典数据备份文件不存在！', mtWarning, [mbOK], 0);
+      MessageDlg('数据接口规范备份文件不存在！', mtWarning, [mbOK], 0);
       Exit;
     end;
     sFilename := Trim(dlgOpenRestore.FileName);
@@ -1181,16 +1178,35 @@ begin
   frmSrcTabMaintain.btnDependClick(self);
 end;
 
+procedure TfrmSrcTabMaintain.DBGridEhSrcTabSelectionChanged(Sender: TObject);
+begin
+  ShowMessage('adf');
+end;
+
 procedure TfrmSrcTabMaintain.OnDataChange(Sender: TObject; Field: TField);
 begin
 {$IF CompilerVersion >= 29.0}
   ToggleButtons(FDSchemaAdapterAll.UpdatesPending);
   if FDSchemaAdapterAll.UpdatesPending then
-    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。字典类型表有' + fdQrySrcTab.ChangeCount.ToString + ' 条，字典值表中有' +
+    StatusBar1.SimpleText := '存盘前存在 ' + FDSchemaAdapterAll.ChangeCount.ToString + ' 条记录改变。数据表有' + fdQrySrcTab.ChangeCount.ToString + ' 条，字段定义中有' +
       fdQrySrcCol.ChangeCount.ToString + '条。'
   else
 {$ENDIF}
     StatusBar1.SimpleText := '存盘前没有记录改变';
+
+end;
+
+procedure TfrmSrcTabMaintain.spnBtn1DownClick(Sender: TObject);
+begin
+  if DBSynEditComInd.Height < lblComIndex.Height * 4 then
+    DBSynEditComInd.Height := DBSynEditComInd.Height + lblComIndex.Height;
+end;
+
+procedure TfrmSrcTabMaintain.spnBtn1UpClick(Sender: TObject);
+begin
+  // DBSynEditComInd.Height := lblComIndex.Height;
+  if DBSynEditComInd.Height > lblComIndex.Height then
+    DBSynEditComInd.Height := DBSynEditComInd.Height - lblComIndex.Height;
 end;
 
 procedure TfrmSrcTabMaintain.ToggleButtons(Enable: Boolean);

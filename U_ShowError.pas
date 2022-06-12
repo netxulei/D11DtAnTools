@@ -3,7 +3,7 @@ unit U_ShowError;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  U_Common, Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, cxControls, cxContainer, cxEdit, cxTextEdit,
   cxMemo, ExtCtrls, cxLabel, cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, dxSkinsCore, dxSkinsDefaultPainters;
 
@@ -35,9 +35,17 @@ var
 begin
   try
     s_filename1 := ExtractFilePath(ParamStr(0)) + 'error.txt.error.txt';
-    cxm1.Lines.LoadFromFile(s_filename1);
     s_filename2 := ExtractFilePath(ParamStr(0)) + 'error.txt';
-    cxm2.Lines.LoadFromFile(s_filename2);
+    if t_cbbCode = '1' then
+    begin
+      cxm1.Lines.LoadFromFile(s_filename1, TEncoding.UTF8);
+      cxm2.Lines.LoadFromFile(s_filename2, TEncoding.UTF8);
+    end
+    else
+    begin
+      cxm1.Lines.LoadFromFile(s_filename1, TEncoding.ANSI);
+      cxm2.Lines.LoadFromFile(s_filename2, TEncoding.ANSI);
+    end;
   except
     ShowMessage('上次导入数据没有出错，将不显示任何信息！');
   end;
@@ -50,8 +58,7 @@ var
   s_filename: string;
 begin
   // s_filename:=ExtractFilePath(ParamStr(0))+'clip.txt';
-   //cxm_tmp.Lines.SaveToFile(s_filename);
+  // cxm_tmp.Lines.SaveToFile(s_filename);
 end;
 
 end.
-
