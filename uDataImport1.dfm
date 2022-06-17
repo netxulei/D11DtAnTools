@@ -18,11 +18,12 @@ object FrmDataImport: TFrmDataImport
   TextHeight = 20
   object pnl1: TPanel
     Left = 0
-    Top = 58
+    Top = 60
     Width = 1246
     Height = 62
     Align = alTop
     TabOrder = 1
+    ExplicitTop = 58
     object lblSrcTab: TLabel
       Left = 14
       Top = 5
@@ -39,10 +40,10 @@ object FrmDataImport: TFrmDataImport
       ParentFont = False
     end
     object btnExit: TBitBtn
-      Left = 862
+      Left = 830
       Top = 18
       Width = 139
-      Height = 31
+      Height = 36
       Caption = '5.'#36820#22238
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clNavy
@@ -77,7 +78,7 @@ object FrmDataImport: TFrmDataImport
       Properties.OnEditValueChanged = cxLCbBSrcTabPropertiesEditValueChanged
       Style.Font.Charset = DEFAULT_CHARSET
       Style.Font.Color = clWindowText
-      Style.Font.Height = -12
+      Style.Font.Height = -15
       Style.Font.Name = #24494#36719#38597#40657
       Style.Font.Style = []
       Style.IsFontAssigned = True
@@ -130,10 +131,10 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 4
     end
     object btnImpTxt: TBitBtn
-      Left = 720
+      Left = 679
       Top = 18
       Width = 136
-      Height = 31
+      Height = 36
       Hint = #25991#26412#25991#20214#23548#20837#38656#35201#23383#27573#20301#32622#19968#19968#23545#24212#65288#21517#31216#26080#20851#65289#65307'Excel'#25991#20214#23548#20837#38656#35201#26631#39064#21517#31216#23545#24212#65288#20301#32622#26080#20851#65289
       Caption = '4.'#25968#25454#23548#20837
       Font.Charset = DEFAULT_CHARSET
@@ -202,31 +203,32 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl3: TPanel
     Left = 0
-    Top = 186
+    Top = 188
     Width = 1246
-    Height = 62
+    Height = 56
     Align = alTop
     TabOrder = 0
+    ExplicitTop = 186
     object LblCheck: TLabel
       Left = 9
       Top = 0
-      Width = 91
+      Width = 105
       Height = 19
       Caption = #25968#25454#39044#35272#19982#26657#39564
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlue
-      Font.Height = -13
+      Font.Height = -15
       Font.Name = #24494#36719#38597#40657
       Font.Style = [fsBold]
       ParentFont = False
     end
     object Label2: TLabel
       Left = 9
-      Top = 24
-      Width = 104
+      Top = 23
+      Width = 39
       Height = 19
       Hint = #20174#25968#25454#34892#31639#36215#65288#21076#38500#26631#39064#34892#65289
-      Caption = #39044#35272#25110#26657#39564#36215#22987#34892
+      Caption = #36215#22987#34892
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -237,12 +239,12 @@ object FrmDataImport: TFrmDataImport
       ShowHint = True
     end
     object Label3: TLabel
-      Left = 195
-      Top = 24
-      Width = 104
+      Left = 155
+      Top = 23
+      Width = 39
       Height = 19
       Hint = #38656#26657#39564#30340#34892#30340#25968#37327
-      Caption = #39044#35272#25110#26657#39564#24635#34892#25968
+      Caption = #24635#34892#25968
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -253,8 +255,8 @@ object FrmDataImport: TFrmDataImport
       ShowHint = True
     end
     object Label4: TLabel
-      Left = 394
-      Top = 24
+      Left = 942
+      Top = 6
       Width = 117
       Height = 19
       Caption = #32570#25968#38408#20540#65288#30334#20998#27604#65289
@@ -267,15 +269,15 @@ object FrmDataImport: TFrmDataImport
       Visible = False
     end
     object lbl2: TLabel
-      Left = 819
-      Top = 15
-      Width = 60
-      Height = 17
+      Left = 664
+      Top = 10
+      Width = 65
+      Height = 19
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
       Caption = #32534#30721#26684#24335#65306
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -284,8 +286,8 @@ object FrmDataImport: TFrmDataImport
       Transparent = True
     end
     object Label1: TLabel
-      Left = 820
-      Top = 33
+      Left = 665
+      Top = 29
       Width = 76
       Height = 17
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
@@ -293,7 +295,7 @@ object FrmDataImport: TFrmDataImport
       Caption = #25968#25454#34892#25968#65306
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -303,10 +305,10 @@ object FrmDataImport: TFrmDataImport
       WordWrap = True
     end
     object lbl3: TLabel
-      Left = 900
-      Top = 18
-      Width = 4
-      Height = 17
+      Left = 727
+      Top = 11
+      Width = 79
+      Height = 21
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -315,9 +317,9 @@ object FrmDataImport: TFrmDataImport
       ParentFont = False
     end
     object lbl_line: TLabel
-      Left = 900
-      Top = 33
-      Width = 4
+      Left = 732
+      Top = 30
+      Width = 77
       Height = 17
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -327,14 +329,14 @@ object FrmDataImport: TFrmDataImport
       ParentFont = False
     end
     object edt_num: TEdit
-      Left = 307
-      Top = 21
-      Width = 76
-      Height = 25
+      Left = 204
+      Top = 19
+      Width = 117
+      Height = 27
       Hint = #34892#25968#22826#22810#26131#20110#20869#23384#19981#22815#29992
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -344,10 +346,10 @@ object FrmDataImport: TFrmDataImport
       Text = '10'
     end
     object btnView: TBitBtn
-      Left = 543
-      Top = 21
+      Left = 333
+      Top = 12
       Width = 107
-      Height = 27
+      Height = 36
       Hint = 'Excel'#25991#20214#39044#35272#25152#26377'Sheet'#30340#26631#39064#21644'2'#34892#25968#25454
       Caption = #39044#35272#25968#25454
       ImageIndex = 12
@@ -359,10 +361,10 @@ object FrmDataImport: TFrmDataImport
       OnClick = btnViewClick
     end
     object btnValid: TBitBtn
-      Left = 653
-      Top = 21
+      Left = 451
+      Top = 12
       Width = 107
-      Height = 27
+      Height = 36
       Hint = #25991#26412#25991#20214#26368#22909#20570#19968#27425#20840#37096#30340#25968#25454#26657#39564#20197#26816#26597#25968#25454#20869#23481#19981#31526#21512#26657#39564#35268#21017#30340#24773#20917
       Caption = '3.'#26657#39564#25968#25454
       Font.Charset = DEFAULT_CHARSET
@@ -378,13 +380,13 @@ object FrmDataImport: TFrmDataImport
       OnClick = btnValidClick
     end
     object edt2: TEdit
-      Left = 510
-      Top = 21
+      Left = 997
+      Top = 24
       Width = 27
-      Height = 25
+      Height = 27
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -393,14 +395,14 @@ object FrmDataImport: TFrmDataImport
       Visible = False
     end
     object edt_start: TEdit
-      Left = 116
-      Top = 21
-      Width = 75
-      Height = 25
+      Left = 57
+      Top = 19
+      Width = 92
+      Height = 27
       Hint = #20174#25968#25454#34892#31639#36215#65288#21076#38500#26631#39064#34892#65289
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -410,15 +412,15 @@ object FrmDataImport: TFrmDataImport
       Text = '1'
     end
     object btnInfo: TButton
-      Left = 779
+      Left = 580
       Top = 12
-      Width = 39
-      Height = 42
+      Width = 80
+      Height = 36
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
       Caption = #25991#20214#20449#24687
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -431,13 +433,14 @@ object FrmDataImport: TFrmDataImport
   end
   object pnl2: TPanel
     Left = 0
-    Top = 120
+    Top = 122
     Width = 1246
     Height = 66
     Align = alTop
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
+    ExplicitTop = 120
     object spbtnFileName: TSpeedButton
       Left = 498
       Top = 37
@@ -483,17 +486,17 @@ object FrmDataImport: TFrmDataImport
       Height = 25
       AutoSize = False
       EditLabel.Width = 215
-      EditLabel.Height = 17
+      EditLabel.Height = 20
       EditLabel.Caption = '2.'#36873#25321#25968#25454#25991#20214#65288#25991#26412#25110'Excel'#65289
       EditLabel.Font.Charset = DEFAULT_CHARSET
       EditLabel.Font.Color = clNavy
-      EditLabel.Font.Height = -13
-      EditLabel.Font.Name = 'Segoe UI'
+      EditLabel.Font.Height = -15
+      EditLabel.Font.Name = #24494#36719#38597#40657
       EditLabel.Font.Style = []
       EditLabel.ParentFont = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -15
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -504,11 +507,11 @@ object FrmDataImport: TFrmDataImport
       OnDblClick = lbledtFileNameDblClick
     end
     object cbbCode: TComboBox
-      Left = 598
-      Top = 33
+      Left = 557
+      Top = 36
       Width = 92
       Height = 25
-      Hint = #20165#23545#25991#26412#25991#20214#26377#25928
+      Hint = #36873#25321#25991#26412#25991#20214#26684#24335'DOS'#25110'Unix'
       Ctl3D = True
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -527,15 +530,15 @@ object FrmDataImport: TFrmDataImport
         'UTF8')
     end
     object chkForceCode: TCheckBox
-      Left = 598
-      Top = 12
+      Left = 557
+      Top = 15
       Width = 97
       Height = 17
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
       Caption = #24378#21046#32534#30721#26684#24335
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -625,23 +628,23 @@ object FrmDataImport: TFrmDataImport
       Text = '"'
     end
     object lbledtValNo: TLabeledEdit
-      Left = 726
-      Top = 30
+      Left = 768
+      Top = 36
       Width = 84
       Height = 25
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
-      EditLabel.Width = 84
-      EditLabel.Height = 17
+      EditLabel.Width = 91
+      EditLabel.Height = 19
       EditLabel.Caption = #23548#20837#21069#26657#39564#34892#25968
       EditLabel.Font.Charset = DEFAULT_CHARSET
       EditLabel.Font.Color = clWindowText
-      EditLabel.Font.Height = -12
+      EditLabel.Font.Height = -13
       EditLabel.Font.Name = #24494#36719#38597#40657
       EditLabel.Font.Style = []
       EditLabel.ParentFont = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -13
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
@@ -650,66 +653,79 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 6
       Text = '10'
     end
-    object bitbtnErr: TBitBtn
-      Left = 900
-      Top = 11
-      Width = 101
-      Height = 50
-      Hint = #20165#23545#25991#26412#25991#20214#26377#25928
-      Caption = #26597#30475#26368#21518#19968#27425#25991#26412#23548#20837#38169#35823#20449#24687
+    object cbbUnix: TComboBox
+      Left = 655
+      Top = 36
+      Width = 92
+      Height = 25
+      Hint = #36873#25321#25991#26412#25991#20214#26684#24335'DOS'#25110'Unix'
+      Ctl3D = True
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
+      ItemIndex = 0
+      ParentCtl3D = False
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 7
+      Text = 'DOS'
+      Items.Strings = (
+        'DOS'
+        'UNIX')
+    end
+    object bitbtnErr: TBitBtn
+      Left = 872
+      Top = 6
+      Width = 97
+      Height = 55
+      Hint = #25968#25454#24120#35265#38382#39064#22788#29702
+      Caption = #25968#25454#24120#35265#38382#39064#22788#29702#24110#21161
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 8
       WordWrap = True
       OnClick = bitbtnErrClick
     end
   end
   object pnl4: TPanel
     Left = 0
-    Top = 248
+    Top = 244
     Width = 1246
-    Height = 440
+    Height = 444
     Align = alClient
     TabOrder = 3
-    object Splitter2: TSplitter
-      Left = 1
-      Top = 257
-      Width = 1244
-      Height = 6
-      Cursor = crVSplit
-      Align = alTop
-      ExplicitTop = 297
-      ExplicitWidth = 1161
-    end
-    object mmo2: TRichEdit
-      Left = 1
-      Top = 263
-      Width = 1244
-      Height = 176
-      Align = alClient
-      Font.Charset = GB2312_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -12
-      Font.Name = #24494#36719#38597#40657
-      Font.Style = []
-      HideScrollBars = False
-      ParentFont = False
-      PlainText = True
-      ReadOnly = True
-      ScrollBars = ssBoth
-      TabOrder = 0
-    end
-    object strngrd1: TAdvStringGrid
+    ExplicitTop = 248
+    ExplicitHeight = 440
+    object Label6: TLabel
       Left = 1
       Top = 1
       Width = 1244
-      Height = 256
+      Height = 20
+      Align = alTop
+      Caption = #25968#25454#20449#24687
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -15
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
+      ParentFont = False
+      ExplicitTop = 9
+      ExplicitWidth = 60
+    end
+    object strngrd1: TAdvStringGrid
+      Left = 1
+      Top = 21
+      Width = 1244
+      Height = 201
       Align = alTop
       ColCount = 1
       Ctl3D = False
@@ -725,7 +741,7 @@ object FrmDataImport: TFrmDataImport
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goRowMoving, goColMoving, goTabs, goThumbTracking, goFixedRowDefAlign]
       ParentCtl3D = False
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
       ActiveRowShow = True
       GridLineColor = 14474202
       GridFixedLineColor = 14474202
@@ -853,17 +869,78 @@ object FrmDataImport: TFrmDataImport
       SortSettings.HeaderMirrorColorTo = 16250613
       UIStyle = tsWindows10
       Version = '8.6.11.2'
+      ExplicitTop = 56
       ColWidths = (
         12)
       RowHeights = (
         22)
+    end
+    object cxSplitter1: TcxSplitter
+      Left = 1
+      Top = 222
+      Width = 1244
+      Height = 8
+      HotZoneClassName = 'TcxSimpleStyle'
+      AlignSplitter = salTop
+      ShowHint = True
+      ParentShowHint = False
+      ExplicitLeft = -23
+      ExplicitTop = 237
+    end
+    object Panel1: TPanel
+      Left = 1
+      Top = 230
+      Width = 1244
+      Height = 213
+      Align = alClient
+      Caption = 'Panel1'
+      TabOrder = 2
+      ExplicitLeft = 246
+      ExplicitTop = 248
+      ExplicitWidth = 185
+      ExplicitHeight = 41
+      object Label5: TLabel
+        Left = 1
+        Top = 1
+        Width = 1242
+        Height = 20
+        Align = alTop
+        Caption = #26657#39564#20449#24687
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = #24494#36719#38597#40657
+        Font.Style = []
+        ParentFont = False
+        ExplicitWidth = 60
+      end
+      object mmo2: TRichEdit
+        Left = 1
+        Top = 21
+        Width = 1242
+        Height = 191
+        Align = alClient
+        Font.Charset = GB2312_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #24494#36719#38597#40657
+        Font.Style = []
+        HideScrollBars = False
+        ParentFont = False
+        PlainText = True
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 0
+        ExplicitTop = 26
+        ExplicitHeight = 189
+      end
     end
   end
   object pnlTop: TPanel
     Left = 0
     Top = 0
     Width = 1246
-    Height = 58
+    Height = 60
     Align = alTop
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -877,7 +954,7 @@ object FrmDataImport: TFrmDataImport
       Left = 1
       Top = 1
       Width = 160
-      Height = 56
+      Height = 58
       Hint = #39033#30446#34920#24517#39035#23384#22312#24403#21069#39033#30446#25165#33021#23548#20837#12290#13#10#20840#23616#34920#20445#23384#20110#31995#32479#25968#25454#24211#20013#65292#25152#26377#39033#30446#22343#21487#20351#29992#12290
       Align = alLeft
       Color = clBtnFace
@@ -886,7 +963,7 @@ object FrmDataImport: TFrmDataImport
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
-      Font.Name = 'Segoe UI'
+      Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ItemIndex = 0
       Items.Strings = (
@@ -901,14 +978,16 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 0
       WordWrap = True
       OnClick = rgSelSrcClick
+      ExplicitHeight = 56
     end
     object pnlProj: TPanel
       Left = 441
       Top = 1
       Width = 804
-      Height = 56
+      Height = 58
       Align = alClient
       TabOrder = 1
+      ExplicitHeight = 56
       object lblProj: TLabel
         Left = 1
         Top = 1
@@ -921,7 +1000,7 @@ object FrmDataImport: TFrmDataImport
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'Segoe UI'
+        Font.Name = #24494#36719#38597#40657
         Font.Style = [fsBold]
         ParentFont = False
         Layout = tlCenter
@@ -931,7 +1010,7 @@ object FrmDataImport: TFrmDataImport
         Left = 1
         Top = 23
         Width = 802
-        Height = 30
+        Height = 34
         Margins.Left = 10
         Align = alTop
         Caption = 
@@ -940,32 +1019,33 @@ object FrmDataImport: TFrmDataImport
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
-        Font.Name = 'Segoe UI'
+        Font.Name = #24494#36719#38597#40657
         Font.Style = []
         ParentFont = False
         Layout = tlCenter
         WordWrap = True
-        ExplicitWidth = 572
+        ExplicitWidth = 539
       end
     end
     object pnl5: TPanel
       Left = 161
       Top = 1
       Width = 280
-      Height = 56
+      Height = 58
       Align = alLeft
       TabOrder = 2
+      ExplicitHeight = 56
       object lblTabType: TLabel
         Left = 6
         Top = 6
-        Width = 64
-        Height = 17
+        Width = 52
+        Height = 19
         Caption = #25968#25454#31867#21035
         Color = clHighlight
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'Segoe UI'
+        Font.Name = #24494#36719#38597#40657
         Font.Style = []
         ParentColor = False
         ParentFont = False

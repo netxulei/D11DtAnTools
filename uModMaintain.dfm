@@ -22,7 +22,7 @@ object FModMaintain: TFModMaintain
     Left = 0
     Top = 0
     Width = 337
-    Height = 945
+    Height = 937
     Align = alLeft
     Bands = <
       item
@@ -165,14 +165,14 @@ object FModMaintain: TFModMaintain
   object pnl1: TPanel
     Left = 345
     Top = 0
-    Width = 1500
-    Height = 945
+    Width = 1498
+    Height = 937
     Align = alClient
     TabOrder = 1
     object pnl6: TPanel
       Left = 1
       Top = 1
-      Width = 1498
+      Width = 1496
       Height = 35
       Align = alTop
       TabOrder = 0
@@ -350,7 +350,7 @@ object FModMaintain: TFModMaintain
     object pnl3: TPanel
       Left = 1
       Top = 36
-      Width = 1498
+      Width = 1496
       Height = 223
       Align = alTop
       TabOrder = 1
@@ -592,12 +592,12 @@ object FModMaintain: TFModMaintain
       TabOrder = 2
       Visible = False
       Height = 81
-      Width = 1498
+      Width = 1496
     end
     object DBSynEditCode: TDBSynEdit
       Left = 1
       Top = 340
-      Width = 1498
+      Width = 1496
       Height = 45
       Cursor = crIBeam
       Align = alTop
@@ -648,8 +648,8 @@ object FModMaintain: TFModMaintain
     object SynEditCode: TSynEdit
       Left = 1
       Top = 385
-      Width = 1498
-      Height = 559
+      Width = 1496
+      Height = 551
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -701,7 +701,7 @@ object FModMaintain: TFModMaintain
     Left = 337
     Top = 0
     Width = 8
-    Height = 945
+    Height = 937
     Cursor = crHSplit
     Hint = #24038#21491#25302#21160
     HotZoneClassName = 'TcxSimpleStyle'
@@ -713,8 +713,8 @@ object FModMaintain: TFModMaintain
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 945
-    Width = 1845
+    Top = 937
+    Width = 1843
     Height = 19
     Panels = <>
     SimplePanel = True
@@ -757,12 +757,11 @@ object FModMaintain: TFModMaintain
   end
   object fdQryTree: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = fdQryTreeCalcFields
     CachedUpdates = True
     IndexFieldNames = 't_sort'
     OnUpdateRecord = fdQryTreeUpdateRecord
-    Connection = F_DT.FDConSysTmp
+    Connection = F_DT.FDConSYS
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
     SQL.Strings = (
@@ -904,7 +903,6 @@ object FModMaintain: TFModMaintain
   end
   object fdQryMaxID: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSQLite
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll

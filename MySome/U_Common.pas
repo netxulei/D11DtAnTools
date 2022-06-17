@@ -43,10 +43,11 @@ var
   // t_Getdata_Mod, t_Getdata_Mod_yh: string;
   // t_table1_sql_dw, t_table2_sql_dw, t_table1_sql_gr, t_table2_sql_gr, t_table1_sql_other, t_table2_sql_other: string;
   // t_table2_sql_order, t_table2_other_order: string;
-  t_cbbCode,//导入时调取出错文件的编码格式
-  t_caption,t_key_name, t_ver_no, t_ver_name, t_TimeOut, t_Jclj_Ver, t_Jrjgbm: string;
+  t_cbbCode, // 导入时调取出错文件的编码格式
+  t_caption, t_key_name, t_ver_no, t_ver_name, t_TimeOut, t_Jclj_Ver, t_Jrjgbm: string;
   t_key_nameLS, t_ver_noLS, t_ver_nameLS: TStrings;
-  t_Last_RHZH_EX, t_Last_RHJX_EX, t_Last_RHZH_DW, t_Last_RHZH_GR, t_Last_SHZH_DW, t_Last_SHZH_GR, t_Last_SHJY_DW, t_Last_SHJY_GR: string;
+  t_Last_RHZH_EX, t_Last_RHJX_EX, t_Last_RHZH_DW, t_Last_RHZH_GR, t_Last_SHZH_DW, t_Last_SHZH_GR, t_Last_SHJY_DW,
+    t_Last_SHJY_GR: string;
   t_ver, // 版本号
   t_type, // 软件版本列表 1|2|3
   t_mode, // 开放模式标志
@@ -108,6 +109,12 @@ function IsUtf8Format(buffer: PAnsiChar; SIZE: Int64): Boolean;
 
 function IsUtf8File(const fileName: string): Boolean;
 // 全文判断文件是否为UTF-8编码（基于IsUtf8Format）
+
+function IsUnixFile(const fileName: string): Boolean;
+// 全文判断文件是否为Unix文件
+
+function StrSubCount(const Source, Sub: string): Integer;
+// 子串在朱传忠出想的数量
 
 function IsFileInUse(fName: string): Boolean;
 
@@ -408,10 +415,12 @@ begin
     F_DT.FDQryTmp.Connection := F_DT.FDConSys;
     F_DT.FDQryTmp.SQL.Clear;
     if procFlag = '1' then
-      sqltext := 'IF EXISTS (SELECT * FROM sys.objects WHERE Type =' + '''' + 'P' + '''' + ' AND name=' + '''' + sqlname + '''' + ') DROP PROCEDURE dbo.[' + sqlname + ']';
+      sqltext := 'IF EXISTS (SELECT * FROM sys.objects WHERE Type =' + '''' + 'P' + '''' + ' AND name=' + '''' + sqlname
+        + '''' + ') DROP PROCEDURE dbo.[' + sqlname + ']';
     if funcFlag = '1' then
-      sqltext := 'IF EXISTS (select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' + 'AF' + '''' + ' or type =' + '''' + 'FN' + '''' +
-        ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT' + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.[' +
+      sqltext := 'IF EXISTS (select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' +
+        'AF' + '''' + ' or type =' + '''' + 'FN' + '''' + ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT'
+        + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.[' +
         sqlname + ']';
     F_DT.FDQryTmp.SQL.Add(sqltext);
     F_DT.FDQryTmp.Prepared;
@@ -465,10 +474,12 @@ begin
     F_DT.FDQryTmp.Connection := F_DT.FDConSys;
     F_DT.FDQryTmp.SQL.Clear;
     if procFlag = '1' then
-      sqltext := 'IF EXISTS (SELECT * FROM sys.objects WHERE Type =' + '''' + 'P' + '''' + ' AND name=' + '''' + sqlname + '''' + ') DROP PROCEDURE dbo.[' + sqlname + ']';
+      sqltext := 'IF EXISTS (SELECT * FROM sys.objects WHERE Type =' + '''' + 'P' + '''' + ' AND name=' + '''' + sqlname
+        + '''' + ') DROP PROCEDURE dbo.[' + sqlname + ']';
     if funcFlag = '1' then
-      sqltext := 'IF EXISTS (select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' + 'AF' + '''' + ' or type =' + '''' + 'FN' + '''' +
-        ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT' + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.[' +
+      sqltext := 'IF EXISTS (select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' +
+        'AF' + '''' + ' or type =' + '''' + 'FN' + '''' + ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT'
+        + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')) DROP Function dbo.[' +
         sqlname + ']';
     F_DT.FDQryTmp.SQL.Add(sqltext);
     F_DT.FDQryTmp.Prepared;
@@ -511,8 +522,9 @@ begin
       if procFlag = '1' then
         sqltext := 'SELECT * FROM sys.objects WHERE Type =' + '''' + 'P' + '''' + ' AND name=' + '''' + sqlname + '''';
       if funcFlag = '1' then
-        sqltext := 'select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' + 'AF' + '''' + ' or type =' + '''' + 'FN' + '''' + ' or type =' +
-          '''' + 'FS' + '''' + ' or type =' + '''' + 'FT' + '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')';
+        sqltext := 'select name from sysobjects where Name =' + '''' + sqlname + '''' + ' and (type =' + '''' + 'AF' +
+          '''' + ' or type =' + '''' + 'FN' + '''' + ' or type =' + '''' + 'FS' + '''' + ' or type =' + '''' + 'FT' +
+          '''' + ' or type =' + '''' + 'IF' + '''' + ' or type =' + '''' + 'TF' + '''' + ')';
       F_DT.FDQryTmp.Connection := F_DT.fdconProj; // 判断存储过程是否存在
       F_DT.FDQryTmp.Close;
       F_DT.FDQryTmp.SQL.Clear;
@@ -602,7 +614,8 @@ begin
     Result := True;
     exit; // 如果文件不存在则退出
   end;
-  HFileRes := CreateFile(PChar(fName), GENERIC_READ or GENERIC_WRITE, 0 { this is the trick! } , nil, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+  HFileRes := CreateFile(PChar(fName), GENERIC_READ or GENERIC_WRITE, 0 { this is the trick! } , nil, OPEN_EXISTING,
+    FILE_ATTRIBUTE_NORMAL, 0);
   Result := (HFileRes = INVALID_HANDLE_VALUE); // 如果CreateFile返回失败 那么Result为真(即文件正在被使用)
   if not Result then // 如果CreateFile函数返回是成功
     CloseHandle(HFileRes); // 那么关闭句柄
@@ -687,6 +700,60 @@ begin
       Result := False;
   finally
     fStream.Free;
+  end;
+end;
+
+function IsUnixFile(const fileName: string): Boolean;
+// 全文判断文件是否为UTF-8编码（基于IsUtf8Format）
+var
+  // fStream: TFileStream;
+  fStream: TBufferedFileStream;
+  readSize: Int64;
+  context: AnsiString;
+const
+  // MaxReadSize: Int64 = 536870912; // 最多读取512M数据判断
+//  MaxReadSize: Int64 = 104857600; // 最多读取100M数据判断
+MaxReadSize: Int64 = 2097152; // 最多读取2M数据判断
+
+begin
+
+  fStream := TBufferedFileStream.Create(fileName, fmOpenRead or fmShareDenyNone, 32768);
+  // fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  try
+
+    if fStream.SIZE > MaxReadSize then
+      readSize := MaxReadSize
+    else
+      readSize := fStream.SIZE;
+
+    SetLength(context, readSize);
+    // 文件太大内存溢出，   两种方案：1.流的缓存机制（解决不了）；2.size变小一点，不要全文判断
+    fStream.Read(context[1], readSize); // 为什么是context[1]，而不是context？？
+
+    if StrSubCount(context, #13#10) > 2 then
+      Result := False
+    else
+      Result := True;
+  finally
+    fStream.Free;
+  end;
+end;
+
+function StrSubCount(const Source, Sub: string): Integer;
+var
+  Buf: string;
+  i: Integer;
+  Len: Integer;
+begin
+  Result := 0;
+  Buf := Source;
+  i := pos(Sub, Buf);
+  Len := Length(Sub);
+  while i <> 0 do
+  begin
+    Inc(Result);
+    Delete(Buf, 1, i + Len - 1);
+    i := pos(Sub, Buf);
   end;
 end;
 
@@ -842,8 +909,8 @@ begin
   // 先判断是否包含子串，不包括返回false，否则进一步 ,
   if pos(substrtxt, strtxt) = 0 then
   begin
-    if Application.MessageBox(PChar('欲导入的账户信息没有“' + substrtxt + '”字段，会影响比对筛选。若继续导入，则确定按钮，否则取消后，重新下载人行账户数据，再行导入。'), '人行数据采集有问题', MB_OKCANCEL + MB_ICONWARNING + MB_TOPMOST) = IDOK
-    then
+    if Application.MessageBox(PChar('欲导入的账户信息没有“' + substrtxt + '”字段，会影响比对筛选。若继续导入，则确定按钮，否则取消后，重新下载人行账户数据，再行导入。'),
+      '人行数据采集有问题', MB_OKCANCEL + MB_ICONWARNING + MB_TOPMOST) = IDOK then
       Result := False
     else
       Result := True;

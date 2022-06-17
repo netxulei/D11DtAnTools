@@ -1147,7 +1147,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcTab: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_sort'
     OnUpdateRecord = fdQrySrcTabUpdateRecord
@@ -1243,14 +1242,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQrySrcCol: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     AfterScroll = fdQrySrcColAfterScroll
     OnCalcFields = StatusCalcFields
     IndexFieldNames = 'tab_id;col_sort'
     MasterSource = dsSrcTabMsDt
     MasterFields = 'tab_id'
     OnUpdateRecord = fdQrySrcColUpdateRecord
-    Connection = F_DT.FDConSysTmp
+    Connection = F_DT.FDConSYS
     SchemaAdapter = FDSchemaAdapterAll
     SQL.Strings = (
       
@@ -1403,7 +1401,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object fdQryDictList: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSysTmp
     SQL.Strings = (
       
@@ -1534,7 +1531,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   end
   object FDQryCurColLst: TFDQuery
     ActiveStoredUsage = [auDesignTime]
-    Active = True
     Connection = F_DT.FDConSQLite
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
