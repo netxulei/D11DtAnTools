@@ -144,7 +144,6 @@ type
     procedure DBGridEhSrcColColumns12OpenDropDownForm(Grid: TCustomDBGridEh; Column: TColumnEh; Button: TEditButtonEh; var DropDownForm: TCustomForm; DynParams: TDynVarsEh);
     procedure spnBtn1DownClick(Sender: TObject);
     procedure spnBtn1UpClick(Sender: TObject);
-    procedure DBGridEhSrcTabSelectionChanged(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure dsSrcTabMsDtDataChange(Sender: TObject; Field: TField);
   private { Private declarations }
@@ -1176,11 +1175,6 @@ procedure TfrmSrcTabMaintain.DBGridEhSrcColColumns12OpenDropDownForm(Grid: TCust
   DynParams: TDynVarsEh);
 begin
   frmSrcTabMaintain.btnDependClick(self);
-end;
-
-procedure TfrmSrcTabMaintain.DBGridEhSrcTabSelectionChanged(Sender: TObject);
-begin
-  ShowMessage('adf');
 end;
 
 procedure TfrmSrcTabMaintain.OnDataChange(Sender: TObject; Field: TField);

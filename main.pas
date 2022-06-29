@@ -283,7 +283,7 @@ var
 implementation
 
 uses
-  log4me, U_Proj, uDictMaintain, uDataImport1, uSrcTabMaintain, uModMaintain;
+  log4me, U_Proj, uDictMaintain, uDataImport1, uSrcTabMaintain, uModMaintain, u_ModPara;
 {$R *.dfm}
 // procedure TMainFrm.CreateParams(var Params: TCreateParams);
 // begin
@@ -1041,7 +1041,7 @@ begin
   cre_V_bank();
 
   // dbgrdh1.Color := clWindow;
-  // 校验 获得全局R_proc参数数组，t_ProcFunName名称，用于执行
+  // 校验代码 获得全局R_proc参数数组，t_ProcFunName名称，用于执行
   ModlCodeValid(fdQryTree, True, False);
   if Not ModvalidOK then
     Exit;
@@ -1051,6 +1051,10 @@ begin
   i_cnt1 := Length(R_proc);
   if i_cnt1 > 0 then
   begin
+    Application.CreateForm(TFrmModPara, FrmModPara);
+    FrmModPara.ShowModal;
+    Exit;
+
     i := 1;
     while (i <= i_cnt1) do
     begin

@@ -64,7 +64,6 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     TitleParams.MultiTitle = True
     TitleParams.ParentFont = False
     VertScrollBar.SmoothStep = True
-    OnSelectionChanged = DBGridEhSrcTabSelectionChanged
     Columns = <
       item
         AutoFitColWidth = False

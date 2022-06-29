@@ -1,22 +1,19 @@
 [Base]
 sys_ver=202205
-sys_database=SysDtAcc
-# sys_database=hngksys
-# sys_database=hnamlsys
+sys_database=SysDtAML
 database_ver=2019
-# database_ver=2014
 connect=DriverID=MSSQL;Server=.;OSAuthent=Yes;
-Ver_no=1|2
-Ver_name=银行账户现场检查|银行账户风险监测
-# Ver_no=1
-# Ver_name=银行账户现场检查
+Ver_no=1
+Ver_name=反洗钱现场检查测试版
+# Ver_no_bak=1|2|3|
+# Ver_name_bak=应用版本1|应用版本2|应用版本3
 Sys_type=1
-Jclj_Ver=2022-05-31
+Jclj_Ver=2022-05-07All.mod
 mod_pass=2322232B232B
 
-Proj_no1=01
-Proj_name1=测试项目
-Database1=ZH_20220523113849
+Proj_no1=202201
+Proj_name1=合肥徽商银行
+Database1=ZH_20220620101311
 Proj_no2=
 Proj_name2=---首先设置项目，才能实施分析---
 Database2=
@@ -25,16 +22,15 @@ Proj_name3=---首先设置项目，才能实施分析---
 Database3=
 rdbt1_name_cn=使用银行机构代码
 rdbt1_name_en=v_bankCode
-rdbt1_code=SELECT 银行机构代码,银行机构名称 FROM SysDtAcc.dbo.tb_BkCode
+rdbt1_code=SELECT 银行机构代码,银行机构名称 FROM SysDtAML.dbo.tb_BkCode
 rdbt2_name_cn=使用金融机构编码
 rdbt2_name_en=v_bankCode
-rdbt2_code=SELECT 金融机构编码 银行机构代码,机构名称 银行机构名称 FROM SysDtAcc.dbo.tb_FnCode
+rdbt2_code=SELECT 金融机构编码 银行机构代码,机构名称 银行机构名称 FROM SysDtAML.dbo.tb_FnCode
 rdbtCheck=1
 [Other]
 dict_list_col=9DA1A56BB935419182BDAB4C86ABF003
 dict_list_reg=C9EA060864084817A56FBA5B9712D00A
-dict_list_type=33799EE3E5814B8180739737AE771CCF
-table_type=0
+dict_list_type=4A7F146696F2412AA5F2DD5AE7772775
 
 [log4me]
 #path,日志的存放目录.必须是主程序目录及子目录.

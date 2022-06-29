@@ -106,7 +106,6 @@ object MainFrm: TMainFrm
     Caption = 'Panel1'
     ParentBackground = False
     TabOrder = 1
-    ExplicitWidth = 1336
     object Panel2: TPanel
       Left = 1
       Top = 1
@@ -116,7 +115,6 @@ object MainFrm: TMainFrm
       Caption = 'Panel2'
       ParentBackground = False
       TabOrder = 0
-      ExplicitWidth = 1334
       object lblMemo: TLabel
         Left = 1
         Top = 1
@@ -138,7 +136,6 @@ object MainFrm: TMainFrm
         ParentBackground = False
         TabOrder = 0
         OnResize = pnl3Resize
-        ExplicitWidth = 1268
         object DBMemo1: TDBMemo
           Left = 1
           Top = 1
@@ -149,7 +146,6 @@ object MainFrm: TMainFrm
           DataSource = dsTree
           ReadOnly = True
           TabOrder = 0
-          ExplicitWidth = 1266
         end
       end
     end
@@ -163,7 +159,6 @@ object MainFrm: TMainFrm
       Color = 16776176
       ParentBackground = False
       TabOrder = 1
-      ExplicitWidth = 1334
       object pnl5: TPanel
         Left = 1
         Top = 1
@@ -174,7 +169,6 @@ object MainFrm: TMainFrm
         Caption = 'Panel2'
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 1332
         object pnl6: TPanel
           Left = 1
           Top = 1
@@ -189,7 +183,6 @@ object MainFrm: TMainFrm
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 1330
           object spbtnFormat: TSpeedButton
             Left = 503
             Top = 4
@@ -419,7 +412,6 @@ object MainFrm: TMainFrm
         ParentFont = False
         TabOrder = 2
         OnResize = pnl2Resize
-        ExplicitWidth = 1332
         object lblResult: TLabel
           Left = 84
           Top = 1
@@ -489,7 +481,6 @@ object MainFrm: TMainFrm
         TabOrder = 3
         Visible = False
         OnResize = pnl2Resize
-        ExplicitWidth = 1332
         object dbgrdh2: TDBGridEh
           Left = 1
           Top = 55
@@ -558,7 +549,6 @@ object MainFrm: TMainFrm
           ParentFont = False
           ShowCaption = False
           TabOrder = 1
-          ExplicitWidth = 1330
           object chkAssis: TCheckBox
             Left = 8
             Top = 7
@@ -676,7 +666,6 @@ object MainFrm: TMainFrm
             Align = alBottom
             Caption = 'pnlFields'
             TabOrder = 6
-            ExplicitWidth = 1328
             object lblFields: TLabel
               Left = 92
               Top = 1
@@ -760,7 +749,6 @@ object MainFrm: TMainFrm
               TabOrder = 1
               OnExit = mmoFieldsExit
               OnKeyDown = mmoFieldsKeyDown
-              ExplicitWidth = 1158
             end
             object spnBtn1: TSpinButton
               Left = 1455
@@ -792,7 +780,6 @@ object MainFrm: TMainFrm
                 800000808000008080000080800000808000}
               OnDownClick = spnBtn1DownClick
               OnUpClick = spnBtn1UpClick
-              ExplicitLeft = 1304
             end
           end
           object lbledtKeyAssis: TLabeledEdit
@@ -834,7 +821,6 @@ object MainFrm: TMainFrm
         ShowHint = True
         ParentShowHint = False
         Visible = False
-        ExplicitWidth = 1332
       end
     end
   end
@@ -869,7 +855,6 @@ object MainFrm: TMainFrm
     ShowCaptions = True
     ShowHint = True
     TabOrder = 3
-    ExplicitWidth = 1604
     object btnProj: TToolButton
       Left = 6
       Top = 0

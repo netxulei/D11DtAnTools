@@ -391,7 +391,7 @@ begin
         R_proc[i].s_para_lx := UpperCase(Copy(sTmp, 1, i_pos2 - 1));
         Delete(sTmp, 1, i_pos2);
         R_proc[i].s_para_value := Trim(sTmp);
-        if (R_proc[i].s_para_lx <> 'N') and (R_proc[i].s_para_lx <> 'D') and (R_proc[i].s_para_lx <> 'S') then
+        if (R_proc[i].s_para_lx <> 'N') and (R_proc[i].s_para_lx <> 'D') and (R_proc[i].s_para_lx <> 'S') and (R_proc[i].s_para_lx <> 'T') then
         begin
           MessageDlg('模型"' + PChar(t_modName) + '"参数信息中数据类型不正确！', mtInformation, [mbOK], 0);
           sl.Free;

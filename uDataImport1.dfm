@@ -2,8 +2,8 @@ object FrmDataImport: TFrmDataImport
   Left = 0
   Top = 0
   Caption = #25968#25454#23548#20837
-  ClientHeight = 688
-  ClientWidth = 1246
+  ClientHeight = 907
+  ClientWidth = 1327
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,6 +12,7 @@ object FrmDataImport: TFrmDataImport
   Font.Style = []
   KeyPreview = True
   Position = poScreenCenter
+  WindowState = wsMaximized
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
@@ -19,11 +20,11 @@ object FrmDataImport: TFrmDataImport
   object pnl1: TPanel
     Left = 0
     Top = 60
-    Width = 1246
+    Width = 1327
     Height = 62
     Align = alTop
     TabOrder = 1
-    ExplicitTop = 58
+    ExplicitWidth = 1246
     object lblSrcTab: TLabel
       Left = 14
       Top = 5
@@ -39,29 +40,12 @@ object FrmDataImport: TFrmDataImport
       ParentColor = False
       ParentFont = False
     end
-    object btnExit: TBitBtn
-      Left = 830
-      Top = 18
-      Width = 139
-      Height = 36
-      Caption = '5.'#36820#22238
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clNavy
-      Font.Height = -15
-      Font.Name = #24494#36719#38597#40657
-      Font.Style = []
-      ImageIndex = 9
-      ImageName = #23567#36864#20986
-      Images = F_DT.vrtlmglst1
-      ParentFont = False
-      TabOrder = 0
-      OnClick = btnExitClick
-    end
     object cxLCbBSrcTab: TcxLookupComboBox
       Left = 12
       Top = 26
       Margins.Bottom = 0
       ParentFont = False
+      Properties.DropDownRows = 20
       Properties.DropDownSizeable = True
       Properties.IncrementalFilteringOptions = [ifoHighlightSearchText, ifoUseContainsOperator]
       Properties.KeyFieldNames = 'tab_id'
@@ -130,31 +114,10 @@ object FrmDataImport: TFrmDataImport
       ParentFont = False
       TabOrder = 4
     end
-    object btnImpTxt: TBitBtn
-      Left = 679
-      Top = 18
-      Width = 136
-      Height = 36
-      Hint = #25991#26412#25991#20214#23548#20837#38656#35201#23383#27573#20301#32622#19968#19968#23545#24212#65288#21517#31216#26080#20851#65289#65307'Excel'#25991#20214#23548#20837#38656#35201#26631#39064#21517#31216#23545#24212#65288#20301#32622#26080#20851#65289
-      Caption = '4.'#25968#25454#23548#20837
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clNavy
-      Font.Height = -15
-      Font.Name = #24494#36719#38597#40657
-      Font.Style = []
-      ImageIndex = 2
-      ImageName = #25968#25454#23548#20837
-      Images = F_DT.vrtlmglstMenu
-      ParentFont = False
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 5
-      OnClick = btnImpTxtClick
-    end
     object rb1: TRadioButton
       Left = 600
       Top = 6
-      Width = 90
+      Width = 80
       Height = 18
       Caption = #28165#31354#23548#20837
       Checked = True
@@ -171,7 +134,7 @@ object FrmDataImport: TFrmDataImport
     object rb2: TRadioButton
       Left = 600
       Top = 23
-      Width = 91
+      Width = 80
       Height = 19
       Caption = #36861#21152#23548#20837
       Font.Charset = DEFAULT_CHARSET
@@ -200,15 +163,54 @@ object FrmDataImport: TFrmDataImport
       State = cbChecked
       TabOrder = 8
     end
+    object btnImpTxt: TBitBtn
+      Left = 679
+      Top = 18
+      Width = 136
+      Height = 36
+      Hint = #25991#26412#25991#20214#23548#20837#38656#35201#23383#27573#20301#32622#19968#19968#23545#24212#65288#21517#31216#26080#20851#65289#65307'Excel'#25991#20214#23548#20837#38656#35201#26631#39064#21517#31216#23545#24212#65288#20301#32622#26080#20851#65289
+      Caption = '4.'#25968#25454#23548#20837
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -15
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
+      ImageIndex = 2
+      ImageName = #25968#25454#23548#20837
+      Images = F_DT.vrtlmglstMenu
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 5
+      OnClick = btnImpTxtClick
+    end
+    object btnExit: TBitBtn
+      Left = 830
+      Top = 18
+      Width = 139
+      Height = 36
+      Caption = '5.'#36820#22238
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -15
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
+      ImageIndex = 9
+      ImageName = #23567#36864#20986
+      Images = F_DT.vrtlmglst1
+      ParentFont = False
+      TabOrder = 0
+      OnClick = btnExitClick
+    end
   end
   object pnl3: TPanel
     Left = 0
     Top = 188
-    Width = 1246
+    Width = 1327
     Height = 56
     Align = alTop
     TabOrder = 0
-    ExplicitTop = 186
+    ExplicitWidth = 1246
     object LblCheck: TLabel
       Left = 9
       Top = 0
@@ -307,8 +309,8 @@ object FrmDataImport: TFrmDataImport
     object lbl3: TLabel
       Left = 727
       Top = 11
-      Width = 79
-      Height = 21
+      Width = 4
+      Height = 17
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
@@ -319,7 +321,7 @@ object FrmDataImport: TFrmDataImport
     object lbl_line: TLabel
       Left = 732
       Top = 30
-      Width = 77
+      Width = 4
       Height = 17
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -434,13 +436,13 @@ object FrmDataImport: TFrmDataImport
   object pnl2: TPanel
     Left = 0
     Top = 122
-    Width = 1246
+    Width = 1327
     Height = 66
     Align = alTop
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
-    ExplicitTop = 120
+    ExplicitWidth = 1246
     object spbtnFileName: TSpeedButton
       Left = 498
       Top = 37
@@ -631,7 +633,7 @@ object FrmDataImport: TFrmDataImport
       Left = 768
       Top = 36
       Width = 84
-      Height = 25
+      Height = 27
       Hint = #20165#23545#25991#26412#25991#20214#26377#25928
       EditLabel.Width = 91
       EditLabel.Height = 19
@@ -699,16 +701,16 @@ object FrmDataImport: TFrmDataImport
   object pnl4: TPanel
     Left = 0
     Top = 244
-    Width = 1246
-    Height = 444
+    Width = 1327
+    Height = 663
     Align = alClient
     TabOrder = 3
-    ExplicitTop = 248
-    ExplicitHeight = 440
+    ExplicitWidth = 1281
+    ExplicitHeight = 637
     object Label6: TLabel
       Left = 1
       Top = 1
-      Width = 1244
+      Width = 1325
       Height = 20
       Align = alTop
       Caption = #25968#25454#20449#24687
@@ -718,19 +720,78 @@ object FrmDataImport: TFrmDataImport
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
-      ExplicitTop = 9
       ExplicitWidth = 60
+    end
+    object cxSplitter1: TcxSplitter
+      Left = 1
+      Top = 300
+      Width = 1325
+      Height = 8
+      HotZoneClassName = 'TcxSimpleStyle'
+      AlignSplitter = salTop
+      ShowHint = True
+      ParentShowHint = False
+      ExplicitLeft = -39
+      ExplicitTop = 285
+      ExplicitWidth = 1279
+    end
+    object Panel1: TPanel
+      Left = 1
+      Top = 308
+      Width = 1325
+      Height = 354
+      Align = alClient
+      Caption = 'Panel1'
+      TabOrder = 1
+      ExplicitTop = 424
+      ExplicitWidth = 1279
+      ExplicitHeight = 212
+      object Label5: TLabel
+        Left = 1
+        Top = 1
+        Width = 1323
+        Height = 20
+        Align = alTop
+        Caption = #26657#39564#20449#24687
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = #24494#36719#38597#40657
+        Font.Style = []
+        ParentFont = False
+        ExplicitWidth = 60
+      end
+      object mmo2: TRichEdit
+        Left = 1
+        Top = 21
+        Width = 1323
+        Height = 332
+        Align = alClient
+        Font.Charset = GB2312_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #24494#36719#38597#40657
+        Font.Style = []
+        HideScrollBars = False
+        ParentFont = False
+        PlainText = True
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 0
+        ExplicitWidth = 1242
+        ExplicitHeight = 191
+      end
     end
     object strngrd1: TAdvStringGrid
       Left = 1
       Top = 21
-      Width = 1244
-      Height = 201
+      Width = 1325
+      Height = 279
       Align = alTop
       ColCount = 1
-      Ctl3D = False
-      DrawingStyle = gdsGradient
-      FixedColor = clSkyBlue
+      DrawingStyle = gdsClassic
+      FixedColor = clWhite
+      FixedCols = 0
       RowCount = 1
       FixedRows = 0
       Font.Charset = DEFAULT_CHARSET
@@ -738,35 +799,27 @@ object FrmDataImport: TFrmDataImport
       Font.Height = -12
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goRowMoving, goColMoving, goTabs, goThumbTracking, goFixedRowDefAlign]
-      ParentCtl3D = False
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goColMoving, goFixedRowDefAlign]
       ParentFont = False
-      TabOrder = 0
-      ActiveRowShow = True
-      GridLineColor = 14474202
-      GridFixedLineColor = 14474202
-      ActiveCellShow = True
-      ActiveCellFont.Charset = ANSI_CHARSET
-      ActiveCellFont.Color = clWindowText
+      TabOrder = 2
+      ActiveCellFont.Charset = DEFAULT_CHARSET
+      ActiveCellFont.Color = 4474440
       ActiveCellFont.Height = -12
-      ActiveCellFont.Name = #24494#36719#38597#40657
+      ActiveCellFont.Name = 'Segoe UI'
       ActiveCellFont.Style = [fsBold]
-      ActiveCellColor = 16250613
-      ActiveCellColorTo = 16250613
-      AutoSize = True
-      BorderColor = 15000546
-      ControlLook.FixedGradientMirrorFrom = 16250613
-      ControlLook.FixedGradientMirrorTo = 16250613
-      ControlLook.FixedGradientHoverFrom = 16248808
-      ControlLook.FixedGradientHoverTo = 16248808
-      ControlLook.FixedGradientHoverMirrorFrom = 16248808
-      ControlLook.FixedGradientHoverMirrorTo = 16248808
-      ControlLook.FixedGradientHoverBorder = 16371364
-      ControlLook.FixedGradientDownFrom = 16244937
-      ControlLook.FixedGradientDownTo = 16244937
-      ControlLook.FixedGradientDownMirrorFrom = 16244937
-      ControlLook.FixedGradientDownMirrorTo = 16244937
-      ControlLook.FixedGradientDownBorder = 14983778
+      ActiveCellColor = 15387318
+      ControlLook.FixedGradientFrom = clWhite
+      ControlLook.FixedGradientTo = clSilver
+      ControlLook.FixedGradientHoverFrom = 13619409
+      ControlLook.FixedGradientHoverTo = 12502728
+      ControlLook.FixedGradientHoverMirrorFrom = 12502728
+      ControlLook.FixedGradientHoverMirrorTo = 11254975
+      ControlLook.FixedGradientHoverBorder = 11645361
+      ControlLook.FixedGradientDownFrom = 8816520
+      ControlLook.FixedGradientDownTo = 7568510
+      ControlLook.FixedGradientDownMirrorFrom = 7568510
+      ControlLook.FixedGradientDownMirrorTo = 6452086
+      ControlLook.FixedGradientDownBorder = 11250603
       ControlLook.DropDownHeader.Font.Charset = DEFAULT_CHARSET
       ControlLook.DropDownHeader.Font.Color = clWindowText
       ControlLook.DropDownHeader.Font.Height = -11
@@ -781,7 +834,6 @@ object FrmDataImport: TFrmDataImport
       ControlLook.DropDownFooter.Font.Style = []
       ControlLook.DropDownFooter.Visible = True
       ControlLook.DropDownFooter.Buttons = <>
-      EnhTextSize = True
       Filter = <>
       FilterDropDown.Font.Charset = DEFAULT_CHARSET
       FilterDropDown.Font.Color = clWindowText
@@ -801,26 +853,18 @@ object FrmDataImport: TFrmDataImport
         'Larger than'
         'Smaller than'
         'Clear')
-      FixedColWidth = 12
+      FixedColWidth = 37
       FixedRowHeight = 22
-      FixedColAlways = True
-      FixedFont.Charset = ANSI_CHARSET
-      FixedFont.Color = clBlack
-      FixedFont.Height = -12
-      FixedFont.Name = #24494#36719#38597#40657
+      FixedFont.Charset = DEFAULT_CHARSET
+      FixedFont.Color = 3881787
+      FixedFont.Height = -11
+      FixedFont.Name = 'Segoe UI'
       FixedFont.Style = [fsBold]
-      Flat = True
       FloatFormat = '%.2f'
       HoverButtons.Buttons = <>
       HTMLSettings.ImageFolder = 'images'
       HTMLSettings.ImageBaseName = 'img'
-      Look = glOffice2007
-      MouseActions.AllColumnSize = True
-      MouseActions.AllRowSize = True
-      MouseActions.SizeFixedCol = True
-      MouseActions.SizeFixedRow = True
-      Multilinecells = True
-      Navigation.AdvanceOnEnter = True
+      Look = glTMS
       PrintSettings.DateFormat = 'dd/mm/yyyy'
       PrintSettings.Font.Charset = DEFAULT_CHARSET
       PrintSettings.Font.Color = clWindowText
@@ -843,10 +887,7 @@ object FrmDataImport: TFrmDataImport
       PrintSettings.FooterFont.Name = 'Segoe UI'
       PrintSettings.FooterFont.Style = []
       PrintSettings.PageNumSep = '/'
-      ScrollSynch = True
-      ScrollWidth = 21
-      SearchFooter.Color = 16250613
-      SearchFooter.ColorTo = 16250613
+      SearchFooter.ColorTo = 15790320
       SearchFooter.FindNextCaption = 'Find &next'
       SearchFooter.FindPrevCaption = 'Find &previous'
       SearchFooter.Font.Charset = DEFAULT_CHARSET
@@ -861,85 +902,18 @@ object FrmDataImport: TFrmDataImport
       SearchFooter.HintHighlight = 'Highlight occurrences'
       SearchFooter.MatchCaseCaption = 'Match case'
       SearchFooter.ResultFormat = '(%d of %d)'
-      SelectionColor = 14327846
-      SelectionTextColor = clWhite
-      SortSettings.HeaderColor = 16250613
-      SortSettings.HeaderColorTo = 16250613
-      SortSettings.HeaderMirrorColor = 16250613
-      SortSettings.HeaderMirrorColorTo = 16250613
-      UIStyle = tsWindows10
+      SortSettings.HeaderColorTo = clWhite
+      SortSettings.HeaderMirrorColor = clWhite
+      SortSettings.HeaderMirrorColorTo = clWhite
       Version = '8.6.11.2'
-      ExplicitTop = 56
       ColWidths = (
-        12)
-      RowHeights = (
-        22)
-    end
-    object cxSplitter1: TcxSplitter
-      Left = 1
-      Top = 222
-      Width = 1244
-      Height = 8
-      HotZoneClassName = 'TcxSimpleStyle'
-      AlignSplitter = salTop
-      ShowHint = True
-      ParentShowHint = False
-      ExplicitLeft = -23
-      ExplicitTop = 237
-    end
-    object Panel1: TPanel
-      Left = 1
-      Top = 230
-      Width = 1244
-      Height = 213
-      Align = alClient
-      Caption = 'Panel1'
-      TabOrder = 2
-      ExplicitLeft = 246
-      ExplicitTop = 248
-      ExplicitWidth = 185
-      ExplicitHeight = 41
-      object Label5: TLabel
-        Left = 1
-        Top = 1
-        Width = 1242
-        Height = 20
-        Align = alTop
-        Caption = #26657#39564#20449#24687
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
-        ParentFont = False
-        ExplicitWidth = 60
-      end
-      object mmo2: TRichEdit
-        Left = 1
-        Top = 21
-        Width = 1242
-        Height = 191
-        Align = alClient
-        Font.Charset = GB2312_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
-        HideScrollBars = False
-        ParentFont = False
-        PlainText = True
-        ReadOnly = True
-        ScrollBars = ssBoth
-        TabOrder = 0
-        ExplicitTop = 26
-        ExplicitHeight = 189
-      end
+        37)
     end
   end
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 1246
+    Width = 1327
     Height = 60
     Align = alTop
     Font.Charset = DEFAULT_CHARSET
@@ -950,6 +924,7 @@ object FrmDataImport: TFrmDataImport
     ParentBackground = False
     ParentFont = False
     TabOrder = 4
+    ExplicitWidth = 1246
     object rgSelSrc: TRadioGroup
       Left = 1
       Top = 1
@@ -978,20 +953,19 @@ object FrmDataImport: TFrmDataImport
       TabOrder = 0
       WordWrap = True
       OnClick = rgSelSrcClick
-      ExplicitHeight = 56
     end
     object pnlProj: TPanel
       Left = 441
       Top = 1
-      Width = 804
+      Width = 885
       Height = 58
       Align = alClient
       TabOrder = 1
-      ExplicitHeight = 56
+      ExplicitWidth = 804
       object lblProj: TLabel
         Left = 1
         Top = 1
-        Width = 802
+        Width = 883
         Height = 22
         Margins.Left = 10
         Align = alTop
@@ -1009,7 +983,7 @@ object FrmDataImport: TFrmDataImport
       object lblTip: TLabel
         Left = 1
         Top = 23
-        Width = 802
+        Width = 883
         Height = 34
         Margins.Left = 10
         Align = alTop
@@ -1034,7 +1008,6 @@ object FrmDataImport: TFrmDataImport
       Height = 58
       Align = alLeft
       TabOrder = 2
-      ExplicitHeight = 56
       object lblTabType: TLabel
         Left = 6
         Top = 6
@@ -1168,8 +1141,8 @@ object FrmDataImport: TFrmDataImport
   end
   object dsSrcTab: TDataSource
     DataSet = fdQrySrcTab
-    Left = 384
-    Top = 412
+    Left = 240
+    Top = 420
   end
   object FDQrySrcCol: TFDQuery
     SQL.Strings = (

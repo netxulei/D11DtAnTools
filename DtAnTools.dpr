@@ -30,7 +30,8 @@ uses
   JMCode in 'JM\JMCode.pas',
   Vcl.Themes,
   Vcl.Styles,
-  EhLibLangConsts in 'MySome\EhLibLangConsts.pas';
+  EhLibLangConsts in 'MySome\EhLibLangConsts.pas',
+  u_ModPara in 'u_ModPara.pas' {FrmModPara};
 
 {$R *.res}
 
