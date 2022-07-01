@@ -27,8 +27,6 @@ object FrmModPara: TFrmModPara
     Height = 48
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 632
-    ExplicitWidth = 854
     object pnlIn: TPanel
       Left = 625
       Top = 1
@@ -40,7 +38,6 @@ object FrmModPara: TFrmModPara
       Ctl3D = False
       ParentCtl3D = False
       TabOrder = 0
-      ExplicitLeft = 624
       object btnExe: TButton
         Left = 62
         Top = 5
@@ -84,10 +81,6 @@ object FrmModPara: TFrmModPara
     UseDockManager = False
     ParentCtl3D = False
     TabOrder = 1
-    ExplicitLeft = 472
-    ExplicitTop = 224
-    ExplicitWidth = 185
-    ExplicitHeight = 41
   end
   object fdQrySrcTab: TFDQuery
     ActiveStoredUsage = [auDesignTime]

@@ -3,7 +3,7 @@ unit u_ModPara;
 interface
 
 uses
-  U_DT, U_Common, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  RegularExpressions, U_DT, U_Common, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   cxContainer, cxEdit, dxSkinsCore, dxSkinsDefaultPainters, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
@@ -54,23 +54,65 @@ implementation
 
 procedure TFrmModPara.btnExeClick(Sender: TObject);
 var
-
   i: integer;
 begin
-  // for i := 1 to i_cnt1 do
-  // begin
-  //
-  // end;
+  for i := 0 to i_cnt1 - 1 do
+  begin
+    if R_proc[i].s_para_lx <> 'T' then
+    begin
+      if varisnull(arParaCtrl[i].edtCtrl.Text) then
+        R_proc[i].s_para_value := ''
+      else
+        R_proc[i].s_para_value := Trim(arParaCtrl[i].edtCtrl.Text)
+    end
+    else
+    begin
+      if varisnull(arParaCtrl[i].lstCtrl.EditValue) then
+        R_proc[i].s_para_value := ''
+      else
+        R_proc[i].s_para_value := Trim(arParaCtrl[i].lstCtrl.EditValue);
+    end;
+
+    // 根据提示参数“日期”“数”等判断数据是否输入正确
+    if (R_proc[i].s_para_lx = 'D') AND (Length(R_proc[i].s_para_value) > 0) then
+    begin
+      // 判断是否日期
+      if not TRegex.IsMatch(R_proc[i].s_para_value, '^(19|20|21)\d{2}(0[1-9]|1[0-2])(0[1-9]|[1|2][0-9]|3[0-1])$|^$') then
+      begin
+        if R_proc[i].s_para_lx <> 'T' then
+          arParaCtrl[i].edtCtrl.SetFocus
+        else
+          arParaCtrl[i].lstCtrl.SetFocus;
+        MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
+        Abort;
+      end;
+    end;
+    // 根据提示参数“日期”“数”等判断数据是否输入正确
+    if R_proc[i].s_para_lx = 'N' then
+    begin
+      // 判断是否数字
+      // if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf)) then
+      if not TRegex.IsMatch(R_proc[i].s_para_value, '^[1-9]\d*\.\d+$|^0\.\d+$|^[1-9]\d*$|^0$') then
+      begin
+        arParaCtrl[i].edtCtrl.SetFocus;
+        MessageDlg('应该输入数字！', mtInformation, [mbOK], 0);
+        Abort;
+      end;
+    end;
+  end;
+  para_inputOK := True;
+  Close;
 end;
 
 procedure TFrmModPara.btnExitClick(Sender: TObject);
 begin
-  close;
+  para_inputOK := False;
+  Close;
 end;
 
 procedure TFrmModPara.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  fdQrySrcTab.close;
+  fdQrySrcTab.Close;
   Action := caFree;
 end;
 
@@ -79,6 +121,7 @@ procedure TFrmModPara.FormCreate(Sender: TObject);
 var
   i: integer;
 begin
+  para_inputOK := False;
   i_cnt1 := Length(R_proc);
   SetLength(arParaCtrl, i_cnt1);
   for i := 0 to i_cnt1 - 1 do
@@ -124,6 +167,9 @@ begin
       arParaCtrl[i].lstCtrl.Properties.GridMode := True;
       arParaCtrl[i].lstCtrl.Properties.ListColumns[0].Caption := '英文表名';
       arParaCtrl[i].lstCtrl.Properties.ListColumns[1].Caption := '中文表名';
+      arParaCtrl[i].lstCtrl.ShowHint := True;
+      arParaCtrl[i].lstCtrl.Hint := 'Backspace键清空';
+      arParaCtrl[i].lstCtrl.Properties.ClearKey := 8;
       arParaCtrl[i].lstCtrl.EditValue := R_proc[i].s_para_value;
     end;
   end;

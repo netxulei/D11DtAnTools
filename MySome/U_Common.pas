@@ -17,6 +17,7 @@ type
 
 var
   mainHandle: HWND;
+  para_inputOK:Boolean; //模型参数录入是否成功
   ModvalidOK: Boolean; // 模型校验是否成功
   R_proc: array of TProcRec; // 参数数组
   t_ProcFunName: string; // 存储过程名称

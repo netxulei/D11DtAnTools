@@ -1051,54 +1051,23 @@ begin
   i_cnt1 := Length(R_proc);
   if i_cnt1 > 0 then
   begin
-    Application.CreateForm(TFrmModPara, FrmModPara);
+    Application.CreateForm(TFrmModPara, FrmModPara);     //返回para_inputOK参数是否录入成功
     FrmModPara.ShowModal;
-    Exit;
+    if not para_inputOK then  //取消参数录入则退出
+      Exit;
 
-    i := 1;
-    while (i <= i_cnt1) do
-    begin
-      ClickedOK := InputQuery('输入参数', R_proc[i - 1].s_para_tip + '            ', R_proc[i - 1].s_para_value);
-      if ClickedOK then { NewString contains new input string }
-      begin
-        // 根据提示参数“日期”“数”等判断数据是否输入正确
-        if (R_proc[i - 1].s_para_lx = 'D') AND (Length(R_proc[i - 1].s_para_value) > 0) then
-        begin
-          // 判断是否日期
-          try
-            tmps1 := Copy(R_proc[i - 1].s_para_value, 1, 4) + '-' + Copy(R_proc[i - 1].s_para_value, 5, 2) + '-' + Copy(R_proc[i - 1].s_para_value, 7, 2);
-            StrToDate(tmps1);
-          except
-            MessageDlg('错误的日期格式,正确的日期格式应为”20090228“！', mtInformation, [mbOK], 0);
-            Continue;
-          end;
-        end;
-        // 根据提示参数“日期”“数”等判断数据是否输入正确
-        if R_proc[i - 1].s_para_lx = 'N' then
-        begin
-          // 判断是否数字
-          if not(TryStrToInt(R_proc[i - 1].s_para_value, tmpi) or TryStrToFloat(R_proc[i - 1].s_para_value, tmpf)) then
-          begin
-            MessageDlg('应该输入数字！', mtInformation, [mbOK], 0);
-            Continue;
-          end;
-        end;
-      end
-      else
-        Exit;
-      i := i + 1;
-    end;
     // 输入完毕，执行以前，记录本次输入的值
     tmps1 := '';
     tmps2 := '';
-    for i := 1 to i_cnt1 do
+    for i := 0 to i_cnt1-1 do
     begin
-      tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' + R_proc[i - 1].s_para_value;
-      tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
+      tmps1 := tmps1 + '@' + R_proc[i].s_para_tip + '!' + R_proc[i].s_para_lx + ':' + R_proc[i].s_para_value;
+      tmps2 := tmps2 + R_proc[i].s_para_tip + R_proc[i].s_para_value;
     end;
     fdQryTree.Edit;
     fdQryTree.FieldByName('t_para').AsString := tmps1;
-    // FDQryTree.UpdateBatch(arAll);
+    fdQryTree.Post;
+//     FDQryTree.UpdateBatch(arAll);
     cxtxtdt1.Text := Trim(fdQryTree.FieldByName('t_name').AsString) + '-' + tmps2;
   end
   else
