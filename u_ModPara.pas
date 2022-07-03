@@ -135,7 +135,7 @@ begin
     else
       arParaCtrl[i].pnlCtrl.Top := arParaCtrl[i - 1].pnlCtrl.height * i + 1;
 
-    arParaCtrl[i].pnlCtrl.height := 55;
+    arParaCtrl[i].pnlCtrl.height := 66;
     arParaCtrl[i].pnlCtrl.Caption := '';
     if R_proc[i].s_para_lx <> 'T' then
     begin
@@ -177,7 +177,7 @@ begin
   // 获取数据表表名作为参数
   fdQrySrcTab.Connection := F_DT.FDconSYS;
   fdQrySrcTab.Open();
-  FrmModPara.height := 55 * (i_cnt1 + 1) + 60;
+  FrmModPara.height := 66 * (i_cnt1 + 1) + 60;
 end;
 
 procedure TFrmModPara.FormShow(Sender: TObject);

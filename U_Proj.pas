@@ -7,7 +7,8 @@ uses
   Forms, Dialogs, StdCtrls, Buttons, cxControls, cxContainer, cxListBox,
   cxDBEdit, FMTBcd, DB, SqlExpr, DBGridEhGrouping, GridsEh, DBGridEh, ADODB,
   ExtCtrls, IniFiles, log4me, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh,
-  EhLibVCL, DBAxisGridsEh, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
+  EhLibVCL, DBAxisGridsEh, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client;
 
@@ -21,7 +22,7 @@ type
     btn3: TBitBtn;
     edt1: TEdit;
     edt2: TEdit;
-    edt3: TEdit;
+    edt33: TEdit;
     edt4: TEdit;
     pnl1: TPanel;
     btn4: TBitBtn;
@@ -33,10 +34,12 @@ type
     edt5: TEdit;
     btn5: TBitBtn;
     pnl3: TPanel;
-    edt6: TEdit;
+    edt66: TEdit;
     lbl7: TLabel;
     fdQryTmp: TFDQuery;
     fdQryProj: TFDQuery;
+    Edt3: TButtonedEdit;
+    Edt6: TButtonedEdit;
     // function del_proc(): Boolean;
     procedure btn1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -131,22 +134,23 @@ end;
 
 procedure TF_Proj.btn1Click(Sender: TObject);
 var
-  s_DataName: string;
+  NowDataTime, s_DataName: string;
   s_filename, s_filename1, s_filepath, FDBname, sqltext, s_info: string;
   i_pos: Integer;
   aml2zhfile: TextFile;
   MyIniFile: TIniFile;
 begin
+  NowDataTime := DateTimeToStr(Now);
   // 准备数据库名称
-  s_DataName := 'ZH_' + StringReplace(DateTimeToStr(Now), '-', '', [rfReplaceAll]);
+  s_DataName := 'ZH_' + StringReplace(NowDataTime, '-', '', [rfReplaceAll]);
   s_DataName := StringReplace(s_DataName, ':', '', [rfReplaceAll]);
   s_DataName := StringReplace(s_DataName, ' ', '', [rfReplaceAll]);
-  edt3.Text := s_DataName; // 记录数据库名称
+  Edt3.Text := s_DataName; // 记录数据库名称
   edt4.Text := t_type; // 记录项目版本号
   // 录入项去空格
   edt1.Text := Trim(edt1.Text);
   edt2.Text := Trim(edt2.Text);
-  edt6.Text := Trim(edt6.Text);
+  Edt6.Text := Trim(Edt6.Text);
   if Length(edt1.Text) = 0 then
   begin
     Application.MessageBox('项目编号不能为空！', '信息输入不准确', MB_OK + MB_ICONSTOP + MB_TOPMOST);
@@ -209,8 +213,8 @@ begin
       // SQL.Add(sqltext);
       sqltext := 'CREATE DATABASE [' + FDBname + '] ON  PRIMARY';
       SQL.Add(sqltext);
-      sqltext := '( NAME = N''' + FDBname + '_data''' + ', FILENAME = N''' + s_filepath + '\' + FDBname + '_data.mdf''' +
-        ' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH =  65536KB )';
+      sqltext := '( NAME = N''' + FDBname + '_data''' + ', FILENAME = N''' + s_filepath + '\' + FDBname + '_data.mdf'''
+        + ' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH =  65536KB )';
       SQL.Add(sqltext);
       sqltext := 'LOG ON ';
       SQL.Add(sqltext);
@@ -240,9 +244,10 @@ begin
     fdQryProj.Append;
     fdQryProj.FieldValues['proj_no'] := edt1.Text;
     fdQryProj.FieldValues['proj_name'] := edt2.Text;
-    fdQryProj.FieldValues['proj_database'] := edt3.Text;
+    fdQryProj.FieldValues['proj_database'] := Edt3.Text;
     fdQryProj.FieldValues['proj_ver'] := edt4.Text; // edt5为自动增量字段
-    fdQryProj.FieldValues['proj_memo'] := edt6.Text;
+    fdQryProj.FieldValues['proj_memo'] := Edt6.Text;
+    fdQryProj.FieldValues['proj_data'] := NowDataTime;
     fdQryProj.Post;
     // FDQryProj.UpdateBatch(arAll);
     // ShowWaitText;
@@ -334,19 +339,19 @@ begin
   begin
     edt1.Text := fdQryProj.FieldValues['proj_no'];
     edt2.Text := fdQryProj.FieldValues['proj_name'];
-    edt3.Text := fdQryProj.FieldValues['proj_database'];
+    Edt3.Text := fdQryProj.FieldValues['proj_database'];
     edt4.Text := fdQryProj.FieldValues['proj_ver'];
     edt5.Text := fdQryProj.FieldValues['proj_id'];
-    edt6.Text := fdQryProj.FieldValues['proj_memo'];
+    Edt6.Text := fdQryProj.FieldValues['proj_memo'];
   end
   else
   begin
     edt1.Text := '';
     edt2.Text := '';
-    edt3.Text := '';
+    Edt3.Text := '';
     edt4.Text := '';
     edt5.Text := '';
-    edt6.Text := '';
+    Edt6.Text := '';
   end;
   fdQryProj.enableControls;
 end;
@@ -357,10 +362,10 @@ begin
   begin
     edt1.Text := fdQryProj.FieldValues['proj_no'];
     edt2.Text := fdQryProj.FieldValues['proj_name'];
-    edt3.Text := fdQryProj.FieldValues['proj_database'];
+    Edt3.Text := fdQryProj.FieldValues['proj_database'];
     edt4.Text := fdQryProj.FieldValues['proj_ver'];
     edt5.Text := fdQryProj.FieldValues['proj_id'];
-    edt6.Text := fdQryProj.FieldValues['proj_memo'];
+    Edt6.Text := fdQryProj.FieldValues['proj_memo'];
   end;
 end;
 
@@ -384,12 +389,13 @@ begin
   end;
   edt1.Text := fdQryProj.FieldValues['proj_no'];
   edt2.Text := fdQryProj.FieldValues['proj_name'];
-  edt3.Text := fdQryProj.FieldValues['proj_database'];
+  Edt3.Text := fdQryProj.FieldValues['proj_database'];
   edt4.Text := fdQryProj.FieldValues['proj_ver'];
   edt5.Text := fdQryProj.FieldValues['proj_id'];
-  edt6.Text := fdQryProj.FieldValues['proj_memo'];
-  FDBname := Trim(edt3.Text);
-  if Application.MessageBox('对应的该项目的人行数据和商行数据都将清空，确定吗？', '信息', MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 + MB_TOPMOST) = IDCANCEL then
+  Edt6.Text := fdQryProj.FieldValues['proj_memo'];
+  FDBname := Trim(Edt3.Text);
+  if Application.MessageBox('对应的该项目的人行数据和商行数据都将清空，确定吗？', '信息', MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 +
+    MB_TOPMOST) = IDCANCEL then
   begin
     Exit;
   end;
@@ -409,7 +415,8 @@ begin
       SQL.Add(sqltext);
       sqltext := 'SET @SQL=' + '''' + '''';
       SQL.Add(sqltext);
-      sqltext := 'SELECT @SQL = @SQL + ' + '''' + '; KILL ' + '''' + '+ Rtrim(SPID) FROM master..sysprocesses WHERE dbid = Db_id(' + '''' + FDBname + '''' + ')';
+      sqltext := 'SELECT @SQL = @SQL + ' + '''' + '; KILL ' + '''' +
+        '+ Rtrim(SPID) FROM master..sysprocesses WHERE dbid = Db_id(' + '''' + FDBname + '''' + ')';
       SQL.Add(sqltext);
       sqltext := 'EXEC(@SQL)';
       SQL.Add(sqltext);
@@ -427,7 +434,7 @@ begin
   // 删除当前记录
   fdQryProj.Delete;
   // FDQryProj.UpdateBatch(arAll);
-  log4info('删除项目：' + edt1.Text + '/' + edt2.Text + '/' + edt3.Text);
+  log4info('删除项目：' + edt1.Text + '/' + edt2.Text + '/' + Edt3.Text);
   if t_proj_no = edt1.Text then // 若删除的是当前项目
   begin
     if fdQryProj.Eof then // 若没有记录了
@@ -440,13 +447,13 @@ begin
     begin
       edt1.Text := fdQryProj.FieldValues['proj_no'];
       edt2.Text := fdQryProj.FieldValues['proj_name'];
-      edt3.Text := fdQryProj.FieldValues['proj_database'];
+      Edt3.Text := fdQryProj.FieldValues['proj_database'];
       edt4.Text := fdQryProj.FieldValues['proj_ver'];
       edt5.Text := fdQryProj.FieldValues['proj_id'];
-      edt6.Text := fdQryProj.FieldValues['proj_memo'];
+      Edt6.Text := fdQryProj.FieldValues['proj_memo'];
       t_proj_no := edt1.Text;
       t_proj_name := edt2.Text;
-      t_Database := edt3.Text;
+      t_Database := Edt3.Text;
     end;
     // 同时记录到setting
     s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
@@ -500,17 +507,18 @@ begin
     Application.MessageBox('没有可修改的项目！', '信息', MB_OK + MB_ICONINFORMATION + MB_TOPMOST);
     Exit;
   end;
-  if Application.MessageBox('修改项目经修改项目信息，并不不改变该项目下已存在的人行数据和商行数据。将以编辑框的内容替换选中的项目，确定吗？', '信息', MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 + MB_TOPMOST) = IDCANCEL then
+  if Application.MessageBox('修改项目经修改项目信息，并不不改变该项目下已存在的人行数据和商行数据。将以编辑框的内容替换选中的项目，确定吗？', '信息',
+    MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 + MB_TOPMOST) = IDCANCEL then
   begin
     Exit;
   end;
   // 记录下与修改记录的id
-  edt3.Text := Trim(fdQryProj.FieldValues['proj_database']);
+  Edt3.Text := Trim(fdQryProj.FieldValues['proj_database']);
   edt5.Text := Trim(fdQryProj.FieldValues['proj_id']);
   // 录入项去空格
   edt1.Text := Trim(edt1.Text);
   edt2.Text := Trim(edt2.Text);
-  edt6.Text := Trim(edt6.Text);
+  Edt6.Text := Trim(Edt6.Text);
   if Length(edt1.Text) = 0 then
   begin
     Application.MessageBox('项目编号不能为空！', '信息输入不准确', MB_OK + MB_ICONSTOP + MB_TOPMOST);
@@ -559,11 +567,11 @@ begin
   fdQryProj.Edit;
   fdQryProj.FieldValues['proj_no'] := edt1.Text;
   fdQryProj.FieldValues['proj_name'] := edt2.Text;
-  fdQryProj.FieldValues['proj_memo'] := edt6.Text;
+  fdQryProj.FieldValues['proj_memo'] := Edt6.Text;
   // FDQryProj.UpdateBatch(arAll);
-  log4info('修改项目：' + edt1.Text + '/' + edt2.Text + '/' + edt3.Text);
+  log4info('修改项目：' + edt1.Text + '/' + edt2.Text + '/' + Edt3.Text);
   // ShowMessage(t_Database+#13+edt3.Text);
-  if t_Database = edt3.Text then // 若修改的是当前项目
+  if t_Database = Edt3.Text then // 若修改的是当前项目
   begin
     t_proj_no := edt1.Text;
     t_proj_name := edt2.Text;
@@ -615,13 +623,13 @@ begin
   end;
   edt1.Text := fdQryProj.FieldValues['proj_no'];
   edt2.Text := fdQryProj.FieldValues['proj_name'];
-  edt3.Text := fdQryProj.FieldValues['proj_database'];
+  Edt3.Text := fdQryProj.FieldValues['proj_database'];
   edt4.Text := fdQryProj.FieldValues['proj_ver'];
-  edt6.Text := fdQryProj.FieldValues['proj_memo'];
+  Edt6.Text := fdQryProj.FieldValues['proj_memo'];
 
   t_proj_no := edt1.Text;
   t_proj_name := edt2.Text;
-  t_Database := edt3.Text;
+  t_Database := Edt3.Text;
   lbl2.Caption := '当前项目：' + t_proj_name;
   // 保存setting
   s_filename := ExtractFilePath(ParamStr(0)) + 'setting.ini';
