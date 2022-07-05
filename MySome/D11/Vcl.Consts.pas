@@ -133,7 +133,7 @@ resourcestring
 
   SMsgDlgWarning = '警告';
   SMsgDlgError = '错误';
-  SMsgDlgInformation = '信息';
+  SMsgDlgInformation = '信息提示';
   SMsgDlgConfirm = '确认';
   SMsgDlgYes = '是';
   SMsgDlgNo = '否';

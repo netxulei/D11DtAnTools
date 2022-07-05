@@ -3,7 +3,7 @@ unit U_AuthorMainpas;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  RegularExpressions, JMCode, EncdDecd, StrUtils, Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, System.ImageList, Vcl.ImgList,
   Vcl.VirtualImageList, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.Grids, Vcl.ValEdit, Vcl.ComCtrls,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
@@ -15,7 +15,6 @@ type
   TForm1 = class(TForm)
     ImageCollection1: TImageCollection;
     VirtualImageList1: TVirtualImageList;
-    FDConnection1: TFDConnection;
     FDPhysSQLiteDriverLink1: TFDPhysSQLiteDriverLink;
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     FDQuery1: TFDQuery;
@@ -32,7 +31,7 @@ type
     Label5: TLabel;
     DBNavigator1: TDBNavigator;
     Panel2: TPanel;
-    ButtonedEdit2: TButtonedEdit;
+    BtnEdtDbID: TButtonedEdit;
     Label1: TLabel;
     BtnEdtReSult: TButtonedEdit;
     Label2: TLabel;
@@ -42,10 +41,15 @@ type
     Label4: TLabel;
     Button1: TButton;
     Button2: TButton;
-    Splitter1: TSplitter;
-    procedure BtnEdtReSultLeftButtonClick(Sender: TObject);
-    procedure BtnEdtReSultRightButtonClick(Sender: TObject);
+    OpenDialog1: TOpenDialog;
+    SaveDialog1: TSaveDialog;
+    FDConnection1: TFDConnection;
     procedure FormCreate(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure BtnEdtDbIDRightButtonClick(Sender: TObject);
+    procedure BtnEdtReSultRightButtonClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -59,14 +63,102 @@ implementation
 
 {$R *.dfm}
 
-procedure TForm1.BtnEdtReSultLeftButtonClick(Sender: TObject);
+procedure TForm1.BtnEdtDbIDRightButtonClick(Sender: TObject);
+var
+  sFilename, s: string;
+  F: TextFile;
 begin
-  showmessage('LeftButton');
+  if OpenDialog1.Execute() then
+  begin
+    sFilename := OpenDialog1.FileName;
+    AssignFile(F, sFilename);
+    Reset(F); // 只读打开
+    Readln(F, s); // 读取
+    CloseFile(F);
+    BtnEdtDbID.Text := trim(s);
+  end;
 end;
 
 procedure TForm1.BtnEdtReSultRightButtonClick(Sender: TObject);
+var
+  sFilename, s: string;
+  F: TextFile;
 begin
-  showmessage('RightButton');
+  if Length(BtnEdtReSult.Text) = 0 then
+  begin
+    MessageDlg('授权码未生成，不能导出', mtInformation, [mbOK], 0);
+    exit;
+  end;
+  SaveDialog1.FileName := BtnEdtDbID.Text + '.Aut';
+  if SaveDialog1.Execute() then
+  begin
+    sFilename := SaveDialog1.FileName;
+    AssignFile(F, sFilename);
+    Rewrite(F); // 会覆盖已存在的文件
+    Writeln(F, BtnEdtReSult.Text);
+    CloseFile(F);
+  end;
+
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  v_key, codeID, codeBgn, codeEnd, sDateBgn, sDateEnd: string;
+begin
+
+  v_key := rightstr(trim(BtnEdtDbID.Text), 4);
+  BtnEdtDbID.Text := trim(BtnEdtDbID.Text);
+  sDateBgn := FormatDateTime('YYYYMMDD', DateBgn.Date);
+  sDateEnd := FormatDateTime('YYYYMMDD', DateEnd.Date);
+  if Length(BtnEdtDbID.Text) = 0 then
+  begin
+    MessageDlg('特征码为空，不能授权', mtInformation, [mbOK], 0);
+    exit;
+  end;
+  if DateEnd.Date <= DateBgn.Date then
+  begin
+    MessageDlg('数据授权结束时间必须大于起始时间', mtInformation, [mbOK], 0);
+    exit;
+  end;
+  if FDQuery1.Locate('dbid;dateBgn;dateEnd', VarArrayOf([BtnEdtDbID.Text, sDateBgn, sDateEnd])) then
+  begin
+    MessageDlg('该特征码和授权日期已授权', mtInformation, [mbOK], 0);
+    exit;
+  end;
+  codeID := EncrypKey(EncodeString(BtnEdtDbID.Text), EncodeString(v_key)); // 编码后加密
+  codeBgn := EncrypKey(EncodeString(sDateBgn), EncodeString(v_key)); // 编码后加密
+  codeEnd := EncrypKey(EncodeString(sDateEnd), EncodeString(v_key)); // 编码后加密
+  BtnEdtReSult.Text := codeID + '-' + codeBgn + '-' + codeEnd;
+  FDQuery1.Append;
+  FDQuery1['dbId'] := trim(BtnEdtDbID.Text);
+  FDQuery1['dateBgn'] := sDateBgn;
+  FDQuery1['dateEnd'] := sDateEnd;
+  FDQuery1['AuthorCode'] := BtnEdtReSult.Text;
+  FDQuery1['dateAuth'] := FormatDateTime('YYYYMMDDHHMMSS', Now());
+  FDQuery1.Post;
+  FDQuery1.Refresh;
+  // ShowMessage(DecodeString(UncrypKey(codeID, EncodeString(v_key)))); // 解密后解码);
+  // ShowMessage(DecodeString(UncrypKey(codeBgn, EncodeString(v_key)))); // 解密后解码);
+  // ShowMessage(DecodeString(UncrypKey(codeEnd, EncodeString(v_key)))); // 解密后解码);
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TForm1.DBGrid1CellClick(Column: TColumn);
+var
+  AFormat: TFormatSettings;
+begin
+  if FDQuery1.Eof then
+    exit;
+  AFormat.ShortDateFormat := 'YYYYMMDD';
+  BtnEdtDbID.Text := FDQuery1['dbId'];
+  DateBgn.Date := StrToDate(FDQuery1['dateBgn'], AFormat);
+  DateEnd.Date := StrToDate(FDQuery1['dateEnd'], AFormat);
+  BtnEdtReSult.Text := FDQuery1['AuthorCode'];
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -75,16 +167,20 @@ const
 var
   dbname: string;
 begin
-  dbname := ExtractFilePath(ParamStr(0)) + dbPath;
 
+  // Application.CreateForm(TFrmpass, Frmpass); // 返回para_inputOK参数是否录入成功
+  // Frmpass.ShowModal;
+
+  dbname := ExtractFilePath(ParamStr(0)) + dbPath;
+//  showmessage(dbname);
+
+  with FDConnection1 do
+  begin
+    Params.Add('DriverID=SQLite');
+    Params.Add('Database=' + dbname);
+  end;
   if not FileExists(dbname) then // 如果数据库文件不存在则建立sqlite3数据库
   begin
-    with FDConnection1 do
-    begin
-      Params.Add('DriverID=SQLite');
-      Params.Add('Database=' + dbname);
-      Connected := True;
-    end;
     { 创建一个名为 MyTable 的表, 字段包括: ID, Name, Age, Note, Picture }
     with FDCommand1.CommandText do
     begin
@@ -93,14 +189,17 @@ begin
       Add('dbId string(40),'); // 能容下 40 个字符的 String 类型
       Add('dateBgn string(8),');
       Add('dateEnd string(8),');
-      Add('AuthorCode string(40),');
-      Add('dateAuth string(8)');
+      Add('AuthorCode string(400),');
+      Add('dateAuth string(20)');
       Add(')');
     end;
     FDCommand1.Active := True;
     { 查看表 }
-    FDQuery1.Open('SELECT * FROM  DtAuthor');
   end;
+  FDConnection1.Connected := True;
+  FDQuery1.Open('SELECT * FROM  DtAuthor');
+  DateBgn.Date := Now();
+  DateEnd.Date := Now();
 
 end;
 

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, JMCode;
+  Dialogs, StdCtrls, JMCode, Vcl.ExtCtrls;
 
 type
   TForm1 = class(TForm)
@@ -13,10 +13,11 @@ type
     btn1: TButton;
     btn2: TButton;
     edt3: TEdit;
+    rg1: TRadioGroup;
     procedure FormCreate(Sender: TObject);
     procedure btn1Click(Sender: TObject);
     procedure btn2Click(Sender: TObject);
-    procedure FormDblClick(Sender: TObject);
+    procedure rg1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,17 +37,12 @@ begin
   edt3.Text := formatdatetime('yyyy', Now) + 'XLudat'
 end;
 
-procedure TForm1.FormDblClick(Sender: TObject);
+procedure TForm1.rg1Click(Sender: TObject);
 begin
-//
-//{$IFDEF DEBUG}
-//  // 代码;
-//  ShowMessage('调试模式');
-//{$ENDIF}
-//{$IFDEF RELEASE}
-//  // 代码;
-//  ShowMessage('发布模式');
-//{$ENDIF}
+  if rg1.ItemIndex = 0 then
+    edt3.Text := formatdatetime('yyyy', Now) + 'XLudat'
+  else
+    edt3.Text := formatdatetime('yyyy', Now) + 'XLuAut'
 end;
 
 procedure TForm1.btn1Click(Sender: TObject);

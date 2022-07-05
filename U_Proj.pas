@@ -3,14 +3,14 @@ unit U_Proj;
 interface
 
 uses
-  U_DT, ShellAPI, Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls,
+  RegularExpressions, JMCode, EncdDecd, System.StrUtils, U_DT, ShellAPI, Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls,
   Forms, Dialogs, StdCtrls, Buttons, cxControls, cxContainer, cxListBox,
   cxDBEdit, FMTBcd, DB, SqlExpr, DBGridEhGrouping, GridsEh, DBGridEh, ADODB,
   ExtCtrls, IniFiles, log4me, ToolCtrlsEh, DBGridEhToolCtrls, DynVarsEh,
   EhLibVCL, DBAxisGridsEh, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async,
   FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Mask;
 
 type
   TF_Proj = class(TForm)
@@ -22,7 +22,6 @@ type
     btn3: TBitBtn;
     edt1: TEdit;
     edt2: TEdit;
-    edt33: TEdit;
     edt4: TEdit;
     pnl1: TPanel;
     btn4: TBitBtn;
@@ -34,21 +33,26 @@ type
     edt5: TEdit;
     btn5: TBitBtn;
     pnl3: TPanel;
-    edt66: TEdit;
     lbl7: TLabel;
     fdQryTmp: TFDQuery;
     fdQryProj: TFDQuery;
     Edt3: TButtonedEdit;
     Edt6: TButtonedEdit;
+    OpenDialog1: TOpenDialog;
+    SaveDialog1: TSaveDialog;
+    lbledtBgn: TLabeledEdit;
+    lbledtEnd: TLabeledEdit;
     // function del_proc(): Boolean;
     procedure btn1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure btn4Click(Sender: TObject);
     procedure btn5Click(Sender: TObject);
     procedure btn2Click(Sender: TObject);
     procedure btn3Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Edt6RightButtonClick(Sender: TObject);
+    procedure Edt3RightButtonClick(Sender: TObject);
+    procedure dbgrdh1CellClick(Column: TColumnEh);
   private
     { Private declarations }
   public
@@ -140,17 +144,6 @@ var
   aml2zhfile: TextFile;
   MyIniFile: TIniFile;
 begin
-  NowDataTime := DateTimeToStr(Now);
-  // 准备数据库名称
-  s_DataName := 'ZH_' + StringReplace(NowDataTime, '-', '', [rfReplaceAll]);
-  s_DataName := StringReplace(s_DataName, ':', '', [rfReplaceAll]);
-  s_DataName := StringReplace(s_DataName, ' ', '', [rfReplaceAll]);
-  Edt3.Text := s_DataName; // 记录数据库名称
-  edt4.Text := t_type; // 记录项目版本号
-  // 录入项去空格
-  edt1.Text := Trim(edt1.Text);
-  edt2.Text := Trim(edt2.Text);
-  Edt6.Text := Trim(Edt6.Text);
   if Length(edt1.Text) = 0 then
   begin
     Application.MessageBox('项目编号不能为空！', '信息输入不准确', MB_OK + MB_ICONSTOP + MB_TOPMOST);
@@ -176,6 +169,20 @@ begin
     edt2.SetFocus;
     Exit;
   end;
+  NowDataTime := DateTimeToStr(Now);
+  // 准备数据库名称
+  s_DataName := 'ZH_' + StringReplace(NowDataTime, '-', '', [rfReplaceAll]);
+  s_DataName := StringReplace(s_DataName, ':', '', [rfReplaceAll]);
+  s_DataName := StringReplace(s_DataName, ' ', '', [rfReplaceAll]);
+  Edt3.Text := s_DataName; // 记录数据库名称
+  Edt6.Text := '';
+  lbledtBgn.Text := '';
+  lbledtEnd.Text := '';
+  edt4.Text := t_type; // 记录项目版本号
+  // 录入项去空格
+  edt1.Text := Trim(edt1.Text);
+  edt2.Text := Trim(edt2.Text);
+
   // 建立数据库，成功后有关信息再存入数据库 ///////////////////////////////////////////////
 
   s_filepath := ExtractFilePath(ParamStr(0));
@@ -213,8 +220,8 @@ begin
       // SQL.Add(sqltext);
       sqltext := 'CREATE DATABASE [' + FDBname + '] ON  PRIMARY';
       SQL.Add(sqltext);
-      sqltext := '( NAME = N''' + FDBname + '_data''' + ', FILENAME = N''' + s_filepath + '\' + FDBname + '_data.mdf'''
-        + ' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH =  65536KB )';
+      sqltext := '( NAME = N''' + FDBname + '_data''' + ', FILENAME = N''' + s_filepath + '\' + FDBname + '_data.mdf''' +
+        ' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH =  65536KB )';
       SQL.Add(sqltext);
       sqltext := 'LOG ON ';
       SQL.Add(sqltext);
@@ -246,7 +253,7 @@ begin
     fdQryProj.FieldValues['proj_name'] := edt2.Text;
     fdQryProj.FieldValues['proj_database'] := Edt3.Text;
     fdQryProj.FieldValues['proj_ver'] := edt4.Text; // edt5为自动增量字段
-    fdQryProj.FieldValues['proj_memo'] := Edt6.Text;
+    fdQryProj.FieldValues['proj_memo'] := '';
     fdQryProj.FieldValues['proj_data'] := NowDataTime;
     fdQryProj.Post;
     // FDQryProj.UpdateBatch(arAll);
@@ -297,7 +304,7 @@ begin
   // FDQryProj.Locate('proj_no', t_proj_no, []);
   lbl2.Caption := '当前项目：' + t_proj_no + '--' + t_proj_name + '--' + t_Database;
   log4info('新建项目：' + t_proj_no + '/' + t_proj_name + '/' + t_Database);
-  Application.MessageBox('新建项目成功！', '成功', MB_OK + MB_ICONINFORMATION + MB_TOPMOST);
+  Application.MessageBox('新建项目成功,请导出项目特征码交权限人员获取数据导入授权码！', '成功', MB_OK + MB_ICONINFORMATION + MB_TOPMOST);
 
   /// ////////////////////////////////////////////////////////////////////////////////////////////////
 end;
@@ -337,12 +344,13 @@ begin
   fdQryProj.First;
   if fdQryProj.Locate('proj_name', t_proj_name, []) then
   begin
-    edt1.Text := fdQryProj.FieldValues['proj_no'];
-    edt2.Text := fdQryProj.FieldValues['proj_name'];
-    Edt3.Text := fdQryProj.FieldValues['proj_database'];
-    edt4.Text := fdQryProj.FieldValues['proj_ver'];
-    edt5.Text := fdQryProj.FieldValues['proj_id'];
-    Edt6.Text := fdQryProj.FieldValues['proj_memo'];
+    dbgrdh1CellClick(dbgrdh1.columns[1]);
+    // edt1.Text := fdQryProj.FieldValues['proj_no'];
+    // edt2.Text := fdQryProj.FieldValues['proj_name'];
+    // Edt3.Text := fdQryProj.FieldValues['proj_database'];
+    // edt4.Text := fdQryProj.FieldValues['proj_ver'];
+    // edt5.Text := fdQryProj.FieldValues['proj_id'];
+    // Edt6.Text := fdQryProj.FieldValues['proj_memo'];
   end
   else
   begin
@@ -356,16 +364,79 @@ begin
   fdQryProj.enableControls;
 end;
 
-procedure TF_Proj.dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TF_Proj.Edt3RightButtonClick(Sender: TObject);
+var
+  sFilename, s: string;
+  F: TextFile;
 begin
-  if not fdQryProj.Eof then
+  if Length(Edt3.Text) = 0 then
   begin
-    edt1.Text := fdQryProj.FieldValues['proj_no'];
-    edt2.Text := fdQryProj.FieldValues['proj_name'];
-    Edt3.Text := fdQryProj.FieldValues['proj_database'];
-    edt4.Text := fdQryProj.FieldValues['proj_ver'];
-    edt5.Text := fdQryProj.FieldValues['proj_id'];
-    Edt6.Text := fdQryProj.FieldValues['proj_memo'];
+    MessageDlg('该项目未建立，不能导出项目特征码文件', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+  if Not fdQryProj.Eof then
+  begin
+    SaveDialog1.FileName := Edt3.Text + '.Did';
+    if SaveDialog1.Execute() then
+    begin
+      sFilename := SaveDialog1.FileName;
+      AssignFile(F, sFilename);
+      Rewrite(F); // 会覆盖已存在的文件
+      Writeln(F, Edt3.Text);
+      CloseFile(F);
+    end;
+  end
+  else
+  begin
+    MessageDlg('请选择一个项目后再导出项目特征码文件', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+
+end;
+
+procedure TF_Proj.Edt6RightButtonClick(Sender: TObject);
+var
+  sFilename, s: string;
+  F: TextFile;
+  v_key, codeID, codeBgn, codeEnd, sDateBgn, sDateEnd: string;
+  m: tmatch;
+begin
+  if OpenDialog1.Execute() then
+  begin
+    if Not fdQryProj.Eof then
+    begin
+      sFilename := OpenDialog1.FileName;
+      AssignFile(F, sFilename);
+      Reset(F); // 只读打开
+      Readln(F, s); // 读取
+      CloseFile(F);
+      Edt6.Text := Trim(s);
+      v_key := rightstr(Trim(Edt3.Text), 4);
+      m := TRegex.match(Edt6.Text, '^(\S+)\-(\S+)\-(\S+)$');
+      if m.Success then
+      begin
+        // ShowMessage(m.Groups[2].Value);
+        // ShowMessage(m.Groups[3].Value);
+        codeBgn := DecodeString(UncrypKey(m.Groups[2].Value, EncodeString(v_key))); // 解密后解码);
+        codeEnd := DecodeString(UncrypKey(m.Groups[3].Value, EncodeString(v_key))); // 解密后解码);
+        lbledtBgn.Text := codeBgn;
+        lbledtEnd.Text := codeEnd;
+        fdQryProj.Edit;
+        fdQryProj.FieldValues['proj_memo'] := Edt6.Text;
+        fdQryProj.Post;
+      end
+      else
+      begin
+        MessageDlg('数据授权码文件不正确', mtInformation, [mbOK], 0);
+        Exit;
+      end;
+    end
+    else
+    begin
+      MessageDlg('请选择一个项目后再导入数据授权码文件', mtInformation, [mbOK], 0);
+      Exit;
+    end;
+
   end;
 end;
 
@@ -384,7 +455,7 @@ var
 begin
   if fdQryProj.Eof then
   begin
-    Application.MessageBox('没有选择要删除的项目', '信息', MB_OK + MB_ICONINFORMATION + MB_TOPMOST);
+    Application.MessageBox('没有选择要删除的项目', '提示信息', MB_OK + MB_ICONINFORMATION + MB_TOPMOST);
     Exit;
   end;
   edt1.Text := fdQryProj.FieldValues['proj_no'];
@@ -394,8 +465,7 @@ begin
   edt5.Text := fdQryProj.FieldValues['proj_id'];
   Edt6.Text := fdQryProj.FieldValues['proj_memo'];
   FDBname := Trim(Edt3.Text);
-  if Application.MessageBox('对应的该项目的人行数据和商行数据都将清空，确定吗？', '信息', MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 +
-    MB_TOPMOST) = IDCANCEL then
+  if Application.MessageBox('对应的该项目的所有数据都将销毁，确定吗？', '提示信息', MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 + MB_TOPMOST) = IDCANCEL then
   begin
     Exit;
   end;
@@ -415,8 +485,7 @@ begin
       SQL.Add(sqltext);
       sqltext := 'SET @SQL=' + '''' + '''';
       SQL.Add(sqltext);
-      sqltext := 'SELECT @SQL = @SQL + ' + '''' + '; KILL ' + '''' +
-        '+ Rtrim(SPID) FROM master..sysprocesses WHERE dbid = Db_id(' + '''' + FDBname + '''' + ')';
+      sqltext := 'SELECT @SQL = @SQL + ' + '''' + '; KILL ' + '''' + '+ Rtrim(SPID) FROM master..sysprocesses WHERE dbid = Db_id(' + '''' + FDBname + '''' + ')';
       SQL.Add(sqltext);
       sqltext := 'EXEC(@SQL)';
       SQL.Add(sqltext);
@@ -494,6 +563,46 @@ begin
 
 end;
 
+procedure TF_Proj.dbgrdh1CellClick(Column: TColumnEh);
+var
+  v_key, codeID, codeBgn, codeEnd, sDateBgn, sDateEnd: string;
+  m: tmatch;
+begin
+  if not fdQryProj.Eof then
+  begin
+    edt1.Text := fdQryProj.FieldValues['proj_no'];
+    edt2.Text := fdQryProj.FieldValues['proj_name'];
+    Edt3.Text := fdQryProj.FieldValues['proj_database'];
+    edt4.Text := fdQryProj.FieldValues['proj_ver'];
+    edt5.Text := fdQryProj.FieldValues['proj_id'];
+    Edt6.Text := fdQryProj.FieldValues['proj_memo'];
+
+    if Length(Edt6.Text) = 0 then
+    begin
+      lbledtBgn.Text := '';
+      lbledtEnd.Text := '';
+      Exit;
+    end;
+    v_key := rightstr(Trim(Edt3.Text), 4);
+    m := TRegex.match(Edt6.Text, '^(\S+)\-(\S+)\-(\S+)$');
+    if m.Success then
+    begin
+      // ShowMessage(m.Groups[2].Value);
+      // ShowMessage(m.Groups[3].Value);
+      codeBgn := DecodeString(UncrypKey(m.Groups[2].Value, EncodeString(v_key))); // 解密后解码);
+      codeEnd := DecodeString(UncrypKey(m.Groups[3].Value, EncodeString(v_key))); // 解密后解码);
+      lbledtBgn.Text := codeBgn;
+      lbledtEnd.Text := codeEnd;
+    end
+    else
+    begin
+      MessageDlg('数据授权码文件不正确', mtInformation, [mbOK], 0);
+      Exit;
+    end;
+  end;
+
+end;
+
 procedure TF_Proj.btn2Click(Sender: TObject);
 var
   s_DataName: string;
@@ -507,8 +616,7 @@ begin
     Application.MessageBox('没有可修改的项目！', '信息', MB_OK + MB_ICONINFORMATION + MB_TOPMOST);
     Exit;
   end;
-  if Application.MessageBox('修改项目经修改项目信息，并不不改变该项目下已存在的人行数据和商行数据。将以编辑框的内容替换选中的项目，确定吗？', '信息',
-    MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 + MB_TOPMOST) = IDCANCEL then
+  if Application.MessageBox('修改项目经修改项目信息，并不不改变该项目下已存在的人行数据和商行数据。将以编辑框的内容替换选中的项目，确定吗？', '信息', MB_OKCANCEL + MB_ICONINFORMATION + MB_DEFBUTTON2 + MB_TOPMOST) = IDCANCEL then
   begin
     Exit;
   end;
@@ -567,7 +675,8 @@ begin
   fdQryProj.Edit;
   fdQryProj.FieldValues['proj_no'] := edt1.Text;
   fdQryProj.FieldValues['proj_name'] := edt2.Text;
-  fdQryProj.FieldValues['proj_memo'] := Edt6.Text;
+  // fdQryProj.FieldValues['proj_memo'] := Edt6.Text;
+  fdQryProj.Post;
   // FDQryProj.UpdateBatch(arAll);
   log4info('修改项目：' + edt1.Text + '/' + edt2.Text + '/' + Edt3.Text);
   // ShowMessage(t_Database+#13+edt3.Text);

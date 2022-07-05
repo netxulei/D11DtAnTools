@@ -1,9 +1,9 @@
 object Form1: TForm1
   Left = 388
   Top = 237
-  Caption = #21152#23494#65288#19981#21487#36870#65289
-  ClientHeight = 299
-  ClientWidth = 722
+  Caption = #21152#23494#65288#19981#21487#36870#65292#24212#29992#20013#23494#30721#19968#24180#19968#21464#65289
+  ClientHeight = 223
+  ClientWidth = 491
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -2392,26 +2392,24 @@ object Form1: TForm1
     000000000000000000}
   Position = poOwnerFormCenter
   OnCreate = FormCreate
-  OnDblClick = FormDblClick
-  PixelsPerInch = 96
   TextHeight = 20
   object edt1: TEdit
-    Left = 40
-    Top = 136
-    Width = 217
+    Left = 199
+    Top = 85
+    Width = 241
     Height = 28
     TabOrder = 0
     Text = 'edt1'
   end
   object edt2: TEdit
-    Left = 400
-    Top = 136
-    Width = 241
+    Left = 152
+    Top = 135
+    Width = 288
     Height = 28
     TabOrder = 1
   end
   object btn1: TButton
-    Left = 296
+    Left = 56
     Top = 137
     Width = 75
     Height = 25
@@ -2420,8 +2418,8 @@ object Form1: TForm1
     OnClick = btn1Click
   end
   object btn2: TButton
-    Left = 296
-    Top = 192
+    Left = 56
+    Top = 168
     Width = 75
     Height = 25
     Caption = #8592#35299#23494
@@ -2430,11 +2428,24 @@ object Form1: TForm1
     OnClick = btn2Click
   end
   object edt3: TEdit
-    Left = 248
-    Top = 72
-    Width = 201
+    Left = 199
+    Top = 24
+    Width = 241
     Height = 28
     TabOrder = 4
     Text = 'edt3'
+  end
+  object rg1: TRadioGroup
+    Left = 32
+    Top = 8
+    Width = 145
+    Height = 105
+    Caption = #23494#30721#24212#29992
+    ItemIndex = 0
+    Items.Strings = (
+      #25968#25454#25480#26435#23494#30721
+      #24320#25918#27169#24335#23494#30721)
+    TabOrder = 5
+    OnClick = rg1Click
   end
 end

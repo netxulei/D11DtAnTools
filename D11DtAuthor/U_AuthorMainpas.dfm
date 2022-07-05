@@ -2,36 +2,28 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = #25968#25454#25480#26435#24037#20855
-  ClientHeight = 572
-  ClientWidth = 907
+  ClientHeight = 692
+  ClientWidth = 1050
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -15
+  Font.Height = -11
   Font.Name = #24494#36719#38597#40657
   Font.Style = []
   Position = poScreenCenter
   OnCreate = FormCreate
-  TextHeight = 20
-  object Splitter1: TSplitter
-    Left = 0
-    Top = 217
-    Width = 907
-    Height = 8
-    Cursor = crVSplit
-    Align = alBottom
-    ExplicitWidth = 920
-  end
+  TextHeight = 16
   object DBGrid1: TDBGrid
     Left = 0
-    Top = 29
-    Width = 907
-    Height = 188
+    Top = 23
+    Width = 1050
+    Height = 529
     Align = alClient
     DataSource = DataSource1
+    FixedColor = clMoneyGreen
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -13
+    Font.Height = -11
     Font.Name = #24494#36719#38597#40657
     Font.Style = []
     ParentFont = False
@@ -42,56 +34,42 @@ object Form1: TForm1
     TitleFont.Height = -12
     TitleFont.Name = #24494#36719#38597#40657
     TitleFont.Style = []
+    OnCellClick = DBGrid1CellClick
     Columns = <
       item
         Expanded = False
         FieldName = 'ID'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
         Title.Alignment = taCenter
         Title.Caption = #24207#21495
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -11
         Title.Font.Name = #24494#36719#38597#40657
         Title.Font.Style = []
-        Width = 66
+        Width = 43
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'dbId'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
         Title.Alignment = taCenter
         Title.Caption = #39033#30446#29305#24449#30721
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -11
         Title.Font.Name = #24494#36719#38597#40657
         Title.Font.Style = []
-        Width = 218
+        Width = 158
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'dateBgn'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
         Title.Alignment = taCenter
-        Title.Caption = #25480#26435#36215#22987#26085#26399
+        Title.Caption = #36215#22987#26085#26399
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -11
         Title.Font.Name = #24494#36719#38597#40657
         Title.Font.Style = []
         Visible = True
@@ -99,65 +77,52 @@ object Form1: TForm1
       item
         Expanded = False
         FieldName = 'dateEnd'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
         Title.Alignment = taCenter
-        Title.Caption = #25480#26435#32467#26463#26085#26399
+        Title.Caption = #32467#26463#26085#26399
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -11
         Title.Font.Name = #24494#36719#38597#40657
         Title.Font.Style = []
+        Width = 59
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'AuthorCode'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
         Title.Alignment = taCenter
         Title.Caption = #25968#25454#25480#26435#30721
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -11
         Title.Font.Name = #24494#36719#38597#40657
         Title.Font.Style = []
+        Width = 604
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'dateAuth'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -15
-        Font.Name = #24494#36719#38597#40657
-        Font.Style = []
         Title.Alignment = taCenter
         Title.Caption = #25480#26435#26085#26399
         Title.Font.Charset = DEFAULT_CHARSET
         Title.Font.Color = clWindowText
-        Title.Font.Height = -15
+        Title.Font.Height = -11
         Title.Font.Name = #24494#36719#38597#40657
         Title.Font.Style = []
-        Width = 85
+        Width = 102
         Visible = True
       end>
   end
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 907
-    Height = 29
+    Width = 1050
+    Height = 23
     Align = alTop
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -15
+    Font.Height = -12
     Font.Name = #24494#36719#38597#40657
     Font.Style = []
     ParentFont = False
@@ -165,24 +130,25 @@ object Form1: TForm1
     object Label5: TLabel
       Left = 1
       Top = 1
-      Width = 60
-      Height = 27
+      Width = 112
+      Height = 21
       Align = alLeft
+      AutoSize = False
       Caption = #25480#26435#21382#21490
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
-      ExplicitHeight = 20
+      ExplicitHeight = 27
     end
     object DBNavigator1: TDBNavigator
-      Left = 61
+      Left = 113
       Top = 1
       Width = 359
-      Height = 27
+      Height = 21
       DataSource = DataSource1
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbDelete]
       Align = alLeft
@@ -191,113 +157,137 @@ object Form1: TForm1
   end
   object Panel2: TPanel
     Left = 0
-    Top = 225
-    Width = 907
-    Height = 347
+    Top = 552
+    Width = 1050
+    Height = 140
     Align = alBottom
-    Caption = 'Panel2'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = #24494#36719#38597#40657
+    Font.Style = []
+    ParentFont = False
     TabOrder = 2
     object Label1: TLabel
-      Left = 14
+      Left = 15
       Top = 22
-      Width = 180
-      Height = 20
+      Width = 144
+      Height = 17
       Caption = #39033#30446#29305#24449#30721#65288#24405#20837#25110#23548#20837#65289
     end
     object Label2: TLabel
-      Left = 34
-      Top = 77
-      Width = 180
-      Height = 20
+      Left = 14
+      Top = 78
+      Width = 144
+      Height = 17
       Caption = #25968#25454#25480#26435#30721#65288#21578#30693#25110#23548#20986#65289
     end
     object Label3: TLabel
-      Left = 200
-      Top = 27
-      Width = 90
-      Height = 20
+      Left = 305
+      Top = 22
+      Width = 72
+      Height = 17
       Caption = #25480#26435#36215#22987#26085#26399
     end
     object Label4: TLabel
-      Left = 193
-      Top = 77
-      Width = 120
-      Height = 20
+      Left = 596
+      Top = 22
+      Width = 96
+      Height = 17
       Caption = #25480#26435#32467#26463#26085#26399#26085#26399
     end
-    object ButtonedEdit2: TButtonedEdit
-      Left = 328
-      Top = 69
-      Width = 209
-      Height = 28
+    object BtnEdtDbID: TButtonedEdit
+      Left = 14
+      Top = 38
+      Width = 227
+      Height = 25
+      Hint = #24405#20837#25110#23548#20837#25968#25454#20998#26512#24037#20855#20013#39033#30446#29305#24449#30721
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
       Images = VirtualImageList1
+      ParentFont = False
+      ParentShowHint = False
+      RightButton.Hint = #23548#20837#25968#25454#20998#26512#24037#20855#20013#39033#30446#29305#24449#30721
       RightButton.HotImageIndex = 4
       RightButton.HotImageName = #23548#20837' (1)'
       RightButton.ImageIndex = 5
       RightButton.ImageName = #23548#20837
       RightButton.Visible = True
+      ShowHint = True
       TabOrder = 0
-      Text = 'ButtonedEdit1'
-      TextHint = #39033#30446#29305#24449#30721
-      OnLeftButtonClick = BtnEdtReSultLeftButtonClick
-      OnRightButtonClick = BtnEdtReSultRightButtonClick
+      TextHint = #23548#20837#25110#24405#20837#39033#30446#29305#24449#30721
+      OnRightButtonClick = BtnEdtDbIDRightButtonClick
     end
     object BtnEdtReSult: TButtonedEdit
-      Left = 272
-      Top = 181
-      Width = 209
-      Height = 28
+      Left = 12
+      Top = 94
+      Width = 789
+      Height = 25
+      Hint = #23548#20986#25968#25454#25480#26435#30721#65292#20132#25968#25454#20998#26512#24037#20855#39033#30446#31649#29702#20013#23548#20837
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = #24494#36719#38597#40657
+      Font.Style = []
       Images = VirtualImageList1
+      ParentFont = False
+      ParentShowHint = False
+      ReadOnly = True
+      RightButton.Hint = #23548#20986#25968#25454#25480#26435#30721#20132#25968#25454#20998#26512#24037#20855#39033#30446#31649#29702#20013#23548#20837
       RightButton.HotImageIndex = 2
       RightButton.HotImageName = #23548#20986' (1)'
       RightButton.ImageIndex = 2
       RightButton.ImageName = #23548#20986' (1)'
       RightButton.Visible = True
-      TabOrder = 1
-      Text = 'BtnEdtReSult'
-      TextHint = #39033#30446#29305#24449#30721
-      OnLeftButtonClick = BtnEdtReSultLeftButtonClick
+      ShowHint = True
+      TabOrder = 4
+      TextHint = #27492#22788#20026#29983#25104#30340#25968#25454#25480#26435#30721
       OnRightButtonClick = BtnEdtReSultRightButtonClick
     end
     object DateBgn: TDateTimePicker
-      Left = 296
-      Top = 261
+      Left = 305
+      Top = 38
+      Width = 222
+      Height = 25
+      Date = 44745.000000000000000000
+      Time = 0.780698310183652200
+      TabOrder = 1
+    end
+    object DateEnd: TDateTimePicker
+      Left = 596
+      Top = 38
       Width = 208
-      Height = 28
+      Height = 25
       Date = 44745.000000000000000000
       Time = 0.780698310183652200
       TabOrder = 2
     end
-    object DateEnd: TDateTimePicker
-      Left = 48
-      Top = 213
-      Width = 208
-      Height = 28
-      Date = 44745.000000000000000000
-      Time = 0.780698310183652200
-      TabOrder = 3
-    end
     object Button1: TButton
-      Left = 34
-      Top = 264
-      Width = 113
-      Height = 25
+      Left = 887
+      Top = 37
+      Width = 88
+      Height = 27
       Caption = #29983#25104#25480#26435#30721
       ImageIndex = 0
       ImageName = #36816#34892' (1)'
       Images = VirtualImageList1
-      TabOrder = 4
+      TabOrder = 3
+      OnClick = Button1Click
     end
     object Button2: TButton
-      Left = 518
-      Top = 344
-      Width = 75
+      Left = 887
+      Top = 94
+      Width = 88
       Height = 25
-      Caption = #36864#20986
+      Caption = '    '#36864#20986'      '
       ImageIndex = 6
       ImageName = #36864#20986
       Images = VirtualImageList1
       TabOrder = 5
+      OnClick = Button2Click
     end
   end
   object ImageCollection1: TImageCollection
@@ -746,8 +736,8 @@ object Form1: TForm1
               AE426082}
           end>
       end>
-    Left = 500
-    Top = 283
+    Left = 540
+    Top = 315
   end
   object VirtualImageList1: TVirtualImageList
     Images = <
@@ -792,19 +782,8 @@ object Form1: TForm1
         Name = #23567#36864#20986
       end>
     ImageCollection = ImageCollection1
-    Left = 759
-    Top = 418
-  end
-  object FDConnection1: TFDConnection
-    Params.Strings = (
-      
-        'Database=D:\DevelopWork\D11DtAnTools\D11DtAuthor\Win32\Debug\DtA' +
-        'uthor'
-      'DriverID=SQLite')
-    ConnectedStoredUsage = [auDesignTime]
-    LoginPrompt = False
-    Left = 689
-    Top = 167
+    Left = 751
+    Top = 242
   end
   object FDPhysSQLiteDriverLink1: TFDPhysSQLiteDriverLink
     Left = 768
@@ -813,8 +792,8 @@ object Form1: TForm1
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
     ScreenCursor = gcrHourGlass
-    Left = 641
-    Top = 413
+    Left = 657
+    Top = 245
   end
   object FDQuery1: TFDQuery
     ActiveStoredUsage = [auDesignTime]
@@ -846,12 +825,11 @@ object Form1: TForm1
     object FDQuery1AuthorCode: TWideStringField
       FieldName = 'AuthorCode'
       Origin = 'AuthorCode'
-      Size = 40
+      Size = 400
     end
     object FDQuery1dateAuth: TWideStringField
       FieldName = 'dateAuth'
       Origin = 'dateAuth'
-      Size = 8
     end
   end
   object FDCommand1: TFDCommand
@@ -863,5 +841,21 @@ object Form1: TForm1
     DataSet = FDQuery1
     Left = 564
     Top = 164
+  end
+  object OpenDialog1: TOpenDialog
+    DefaultExt = 'Did'
+    Filter = #29305#24449#30721#25991#20214'|*.Did'
+    Left = 584
+    Top = 432
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = 'Aut'
+    Filter = #25480#26435#30721#25991#20214'|*.Aut'
+    Left = 712
+    Top = 440
+  end
+  object FDConnection1: TFDConnection
+    Left = 832
+    Top = 152
   end
 end

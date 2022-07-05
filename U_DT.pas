@@ -26,6 +26,8 @@ type
     imgClectState: TImageCollection;
     imgClect1: TImageCollection;
     vrtlmglst1: TVirtualImageList;
+    VirtualImageList1: TVirtualImageList;
+    ImageCollection1: TImageCollection;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
