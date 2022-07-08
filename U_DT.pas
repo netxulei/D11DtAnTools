@@ -28,6 +28,8 @@ type
     vrtlmglst1: TVirtualImageList;
     VirtualImageList1: TVirtualImageList;
     ImageCollection1: TImageCollection;
+    ImageCollection2: TImageCollection;
+    VirtualImageList2: TVirtualImageList;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

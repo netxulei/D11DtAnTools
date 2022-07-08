@@ -138,7 +138,6 @@ type
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
     FDStanStorageXMLLink1: TFDStanStorageXMLLink;
     chkAssis: TCheckBox;
-    cxbtnExp: TcxButton;
     pmAssis: TPopupMenu;
     N3: TMenuItem;
     N4: TMenuItem;
@@ -182,6 +181,18 @@ type
     btnExit: TToolButton;
     spnBtn1: TSpinButton;
     lbledtKeyAssis: TLabeledEdit;
+    cxPopEdtAss: TcxPopupEdit;
+    FDQryAssLst: TFDQuery;
+    dsAssLst: TDataSource;
+    FDQryAssLstAssiName: TStringField;
+    FDQryAssLstSrcTable: TStringField;
+    FDQryAssLstKeyColMain: TStringField;
+    FDQryAssLstKeyColAssi: TStringField;
+    FDQryAssLstOrderCol: TStringField;
+    FDQryAssLstDisCols: TStringField;
+    dbgrdEhAssLst: TDBGridEh;
+    sBtnUpSave: TSpeedButton;
+    sBtnAddSave: TSpeedButton;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function cre_V_bank(): Boolean;
@@ -268,6 +279,8 @@ type
     procedure mmoFieldsKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure spnBtn1DownClick(Sender: TObject);
     procedure spnBtn1UpClick(Sender: TObject);
+    procedure dbgrdEhAssLstDblClick(Sender: TObject);
+    procedure sBtnAddSaveClick(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -373,6 +386,64 @@ var
 begin
   IniFileNameStr := ExtractFileDir(ParamStr(0)) + '\' + 'DBGirdConfig.ini';
   ADBGridEh.SaveGridLayoutIni(IniFileNameStr, ADBGridEhNameStr, False);
+end;
+
+procedure TMainFrm.sBtnAddSaveClick(Sender: TObject);
+var
+  bk: TBookmark;
+  AssiName, SrcTable, KeyColMain, KeyColAssi, OrderCol, DisCols: string;
+begin
+  AssiName := trim(lbledtName.text);
+  SrcTable := trim(lbledttabName.text);
+  KeyColMain := trim(lbledtKey.text);
+  KeyColAssi := trim(lbledtKeyAssis.text);
+  OrderCol := trim(lbledtSort.text);
+  DisCols := trim(mmoFields.text);
+  // (Length(SrcTable)=0) or (Length(KeyColMain)=0) or (Length(KeyColAssi)=0) or (Length(OrderCol)=0) or (Length(DisCols)=0)
+  if (Length(AssiName) = 0) then
+  begin
+    MessageDlg('模板名称不能为空', mtInformation, [mbOK], 0);
+    lbledtName.SetFocus;
+    Exit;
+  end;
+  if (Length(SrcTable) = 0) then
+  begin
+    MessageDlg('来源数据表名称不能为空', mtInformation, [mbOK], 0);
+    lbledttabName.SetFocus;
+    Exit;
+  end;
+  if (Length(KeyColMain) = 0) then
+  begin
+    MessageDlg('结果表关联字段不能为空', mtInformation, [mbOK], 0);
+    lbledtKey.SetFocus;
+    Exit;
+  end;
+  if (Length(KeyColAssi) = 0) then
+  begin
+    MessageDlg('辅表关联字段不能为空', mtInformation, [mbOK], 0);
+    lbledtKeyAssis.SetFocus;
+    Exit;
+  end;
+  if (Length(OrderCol) = 0) then
+  begin
+    MessageDlg('排序字段不能为空', mtInformation, [mbOK], 0);
+    lbledtSort.SetFocus;
+    Exit;
+  end;
+  if (Length(DisCols) = 0) then
+  begin
+    MessageDlg('查询字段不能为空', mtInformation, [mbOK], 0);
+    mmoFields.SetFocus;
+    Exit;
+  end;
+
+  if not FDQryAssLst.Eof then
+  begin
+    bk := FDQryAssLst.GetBookmark;
+    FDQryAssLst.Locate('AssiName', AssiName, []);
+
+  end;
+
 end;
 
 procedure TMainFrm.spbtnFormatClick(Sender: TObject);
@@ -610,7 +681,7 @@ begin
 
   // 判断项目数据库是否存在--若不存在，则无需删除存储过程------------
   fdqryTmp.SQL.Clear;
-  fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
+  fdqryTmp.SQL.text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
   fdqryTmp.Open;
   if fdqryTmp.RecordCount <= 0 then
   begin
@@ -853,7 +924,7 @@ begin
   i := t_ver_noLS.IndexOf(t_type); // 系统版本的索引号
   MainFrm.Caption := t_ver_nameLS[i] + t_ver + '---' + User_info;
   // 标题显示系统版本和用户信息
-  cxDBTreeList1t_name.Caption.Text := '数据分析（双击执行）' + '→' + '版本：' + t_Jclj_Ver;
+  cxDBTreeList1t_name.Caption.text := '数据分析（双击执行）' + '→' + '版本：' + t_Jclj_Ver;
   // 模型列表标题显示模型（检查逻辑）版本号
   // 显示当前项目名称
   // if Length(Trim(t_proj_no)) = 0 then
@@ -861,7 +932,7 @@ begin
   // else
   // lblInfo.Caption := '当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
   t_caption := MainFrm.Caption;
-  if Length(Trim(t_proj_no)) = 0 then
+  if Length(trim(t_proj_no)) = 0 then
     MainFrm.Caption := t_caption + '---注意：首先设置当前项目，才能实施数据分析！'
   else
     MainFrm.Caption := t_caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
@@ -920,18 +991,24 @@ begin
   // dbgrdh1.Hint:='在表格上选中后右键可复制'+#13#10+'点按标题可排序';
   // dbgrdh1.Align := alClient;
   // 调取默认的辅助查询
-  s_filename := ExtractFilePath(ParamStr(0));
-  s_filename := s_filename + '辅助信息_默认.asi';
+  // s_filename := ExtractFilePath(ParamStr(0));
+  // s_filename := s_filename + '辅助信息_默认.asi';
+  FDQryAssLst.Connection := F_DT.FDConSYS;
+  sqltext := 'select * from AssiQry order by AssiName';
+  FDQryAssLst.SQL.Clear;
+  FDQryAssLst.SQL.Add(sqltext);
+  FDQryAssLst.Prepared;
+  FDQryAssLst.Open;
 
   if FileExists(s_filename) then
   begin
     MyIniFile := TIniFile.Create(s_filename);
-    lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
-    lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
-    lbledtKey.Text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
-    lbledtKeyAssis.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
-    mmoFields.Text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
-    lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
+    lbledtName.text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
+    lbledtTabName.text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
+    lbledtKey.text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
+    lbledtKeyAssis.text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
+    mmoFields.text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
+    lbledtSort.text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
     MyIniFile.Free;
   end;
   Panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
@@ -972,20 +1049,20 @@ var
   i_pos, i: Integer;
 begin
   // 查看结果表是否存在字段名称
-  if fdmtblRun.Fields.FindField(Trim(lbledtKey.Text)) = nil then
+  if fdmtblRun.Fields.FindField(trim(lbledtKey.text)) = nil then
   // if fdmtblRun.FieldList.Find((Trim(lbledtKey.Text))) = nil then
   begin
-    MessageDlg('上述结果表中没有关联字段"' + pchar(lbledtKey.Text) + '"，不能显示辅助信息。', mtWarning, [mbOK], 0);
+    MessageDlg('上述结果表中没有关联字段"' + pchar(lbledtKey.text) + '"，不能显示辅助信息。', mtWarning, [mbOK], 0);
     Exit;
   end;
-  key_value := fdmtblRun.Fields.FindField(Trim(lbledtKey.Text)).Value;
-  qryFields := Trim(mmoFields.Text);
+  key_value := fdmtblRun.Fields.FindField(trim(lbledtKey.text)).Value;
+  qryFields := trim(mmoFields.text);
   qryFields := StringReplace(qryFields, #$D#$A, '', [rfReplaceAll]); // 删除回车换行空格
   qryFields := StringReplace(qryFields, #$A, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, #$D, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, ' ', '', [rfReplaceAll]);
 
-  sqltext := 'Select ' + qryFields + ' From ' + Trim(lbledtTabName.Text) + ' Where ' + Trim(lbledtKeyAssis.Text) + ' = ''' + key_value + ''' Order by ' + Trim(lbledtSort.Text);
+  sqltext := 'Select ' + qryFields + ' From ' + trim(lbledtTabName.text) + ' Where ' + trim(lbledtKeyAssis.text) + ' = ''' + key_value + ''' Order by ' + trim(lbledtSort.text);
 
   try
     fdQryAssis.close;
@@ -1051,15 +1128,15 @@ begin
   i_cnt1 := Length(R_proc);
   if i_cnt1 > 0 then
   begin
-    Application.CreateForm(TFrmModPara, FrmModPara);     //返回para_inputOK参数是否录入成功
+    Application.CreateForm(TFrmModPara, FrmModPara); // 返回para_inputOK参数是否录入成功
     FrmModPara.ShowModal;
-    if not para_inputOK then  //取消参数录入则退出
+    if not para_inputOK then // 取消参数录入则退出
       Exit;
 
     // 输入完毕，执行以前，记录本次输入的值
     tmps1 := '';
     tmps2 := '';
-    for i := 0 to i_cnt1-1 do
+    for i := 0 to i_cnt1 - 1 do
     begin
       tmps1 := tmps1 + '@' + R_proc[i].s_para_tip + '!' + R_proc[i].s_para_lx + ':' + R_proc[i].s_para_value;
       tmps2 := tmps2 + R_proc[i].s_para_tip + R_proc[i].s_para_value;
@@ -1067,11 +1144,11 @@ begin
     fdQryTree.Edit;
     fdQryTree.FieldByName('t_para').AsString := tmps1;
     fdQryTree.Post;
-//     FDQryTree.UpdateBatch(arAll);
-    cxtxtdt1.Text := Trim(fdQryTree.FieldByName('t_name').AsString) + '-' + tmps2;
+    // FDQryTree.UpdateBatch(arAll);
+    cxtxtdt1.text := trim(fdQryTree.FieldByName('t_name').AsString) + '-' + tmps2;
   end
   else
-    cxtxtdt1.Text := Trim(fdQryTree.FieldByName('t_name').AsString);
+    cxtxtdt1.text := trim(fdQryTree.FieldByName('t_name').AsString);
 {$ENDREGION}
   t_time := GetTickCount(); // 记录开始时间
   dbgrdh1.Enabled := False;
@@ -1128,9 +1205,9 @@ begin
   // inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
   // prpstrgh1.LoadProperties;
   // 显示执行时间
-  cxtxtdt1.Text := cxtxtdt1.Text + '(' + FloatToStr((GetTickCount() - t_time) / 1000) + '秒)';
+  cxtxtdt1.text := cxtxtdt1.text + '(' + FloatToStr((GetTickCount() - t_time) / 1000) + '秒)';
   // 记录成功日志
-  log4info(cxtxtdt1.Text);
+  log4info(cxtxtdt1.text);
 end;
 
 procedure TMainFrm.btn2Click(Sender: TObject);
@@ -1161,7 +1238,7 @@ begin
     Exit;
   end;
 
-  SaveDialog1.FileName := Trim(StringReplace(cxtxtdt1.Text, '|', '', [rfReplaceAll]));
+  SaveDialog1.FileName := trim(StringReplace(cxtxtdt1.text, '|', '', [rfReplaceAll]));
   if not SaveDialog1.Execute then
   begin
     // ShowMessage('exit');
@@ -1186,7 +1263,7 @@ begin
     Exit;
 
   // 保存的文件名---------------------------
-  s_filename := Trim(SaveDialog1.FileName);
+  s_filename := trim(SaveDialog1.FileName);
   // 若匹配.XLS,则文件名不变，且不管 SaveDialog1.FilterIndex的选择
   if (TRegex.IsMatch(UpperCase(s_filename), '^[\S]+\.XLS$')) then
     Ext := 'XLS'
@@ -1242,7 +1319,7 @@ begin
 
   // 标题
   xlSheet.setMerge(0, 0, 0, dbgrdh1.VisibleColumns.Count - 1);
-  xlSheet.writeStr(0, 0, PWideChar(cxtxtdt1.Text), titleFormat);
+  xlSheet.writeStr(0, 0, PWideChar(cxtxtdt1.text), titleFormat);
 
   // 字段名
   gridLen := dbgrdh1.VisibleColumns.Count; // grid的列数
@@ -1631,7 +1708,7 @@ begin
   SaveDialog2.FileName := DateToStr(Now) + '.mod';
   if SaveDialog2.Execute then
   begin
-    s_filename := Trim(SaveDialog2.FileName);
+    s_filename := trim(SaveDialog2.FileName);
     if FileExists(s_filename) then
     begin
       if MessageDlg('模型文件已存在，覆盖吗？''', mtWarning, [mbYes, mbNo], 0) = mrNo then
@@ -1671,12 +1748,12 @@ procedure TMainFrm.MnModRestClick(Sender: TObject);
 begin
   Application.CreateForm(TF_import, F_import);
   F_import.ShowModal;
-  if Length(Trim(t_proj_no)) > 0 then
+  if Length(trim(t_proj_no)) > 0 then
   begin
     // 判断数据库是否存在
     F_DT.fdqryTmp.Connection := F_DT.FDConGen;
     F_DT.fdqryTmp.SQL.Clear;
-    F_DT.fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
+    F_DT.fdqryTmp.SQL.text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
     F_DT.fdqryTmp.Open;
     if F_DT.fdqryTmp.RecordCount > 0 then
     begin
@@ -1696,7 +1773,7 @@ begin
   // del_proc();
   // def_fun();
   // Auto_proc();
-  cxDBTreeList1t_name.Caption.Text := '模型列表（双击执行）' + '→' + '版本：' + t_Jclj_Ver;
+  cxDBTreeList1t_name.Caption.text := '模型列表（双击执行）' + '→' + '版本：' + t_Jclj_Ver;
 end;
 
 procedure TMainFrm.MnUserClick(Sender: TObject);
@@ -1933,6 +2010,21 @@ begin
 
 end;
 
+procedure TMainFrm.dbgrdEhAssLstDblClick(Sender: TObject);
+begin
+  if not FDQryAssLst.Eof then
+  begin
+    lbledtName.text := FDQryAssLst['AssiName'];
+    lbledtTabName.text := FDQryAssLst['SrcTable'];
+    lbledtKey.text := FDQryAssLst['KeyColMain'];
+    lbledtKeyAssis.text := FDQryAssLst['KeyColAssi'];
+    lbledtSort.text := FDQryAssLst['OrderCol'];
+    mmoFields.text := FDQryAssLst['DisCols'];
+  end;
+  bitbtnAssis.SetFocus;
+
+end;
+
 procedure TMainFrm.dbgrdh1DblClick(Sender: TObject);
 begin
   // OptimizeGrid(dbgrdh1);
@@ -1979,7 +2071,7 @@ var
   AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
 begin
   dlgOpenAssis.InitialDir := ExtractFilePath(ParamStr(0));
-  dlgOpenAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.Text + '.Asi';
+  dlgOpenAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.text + '.Asi';
   if dlgOpenAssis.Execute then
   begin
     s_filename := dlgOpenAssis.FileName;
@@ -1989,12 +2081,12 @@ begin
       Exit;
     end;
     MyIniFile := TIniFile.Create(s_filename);
-    lbledtName.Text := MyIniFile.ReadString('Base', 'AssisName', '辅助查询名称');
-    lbledtTabName.Text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助查询表名');
-    lbledtKey.Text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
-    lbledtKeyAssis.Text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
-    mmoFields.Text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
-    lbledtSort.Text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
+    lbledtName.text := MyIniFile.ReadString('Base', 'AssisName', '辅助查询名称');
+    lbledtTabName.text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助查询表名');
+    lbledtKey.text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
+    lbledtKeyAssis.text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
+    mmoFields.text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
+    lbledtSort.text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
     MyIniFile.Free;
   end;
 end;
@@ -2035,7 +2127,7 @@ var
   AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
 begin
   dlgSaveAssis.InitialDir := ExtractFilePath(ParamStr(0));
-  dlgSaveAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.Text + '.Asi';
+  dlgSaveAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.text + '.Asi';
   if dlgSaveAssis.Execute then
   begin
     s_filename := dlgSaveAssis.FileName;
@@ -2047,12 +2139,12 @@ begin
       end;
     end;
     MyIniFile := TIniFile.Create(s_filename);
-    MyIniFile.WriteString('Base', 'AssisName', Trim(lbledtName.Text));
-    MyIniFile.WriteString('Base', 'AssisTabName', Trim(lbledtTabName.Text));
-    MyIniFile.WriteString('Base', 'ResultKeyField', Trim(lbledtKey.Text));
-    MyIniFile.WriteString('Base', 'AssisKeyField', Trim(lbledtKeyAssis.Text));
-    MyIniFile.WriteString('Base', 'AssisFields', Trim(mmoFields.Text));
-    MyIniFile.WriteString('Base', 'AssisSort', Trim(lbledtSort.Text));
+    MyIniFile.WriteString('Base', 'AssisName', trim(lbledtName.text));
+    MyIniFile.WriteString('Base', 'AssisTabName', trim(lbledtTabName.text));
+    MyIniFile.WriteString('Base', 'ResultKeyField', trim(lbledtKey.text));
+    MyIniFile.WriteString('Base', 'AssisKeyField', trim(lbledtKeyAssis.text));
+    MyIniFile.WriteString('Base', 'AssisFields', trim(mmoFields.text));
+    MyIniFile.WriteString('Base', 'AssisSort', trim(lbledtSort.text));
     MyIniFile.Free;
   end;
 end;
@@ -2126,16 +2218,16 @@ begin
   // F_DT.ADOconGD3.Connected := False;
   Application.CreateForm(TF_Proj, F_Proj);
   F_Proj.ShowModal;
-  if Length(Trim(t_proj_no)) = 0 then
+  if Length(trim(t_proj_no)) = 0 then
     MainFrm.Caption := t_caption + '---注意：首先设置当前项目，才能实施数据分析！'
   else
     MainFrm.Caption := t_caption + '---当前项目：' + t_proj_no + '_' + t_proj_name + '_' + t_Database;
-  if Length(Trim(t_proj_no)) <> 0 then
+  if Length(trim(t_proj_no)) <> 0 then
   begin
     // 判断数据库是否存在
     F_DT.fdqryTmp.Connection := F_DT.FDConGen;
     F_DT.fdqryTmp.SQL.Clear;
-    F_DT.fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
+    F_DT.fdqryTmp.SQL.text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
     F_DT.fdqryTmp.Open;
     if F_DT.fdqryTmp.RecordCount > 0 then
     begin
@@ -2178,12 +2270,12 @@ begin
   fdQryTree.close;
   fdQryTree.Open;
   // cre_zhsys();   //建立账户视图
-  if Length(Trim(t_proj_no)) > 0 then
+  if Length(trim(t_proj_no)) > 0 then
   begin
     // 判断数据库是否存在
     F_DT.fdqryTmp.Connection := F_DT.FDConGen;
     F_DT.fdqryTmp.SQL.Clear;
-    F_DT.fdqryTmp.SQL.Text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
+    F_DT.fdqryTmp.SQL.text := 'select name from master..sysdatabases where name = ' + '''' + t_Database + '''';
     F_DT.fdqryTmp.Open;
     if F_DT.fdqryTmp.RecordCount > 0 then
     begin

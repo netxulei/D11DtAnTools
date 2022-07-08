@@ -127,9 +127,6 @@ Coordinates=82,1,48,33
 [N4]
 Coordinates=730,677,40,33
 
-[cxbtnExp]
-Coordinates=727,10,60,51
-
 [lblMemo]
 Coordinates=253,427,56,51
 
@@ -386,5 +383,5 @@ Coordinates=290,10,88,51
 Coordinates=422,421,40,33
 
 []
-Coordinates=734,427,66,33
+Coordinates=727,10,60,51
 

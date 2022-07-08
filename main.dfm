@@ -155,7 +155,6 @@ object MainFrm: TMainFrm
       Width = 1485
       Height = 908
       Align = alClient
-      Caption = 'pnl1'
       Color = 16776176
       ParentBackground = False
       TabOrder = 1
@@ -483,9 +482,9 @@ object MainFrm: TMainFrm
         OnResize = pnl2Resize
         object dbgrdh2: TDBGridEh
           Left = 1
-          Top = 55
+          Top = 57
           Width = 1481
-          Height = 201
+          Height = 199
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -538,7 +537,7 @@ object MainFrm: TMainFrm
           Left = 1
           Top = 1
           Width = 1481
-          Height = 54
+          Height = 56
           Align = alTop
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -549,9 +548,38 @@ object MainFrm: TMainFrm
           ParentFont = False
           ShowCaption = False
           TabOrder = 1
+          object sBtnUpSave: TSpeedButton
+            Left = 213
+            Top = 3
+            Width = 34
+            Height = 27
+            Hint = #24403#21069#26597#35810#20449#24687#26356#26032#20445#23384
+            ImageIndex = 1
+            ImageName = #20445#23384#24182#26356#26032'1'
+            Images = F_DT.VirtualImageList2
+            HotImageIndex = 0
+            HotImageName = #20445#23384#24182#26356#26032
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object sBtnAddSave: TSpeedButton
+            Left = 250
+            Top = 3
+            Width = 32
+            Height = 27
+            Hint = #23558#24403#21069#26597#35810#20449#24687#26032#22686#20445#23384
+            ImageIndex = 3
+            ImageName = #20445#23384#24182#26032#22686
+            Images = F_DT.VirtualImageList2
+            HotImageIndex = 2
+            HotImageName = #20445#23384#24182#26032#22686' (1)'
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = sBtnAddSaveClick
+          end
           object chkAssis: TCheckBox
             Left = 8
-            Top = 7
+            Top = 6
             Width = 68
             Height = 21
             Hint = #36741#21161#26597#35810#32467#26524#33258#21160#38543#19978#34920#31227#21160#26174#31034
@@ -560,22 +588,9 @@ object MainFrm: TMainFrm
             ShowHint = True
             TabOrder = 0
           end
-          object cxbtnExp: TcxButton
-            Left = 81
-            Top = 5
-            Width = 120
-            Height = 21
-            Hint = #21517#31216#20026#8221#36741#21161#20449#24687'_'#40664#35748'.asi'#8220#30340#27169#26495#20026#31995#32479#27599#27425#25171#24320#26102#33258#21160#35843#29992#30340#27169#26495
-            Caption = #36741#21161#26597#35810#27169#26495
-            DropDownMenu = pmAssis
-            Kind = cxbkOfficeDropDown
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 1
-          end
           object lbledtKey: TLabeledEdit
-            Left = 716
-            Top = 5
+            Left = 794
+            Top = 6
             Width = 132
             Height = 23
             Hint = #27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
@@ -592,11 +607,11 @@ object MainFrm: TMainFrm
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
-            TabOrder = 2
+            TabOrder = 1
             Text = #36134#21495
           end
           object lbledtTabName: TLabeledEdit
-            Left = 545
+            Left = 623
             Top = 6
             Width = 105
             Height = 23
@@ -614,12 +629,12 @@ object MainFrm: TMainFrm
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
-            TabOrder = 3
+            TabOrder = 2
             Text = ' tb_rhzh_dw'
           end
           object lbledtSort: TLabeledEdit
-            Left = 1125
-            Top = 5
+            Left = 1203
+            Top = 6
             Width = 209
             Height = 23
             Hint = #36741#21161#26597#35810#32467#26524#25490#24207
@@ -636,17 +651,17 @@ object MainFrm: TMainFrm
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
-            TabOrder = 4
+            TabOrder = 3
             Text = #36134#21495','#20132#26131#26085#26399
           end
           object lbledtName: TLabeledEdit
-            Left = 293
+            Left = 343
             Top = 6
-            Width = 163
+            Width = 195
             Height = 23
-            EditLabel.Width = 78
+            EditLabel.Width = 52
             EditLabel.Height = 15
-            EditLabel.Caption = #36741#21161#26597#35810#21517#31216
+            EditLabel.Caption = #27169#26495#21517#31216
             EditLabel.Layout = tlCenter
             Font.Charset = ANSI_CHARSET
             Font.Color = clWindowText
@@ -655,17 +670,18 @@ object MainFrm: TMainFrm
             Font.Style = []
             LabelPosition = lpLeft
             ParentFont = False
-            TabOrder = 5
-            Text = #21333#20301#36134#25143
+            TabOrder = 4
+            Text = #23458#25143#21495#23545#24212#36134#25143#20449#24687
           end
           object pnlFields: TPanel
             Left = 1
-            Top = 30
+            Top = 32
             Width = 1479
             Height = 23
             Align = alBottom
             Caption = 'pnlFields'
-            TabOrder = 6
+            TabOrder = 5
+            ExplicitTop = 30
             object lblFields: TLabel
               Left = 92
               Top = 1
@@ -783,8 +799,8 @@ object MainFrm: TMainFrm
             end
           end
           object lbledtKeyAssis: TLabeledEdit
-            Left = 918
-            Top = 5
+            Left = 996
+            Top = 6
             Width = 132
             Height = 23
             Hint = #27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
@@ -801,8 +817,19 @@ object MainFrm: TMainFrm
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
-            TabOrder = 7
+            TabOrder = 6
             Text = #36134#21495
+          end
+          object cxPopEdtAss: TcxPopupEdit
+            Left = 82
+            Top = 5
+            Properties.PopupControl = dbgrdEhAssLst
+            Properties.ReadOnly = True
+            Properties.ValidateOnEnter = False
+            TabOrder = 7
+            Text = #35843#21462#36741#21161#26597#35810#27169#26495
+            TextHint = #35843#21462#36741#21161#26597#35810#27169#26495
+            Width = 129
           end
         end
       end
@@ -821,6 +848,60 @@ object MainFrm: TMainFrm
         ShowHint = True
         ParentShowHint = False
         Visible = False
+      end
+      object dbgrdEhAssLst: TDBGridEh
+        Left = 379
+        Top = 347
+        Width = 377
+        Height = 233
+        Hint = #21452#20987#35760#24405#35843#20837#27169#26495#13#10'Ctrl+Del'#25110#19979#26041'X'#25353#38062#21024#38500#24403#21069#35760#24405#13#10#20462#25913#36741#21161#26597#35810#21517#31216#21069#25968#23383#21487#25913#21464#25490#24207
+        Align = alCustom
+        AllowedOperations = [alopDeleteEh]
+        AutoFitColWidths = True
+        Ctl3D = True
+        DataSource = dsAssLst
+        DynProps = <>
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = #24494#36719#38597#40657
+        Font.Style = []
+        HorzScrollBar.ExtraPanel.NavigatorButtons = [nbFirstEh, nbPriorEh, nbNextEh, nbLastEh, nbDeleteEh]
+        HorzScrollBar.ExtraPanel.Visible = True
+        IndicatorOptions = [gioShowRowIndicatorEh, gioShowRecNoEh]
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+        OptionsEh = [dghFixed3D, dghHighlightFocus, dghClearSelection, dghDialogFind, dghShowRecNo, dghColumnResize, dghColumnMove, dghAutoFitRowHeight, dghHotTrack, dghExtendVertLines]
+        ParentCtl3D = False
+        ParentFont = False
+        ParentShowHint = False
+        RowSizingAllowed = True
+        RowPanel.Active = True
+        SearchPanel.Enabled = True
+        ShowHint = True
+        TabOrder = 5
+        Visible = False
+        OnDblClick = dbgrdEhAssLstDblClick
+        Columns = <
+          item
+            CellButtons = <>
+            DynProps = <>
+            EditButtons = <>
+            FieldName = 'AssiName'
+            Footers = <>
+            Title.Caption = #36741#21161#26597#35810#21517#31216
+            Width = 193
+          end
+          item
+            CellButtons = <>
+            DynProps = <>
+            EditButtons = <>
+            FieldName = 'SrcTable'
+            Footers = <>
+            Title.Caption = #26469#28304#25968#25454#34920
+            Width = 99
+          end>
+        object RowDetailData: TRowDetailPanelControlEh
+        end
       end
     end
   end
@@ -2791,7 +2872,7 @@ object MainFrm: TMainFrm
   object dsAssis: TDataSource
     DataSet = fdQryAssis
     Left = 1291
-    Top = 541
+    Top = 549
   end
   object prpstrgh1: TPropStorageEh
     Section = 'datGrid'
@@ -2813,7 +2894,7 @@ object MainFrm: TMainFrm
   object pm3: TPopupMenu
     OnPopup = pm3Popup
     Left = 388
-    Top = 644
+    Top = 628
     object MenuItem1: TMenuItem
       Action = edtcpy1
       Caption = '&'#22797#21046#25152#36873
@@ -3004,8 +3085,8 @@ object MainFrm: TMainFrm
     Top = 177
   end
   object pmAssis: TPopupMenu
-    Left = 632
-    Top = 624
+    Left = 384
+    Top = 552
     object N3: TMenuItem
       Caption = #35843#21462#35843#21462#36741#21161#26597#35810#27169#26495
       OnClick = N3Click
@@ -3019,8 +3100,8 @@ object MainFrm: TMainFrm
     DefaultExt = 'Asi'
     Filter = #36741#21161#26597#35810#27169#26495'(*.Asi)|*.Asi'
     Title = #36741#21161#26597#35810#27169#26495#25991#20214
-    Left = 421
-    Top = 625
+    Left = 453
+    Top = 553
   end
   object fdQryAssis: TFDQuery
     FetchOptions.AssignedValues = [evMode]
@@ -3032,13 +3113,57 @@ object MainFrm: TMainFrm
     DefaultExt = 'Asi'
     Filter = #36741#21161#26597#35810#27169#26495'(*.Asi)|*.Asi'
     Title = #36741#21161#26597#35810#27169#26495#25991#20214
-    Left = 528
-    Top = 633
+    Left = 456
+    Top = 625
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
     ScreenCursor = gcrHourGlass
     Left = 1277
     Top = 177
+  end
+  object FDQryAssLst: TFDQuery
+    ActiveStoredUsage = [auDesignTime]
+    IndexFieldNames = 'AssiName'
+    Connection = F_DT.FDConSysTmp
+    SQL.Strings = (
+      'select * from AssiQry')
+    Left = 1229
+    Top = 632
+    object FDQryAssLstAssiName: TStringField
+      FieldName = 'AssiName'
+      Origin = 'AssiName'
+      Size = 80
+    end
+    object FDQryAssLstSrcTable: TStringField
+      FieldName = 'SrcTable'
+      Origin = 'SrcTable'
+      Size = 80
+    end
+    object FDQryAssLstKeyColMain: TStringField
+      FieldName = 'KeyColMain'
+      Origin = 'KeyColMain'
+      Size = 80
+    end
+    object FDQryAssLstKeyColAssi: TStringField
+      FieldName = 'KeyColAssi'
+      Origin = 'KeyColAssi'
+      Size = 80
+    end
+    object FDQryAssLstOrderCol: TStringField
+      FieldName = 'OrderCol'
+      Origin = 'OrderCol'
+      Size = 60
+    end
+    object FDQryAssLstDisCols: TStringField
+      FieldName = 'DisCols'
+      Origin = 'DisCols'
+      Size = 800
+    end
+  end
+  object dsAssLst: TDataSource
+    DataSet = FDQryAssLst
+    Left = 1349
+    Top = 640
   end
 end
