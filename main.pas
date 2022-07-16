@@ -27,7 +27,7 @@ uses
   FireDAC.Stan.StorageJSON, cxButtons, LibXL, math,
   Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnMan, Vcl.ToolWin, Vcl.ActnCtrls,
   Vcl.ActnMenus, FireDAC.UI.Intf, FireDAC.VCLUI.Wait, FireDAC.Comp.UI,
-  FireDAC.ConsoleUI.Wait, Vcl.Samples.Spin;
+  FireDAC.ConsoleUI.Wait, Vcl.Samples.Spin, FireDAC.VCLUI.Async;
 
 type
   TMainFrm = class(TForm)
@@ -193,6 +193,8 @@ type
     dbgrdEhAssLst: TDBGridEh;
     sBtnUpSave: TSpeedButton;
     sBtnAddSave: TSpeedButton;
+    FDGUIxAsyncExecuteDialog1: TFDGUIxAsyncExecuteDialog;
+    function AssisSaveClick(Sender: TObject): Boolean;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function cre_V_bank(): Boolean;
@@ -200,8 +202,8 @@ type
     // function def_fun(): Boolean;   //函数定义放到逻辑中自动执行定义，不再代码实现
     function DispInfo(): Boolean;
     function Auto_proc(): Boolean;
-    function Disp_txn(): Boolean;
-    function table_visable(): Boolean;
+    // function Disp_txn(): Boolean;
+    // function table_visable(): Boolean;
     procedure MnExitClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -210,8 +212,8 @@ type
     procedure btn1Click(Sender: TObject);
     procedure N19Click(Sender: TObject);
     procedure pnl2Resize(Sender: TObject);
-    procedure pnl3Resize(Sender: TObject);
-    procedure pnl4Resize(Sender: TObject);
+    // procedure pnl3Resize(Sender: TObject);
+    // procedure pnl4Resize(Sender: TObject);
     procedure N27Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btn2Click(Sender: TObject);
@@ -226,15 +228,15 @@ type
     procedure MnUserClick(Sender: TObject);
     procedure N20Click(Sender: TObject);
     procedure pm2Popup(Sender: TObject);
-    procedure N_Excel_DwClick(Sender: TObject);
+    // procedure N_Excel_DwClick(Sender: TObject);
     procedure cxDBTreeList1DblClick(Sender: TObject);
     procedure MnOpenClick(Sender: TObject);
     procedure dbgrdh1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure dbgrdh1DblClick(Sender: TObject);
+    // procedure dbgrdh1DblClick(Sender: TObject);
     procedure N301Click(Sender: TObject);
     procedure N302Click(Sender: TObject);
-    procedure N401Click(Sender: TObject);
-    procedure N402Click(Sender: TObject);
+    // procedure N401Click(Sender: TObject);
+    // procedure N402Click(Sender: TObject);
     procedure N49Click(Sender: TObject);
     procedure N53Click(Sender: TObject);
     procedure cxDBTreeList1CustomDrawCell(Sender: TObject; ACanvas: TcxCanvas; AViewInfo: TcxTreeListEditCellViewInfo; var ADone: Boolean);
@@ -248,7 +250,7 @@ type
     procedure M_DR_FXZHClick(Sender: TObject);
     procedure M_DR_FXDWClick(Sender: TObject);
     procedure M_DR_FXGRClick(Sender: TObject);
-    procedure cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
+    // procedure cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
     procedure cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
     procedure spbtnFormatClick(Sender: TObject);
     procedure N22Click(Sender: TObject);
@@ -258,9 +260,9 @@ type
     procedure MnRuleClick(Sender: TObject);
     procedure N2Click(Sender: TObject);
     procedure bitbtnAssisClick(Sender: TObject);
-    procedure N3Click(Sender: TObject);
+    // procedure N3Click(Sender: TObject);
     procedure mmoFieldsExit(Sender: TObject);
-    procedure N4Click(Sender: TObject);
+    // procedure N4Click(Sender: TObject);
     procedure chkAssisDisClick(Sender: TObject);
     procedure rdbt1Click(Sender: TObject);
     procedure rdbt2Click(Sender: TObject);
@@ -281,6 +283,8 @@ type
     procedure spnBtn1UpClick(Sender: TObject);
     procedure dbgrdEhAssLstDblClick(Sender: TObject);
     procedure sBtnAddSaveClick(Sender: TObject);
+    procedure sBtnUpSaveClick(Sender: TObject);
+    procedure FDGUIxAsyncExecuteDialog1Hide(Sender: TObject);
   private { Private declarations }
 
   public { Public declarations }
@@ -343,42 +347,42 @@ begin
   // // 视图建立结束
 end;
 
-function TMainFrm.table_visable(): Boolean;
-begin
-  // // MessageDlg('将要确定table显示');
-  // pnl10.Visible := False;
-  // cxspltr4.Visible := False;
-  // pnl9.Visible := False;
-  // cxspltr3.Visible := False;
-  // if fdQryTree['t_table2'] = '1' then
-  // begin
-  // pnl10.Visible := True;
-  // cxspltr4.Visible := True;
-  // end
-  // else
-  // begin
-  // pnl10.Visible := False;
-  // cxspltr4.Visible := False;
-  // end;
-  //
-  // if fdQryTree['t_table1'] = '1' then
-  // begin
-  // pnl9.Visible := True;
-  // cxspltr3.Visible := True;
-  // end
-  // else
-  // begin
-  // pnl9.Visible := False;
-  // cxspltr3.Visible := False;
-  // end;
-  //
-  // // if  pnl9.top<pnl10.Top then pnl9.top:=pnl10.Top-1;
-  // if cxspltr3.Top < cxspltr4.Top then
-  // cxspltr3.Top := cxspltr4.Top;
-  // cxspltr3.Top := pnl9.Top;
-  // cxspltr4.Top := pnl10.Top;
-
-end;
+// function TMainFrm.table_visable(): Boolean;
+// begin
+// // // MessageDlg('将要确定table显示');
+// // pnl10.Visible := False;
+// // cxspltr4.Visible := False;
+// // pnl9.Visible := False;
+// // cxspltr3.Visible := False;
+// // if fdQryTree['t_table2'] = '1' then
+// // begin
+// // pnl10.Visible := True;
+// // cxspltr4.Visible := True;
+// // end
+// // else
+// // begin
+// // pnl10.Visible := False;
+// // cxspltr4.Visible := False;
+// // end;
+// //
+// // if fdQryTree['t_table1'] = '1' then
+// // begin
+// // pnl9.Visible := True;
+// // cxspltr3.Visible := True;
+// // end
+// // else
+// // begin
+// // pnl9.Visible := False;
+// // cxspltr3.Visible := False;
+// // end;
+// //
+// // // if  pnl9.top<pnl10.Top then pnl9.top:=pnl10.Top-1;
+// // if cxspltr3.Top < cxspltr4.Top then
+// // cxspltr3.Top := cxspltr4.Top;
+// // cxspltr3.Top := pnl9.Top;
+// // cxspltr4.Top := pnl10.Top;
+//
+// end;
 
 function TMainFrm.SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
 var
@@ -388,13 +392,13 @@ begin
   ADBGridEh.SaveGridLayoutIni(IniFileNameStr, ADBGridEhNameStr, False);
 end;
 
-procedure TMainFrm.sBtnAddSaveClick(Sender: TObject);
+function TMainFrm.AssisSaveClick(Sender: TObject): Boolean;
 var
   bk: TBookmark;
   AssiName, SrcTable, KeyColMain, KeyColAssi, OrderCol, DisCols: string;
 begin
   AssiName := trim(lbledtName.text);
-  SrcTable := trim(lbledttabName.text);
+  SrcTable := trim(lbledtTabName.text);
   KeyColMain := trim(lbledtKey.text);
   KeyColAssi := trim(lbledtKeyAssis.text);
   OrderCol := trim(lbledtSort.text);
@@ -409,7 +413,7 @@ begin
   if (Length(SrcTable) = 0) then
   begin
     MessageDlg('来源数据表名称不能为空', mtInformation, [mbOK], 0);
-    lbledttabName.SetFocus;
+    lbledtTabName.SetFocus;
     Exit;
   end;
   if (Length(KeyColMain) = 0) then
@@ -436,14 +440,46 @@ begin
     mmoFields.SetFocus;
     Exit;
   end;
-
-  if not FDQryAssLst.Eof then
+  if (Sender as TSpeedButton).Name = 'sBtnUpSave' then
+    if FDQryAssLst.Eof then
+      FDQryAssLst.append
+    else if MessageDlg('即将以新内容覆盖当前模板，是否覆盖？', mtInformation, [mbYes, mbNo], 0) = mrNo then
+      Exit
+    else
+      FDQryAssLst.edit
+  else
   begin
-    bk := FDQryAssLst.GetBookmark;
-    FDQryAssLst.Locate('AssiName', AssiName, []);
-
+    if not FDQryAssLst.Eof then
+    begin
+      bk := FDQryAssLst.GetBookmark;
+      if FDQryAssLst.Locate('AssiName', AssiName, []) then
+      begin
+        if MessageDlg('新增保存的模板名称已存在，是否覆盖？', mtInformation, [mbYes, mbNo], 0) = mrNo then
+          Exit
+        else
+          FDQryAssLst.edit;
+      end
+      else
+        FDQryAssLst.append;
+    end;
   end;
+  FDQryAssLst['AssiName'] := lbledtName.text;
+  FDQryAssLst['SrcTable'] := lbledtTabName.text;
+  FDQryAssLst['KeyColMain'] := lbledtKey.text;
+  FDQryAssLst['KeyColAssi'] := lbledtKeyAssis.text;
+  FDQryAssLst['OrderCol'] := lbledtSort.text;
+  FDQryAssLst['DisCols'] := mmoFields.text;
+  FDQryAssLst.Post;
+end;
 
+procedure TMainFrm.sBtnAddSaveClick(Sender: TObject);
+begin
+  AssisSaveClick(Sender);
+end;
+
+procedure TMainFrm.sBtnUpSaveClick(Sender: TObject);
+begin
+  AssisSaveClick(Sender);
 end;
 
 procedure TMainFrm.spbtnFormatClick(Sender: TObject);
@@ -776,7 +812,7 @@ begin
         tmps1 := tmps1 + '@' + R_proc[i - 1].s_para_tip + '!' + R_proc[i - 1].s_para_lx + ':' + R_proc[i - 1].s_para_value;
         tmps2 := tmps2 + R_proc[i - 1].s_para_tip + R_proc[i - 1].s_para_value;
       end;
-      fdqryAuto.Edit;
+      fdqryAuto.edit;
       fdqryAuto.FieldByName('t_para').AsString := tmps1;
       // FDQryTree.UpdateBatch(arAll);
     end;
@@ -816,97 +852,97 @@ begin
   // ShowWaitText;
 end;
 
-function TMainFrm.Disp_txn(): Boolean;
-var
-  s_key_name, sqltext1, sqltext2: string;
-begin
-  // // if (adoq2['t_table2'] <> '1') or (adoq2['t_table1'] <> '1') then //显示人行账户或商行交易
-  // // Exit;
-  // if chk2.Checked and (fdQryTree['t_table1'] = '1') then
-  // begin
-  // try
-  // // 获得账号
-  // s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
-  //
-  // F_DT.ADOconGD2.Connected := False;
-  // F_DT.ADOconGD2.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
-  // F_DT.ADOconGD2.ConnectionString :=
-  // 'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
-  // ';Data Source=' + sComputerName + t_connect;
-  // if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
-  // sqltext1 := t_table1_sql_dw + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-  // if (t_modl_type = '3') or (t_modl_type = '6') then
-  // sqltext1 := t_table1_sql_gr + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-  // if (t_modl_type = '7') then
-  // sqltext1 := t_table1_sql_other + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
-  //
-  // // ShowMessage(sqltext2);
-  // // exit ;
-  // qrygd2.Connection := F_DT.ADOconGD2;
-  // qrygd2.close;
-  // qrygd2.DisableControls;
-  // qrygd2.SQL.Clear;
-  // qrygd2.SQL.Add(sqltext1);
-  // // ShowMessage(qrygd2.SQL.Text);
-  // qrygd2.Prepared;
-  // qrygd2.Open;
-  // qrygd2.enableControls;
-  // F_DT.ADOconGD2.Connected := True;
-  // dbgrdh2.Enabled := True;
-  // // OptimizeGrid(dbgrdh2);
-  // except
-  // dbgrdh2.Enabled := False;
-  // qrygd2.close;
-  // qrygd2.DisableControls;
-  // raise Exception.Create('请确认人民银行个人账户数据是否导入或setting中table1_sql否正确!');
-  // end;
-  // end;
-  //
-  // // 显示同步显示交易
-  // if chk1.Checked and (fdQryTree['t_table2'] = '1') then
-  // begin
-  // try
-  // // 获得账号
-  // s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
-  //
-  // F_DT.ADOconGD3.Connected := False;
-  // F_DT.ADOconGD3.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
-  // F_DT.ADOconGD3.ConnectionString :=
-  // 'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
-  // ';Data Source=' + sComputerName + t_connect;
-  // // sqltext2 := t_table2_sql + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' + t_table2_sql_order;
-  // if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
-  // sqltext2 := t_table2_sql_dw + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-  // t_table2_sql_order;
-  // if (t_modl_type = '3') or (t_modl_type = '6') then
-  // sqltext2 := t_table2_sql_gr + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-  // t_table2_sql_order;
-  // if (t_modl_type = '7') then
-  // sqltext2 := t_table2_sql_other + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
-  // t_table2_other_order;
-  //
-  // // ShowMessage(sqltext2);
-  // // exit;
-  // qrygd3.Connection := F_DT.ADOconGD3;
-  // qrygd3.close;
-  // qrygd3.DisableControls;
-  // qrygd3.SQL.Clear;
-  // qrygd3.SQL.Add(sqltext2);
-  // qrygd3.Prepared;
-  // qrygd3.Open;
-  // qrygd3.enableControls;
-  // F_DT.ADOconGD3.Connected := True;
-  // dbgrdh3.Enabled := True;
-  // // OptimizeGrid(dbgrdh3);
-  // except
-  // dbgrdh3.Enabled := False;
-  // qrygd3.close;
-  // qrygd3.DisableControls;
-  // raise Exception.Create('请确认同步显示的数据表是否导入!');
-  // Exit;
-  // end;
-  // end;
-end;
+// function TMainFrm.Disp_txn(): Boolean;
+// var
+// s_key_name, sqltext1, sqltext2: string;
+// begin
+// // // if (adoq2['t_table2'] <> '1') or (adoq2['t_table1'] <> '1') then //显示人行账户或商行交易
+// // // Exit;
+// // if chk2.Checked and (fdQryTree['t_table1'] = '1') then
+// // begin
+// // try
+// // // 获得账号
+// // s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
+// //
+// // F_DT.ADOconGD2.Connected := False;
+// // F_DT.ADOconGD2.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
+// // F_DT.ADOconGD2.ConnectionString :=
+// // 'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
+// // ';Data Source=' + sComputerName + t_connect;
+// // if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
+// // sqltext1 := t_table1_sql_dw + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+// // if (t_modl_type = '3') or (t_modl_type = '6') then
+// // sqltext1 := t_table1_sql_gr + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+// // if (t_modl_type = '7') then
+// // sqltext1 := t_table1_sql_other + ' where ' + t_key_nameLS[1] + ' = ' + '''' + s_key_name + '''';
+// //
+// // // ShowMessage(sqltext2);
+// // // exit ;
+// // qrygd2.Connection := F_DT.ADOconGD2;
+// // qrygd2.close;
+// // qrygd2.DisableControls;
+// // qrygd2.SQL.Clear;
+// // qrygd2.SQL.Add(sqltext1);
+// // // ShowMessage(qrygd2.SQL.Text);
+// // qrygd2.Prepared;
+// // qrygd2.Open;
+// // qrygd2.enableControls;
+// // F_DT.ADOconGD2.Connected := True;
+// // dbgrdh2.Enabled := True;
+// // // OptimizeGrid(dbgrdh2);
+// // except
+// // dbgrdh2.Enabled := False;
+// // qrygd2.close;
+// // qrygd2.DisableControls;
+// // raise Exception.Create('请确认人民银行个人账户数据是否导入或setting中table1_sql否正确!');
+// // end;
+// // end;
+// //
+// // // 显示同步显示交易
+// // if chk1.Checked and (fdQryTree['t_table2'] = '1') then
+// // begin
+// // try
+// // // 获得账号
+// // s_key_name := mtblh1.FieldByName(t_key_nameLS[0]).AsString;
+// //
+// // F_DT.ADOconGD3.Connected := False;
+// // F_DT.ADOconGD3.Connectiontimeout := StrToInt(t_TimeOut) * 1000;
+// // F_DT.ADOconGD3.ConnectionString :=
+// // 'Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=' + t_Database +
+// // ';Data Source=' + sComputerName + t_connect;
+// // // sqltext2 := t_table2_sql + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' + t_table2_sql_order;
+// // if (t_modl_type = '1') or (t_modl_type = '2') or (t_modl_type = '4') or (t_modl_type = '5') then
+// // sqltext2 := t_table2_sql_dw + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+// // t_table2_sql_order;
+// // if (t_modl_type = '3') or (t_modl_type = '6') then
+// // sqltext2 := t_table2_sql_gr + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+// // t_table2_sql_order;
+// // if (t_modl_type = '7') then
+// // sqltext2 := t_table2_sql_other + ' where ' + t_key_nameLS[2] + ' = ' + '''' + s_key_name + '''' + ' ' +
+// // t_table2_other_order;
+// //
+// // // ShowMessage(sqltext2);
+// // // exit;
+// // qrygd3.Connection := F_DT.ADOconGD3;
+// // qrygd3.close;
+// // qrygd3.DisableControls;
+// // qrygd3.SQL.Clear;
+// // qrygd3.SQL.Add(sqltext2);
+// // qrygd3.Prepared;
+// // qrygd3.Open;
+// // qrygd3.enableControls;
+// // F_DT.ADOconGD3.Connected := True;
+// // dbgrdh3.Enabled := True;
+// // // OptimizeGrid(dbgrdh3);
+// // except
+// // dbgrdh3.Enabled := False;
+// // qrygd3.close;
+// // qrygd3.DisableControls;
+// // raise Exception.Create('请确认同步显示的数据表是否导入!');
+// // Exit;
+// // end;
+// // end;
+// end;
 
 procedure TMainFrm.MnExitClick(Sender: TObject);
 begin
@@ -1000,20 +1036,25 @@ begin
   FDQryAssLst.Prepared;
   FDQryAssLst.Open;
 
-  if FileExists(s_filename) then
-  begin
-    MyIniFile := TIniFile.Create(s_filename);
-    lbledtName.text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
-    lbledtTabName.text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
-    lbledtKey.text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
-    lbledtKeyAssis.text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
-    mmoFields.text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
-    lbledtSort.text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
-    MyIniFile.Free;
-  end;
+  // if FileExists(s_filename) then
+  // begin
+  // MyIniFile := TIniFile.Create(s_filename);
+  // lbledtName.text := MyIniFile.ReadString('Base', 'AssisName', '辅助表名称');
+  // lbledtTabName.text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助表表名');
+  // lbledtKey.text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
+  // lbledtKeyAssis.text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
+  // mmoFields.text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
+  // lbledtSort.text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
+  // MyIniFile.Free;
+  // end;
   Panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
   pnlFields.Height := lbledtName.Height;
 
+end;
+
+procedure TMainFrm.FDGUIxAsyncExecuteDialog1Hide(Sender: TObject);
+begin
+  dbgrdh1.Enabled := True;
 end;
 
 procedure TMainFrm.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1141,7 +1182,7 @@ begin
       tmps1 := tmps1 + '@' + R_proc[i].s_para_tip + '!' + R_proc[i].s_para_lx + ':' + R_proc[i].s_para_value;
       tmps2 := tmps2 + R_proc[i].s_para_tip + R_proc[i].s_para_value;
     end;
-    fdQryTree.Edit;
+    fdQryTree.edit;
     fdQryTree.FieldByName('t_para').AsString := tmps1;
     fdQryTree.Post;
     // FDQryTree.UpdateBatch(arAll);
@@ -1154,6 +1195,9 @@ begin
   dbgrdh1.Enabled := False;
   fdSPRun.DisableControls;
   fdSPRun.close;
+  FDGUIxAsyncExecuteDialog1.Caption := '运行模型分析';
+  FDGUIxAsyncExecuteDialog1.Prompt := '正在运行模型分析，请稍后...';
+
   // FdSPRun.CommandTimeout:=StrToInt(t_TimeOut)*1000;
   // sp1的过滤要取消才能继续查询，否则出错？？？？？？？？？？？？？？？？？
   fdSPRun.Filtered := False;
@@ -1200,7 +1244,7 @@ begin
   end;
 
   // 首先处理表可见性
-  table_visable();
+  // table_visable();
   // s_filename := ExtractFilePath(ParamStr(0));
   // inprpstrgmnh1.IniFileName := s_filename + 'zh_layout';
   // prpstrgh1.LoadProperties;
@@ -1291,7 +1335,7 @@ begin
   xlSheet := xlBook.addSheet('数据分析结果');
 
   titleFont := xlBook.addFont;
-  titleFont.name := '微软雅黑';
+  titleFont.Name := '微软雅黑';
   titleFont.size := 12;
   titleFormat := xlBook.addFormat();
   titleFormat.alignH := ALIGNH_CENTER;
@@ -1299,7 +1343,7 @@ begin
   titleFormat.font := titleFont;
 
   headerFont := xlBook.addFont;
-  headerFont.name := '微软雅黑';
+  headerFont.Name := '微软雅黑';
   headerFont.size := 10;
   headerFont.bold := True;
   headerFormat := xlBook.addFormat();
@@ -1309,7 +1353,7 @@ begin
   headerFormat.setBorder(BORDERSTYLE_THIN);
 
   cellsFont := xlBook.addFont;
-  cellsFont.name := '微软雅黑';
+  cellsFont.Name := '微软雅黑';
   cellsFont.size := 9;
   cellsFormat := xlBook.addFormat();
   cellsFormat.alignH := ALIGNH_LEFT;
@@ -1476,21 +1520,21 @@ begin
   cxtxtdt1.Height := pnl2.Height;
 end;
 
-procedure TMainFrm.pnl3Resize(Sender: TObject);
-begin
-  // cxdbtxtdt1.Top := 0;
-  // cxdbtxtdt1.Left := 0;
-  // cxdbtxtdt1.Width := pnl3.Width;
-  // cxdbtxtdt1.Height := pnl3.Height;
-end;
+// procedure TMainFrm.pnl3Resize(Sender: TObject);
+// begin
+// // cxdbtxtdt1.Top := 0;
+// // cxdbtxtdt1.Left := 0;
+// // cxdbtxtdt1.Width := pnl3.Width;
+// // cxdbtxtdt1.Height := pnl3.Height;
+// end;
 
-procedure TMainFrm.pnl4Resize(Sender: TObject);
-begin
-  // lblInfo.Top:=0;
-  // lblInfo.Left:=0;
-  // lblInfo.Width:=pnl4.Width;
-  // lblInfo.Height:=pnl4.Height;
-end;
+// procedure TMainFrm.pnl4Resize(Sender: TObject);
+// begin
+// // lblInfo.Top:=0;
+// // lblInfo.Left:=0;
+// // lblInfo.Width:=pnl4.Width;
+// // lblInfo.Height:=pnl4.Height;
+// end;
 
 procedure TMainFrm.rdbt1Click(Sender: TObject);
 var
@@ -1577,60 +1621,6 @@ var
   Ext: string;
 begin
   btn2.Click;
-  // if not fdSPRun.Active then
-  // begin
-  // MessageDlg('没有要导出的数据！', mtInformation, [mbOK], 0);
-  // Exit;
-  // end
-  // else if fdSPRun.RecordCount = 0 then
-  // begin
-  // MessageDlg('没有要导出的数据！', mtInformation, [mbOK], 0);
-  // Exit;
-  // end;
-  // if dbgrdh1.Selection.SelectionType = gstNon then
-  // begin
-  // MessageDlg('没有选中的数据要导出！', mtInformation, [mbOK], 0);
-  // Exit;
-  // end;
-  // SaveDialog1.FileName := Trim(cxtxtdt1.Text);
-  // if (ActiveControl is TDBGridEh) then
-  // if SaveDialog1.Execute then
-  // begin
-  // case SaveDialog1.FilterIndex of
-  // 1:
-  // begin
-  // ExpClass := TDBGridEhExportAsXLS;
-  // Ext := 'xls';
-  // end;
-  // 2:
-  // begin
-  // ExpClass := TDBGridEhExportAsXLS;
-  // Ext := 'xlsx';
-  // end;
-  // 3:
-  // begin
-  // ExpClass := TDBGridEhExportAsText;
-  // Ext := 'txt';
-  // end;
-  // 4:
-  // begin
-  // ExpClass := TDBGridEhExportAsRTF;
-  // Ext := 'rtf';
-  // end;
-  // // 3:begin ExpClass := TDBGridEhExportAsCSV; Ext := 'csv'; end;
-  // else
-  // ExpClass := nil;
-  // Ext := '';
-  // end;
-  // if ExpClass <> nil then
-  // begin
-  // if UpperCase(Copy(SaveDialog1.FileName, Length(SaveDialog1.FileName) -
-  // 2, 3)) <> UpperCase(Ext) then
-  // SaveDialog1.FileName := SaveDialog1.FileName + '.' + Ext;
-  // SaveDBGridEhToExportFile(ExpClass, TDBGridEh(ActiveControl),
-  // SaveDialog1.FileName, False);
-  // end;
-  // end;
 end;
 
 procedure TMainFrm.N8Click(Sender: TObject);
@@ -1825,12 +1815,11 @@ begin
   N18.Checked := not N20.Checked
 end;
 
-procedure TMainFrm.N_Excel_DwClick(Sender: TObject);
-begin
-  // 导入人行excel账户信息后执行
-  // def_fun();
-
-end;
+// procedure TMainFrm.N_Excel_DwClick(Sender: TObject);
+// begin
+// // 导入人行excel账户信息后执行
+// // def_fun();
+// end;
 
 procedure TMainFrm.cxDBTreeList1DblClick(Sender: TObject);
 var
@@ -1854,50 +1843,50 @@ begin
   end;
 end;
 
-procedure TMainFrm.cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
-// var
-// i_id, i_parent_id: Integer;
-begin
-  // ShowMessage(IntToStr(AFocusedNode.Count));
-  // ShowMessage(IntToStr(AFocusedNode.ChildVisibleCount));
-  // i_id := fdQryTree['t_id'];
-  // i_parent_id := fdQryTree['t_parent_id'];
-  // if (AFocusedNode.Count> 0) or (i_parent_id = 0) then
-  // 如果下面没有节点或为根节点，则不执行 （执行按钮变虚）--多版本下获得的列表应
-  // btn1.Enabled := False
-  // else
-  // btn1.Enabled := True;
-  // try
-  // try
-  // i_id := FDQryTree['t_id'];
-  // i_parent_id := FDQryTree['t_parent_id'];
-  // except
-  // // MessageDlg('ddd');
-  // end;
-  // finally
-  // ADOQ1.close;    //判断节点下是否还有节点，确定执行按钮是否有效，确定是否执行
-  // ADOQ1.DisableControls;
-  // ADOQ1.Connection := F_DT.ADOCN3;
-  // ADOQ1.CursorLocation := clUseClient;
-  // ADOQ1.CursorType := ctStatic;
-  // ADOQ1.LockType := ltBatchOptimistic;
-  // ADOQ1.SQL.Clear;
-  // // ADOQ1.SQL.Add('SELECT * FROM "X_menus" where t_memo not like' + '''' +
-  // // '%隐藏%'
-  // // + '''' + 'order by t_order');
-  // ADOQ1.SQL.Add('SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + 'order by t_order');
-  // // --多版本下获得的列表应考虑t_type或t_datebase_ver的情况
-  // ADOQ1.Prepared;
-  // ADOQ1.Open;
-  // ADOQ1.enableControls;
-  // // adoq1.Open;
-  // if (ADOQ1.Locate('t_parent_id', i_id, [])) or (i_parent_id = 0) then
-  // // 如果下面没有节点或为根节点，则不执行 （执行按钮变虚）--多版本下获得的列表应
-  // btn1.Enabled := False
-  // else
-  // btn1.Enabled := True;
-  // end;
-end;
+// procedure TMainFrm.cxDBTreeList1FocusedNodeChanged(Sender: TcxCustomTreeList; APrevFocusedNode, AFocusedNode: TcxTreeListNode);
+/// / var
+/// / i_id, i_parent_id: Integer;
+// begin
+// // ShowMessage(IntToStr(AFocusedNode.Count));
+// // ShowMessage(IntToStr(AFocusedNode.ChildVisibleCount));
+// // i_id := fdQryTree['t_id'];
+// // i_parent_id := fdQryTree['t_parent_id'];
+// // if (AFocusedNode.Count> 0) or (i_parent_id = 0) then
+// // 如果下面没有节点或为根节点，则不执行 （执行按钮变虚）--多版本下获得的列表应
+// // btn1.Enabled := False
+// // else
+// // btn1.Enabled := True;
+// // try
+// // try
+// // i_id := FDQryTree['t_id'];
+// // i_parent_id := FDQryTree['t_parent_id'];
+// // except
+// // // MessageDlg('ddd');
+// // end;
+// // finally
+// // ADOQ1.close;    //判断节点下是否还有节点，确定执行按钮是否有效，确定是否执行
+// // ADOQ1.DisableControls;
+// // ADOQ1.Connection := F_DT.ADOCN3;
+// // ADOQ1.CursorLocation := clUseClient;
+// // ADOQ1.CursorType := ctStatic;
+// // ADOQ1.LockType := ltBatchOptimistic;
+// // ADOQ1.SQL.Clear;
+// // // ADOQ1.SQL.Add('SELECT * FROM "X_menus" where t_memo not like' + '''' +
+// // // '%隐藏%'
+// // // + '''' + 'order by t_order');
+// // ADOQ1.SQL.Add('SELECT * FROM "X_menus" where t_hide =' + '''' + '1' + '''' + 'order by t_order');
+// // // --多版本下获得的列表应考虑t_type或t_datebase_ver的情况
+// // ADOQ1.Prepared;
+// // ADOQ1.Open;
+// // ADOQ1.enableControls;
+// // // adoq1.Open;
+// // if (ADOQ1.Locate('t_parent_id', i_id, [])) or (i_parent_id = 0) then
+// // // 如果下面没有节点或为根节点，则不执行 （执行按钮变虚）--多版本下获得的列表应
+// // btn1.Enabled := False
+// // else
+// // btn1.Enabled := True;
+// // end;
+// end;
 
 procedure TMainFrm.cxDBTreeList1GetNodeImageIndex(Sender: TcxCustomTreeList; ANode: TcxTreeListNode; AIndexType: TcxTreeListImageIndexType; var AIndex: TImageIndex);
 begin
@@ -2022,18 +2011,18 @@ begin
     mmoFields.text := FDQryAssLst['DisCols'];
   end;
   bitbtnAssis.SetFocus;
-
+  cxPopEdtAss.text := lbledtName.text;
 end;
 
-procedure TMainFrm.dbgrdh1DblClick(Sender: TObject);
-begin
-  // OptimizeGrid(dbgrdh1);
-  // if pnl9.Visible = True then
-  // OptimizeGrid(dbgrdh2);
-  // if pnl10.Visible = True then
-  // OptimizeGrid(dbgrdh3);
-
-end;
+// procedure TMainFrm.dbgrdh1DblClick(Sender: TObject);
+// begin
+// // OptimizeGrid(dbgrdh1);
+// // if pnl9.Visible = True then
+// // OptimizeGrid(dbgrdh2);
+// // if pnl10.Visible = True then
+// // OptimizeGrid(dbgrdh3);
+//
+// end;
 
 procedure TMainFrm.N301Click(Sender: TObject);
 var
@@ -2064,52 +2053,52 @@ begin
 
 end;
 
-procedure TMainFrm.N3Click(Sender: TObject);
-var
-  s_filename: string;
-  MyIniFile: TIniFile;
-  AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
-begin
-  dlgOpenAssis.InitialDir := ExtractFilePath(ParamStr(0));
-  dlgOpenAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.text + '.Asi';
-  if dlgOpenAssis.Execute then
-  begin
-    s_filename := dlgOpenAssis.FileName;
-    if not FileExists(s_filename) then
-    begin
-      MessageDlg('该辅助查询模板文件不存在！', mtError, [mbOK], 0);
-      Exit;
-    end;
-    MyIniFile := TIniFile.Create(s_filename);
-    lbledtName.text := MyIniFile.ReadString('Base', 'AssisName', '辅助查询名称');
-    lbledtTabName.text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助查询表名');
-    lbledtKey.text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
-    lbledtKeyAssis.text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
-    mmoFields.text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
-    lbledtSort.text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
-    MyIniFile.Free;
-  end;
-end;
+// procedure TMainFrm.N3Click(Sender: TObject);
+/// /var
+/// /  s_filename: string;
+/// /  MyIniFile: TIniFile;
+/// /  AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
+// begin
+/// /  dlgOpenAssis.InitialDir := ExtractFilePath(ParamStr(0));
+/// /  dlgOpenAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.text + '.Asi';
+/// /  if dlgOpenAssis.Execute then
+/// /  begin
+/// /    s_filename := dlgOpenAssis.FileName;
+/// /    if not FileExists(s_filename) then
+/// /    begin
+/// /      MessageDlg('该辅助查询模板文件不存在！', mtError, [mbOK], 0);
+/// /      Exit;
+/// /    end;
+/// /    MyIniFile := TIniFile.Create(s_filename);
+/// /    lbledtName.text := MyIniFile.ReadString('Base', 'AssisName', '辅助查询名称');
+/// /    lbledtTabName.text := MyIniFile.ReadString('Base', 'AssisTabName', '辅助查询表名');
+/// /    lbledtKey.text := MyIniFile.ReadString('Base', 'ResultKeyField', '结果表关联字段');
+/// /    lbledtKeyAssis.text := MyIniFile.ReadString('Base', 'AssisKeyField', '辅助表关联字段');
+/// /    mmoFields.text := MyIniFile.ReadString('Base', 'AssisFields', '查询字段');
+/// /    lbledtSort.text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
+/// /    MyIniFile.Free;
+/// /  end;
+// end;
 
-procedure TMainFrm.N401Click(Sender: TObject);
-begin
-  // ActiveControl := dbgrdh3;
-  // if not(ActiveControl is TDBGridEh) then
-  // Exit;
-  // dbgrdh3.AutoFitColWidths := False;
-  // N402.Checked := dbgrdh3.AutoFitColWidths;
-  // N401.Checked := not N402.Checked;
-end;
+// procedure TMainFrm.N401Click(Sender: TObject);
+// begin
+// // ActiveControl := dbgrdh3;
+// // if not(ActiveControl is TDBGridEh) then
+// // Exit;
+// // dbgrdh3.AutoFitColWidths := False;
+// // N402.Checked := dbgrdh3.AutoFitColWidths;
+// // N401.Checked := not N402.Checked;
+// end;
 
-procedure TMainFrm.N402Click(Sender: TObject);
-begin
-  // ActiveControl := dbgrdh3;
-  // if not(ActiveControl is TDBGridEh) then
-  // Exit;
-  // dbgrdh3.AutoFitColWidths := True;
-  // N402.Checked := dbgrdh3.AutoFitColWidths;
-  // N401.Checked := not N402.Checked;
-end;
+// procedure TMainFrm.N402Click(Sender: TObject);
+// begin
+// // ActiveControl := dbgrdh3;
+// // if not(ActiveControl is TDBGridEh) then
+// // Exit;
+// // dbgrdh3.AutoFitColWidths := True;
+// // N402.Checked := dbgrdh3.AutoFitColWidths;
+// // N401.Checked := not N402.Checked;
+// end;
 
 procedure TMainFrm.N49Click(Sender: TObject);
 var
@@ -2120,34 +2109,34 @@ begin
   prpstrgh1.SaveProperties;
 end;
 
-procedure TMainFrm.N4Click(Sender: TObject);
-var
-  s_filename: string;
-  MyIniFile: TIniFile;
-  AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
-begin
-  dlgSaveAssis.InitialDir := ExtractFilePath(ParamStr(0));
-  dlgSaveAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.text + '.Asi';
-  if dlgSaveAssis.Execute then
-  begin
-    s_filename := dlgSaveAssis.FileName;
-    if FileExists(s_filename) then
-    begin
-      if MessageDlg('该辅助查询模板文件已存在，是否覆盖？', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
-      begin
-        Exit;
-      end;
-    end;
-    MyIniFile := TIniFile.Create(s_filename);
-    MyIniFile.WriteString('Base', 'AssisName', trim(lbledtName.text));
-    MyIniFile.WriteString('Base', 'AssisTabName', trim(lbledtTabName.text));
-    MyIniFile.WriteString('Base', 'ResultKeyField', trim(lbledtKey.text));
-    MyIniFile.WriteString('Base', 'AssisKeyField', trim(lbledtKeyAssis.text));
-    MyIniFile.WriteString('Base', 'AssisFields', trim(mmoFields.text));
-    MyIniFile.WriteString('Base', 'AssisSort', trim(lbledtSort.text));
-    MyIniFile.Free;
-  end;
-end;
+// procedure TMainFrm.N4Click(Sender: TObject);
+/// /var
+/// /  s_filename: string;
+/// /  MyIniFile: TIniFile;
+/// /  AssisName, AssisTabName, AssisKeyField, AssisFields, AssisSort: string;
+// begin
+/// /  dlgSaveAssis.InitialDir := ExtractFilePath(ParamStr(0));
+/// /  dlgSaveAssis.FileName := ExtractFilePath(ParamStr(0)) + '辅助信息_' + lbledtName.text + '.Asi';
+/// /  if dlgSaveAssis.Execute then
+/// /  begin
+/// /    s_filename := dlgSaveAssis.FileName;
+/// /    if FileExists(s_filename) then
+/// /    begin
+/// /      if MessageDlg('该辅助查询模板文件已存在，是否覆盖？', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
+/// /      begin
+/// /        Exit;
+/// /      end;
+/// /    end;
+/// /    MyIniFile := TIniFile.Create(s_filename);
+/// /    MyIniFile.WriteString('Base', 'AssisName', trim(lbledtName.text));
+/// /    MyIniFile.WriteString('Base', 'AssisTabName', trim(lbledtTabName.text));
+/// /    MyIniFile.WriteString('Base', 'ResultKeyField', trim(lbledtKey.text));
+/// /    MyIniFile.WriteString('Base', 'AssisKeyField', trim(lbledtKeyAssis.text));
+/// /    MyIniFile.WriteString('Base', 'AssisFields', trim(mmoFields.text));
+/// /    MyIniFile.WriteString('Base', 'AssisSort', trim(lbledtSort.text));
+/// /    MyIniFile.Free;
+/// /  end;
+// end;
 
 procedure TMainFrm.N53Click(Sender: TObject);
 var

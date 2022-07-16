@@ -24,7 +24,6 @@ object FrmDataImport: TFrmDataImport
     Height = 62
     Align = alTop
     TabOrder = 1
-    ExplicitWidth = 1246
     object lblSrcTab: TLabel
       Left = 14
       Top = 5
@@ -210,7 +209,6 @@ object FrmDataImport: TFrmDataImport
     Height = 56
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 1246
     object LblCheck: TLabel
       Left = 9
       Top = 0
@@ -442,7 +440,6 @@ object FrmDataImport: TFrmDataImport
     ParentShowHint = False
     ShowHint = False
     TabOrder = 2
-    ExplicitWidth = 1246
     object spbtnFileName: TSpeedButton
       Left = 498
       Top = 37
@@ -705,8 +702,6 @@ object FrmDataImport: TFrmDataImport
     Height = 663
     Align = alClient
     TabOrder = 3
-    ExplicitWidth = 1281
-    ExplicitHeight = 637
     object Label6: TLabel
       Left = 1
       Top = 1
@@ -731,9 +726,6 @@ object FrmDataImport: TFrmDataImport
       AlignSplitter = salTop
       ShowHint = True
       ParentShowHint = False
-      ExplicitLeft = -39
-      ExplicitTop = 285
-      ExplicitWidth = 1279
     end
     object Panel1: TPanel
       Left = 1
@@ -743,9 +735,6 @@ object FrmDataImport: TFrmDataImport
       Align = alClient
       Caption = 'Panel1'
       TabOrder = 1
-      ExplicitTop = 424
-      ExplicitWidth = 1279
-      ExplicitHeight = 212
       object Label5: TLabel
         Left = 1
         Top = 1
@@ -778,8 +767,6 @@ object FrmDataImport: TFrmDataImport
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 0
-        ExplicitWidth = 1242
-        ExplicitHeight = 191
       end
     end
     object strngrd1: TAdvStringGrid
@@ -908,6 +895,8 @@ object FrmDataImport: TFrmDataImport
       Version = '8.6.11.2'
       ColWidths = (
         37)
+      RowHeights = (
+        22)
     end
   end
   object pnlTop: TPanel
@@ -924,7 +913,6 @@ object FrmDataImport: TFrmDataImport
     ParentBackground = False
     ParentFont = False
     TabOrder = 4
-    ExplicitWidth = 1246
     object rgSelSrc: TRadioGroup
       Left = 1
       Top = 1
@@ -961,7 +949,6 @@ object FrmDataImport: TFrmDataImport
       Height = 58
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 804
       object lblProj: TLabel
         Left = 1
         Top = 1

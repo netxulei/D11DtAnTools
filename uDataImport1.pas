@@ -460,6 +460,9 @@ begin
   fdQrySrcTab.close;
   FDQrySrcCol.close;
   FDQryTabType.close;
+  FDGUIxAsyncExecuteDialog1.Destroy;
+  Action := caFree;
+
 end;
 
 procedure TFrmDataImport.FormCreate(Sender: TObject);

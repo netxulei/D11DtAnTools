@@ -80,7 +80,7 @@ resourcestring
   SControlParentSetToSelf = 'A control cannot have itself as its parent';
   SControlNonMainThreadUsage = 'Control ''%s'' is used on a not main thread';
   SOKButton = 'OK';
-  SCancelButton = 'Cancel';
+  SCancelButton = 'È¡Ïû';
   SYesButton = '&Yes';
   SNoButton = '&No';
   SHelpButton = '&Help';
