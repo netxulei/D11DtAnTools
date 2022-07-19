@@ -147,10 +147,8 @@ type
     lbledtName: TLabeledEdit;
     dlgOpenAssis: TOpenDialog;
     pnlFields: TPanel;
-    bitbtnAssis: TBitBtn;
     lblFields: TLabel;
     mmoFields: TMemo;
-    lblBreak: TLabel;
     lblBk2: TLabel;
     lblbk3: TLabel;
     fdQryAssis: TFDQuery;
@@ -194,6 +192,11 @@ type
     sBtnUpSave: TSpeedButton;
     sBtnAddSave: TSpeedButton;
     FDGUIxAsyncExecuteDialog1: TFDGUIxAsyncExecuteDialog;
+    FDQryAssLstothWhere: TStringField;
+    FDQryAssLstdisNum: TIntegerField;
+    lbledtWhere: TLabeledEdit;
+    bitbtnAssis: TBitBtn;
+    lblEdtDisNum: TLabeledEdit;
     function AssisSaveClick(Sender: TObject): Boolean;
     function SaveGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
     function RestoreGridIni(ADBGridEhNameStr: string; ADBGridEh: TDBGridEh): Boolean;
@@ -395,7 +398,7 @@ end;
 function TMainFrm.AssisSaveClick(Sender: TObject): Boolean;
 var
   bk: TBookmark;
-  AssiName, SrcTable, KeyColMain, KeyColAssi, OrderCol, DisCols: string;
+  AssiName, SrcTable, KeyColMain, KeyColAssi, OrderCol, DisCols, OthWhere, DispNum: string;
 begin
   AssiName := trim(lbledtName.text);
   SrcTable := trim(lbledtTabName.text);
@@ -403,6 +406,8 @@ begin
   KeyColAssi := trim(lbledtKeyAssis.text);
   OrderCol := trim(lbledtSort.text);
   DisCols := trim(mmoFields.text);
+  OthWhere := trim(lbledtWhere.text);
+  DispNum := trim(lblEdtDisNum.text);
   // (Length(SrcTable)=0) or (Length(KeyColMain)=0) or (Length(KeyColAssi)=0) or (Length(OrderCol)=0) or (Length(DisCols)=0)
   if (Length(AssiName) = 0) then
   begin
@@ -416,18 +421,18 @@ begin
     lbledtTabName.SetFocus;
     Exit;
   end;
-  if (Length(KeyColMain) = 0) then
-  begin
-    MessageDlg('结果表关联字段不能为空', mtInformation, [mbOK], 0);
-    lbledtKey.SetFocus;
-    Exit;
-  end;
-  if (Length(KeyColAssi) = 0) then
-  begin
-    MessageDlg('辅表关联字段不能为空', mtInformation, [mbOK], 0);
-    lbledtKeyAssis.SetFocus;
-    Exit;
-  end;
+  // if (Length(KeyColMain) = 0) then
+  // begin
+  // MessageDlg('结果表关联字段不能为空', mtInformation, [mbOK], 0);
+  // lbledtKey.SetFocus;
+  // Exit;
+  // end;
+  // if (Length(KeyColAssi) = 0) then
+  // begin
+  // MessageDlg('辅表关联字段不能为空', mtInformation, [mbOK], 0);
+  // lbledtKeyAssis.SetFocus;
+  // Exit;
+  // end;
   if (Length(OrderCol) = 0) then
   begin
     MessageDlg('排序字段不能为空', mtInformation, [mbOK], 0);
@@ -469,6 +474,11 @@ begin
   FDQryAssLst['KeyColAssi'] := lbledtKeyAssis.text;
   FDQryAssLst['OrderCol'] := lbledtSort.text;
   FDQryAssLst['DisCols'] := mmoFields.text;
+  FDQryAssLst['othWhere'] := lbledtWhere.text;
+  if Length(lblEdtDisNum.text) = 0 then
+    FDQryAssLst['DisNum'] := 100
+  else
+    FDQryAssLst['DisNum'] := lblEdtDisNum.text;
   FDQryAssLst.Post;
 end;
 
@@ -1047,7 +1057,7 @@ begin
   // lbledtSort.text := MyIniFile.ReadString('Base', 'AssisSort', '排序字段');
   // MyIniFile.Free;
   // end;
-  Panel3.Height := lbledtName.Height * 2 + 12; // 初始化辅助查询字段高度
+  Panel3.Height := lbledtName.Height * 3 + 12; // 初始化辅助查询字段高度
   pnlFields.Height := lbledtName.Height;
 
 end;
@@ -1086,24 +1096,49 @@ end;
 procedure TMainFrm.bitbtnAssisClick(Sender: TObject);
 var
 
-  key_value, qryFields, sqltext, sError: string;
+  key_value, qryFields, sqltext, sqlSelect, sqlWhere, sqlOrder, sError: string;
   i_pos, i: Integer;
 begin
-  // 查看结果表是否存在字段名称
-  if fdmtblRun.Fields.FindField(trim(lbledtKey.text)) = nil then
-  // if fdmtblRun.FieldList.Find((Trim(lbledtKey.Text))) = nil then
+
+  if (Length(trim(lbledtKey.text)) = 0) or (Length(trim(lbledtKeyAssis.text)) = 0) then
   begin
-    MessageDlg('上述结果表中没有关联字段"' + pchar(lbledtKey.text) + '"，不能显示辅助信息。', mtWarning, [mbOK], 0);
-    Exit;
+    sqlWhere := '';
+    if Length(trim(lbledtWhere.text)) > 0 then
+      sqlWhere := sqlWhere + ' Where ' + trim(lbledtWhere.text);
+  end
+  else
+  begin
+    // 查看结果表是否存在字段名称
+    if fdmtblRun.Fields.FindField(trim(lbledtKey.text)) = nil then
+    // if fdmtblRun.FieldList.Find((Trim(lbledtKey.Text))) = nil then
+    begin
+      MessageDlg('上述结果表中没有关联字段"' + pchar(lbledtKey.text) + '"，不能显示辅助信息。', mtWarning, [mbOK], 0);
+      Exit;
+    end;
+    key_value := fdmtblRun.Fields.FindField(trim(lbledtKey.text)).Value;
+    sqlWhere := ' Where [' + trim(lbledtKeyAssis.text) + '] = ''' + key_value + '''';
+    if Length(trim(lbledtWhere.text)) > 0 then
+      sqlWhere := sqlWhere + ' And (' + trim(lbledtWhere.text) + ')';
   end;
-  key_value := fdmtblRun.Fields.FindField(trim(lbledtKey.text)).Value;
+
+  if Length(lblEdtDisNum.text) = 0 then
+    sqlSelect := 'Select '
+  else
+    sqlSelect := 'Select Top ' + lblEdtDisNum.text + ' ';
+
   qryFields := trim(mmoFields.text);
   qryFields := StringReplace(qryFields, #$D#$A, '', [rfReplaceAll]); // 删除回车换行空格
   qryFields := StringReplace(qryFields, #$A, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, #$D, '', [rfReplaceAll]);
   qryFields := StringReplace(qryFields, ' ', '', [rfReplaceAll]);
+  qryFields := StringReplace(qryFields, '，', ',', [rfReplaceAll]);
 
-  sqltext := 'Select ' + qryFields + ' From ' + trim(lbledtTabName.text) + ' Where ' + trim(lbledtKeyAssis.text) + ' = ''' + key_value + ''' Order by ' + trim(lbledtSort.text);
+  qryFields := '[' + StringReplace(qryFields, ',', '],[', [rfReplaceAll]) + ']';
+  sqlOrder := trim(lbledtSort.text);
+  sqlOrder := StringReplace(sqlOrder, '，', ',', [rfReplaceAll]);
+  sqlOrder := '[' + StringReplace(sqlOrder, ',', '],[', [rfReplaceAll]) + ']';
+
+  sqltext := sqlSelect + qryFields + ' From ' + trim(lbledtTabName.text) + sqlWhere + ' Order by ' + sqlOrder;
 
   try
     fdQryAssis.close;
@@ -2009,6 +2044,8 @@ begin
     lbledtKeyAssis.text := FDQryAssLst['KeyColAssi'];
     lbledtSort.text := FDQryAssLst['OrderCol'];
     mmoFields.text := FDQryAssLst['DisCols'];
+    lbledtWhere.text := FDQryAssLst['OthWhere'];
+    lblEdtDisNum.text := FDQryAssLst['disNum'];
   end;
   bitbtnAssis.SetFocus;
   cxPopEdtAss.text := lbledtName.text;

@@ -20,7 +20,7 @@ object MainFrm: TMainFrm
   object cxDBTreeList1: TcxDBTreeList
     Left = 0
     Top = 40
-    Width = 260
+    Width = 217
     Height = 957
     Align = alLeft
     Bands = <
@@ -91,9 +91,9 @@ object MainFrm: TMainFrm
     end
   end
   object Panel1: TPanel
-    Left = 268
+    Left = 225
     Top = 40
-    Width = 1487
+    Width = 1530
     Height = 957
     Align = alClient
     Caption = 'Panel1'
@@ -102,7 +102,7 @@ object MainFrm: TMainFrm
     object Panel2: TPanel
       Left = 1
       Top = 1
-      Width = 1485
+      Width = 1528
       Height = 49
       Align = alTop
       Caption = 'Panel2'
@@ -121,7 +121,7 @@ object MainFrm: TMainFrm
       object pnl3: TPanel
         Left = 65
         Top = 1
-        Width = 1419
+        Width = 1462
         Height = 47
         Align = alClient
         BevelOuter = bvLowered
@@ -131,7 +131,7 @@ object MainFrm: TMainFrm
         object DBMemo1: TDBMemo
           Left = 1
           Top = 1
-          Width = 1417
+          Width = 1460
           Height = 45
           Align = alClient
           DataField = 't_memo'
@@ -144,7 +144,7 @@ object MainFrm: TMainFrm
     object pnl1: TPanel
       Left = 1
       Top = 50
-      Width = 1485
+      Width = 1528
       Height = 906
       Align = alClient
       Color = 16776176
@@ -153,7 +153,7 @@ object MainFrm: TMainFrm
       object pnl5: TPanel
         Left = 1
         Top = 1
-        Width = 1483
+        Width = 1526
         Height = 32
         Align = alTop
         Alignment = taLeftJustify
@@ -163,7 +163,7 @@ object MainFrm: TMainFrm
         object pnl6: TPanel
           Left = 1
           Top = 1
-          Width = 1481
+          Width = 1524
           Height = 30
           Align = alClient
           ParentBackground = False
@@ -291,7 +291,7 @@ object MainFrm: TMainFrm
       object dbgrdh1: TDBGridEh
         Left = 1
         Top = 61
-        Width = 1483
+        Width = 1526
         Height = 581
         Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
         Align = alTop
@@ -342,7 +342,7 @@ object MainFrm: TMainFrm
       object pnl2: TPanel
         Left = 1
         Top = 33
-        Width = 1483
+        Width = 1526
         Height = 28
         Align = alTop
         Font.Charset = ANSI_CHARSET
@@ -415,7 +415,7 @@ object MainFrm: TMainFrm
       object pnl9: TPanel
         Left = 1
         Top = 650
-        Width = 1483
+        Width = 1526
         Height = 255
         Align = alClient
         Color = 16776176
@@ -425,9 +425,9 @@ object MainFrm: TMainFrm
         OnResize = pnl2Resize
         object dbgrdh2: TDBGridEh
           Left = 1
-          Top = 57
-          Width = 1481
-          Height = 197
+          Top = 97
+          Width = 1524
+          Height = 157
           Hint = #34920#26684#25805#20316#35828#26126#65306'1.'#21452#20987#34920#26684#20248#21270#26174#31034#65307'2.'#28857#20987#26631#39064#21487#25490#24207#65307'3.'#28857#20987#34920#26684#24038#19978#30340#21521#19979#19977#35282#65292#36873#25321#26174#31034#21508#21015#65307'4.'#40736#26631#21491#38190#26356#22810#21151#33021#12290
           Align = alClient
           AllowedOperations = []
@@ -472,8 +472,8 @@ object MainFrm: TMainFrm
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 1481
-          Height = 56
+          Width = 1524
+          Height = 96
           Align = alTop
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -485,11 +485,11 @@ object MainFrm: TMainFrm
           ShowCaption = False
           TabOrder = 1
           object sBtnUpSave: TSpeedButton
-            Left = 279
-            Top = 3
+            Left = 158
+            Top = 30
             Width = 34
             Height = 27
-            Hint = #24403#21069#26597#35810#20449#24687#26356#26032#20445#23384
+            Hint = #24403#21069#36741#21161#26597#35810#20449#24687#26356#26032#20445#23384
             ImageIndex = 1
             ImageName = #20445#23384#24182#26356#26032'1'
             Images = F_DT.VirtualImageList2
@@ -500,11 +500,11 @@ object MainFrm: TMainFrm
             OnClick = sBtnUpSaveClick
           end
           object sBtnAddSave: TSpeedButton
-            Left = 316
-            Top = 3
+            Left = 189
+            Top = 30
             Width = 32
             Height = 27
-            Hint = #23558#24403#21069#26597#35810#20449#24687#26032#22686#20445#23384
+            Hint = #24403#21069#36741#21161#26597#35810#20449#24687#26032#22686#20445#23384
             ImageIndex = 3
             ImageName = #20445#23384#24182#26032#22686
             Images = F_DT.VirtualImageList2
@@ -516,7 +516,7 @@ object MainFrm: TMainFrm
           end
           object chkAssis: TCheckBox
             Left = 8
-            Top = 6
+            Top = 33
             Width = 68
             Height = 21
             Hint = #36741#21161#26597#35810#32467#26524#33258#21160#38543#19978#34920#31227#21160#26174#31034
@@ -526,11 +526,11 @@ object MainFrm: TMainFrm
             TabOrder = 0
           end
           object lbledtKey: TLabeledEdit
-            Left = 860
+            Left = 724
             Top = 6
-            Width = 132
+            Width = 141
             Height = 25
-            Hint = #27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
+            Hint = #20026#31354#26102#65292#36741#21161#26597#35810#19981#20877#20351#29992#20851#32852#23383#27573#38480#23450#13#10#19981#20026#31354#26102#65292#27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
             EditLabel.Width = 54
             EditLabel.Height = 17
             EditLabel.Caption = #8593#20851#32852#23383#27573
@@ -542,14 +542,14 @@ object MainFrm: TMainFrm
             Text = ''
           end
           object lbledtTabName: TLabeledEdit
-            Left = 689
+            Left = 547
             Top = 6
             Width = 105
             Height = 25
             Hint = #36741#21161#26597#35810#26469#28304#25968#25454#34920
-            EditLabel.Width = 72
+            EditLabel.Width = 48
             EditLabel.Height = 17
-            EditLabel.Caption = #26469#28304#25968#25454#34920#21517
+            EditLabel.Caption = #25968#25454#34920#21517
             EditLabel.Layout = tlCenter
             LabelPosition = lpLeft
             ParentShowHint = False
@@ -558,11 +558,11 @@ object MainFrm: TMainFrm
             Text = ' '
           end
           object lbledtSort: TLabeledEdit
-            Left = 1269
-            Top = 6
-            Width = 209
+            Left = 286
+            Top = 34
+            Width = 196
             Height = 25
-            Hint = #36741#21161#26597#35810#32467#26524#25490#24207
+            Hint = #36741#21161#26597#35810#32467#26524#25490#24207#12290#22810#20010#23383#27573#26102#65292#36887#21495#20998#38548#12290
             EditLabel.Width = 48
             EditLabel.Height = 17
             EditLabel.Caption = #25490#24207#23383#27573
@@ -574,7 +574,7 @@ object MainFrm: TMainFrm
             Text = ''
           end
           object lbledtName: TLabeledEdit
-            Left = 409
+            Left = 287
             Top = 6
             Width = 195
             Height = 25
@@ -588,41 +588,28 @@ object MainFrm: TMainFrm
           end
           object pnlFields: TPanel
             Left = 1
-            Top = 32
-            Width = 1479
-            Height = 23
+            Top = 63
+            Width = 1522
+            Height = 32
             Align = alBottom
             Caption = 'pnlFields'
             TabOrder = 5
             object lblFields: TLabel
-              Left = 92
+              Left = 6
               Top = 1
               Width = 48
-              Height = 21
+              Height = 30
               Margins.Left = 30
               Align = alLeft
               Caption = #26597#35810#23383#27573
               Layout = tlCenter
               ExplicitHeight = 17
             end
-            object lblBreak: TLabel
-              Left = 70
-              Top = 1
-              Width = 22
-              Height = 21
-              Margins.Left = 30
-              Align = alLeft
-              AutoSize = False
-              Layout = tlCenter
-              WordWrap = True
-              ExplicitLeft = 65
-              ExplicitHeight = 24
-            end
             object lblBk2: TLabel
               Left = 1
               Top = 1
               Width = 5
-              Height = 21
+              Height = 30
               Margins.Left = 30
               Align = alLeft
               AutoSize = False
@@ -631,10 +618,10 @@ object MainFrm: TMainFrm
               ExplicitHeight = 24
             end
             object lblbk3: TLabel
-              Left = 140
+              Left = 54
               Top = 1
               Width = 2
-              Height = 21
+              Height = 30
               Margins.Left = 30
               Align = alLeft
               AutoSize = False
@@ -643,38 +630,24 @@ object MainFrm: TMainFrm
               ExplicitLeft = 143
               ExplicitHeight = 24
             end
-            object bitbtnAssis: TBitBtn
-              Left = 6
-              Top = 1
-              Width = 64
-              Height = 21
-              Hint = #28857#20987#26174#31034#36741#21161#34920#32467#26524
-              Align = alLeft
-              Caption = #26174#31034#36741#21161
-              ParentShowHint = False
-              ShowHint = True
-              TabOrder = 0
-              WordWrap = True
-              OnClick = bitbtnAssisClick
-            end
             object mmoFields: TMemo
-              Left = 142
+              Left = 56
               Top = 1
-              Width = 1313
-              Height = 21
+              Width = 1442
+              Height = 30
               Hint = 'Ctrl+'#8593' '#25110'Ctrl+'#8595' '#35843#25972#32534#36753#26694#22823#23567
               Align = alClient
               ParentShowHint = False
               ShowHint = True
-              TabOrder = 1
+              TabOrder = 0
               OnExit = mmoFieldsExit
               OnKeyDown = mmoFieldsKeyDown
             end
             object spnBtn1: TSpinButton
-              Left = 1455
+              Left = 1498
               Top = 1
               Width = 23
-              Height = 21
+              Height = 30
               Hint = #35843#25972#32534#36753#26694#22823#23567
               Align = alRight
               DownGlyph.Data = {
@@ -687,7 +660,7 @@ object MainFrm: TMainFrm
                 0000008080000080800000808000000000000000000000000000000000000000
                 0000000000000000000000808000008080000080800000808000008080000080
                 800000808000008080000080800000808000}
-              TabOrder = 2
+              TabOrder = 1
               UpGlyph.Data = {
                 0E010000424D0E01000000000000360000002800000009000000060000000100
                 200000000000D800000000000000000000000000000000000000008080000080
@@ -703,11 +676,11 @@ object MainFrm: TMainFrm
             end
           end
           object lbledtKeyAssis: TLabeledEdit
-            Left = 1062
+            Left = 926
             Top = 6
-            Width = 132
+            Width = 187
             Height = 25
-            Hint = #27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
+            Hint = #20026#31354#26102#65292#36741#21161#26597#35810#19981#20877#20351#29992#20851#32852#23383#27573#38480#23450#13#10#19981#20026#31354#26102#65292#27169#22411#20998#26512#32467#26524#19982#36741#21161#26597#35810#21547#26377#30456#21516#30340#20851#32852#23383#27573#25165#33021#36741#21161#26597#35810
             EditLabel.Width = 54
             EditLabel.Height = 17
             EditLabel.Caption = #8595#20851#32852#23383#27573
@@ -719,7 +692,7 @@ object MainFrm: TMainFrm
             Text = ''
           end
           object cxPopEdtAss: TcxPopupEdit
-            Left = 82
+            Left = 3
             Top = 5
             Hint = #24403#21069#36741#21161#26597#35810#27169#26495#21517#31216
             ParentShowHint = False
@@ -730,14 +703,64 @@ object MainFrm: TMainFrm
             TabOrder = 7
             Text = #35831#35843#21462#36741#21161#26597#35810#27169#26495
             TextHint = #35831#35843#21462#36741#21161#26597#35810#27169#26495
-            Width = 191
+            Width = 216
+          end
+          object lbledtWhere: TLabeledEdit
+            Left = 548
+            Top = 34
+            Width = 649
+            Height = 25
+            Hint = #19982#25968#25454#34920#30456#20851#30340#20854#20182#26465#20214#65288#19968#33324#20026#31354#65289
+            EditLabel.Width = 48
+            EditLabel.Height = 17
+            EditLabel.Caption = #38480#23450#26465#20214
+            EditLabel.Layout = tlCenter
+            LabelPosition = lpLeft
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 8
+            Text = ' '
+          end
+          object bitbtnAssis: TBitBtn
+            Left = 77
+            Top = 31
+            Width = 76
+            Height = 25
+            Hint = #28857#20987#26174#31034#36741#21161#34920#32467#26524
+            Align = alCustom
+            Caption = #26174#31034#36741#21161
+            ImageIndex = 7
+            ImageName = #36816#34892
+            Images = F_DT.VirtualImageList1
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 9
+            WordWrap = True
+            OnClick = bitbtnAssisClick
+          end
+          object lblEdtDisNum: TLabeledEdit
+            Left = 1151
+            Top = 5
+            Width = 46
+            Height = 25
+            Hint = #36741#21161#26597#35810#34892#25968#36739#22810#26102#65292#21487#20197#38480#23450#26174#31034#30340#34892#25968
+            EditLabel.Width = 24
+            EditLabel.Height = 17
+            EditLabel.Caption = #34892#25968
+            EditLabel.Layout = tlCenter
+            LabelPosition = lpLeft
+            NumbersOnly = True
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 10
+            Text = ''
           end
         end
       end
       object cxspltr3: TcxSplitter
         Left = 1
         Top = 642
-        Width = 1483
+        Width = 1526
         Height = 8
         Hint = #21333#20987#25110#19978#19979#25302#21160
         HotZoneClassName = 'TcxSimpleStyle'
@@ -752,9 +775,9 @@ object MainFrm: TMainFrm
       end
       object dbgrdEhAssLst: TDBGridEh
         Left = 379
-        Top = 347
+        Top = 128
         Width = 377
-        Height = 233
+        Height = 452
         Hint = #21452#20987#35760#24405#35843#20837#27169#26495#13#10'Ctrl+Del'#25110#19979#26041'X'#25353#38062#21024#38500#24403#21069#35760#24405#13#10#20462#25913#36741#21161#26597#35810#21517#31216#21069#25968#23383#21487#25913#21464#25490#24207
         Align = alCustom
         AllowedOperations = [alopDeleteEh]
@@ -807,7 +830,7 @@ object MainFrm: TMainFrm
     end
   end
   object cxspltr2: TcxSplitter
-    Left = 260
+    Left = 217
     Top = 40
     Width = 8
     Height = 957
@@ -3055,9 +3078,19 @@ object MainFrm: TMainFrm
       Size = 60
     end
     object FDQryAssLstDisCols: TStringField
+      DisplayWidth = 2000
       FieldName = 'DisCols'
       Origin = 'DisCols'
-      Size = 800
+      Size = 2000
+    end
+    object FDQryAssLstothWhere: TStringField
+      FieldName = 'othWhere'
+      Origin = 'othWhere'
+      Size = 200
+    end
+    object FDQryAssLstdisNum: TIntegerField
+      FieldName = 'disNum'
+      Origin = 'disNum'
     end
   end
   object dsAssLst: TDataSource

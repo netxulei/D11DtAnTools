@@ -79,9 +79,6 @@ Coordinates=264,305,44,51
 [MnModRest]
 Coordinates=730,157,72,33
 
-[bitbtnAssis]
-Coordinates=184,305,70,51
-
 [pnl9]
 Coordinates=396,305,41,51
 
@@ -114,9 +111,6 @@ Coordinates=467,366,47,51
 
 [MenuItem1]
 Coordinates=730,625,68,33
-
-[lblBreak]
-Coordinates=801,305,54,51
 
 [lblFields]
 Coordinates=118,305,56,51
@@ -383,5 +377,5 @@ Coordinates=290,10,88,51
 Coordinates=422,421,40,33
 
 []
-Coordinates=727,10,60,51
+Coordinates=801,305,54,51
 
