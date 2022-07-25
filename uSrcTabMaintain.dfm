@@ -7,8 +7,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -12
-  Font.Name = 'Segoe UI'
+  Font.Height = -13
+  Font.Name = #24494#36719#38597#40657
   Font.Style = []
   Position = poScreenCenter
   WindowState = wsMaximized
@@ -16,12 +16,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  TextHeight = 15
+  TextHeight = 19
   object DBGridEhSrcTab: TDBGridEh
     Left = 0
-    Top = 55
+    Top = 57
     Width = 1741
-    Height = 844
+    Height = 842
     Align = alClient
     AllowedOperations = [alopUpdateEh, alopDeleteEh]
     AutoFitColWidths = True
@@ -36,7 +36,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Segoe UI'
+    Font.Name = #24494#36719#38597#40657
     Font.Style = []
     HorzScrollBar.ExtraPanel.Visible = True
     HorzScrollBar.ExtraPanel.VisibleItems = [gsbiRecordsInfoEh, gsbiSelAggregationInfoEh]
@@ -59,7 +59,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     TitleParams.Font.Charset = DEFAULT_CHARSET
     TitleParams.Font.Color = clWindowText
     TitleParams.Font.Height = -12
-    TitleParams.Font.Name = 'Segoe UI'
+    TitleParams.Font.Name = #24494#36719#38597#40657
     TitleParams.Font.Style = []
     TitleParams.MultiTitle = True
     TitleParams.ParentFont = False
@@ -274,7 +274,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'Segoe UI Light'
+        Font.Name = #24494#36719#38597#40657' Light'
         Font.Style = []
         FooterParams.Font.Charset = DEFAULT_CHARSET
         FooterParams.Font.Color = clWindowText
@@ -301,7 +301,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         TitleParams.Font.Charset = DEFAULT_CHARSET
         TitleParams.Font.Color = clWindowText
         TitleParams.Font.Height = -13
-        TitleParams.Font.Name = 'Segoe UI'
+        TitleParams.Font.Name = #24494#36719#38597#40657
         TitleParams.Font.Style = []
         TitleParams.MultiTitle = True
         TitleParams.ParentFont = False
@@ -391,7 +391,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             Title.Hint = 
               #33509#26377#8220#32534#30721#20851#32852#8221#65292#21462#25968#25454#23383#20856#20013#32534#30721#23545#24212#20449#24687#26368#22823#38271#24230#65307#13#10#33509#26080#8220#32534#30721#20851#32852#8221#65292#21462#32534#30721#26368#22823#38271#24230#65307#13#10#25968#20540#22411#26681#25454#21487#33021#26368#22823#20540#21462#25968#23567#25968#28857#21069#20960 +
               #20301#38271#24230#12290
-            Width = 47
+            Width = 37
           end
           item
             CellButtons = <>
@@ -418,7 +418,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
               '1')
             Title.Caption = #29420#31435#32034#24341
             Title.Hint = #23548#20837#25968#25454#26102#65292#27492#23383#27573#24314#31435#29420#31435#32034#24341
-            Width = 48
+            Width = 38
           end
           item
             CellButtons = <>
@@ -611,8 +611,8 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
         Ctl3D = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
+        Font.Height = -12
+        Font.Name = #24494#36719#38597#40657' Light'
         Font.Style = []
         ParentCtl3D = False
         ParentFont = False
@@ -679,7 +679,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Segoe UI'
+          Font.Name = #24494#36719#38597#40657' Light'
           Font.Style = []
           ParentCtl3D = False
           ParentFont = False
@@ -693,13 +693,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
             AutoSize = False
             Caption = #32452#21512#32034#24341
             Color = clHighlight
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clHotLight
-            Font.Height = -13
-            Font.Name = 'Segoe UI'
-            Font.Style = []
             ParentColor = False
-            ParentFont = False
             Layout = tlCenter
           end
         end
@@ -798,13 +792,13 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Left = 0
     Top = 28
     Width = 1741
-    Height = 27
+    Height = 29
     Align = alTop
     AutoSize = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
-    Font.Name = 'Segoe UI'
+    Font.Name = #24494#36719#38597#40657
     Font.Style = []
     ParentFont = False
     TabOrder = 1
@@ -869,13 +863,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       AutoSize = False
       Caption = '  '#23383#27573#31867#22411#26469#28304'  '
       Color = clHighlight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clHotLight
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
       ParentColor = False
-      ParentFont = False
       Layout = tlCenter
     end
     object cxLookupComboBoxDictList: TcxLookupComboBox
@@ -908,13 +896,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       AutoSize = False
       Caption = '   '#26657#39564#35268#21017#26469#28304
       Color = clHighlight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clHotLight
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
       ParentColor = False
-      ParentFont = False
       Layout = tlCenter
     end
     object cxLookupComboBoxReg: TcxLookupComboBox
@@ -947,13 +929,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       AutoSize = False
       Caption = #34892#19994#31867#21035#26469#28304
       Color = clHighlight
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clHotLight
-      Font.Height = -13
-      Font.Name = 'Segoe UI'
-      Font.Style = []
       ParentColor = False
-      ParentFont = False
       Layout = tlCenter
     end
     object cxLookupComboBoxType: TcxLookupComboBox
@@ -987,14 +963,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     AutoSize = True
     Ctl3D = True
     FlowStyle = fsLeftRightBottomTop
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Segoe UI'
-    Font.Style = []
     ParentCtl3D = False
-    ParentFont = False
     TabOrder = 2
+    ExplicitTop = -5
     object bitbtnUndoOnce: TBitBtn
       Left = 1
       Top = 1
@@ -1031,8 +1002,21 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       TabOrder = 2
       OnClick = bitbtnSaveClick
     end
-    object bitbtnExport: TBitBtn
+    object bitbtnCopy: TBitBtn
       Left = 337
+      Top = 1
+      Width = 112
+      Height = 26
+      Hint = #22797#21046#24403#21069#25509#21475#35268#33539#34920#20026#26032#34920
+      Caption = #22797#21046
+      ImageIndex = 18
+      ImageName = #22797#21046
+      Images = F_DT.vrtlmglst1
+      TabOrder = 3
+      OnClick = bitbtnCopyClick
+    end
+    object bitbtnExport: TBitBtn
+      Left = 449
       Top = 1
       Width = 112
       Height = 26
@@ -1043,12 +1027,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Images = F_DT.vrtlmglst1
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 3
+      TabOrder = 4
       OnClick = bitbtnExportClick
     end
     object chkOpen: TCheckBox
       AlignWithMargins = True
-      Left = 452
+      Left = 564
       Top = 5
       Width = 103
       Height = 19
@@ -1058,11 +1042,12 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Ctl3D = True
       ParentCtl3D = False
       State = cbChecked
-      TabOrder = 4
+      TabOrder = 5
       WordWrap = True
+      ExplicitTop = 7
     end
     object BitBtnBackUP: TBitBtn
-      Left = 558
+      Left = 670
       Top = 1
       Width = 58
       Height = 26
@@ -1073,11 +1058,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Images = F_DT.vrtlmglstMenu
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 5
+      TabOrder = 6
       OnClick = BitBtnBackUPClick
     end
     object BitBtnRestore: TBitBtn
-      Left = 616
+      Left = 728
       Top = 1
       Width = 61
       Height = 26
@@ -1088,11 +1073,11 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       Images = F_DT.vrtlmglstMenu
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 6
+      TabOrder = 7
       OnClick = BitBtnRestoreClick
     end
     object bitbtnExit: TBitBtn
-      Left = 677
+      Left = 789
       Top = 1
       Width = 112
       Height = 26
@@ -1100,7 +1085,7 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
       ImageIndex = 9
       ImageName = #23567#36864#20986
       Images = F_DT.vrtlmglst1
-      TabOrder = 7
+      TabOrder = 8
       OnClick = bitbtnExitClick
     end
   end
@@ -1110,7 +1095,9 @@ object frmSrcTabMaintain: TfrmSrcTabMaintain
     Width = 1741
     Height = 19
     Panels = <>
+    ParentFont = True
     SimplePanel = True
+    UseSystemFont = False
   end
   object dsSrcTabMsDt: TDataSource
     DataSet = fdQrySrcTab

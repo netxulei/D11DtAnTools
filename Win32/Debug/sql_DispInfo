@@ -1,4 +1,0 @@
-CREATE PROCEDURE  P_dispInfo   AS
-BEGIN
-select '模型维护已结束，可以运行模型了' as 信息提示
-END

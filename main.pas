@@ -466,7 +466,9 @@ begin
       end
       else
         FDQryAssLst.append;
-    end;
+    end
+    else
+      FDQryAssLst.append;
   end;
   FDQryAssLst['AssiName'] := lbledtName.text;
   FDQryAssLst['SrcTable'] := lbledtTabName.text;

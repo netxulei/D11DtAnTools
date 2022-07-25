@@ -275,8 +275,8 @@ begin
   fdQryDictVal.Connection := F_DT.FDConSYS;
   fdQryDictType.open();
   fdQryDictVal.open();
-//  CHNDBNavigator(dbnvgrDictType);
-//  CHNDBNavigator(dbnvgrDictVal);
+  // CHNDBNavigator(dbnvgrDictType);
+  // CHNDBNavigator(dbnvgrDictVal);
   // DBGridEhSrcTab.Columns[0].width:=40;
   // DBGridEhSrcCol.Columns[0].width:=20;
 end;
@@ -782,7 +782,7 @@ begin
     F_DT.FDConSYS.Rollback;
   end;
   OnDataChange(nil, nil);
-  //更新数据接口表：sql语句卸载控件里
+  // 更新数据接口表：sql语句卸载控件里
   try
     fDCmndUpdateSrc.Connection := F_DT.FDConSYS;
     fDCmndUpdateSrc.Execute;
@@ -1022,6 +1022,7 @@ begin
   bitbtnUndoAll.Enabled := Enable;
   BitBtnBackUP.Enabled := not Enable;
   BitBtnRestore.Enabled := not Enable;
+  bitbtnExport.Enabled := not Enable;
 end;
 
 end.

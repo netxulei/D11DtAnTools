@@ -1,52 +1,79 @@
--- 无参数分析模型模板例
--- 1.各模型名称不能重复
--- 2.参数个数应与“参数信息”处的的个数和类型相一致
--- 3.可复制粘贴至 SSMS(SQL Server Management Studio)中调试运行
-CREATE PROCEDURE 模型英文名称 WITH ENCRYPTION AS
-BEGIN
-
-END
-GO
-
--- 有参数分析模型模板例
+-- 以下模板，只能选择一种 ---
 -- 1.各模型名称不能重复
 -- 2.参数个数应与“参数信息”处的的个数和类型相一致(代码参数前以@开头)
 -- 3.可复制粘贴至 SSMS(SQL Server Management Studio)中调试运行
+
+-- 分析模型模板-无参数
+CREATE PROCEDURE 模型英文名称 WITH ENCRYPTION AS
+BEGIN	
+	-- 判断和删除临时表（若用到临时表）
+  IF Object_id('tempdb..#tmp1') IS NOT NULL
+    DROP TABLE #tmp1
+  IF Object_id('tempdb..#tmp2') IS NOT NULL
+     DROP TABLE #tmp2
+
+  -- 应判断数据表是否导入
+  IF Object_id(N'tb_PbcUnit', N'U') IS NULL
+    OR Object_id(N'tb_BankTxnUnit', N'U') IS NULL
+    BEGIN
+      SELECT '×账户系统单位账户数据或商业银行单位交易数据未导入'   注意
+      RETURN     -- 不再执行后续代码
+    END
+  -- 分析代码，最后一定是Select 语句的结果。Select语句字段名为结果表格标题栏的列名
+  ...
+	Select ...
+END
+
+
+-- 分析模型模板--有参数
 CREATE PROCEDURE 模型英文名称(@str Varchar(40),@begin_date Char(8),@num Int ) WITH ENCRYPTION AS
 BEGIN
+	-- 判断和删除临时表（若用到临时表）
+  IF Object_id('tempdb..#tmp1') IS NOT NULL
+    DROP TABLE #tmp1
+  IF Object_id('tempdb..#tmp2') IS NOT NULL
+     DROP TABLE #tmp2
 
+  -- 应判断数据表是否导入
+  IF Object_id(N'tb_PbcUnit', N'U') IS NULL
+    OR Object_id(N'tb_BankTxnUnit', N'U') IS NULL
+    BEGIN
+      SELECT '×账户系统单位账户数据或商业银行单位交易数据未导入'   注意
+      RETURN     -- 不再执行后续代码
+    END
+  -- 分析代码，最后一定是Select 语句的结果。Select语句字段名为结果表格标题栏的列名
+  ...
+	Select ...
 END
-GO
 
--- 返回字符串函数模板例（“参数信息”处必须为空）
+
+-- 自定义函数--返回字符串（“参数信息”处必须为空）
 CREATE FUNCTION 函数英文名称(@str VARCHAR(MAX),@split VARCHAR(10))
 RETURNS Varchar(8) WITH ENCRYPTION
     AS
 BEGIN
 
 
-  RETURN
+  RETURN ...
 END
-GO
 
--- 返回数量函数模板例（“参数信息”处必须为空）
+-- 自定义函数--返回数量（“参数信息”处必须为空）
 CREATE FUNCTION 函数英文名称(@str VARCHAR(MAX),@split VARCHAR(10))
-RETURNS Varchar(8) WITH ENCRYPTION
+RETURNS Int WITH ENCRYPTION
     AS
-BEGIN
+BEGIN 
 
 
-  RETURN
+  RETURN ...
 END
-GO
 
--- 返回表函数模板（“参数信息”处必须为空）
+-- 自定义函数--返回数据表（“参数信息”处必须为空）
 CREATE FUNCTION 函数英文名称(@str VARCHAR(MAX),@split VARCHAR(10))
 RETURNS TABLE WITH ENCRYPTION
     AS
 BEGIN
 
-  RETURN (Select * ……)
+  RETURN (Select ...)
 END
-GO
+
 

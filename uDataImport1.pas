@@ -3,7 +3,7 @@ unit uDataImport1;
 interface
 
 uses
-  IniFiles, u_dt, DateUtils, RegularExpressions, Math, U_Common, Winapi.Windows,
+  UDtHlp, IniFiles, u_dt, DateUtils, RegularExpressions, Math, U_Common, Winapi.Windows,
   Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
   Vcl.Grids, Vcl.ValEdit, Vcl.CustomizeDlg, Vcl.ActnMan, Vcl.ActnColorMaps,
@@ -266,12 +266,18 @@ end;
 
 procedure TFrmDataImport.bitbtnErrClick(Sender: TObject);
 begin
-  if cbbCode.ItemIndex = 1 then
-    t_cbbCode := '1'
+  // if cbbCode.ItemIndex = 1 then
+  // t_cbbCode := '1'
+  // else
+  // t_cbbCode := '0';
+  // Application.CreateForm(TF_showError, F_showError);
+  // F_showError.ShowModal;
+
+  if FrmDtHlp.Showing then
+    FrmDtHlp.Hide
   else
-    t_cbbCode := '0';
-  Application.CreateForm(TF_showError, F_showError);
-  F_showError.ShowModal;
+    FrmDtHlp.Show;
+
 end;
 
 procedure TFrmDataImport.btnExitClick(Sender: TObject);
@@ -753,10 +759,10 @@ begin
   mmo2.Clear; // 清空信息
   mmo2.Visible := True;
   // 校验文件时grid显示内容要少一些
-//  if dis_or_Val = '1' then
-//    strngrd1.Height := strngrd1.RowHeights[0] * 5
-//  else
-//    strngrd1.Height := pnl4.Height - strngrd1.RowHeights[0] * 5;
+  // if dis_or_Val = '1' then
+  // strngrd1.Height := strngrd1.RowHeights[0] * 5
+  // else
+  // strngrd1.Height := pnl4.Height - strngrd1.RowHeights[0] * 5;
 
 
   // -------------------------------------------------

@@ -486,7 +486,7 @@ object MainFrm: TMainFrm
           TabOrder = 1
           object sBtnUpSave: TSpeedButton
             Left = 158
-            Top = 30
+            Top = 33
             Width = 34
             Height = 27
             Hint = #24403#21069#36741#21161#26597#35810#20449#24687#26356#26032#20445#23384
@@ -501,7 +501,7 @@ object MainFrm: TMainFrm
           end
           object sBtnAddSave: TSpeedButton
             Left = 189
-            Top = 30
+            Top = 33
             Width = 32
             Height = 27
             Hint = #24403#21069#36741#21161#26597#35810#20449#24687#26032#22686#20445#23384
@@ -515,12 +515,18 @@ object MainFrm: TMainFrm
             OnClick = sBtnAddSaveClick
           end
           object chkAssis: TCheckBox
-            Left = 8
-            Top = 33
-            Width = 68
-            Height = 21
-            Hint = #36741#21161#26597#35810#32467#26524#33258#21160#38543#19978#34920#31227#21160#26174#31034
-            Caption = #23454#26102#26174#31034
+            Left = 6
+            Top = 36
+            Width = 45
+            Height = 24
+            Hint = #36741#21161#26597#35810#32467#26524#33258#21160#38543#19978#34920#35760#24405#31227#21160#23454#26102#26174#31034
+            Caption = #23454#26102
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = #24494#36719#38597#40657
+            Font.Style = []
+            ParentFont = False
             ParentShowHint = False
             ShowHint = True
             TabOrder = 0
@@ -722,13 +728,13 @@ object MainFrm: TMainFrm
             Text = ' '
           end
           object bitbtnAssis: TBitBtn
-            Left = 77
-            Top = 31
-            Width = 76
-            Height = 25
+            Left = 47
+            Top = 34
+            Width = 101
+            Height = 26
             Hint = #28857#20987#26174#31034#36741#21161#34920#32467#26524
             Align = alCustom
-            Caption = #26174#31034#36741#21161
+            Caption = #36741#21161#26597#35810
             ImageIndex = 7
             ImageName = #36816#34892
             Images = F_DT.VirtualImageList1

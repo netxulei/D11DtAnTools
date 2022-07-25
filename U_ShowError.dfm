@@ -29,7 +29,6 @@ object F_showError: TF_showError
   object cxm1: TcxMemo
     Left = 0
     Top = 56
-    Align = alClient
     ParentFont = False
     Properties.ReadOnly = True
     Properties.ScrollBars = ssVertical
@@ -42,11 +41,8 @@ object F_showError: TF_showError
     Style.Shadow = False
     Style.IsFontAssigned = True
     TabOrder = 0
-    ExplicitTop = 34
-    ExplicitWidth = 911
-    ExplicitHeight = 158
-    Height = 466
-    Width = 1048
+    Height = 129
+    Width = 569
   end
   object cxlbl1: TcxLabel
     Left = 0
@@ -61,13 +57,11 @@ object F_showError: TF_showError
     Style.Font.Style = []
     Style.IsFontAssigned = True
     Properties.WordWrap = True
-    ExplicitWidth = 911
     Width = 1048
   end
   object cxm2: TcxMemo
-    Left = 0
-    Top = 56
-    Align = alClient
+    Left = -15
+    Top = 191
     ParentFont = False
     Properties.ReadOnly = True
     Properties.ScrollBars = ssVertical
@@ -81,11 +75,8 @@ object F_showError: TF_showError
     Style.IsFontAssigned = True
     TabOrder = 2
     Visible = False
-    ExplicitTop = 229
-    ExplicitWidth = 911
-    ExplicitHeight = 282
-    Height = 466
-    Width = 1048
+    Height = 129
+    Width = 584
   end
   object cxlbl2: TcxLabel
     Left = 0
@@ -103,8 +94,6 @@ object F_showError: TF_showError
     Style.IsFontAssigned = True
     Properties.WordWrap = True
     Visible = False
-    ExplicitTop = 195
-    ExplicitWidth = 911
     Width = 1048
   end
 end

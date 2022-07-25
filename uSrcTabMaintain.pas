@@ -81,11 +81,6 @@ type
     fdQrySrcColcol_rept: TStringField;
     fdQrySrcColcol_index: TStringField;
     dlgSave1: TSaveDialog;
-    bitbtnExport: TBitBtn;
-    chkOpen: TCheckBox;
-    BitBtnBackUP: TBitBtn;
-    BitBtnRestore: TBitBtn;
-    bitbtnExit: TBitBtn;
     FDQryBKMaster: TFDQuery;
     FDQryBKDetail: TFDQuery;
     fdmtblImp: TFDMemTable;
@@ -115,6 +110,12 @@ type
     dsCurColLst: TDataSource;
     btnDepend: TButton;
     spnBtn1: TSpinButton;
+    bitbtnCopy: TBitBtn;
+    bitbtnExport: TBitBtn;
+    chkOpen: TCheckBox;
+    BitBtnBackUP: TBitBtn;
+    BitBtnRestore: TBitBtn;
+    bitbtnExit: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure dbnvgrDictTypeClick(Sender: TObject; Button: TNavigateBtn);
     procedure dbnvgrDictTypeBeforeAction(Sender: TObject; Button: TNavigateBtn);
@@ -146,6 +147,7 @@ type
     procedure spnBtn1UpClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure dsSrcTabMsDtDataChange(Sender: TObject; Field: TField);
+    procedure bitbtnCopyClick(Sender: TObject);
   private { Private declarations }
     procedure CHNDBNavigator(ADBNavigator: TDBNavigator);
     procedure ToggleButtons(Enable: Boolean);
@@ -185,7 +187,7 @@ begin
         max_sort := Max(max_sort, fdQrySrcTab['tab_sort']);
         Next;
       end;
-//      EnableControls;          // append引发错误could not convert variant of type into type (OleStr),放到后面
+      // EnableControls;          // append引发错误could not convert variant of type into type (OleStr),放到后面
     end;
     fdQrySrcTab.Append;
     fdQrySrcTab['tab_id'] := getGUID; // 自增量字段不能修改   ，但主表未存盘之前，从表无法增加记录
@@ -517,6 +519,254 @@ begin
     end;
   end;
 
+end;
+
+procedure TfrmSrcTabMaintain.bitbtnCopyClick(Sender: TObject);
+type
+  TSrcColRec = record
+    // col_Id,
+    tab_id, col_name_cn, col_name_en, col_type: string;
+    col_all_len, col_dot_len: Integer;
+    col_index, col_rept, col_Dict, col_date_deal, col_xls_loc, col_regName, col_reg, col_reg_str, col_reg_ok, col_reg_depCol, col_reg_depVal, col_memo: string;
+    // col_sort: Integer;
+  end;
+var
+  i, rec_no, tab_max_sort, col_max_sort: Integer;
+  // table所有字段
+  tab_id, tab_name_cn, tab_name_en, tab_memo, tab_XLS, tab_TXT, txt_split, txt_qualifier, chn_col, GloImp: string;
+  tab_sort: Integer;
+  tb_type, combIndex: string;
+  // col表字段记录，记录子表所有记录
+  SrcColRec: array of TSrcColRec; // 字段定义数组
+begin
+
+  // ShowMessage(fdQrySrcTab['tab_id']);
+  // ShowMessage(IntToStr(fdQrySrcCol.RecordCount));
+  // 获得table当前记录值
+  if fdQrySrcTab.Eof then
+  begin
+    MessageDlg('请选中要复制的接口规范表以后再行复制', mtInformation, [mbOK], 0);
+    Exit;
+  end;
+
+  if VarIsNull(fdQrySrcTab['tab_name_cn']) then
+    tab_name_cn := ''
+  else
+    tab_name_cn := fdQrySrcTab['tab_name_cn'];
+
+  if VarIsNull(fdQrySrcTab['tab_name_en']) then
+    tab_name_en := ''
+  else
+    tab_name_en := fdQrySrcTab['tab_name_en'];
+
+  if VarIsNull(fdQrySrcTab['tab_memo']) then
+    tab_memo := ''
+  else
+    tab_memo := fdQrySrcTab['tab_memo'];
+
+  if VarIsNull(fdQrySrcTab['tab_XLS']) then
+    tab_XLS := '0'
+  else
+    tab_XLS := fdQrySrcTab['tab_XLS'];
+
+  if VarIsNull(fdQrySrcTab['tab_TXT']) then
+    tab_TXT := '1'
+  else
+    tab_TXT := fdQrySrcTab['tab_TXT'];
+
+  if VarIsNull(fdQrySrcTab['txt_split']) then
+    txt_split := ''
+  else
+    txt_split := fdQrySrcTab['txt_split'];
+
+  if VarIsNull(fdQrySrcTab['txt_qualifier']) then
+    txt_qualifier := ''
+  else
+    txt_qualifier := fdQrySrcTab['txt_qualifier'];
+  if VarIsNull(fdQrySrcTab['chn_col']) then
+    chn_col := '1'
+  else
+    chn_col := fdQrySrcTab['chn_col'];
+  if VarIsNull(fdQrySrcTab['GloImp']) then
+    GloImp := '0'
+  else
+    GloImp := fdQrySrcTab['GloImp'];
+  // tab_sort := fdQrySrcTab[''];
+  if VarIsNull(fdQrySrcTab['type']) then
+    tb_type := '0'
+  else
+    tb_type := fdQrySrcTab['type'];
+  if VarIsNull(fdQrySrcTab['combIndex']) then
+    combIndex := ''
+  else
+    combIndex := fdQrySrcTab['combIndex'];
+
+  // 获得tabe关联子表的所有记录
+  rec_no := fdQrySrcCol.RecordCount;
+  if rec_no > 0 then
+  begin
+    SetLength(SrcColRec, rec_no); // 定义数组长度为子表记录数
+    col_max_sort := 0;
+    fdQrySrcCol.First;
+    for i := 0 to rec_no - 1 do
+    begin
+      if VarIsNull(fdQrySrcCol['col_name_cn']) then
+        SrcColRec[i].col_name_cn := ''
+      else
+        SrcColRec[i].col_name_cn := fdQrySrcCol['col_name_cn'];
+
+      if VarIsNull(fdQrySrcCol['col_name_en']) then
+        SrcColRec[i].col_name_en := ''
+      else
+        SrcColRec[i].col_name_en := fdQrySrcCol['col_name_en'];
+
+      if VarIsNull(fdQrySrcCol['col_type']) then
+        SrcColRec[i].col_type := 'varchar'
+      else
+        SrcColRec[i].col_type := fdQrySrcCol['col_type'];
+
+      if VarIsNull(fdQrySrcCol['col_all_len']) then
+        SrcColRec[i].col_all_len := 80
+      else
+        SrcColRec[i].col_all_len := fdQrySrcCol['col_all_len'];
+
+      if VarIsNull(fdQrySrcCol['col_dot_len']) then
+        SrcColRec[i].col_dot_len := 0
+      else
+        SrcColRec[i].col_dot_len := fdQrySrcCol['col_dot_len'];
+
+      if VarIsNull(fdQrySrcCol['col_index']) then
+        SrcColRec[i].col_index := '0'
+      else
+        SrcColRec[i].col_index := fdQrySrcCol['col_index'];
+
+      if VarIsNull(fdQrySrcCol['col_rept']) then
+        SrcColRec[i].col_rept := '0'
+      else
+        SrcColRec[i].col_rept := fdQrySrcCol['col_rept'];
+
+      if VarIsNull(fdQrySrcCol['col_Dict']) then
+        SrcColRec[i].col_Dict := ''
+      else
+        SrcColRec[i].col_Dict := fdQrySrcCol['col_Dict'];
+
+      if VarIsNull(fdQrySrcCol['col_date_deal']) then
+        SrcColRec[i].col_date_deal := '0'
+      else
+        SrcColRec[i].col_date_deal := fdQrySrcCol['col_date_deal'];
+
+      if VarIsNull(fdQrySrcCol['col_xls_loc']) then
+        SrcColRec[i].col_xls_loc := ''
+      else
+        SrcColRec[i].col_xls_loc := fdQrySrcCol['col_xls_loc'];
+
+      if VarIsNull(fdQrySrcCol['col_regName']) then
+        SrcColRec[i].col_regName := ''
+      else
+        SrcColRec[i].col_regName := fdQrySrcCol['col_regName'];
+      if VarIsNull(fdQrySrcCol['col_reg']) then
+        SrcColRec[i].col_reg := ''
+      else
+        SrcColRec[i].col_reg := fdQrySrcCol['col_reg'];
+
+      if VarIsNull(fdQrySrcCol['col_reg_str']) then
+        SrcColRec[i].col_reg_str := ''
+      else
+        SrcColRec[i].col_reg_str := fdQrySrcCol['col_reg_str'];
+
+      if VarIsNull(fdQrySrcCol['col_reg_ok']) then
+        SrcColRec[i].col_reg_ok := '0'
+      else
+        SrcColRec[i].col_reg_ok := fdQrySrcCol['col_reg_ok'];
+
+      if VarIsNull(fdQrySrcCol['col_reg_depCol']) then
+        SrcColRec[i].col_reg_depCol := ''
+      else
+        SrcColRec[i].col_reg_depCol := fdQrySrcCol['col_reg_depCol'];
+
+      if VarIsNull(fdQrySrcCol['col_reg_depVal']) then
+        SrcColRec[i].col_reg_depVal := ''
+      else
+        SrcColRec[i].col_reg_depVal := fdQrySrcCol['col_reg_depVal'];
+
+      if VarIsNull(fdQrySrcCol['col_memo']) then
+        SrcColRec[i].col_memo := ''
+      else
+        SrcColRec[i].col_memo := fdQrySrcCol['col_memo'];
+      fdQrySrcCol.Next;
+    end;
+
+    // 获得col的最大序号    无需获列最大序号从1开始即可，数组下标+1即可
+    // fdQrySrcCol.Last;
+    // col_max_sort := fdQrySrcCol['col_sort'];
+  end;
+
+  // 遍历取tab最大序号，未用sql语句是因为未保存时，即使post，缓存中的值无法取得
+  with fdQrySrcTab do
+  begin
+    First;
+    DisableControls;
+    tab_max_sort := 0;
+    while not Eof do
+    begin
+      tab_max_sort := Max(tab_max_sort, fdQrySrcTab['tab_sort']);
+      Next;
+    end;
+    // EnableControls;          // append引发错误could not convert variant of type into type (OleStr),放到后面
+  end;
+
+  tab_id := getGUID; // 新纪录id
+
+  // 新增src
+  fdQrySrcTab.Append;
+  fdQrySrcTab['tab_id'] := tab_id; // 自增量字段不能修改   ，但主表未存盘之前，从表无法增加记录
+  fdQrySrcTab['tab_sort'] := tab_max_sort + 1;
+  fdQrySrcTab['tab_name_cn'] := tab_name_cn;
+  fdQrySrcTab['tab_name_en'] := tab_name_en;
+  fdQrySrcTab['tab_memo'] := tab_memo;
+  fdQrySrcTab['tab_XLS'] := tab_XLS;
+  fdQrySrcTab['tab_TXT'] := tab_TXT;
+  fdQrySrcTab['txt_split'] := txt_split;
+  fdQrySrcTab['txt_qualifier'] := txt_qualifier;
+  fdQrySrcTab['chn_col'] := chn_col;
+  fdQrySrcTab['GloImp'] := GloImp;
+  fdQrySrcTab['type'] := tb_type;
+  fdQrySrcTab['combIndex'] := combIndex;
+  fdQrySrcTab.Post;
+  fdQrySrcTab.EnableControls;
+  // // 新增col
+  if rec_no > 0 then
+  begin
+    // col_max_sort := 1;
+    fdQrySrcCol.DisableControls;
+    for i := 0 to rec_no - 1 do
+    begin
+      fdQrySrcCol.Append;
+      fdQrySrcCol['col_name_cn'] := SrcColRec[i].col_name_cn;
+      fdQrySrcCol['col_name_en'] := SrcColRec[i].col_name_en;
+      fdQrySrcCol['col_type'] := SrcColRec[i].col_type;
+      fdQrySrcCol['col_all_len'] := SrcColRec[i].col_all_len;
+      fdQrySrcCol['col_dot_len'] := SrcColRec[i].col_dot_len;
+      fdQrySrcCol['col_index'] := SrcColRec[i].col_index;
+      fdQrySrcCol['col_rept'] := SrcColRec[i].col_rept;
+      fdQrySrcCol['col_Dict'] := SrcColRec[i].col_Dict;
+      fdQrySrcCol['col_date_deal'] := SrcColRec[i].col_date_deal;
+      fdQrySrcCol['col_xls_loc'] := SrcColRec[i].col_xls_loc;
+      fdQrySrcCol['col_regName'] := SrcColRec[i].col_regName;
+      fdQrySrcCol['col_reg'] := SrcColRec[i].col_reg;
+      fdQrySrcCol['col_reg_str'] := SrcColRec[i].col_reg_str;
+      fdQrySrcCol['col_reg_ok'] := SrcColRec[i].col_reg_ok;
+      fdQrySrcCol['col_reg_depCol'] := SrcColRec[i].col_reg_depCol;
+      fdQrySrcCol['col_reg_depVal'] := SrcColRec[i].col_reg_depVal;
+      fdQrySrcCol['col_memo'] := SrcColRec[i].col_memo;
+      fdQrySrcCol['col_id'] := getGUID;
+      fdQrySrcCol['tab_id'] := tab_id;
+      fdQrySrcCol['col_sort'] := i + 1;
+    end;
+    fdQrySrcCol.Post;
+    fdQrySrcCol.EnableControls;
+  end;
+  DBGridEhSrcTab.SetFocus;
 end;
 
 procedure TfrmSrcTabMaintain.bitbtnExitClick(Sender: TObject);
@@ -1210,6 +1460,8 @@ begin
   bitbtnUndoAll.Enabled := Enable;
   BitBtnBackUP.Enabled := not Enable;
   BitBtnRestore.Enabled := not Enable;
+  bitbtnCopy.Enabled := not Enable;
+  bitbtnExport.Enabled := not Enable;
 end;
 
 end.

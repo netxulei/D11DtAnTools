@@ -1,6 +1,0 @@
-[Base]
-AssisName=对应人行个人账户信息
-AssisTabName = tb_rhzh_gr
-AssisKeyField=账号
-AssisFields=账号,银行机构代码,存款人名称,存款人身份类别,发证机关所在地地区代码,地址,邮编,电话,身份证件种类,身份证件编号,行别代码,开户地地区代码,账户类型,开户日期,账户有效日期,销户日期,变更日期,开户登记日期
-AssisSort= 账号,开户日期

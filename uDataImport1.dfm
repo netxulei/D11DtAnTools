@@ -7,7 +7,7 @@ object FrmDataImport: TFrmDataImport
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -15
+  Font.Height = -13
   Font.Name = #24494#36719#38597#40657
   Font.Style = []
   KeyPreview = True
@@ -16,7 +16,7 @@ object FrmDataImport: TFrmDataImport
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
-  TextHeight = 20
+  TextHeight = 19
   object pnl1: TPanel
     Left = 0
     Top = 60
@@ -25,8 +25,8 @@ object FrmDataImport: TFrmDataImport
     Align = alTop
     TabOrder = 1
     object lblSrcTab: TLabel
-      Left = 14
-      Top = 5
+      Left = 12
+      Top = 3
       Width = 122
       Height = 17
       Caption = '1.'#36873#25321#25968#25454#34920#21517#31216
@@ -676,15 +676,15 @@ object FrmDataImport: TFrmDataImport
         'UNIX')
     end
     object bitbtnErr: TBitBtn
-      Left = 872
-      Top = 6
-      Width = 97
-      Height = 55
+      Left = 880
+      Top = 24
+      Width = 89
+      Height = 39
       Hint = #25968#25454#24120#35265#38382#39064#22788#29702
-      Caption = #25968#25454#24120#35265#38382#39064#22788#29702#24110#21161
+      Caption = #25968#25454#24120#35265#38382#39064#22788#29702#31508#35760
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -15
+      Font.Height = -12
       Font.Name = #24494#36719#38597#40657
       Font.Style = []
       ParentFont = False

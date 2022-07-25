@@ -31,7 +31,8 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   EhLibLangConsts in 'MySome\EhLibLangConsts.pas',
-  u_ModPara in 'u_ModPara.pas' {FrmModPara};
+  u_ModPara in 'u_ModPara.pas' {FrmModPara},
+  UDtHlp in 'UDtHlp.pas' {FrmDtHlp};
 
 {$R *.res}
 
@@ -43,6 +44,7 @@ begin
   Application.CreateForm(TLoginFrm, LoginFrm);
   Application.CreateForm(TF_DT, F_DT);
   Application.CreateForm(TF_float, F_float);
+  Application.CreateForm(TFrmDtHlp, FrmDtHlp);
   Application.Run;
 
   // 子窗口显示在任务栏
